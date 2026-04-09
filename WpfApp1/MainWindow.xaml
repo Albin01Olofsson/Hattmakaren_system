@@ -5,12 +5,117 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="49*"/>
-            <ColumnDefinition Width="351*"/>
-        </Grid.ColumnDefinitions>
+        Title="Hattmakaren Dashboard" Height="650" Width="900"
+        WindowStartupLocation="CenterScreen">
 
+    <Grid Background="#0A0A0C">
+        <StackPanel VerticalAlignment="Center">
+
+            <TextBlock Text="AFFÄRSSYSTEM" 
+           Foreground="White" 
+           FontSize="42" 
+           FontWeight="Bold" 
+           HorizontalAlignment="Center" 
+           Margin="0,0,0,40">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="White" Opacity="0.3"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <UniformGrid Columns="3" Rows="2" Margin="60,0,60,0">
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#0066FF" Offset="0"/>
+                                <GradientStop Color="#00CCFF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel
+" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#A033FF" Offset="0"/>
+                                <GradientStop Color="#D433FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF3333" Offset="0"/>
+                                <GradientStop Color="#FF6666" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#3344FF" Offset="0"/>
+                                <GradientStop Color="#6688FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF9933" Offset="0"/>
+                                <GradientStop Color="#FFCC33" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Style="{StaticResource GlassBack}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#33CC66" Offset="0"/>
+                                <GradientStop Color="#66FF99" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Style="{StaticResource GlassFront}">
+                        <TextBlock Text="" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Exempel" Foreground="#888" HorizontalAlignment="Center" Margin="0,95,0,0"/>
+                </Grid>
+
+            </UniformGrid>
+        </StackPanel>
     </Grid>
 </Window>

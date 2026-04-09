@@ -7,24 +7,27 @@ namespace Models
         [Key]
         public int OrderID { get; set; }
 
-        public double Pris { get; set; }
+        public decimal Pris { get; set; }
 
         public DateTime Datum { get; set; }
 
         public bool Färdig { get; set; } = false;
 
+
+        [ForeignKey("StartadAv")]
+        public int StartadAvID { get; set; }
         public Användare StartadAv { get; set; } = null!;
 
-        public Kund Beställare { get; set; } = null!;
 
-        public List<LagerfördProdukt> Produkter { get; set; } = new List<LagerfördProdukt>();
 
-        public List<SpecialBeställning> SpecialBeställningar { get; set; } = new List<SpecialBeställning>();
+        public List<Produkt> Produkter { get; set; } = new List<Produkt>();
+
+
 
         public Kund Kund { get; set; } = null!;
 
         [ForeignKey("Kund")]
-        public string KundID { get; set; } = null!;
+        public int KundID { get; set; }
 
     }
 }

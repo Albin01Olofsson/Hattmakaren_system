@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -11,8 +12,11 @@ namespace Models
 
 
 
-        public double TotalPris { get; set; }
+        public decimal TotalPris { get; set; }
 
+        [ForeignKey("StartadAv")]
+        public int StartadAvID { get; set; }
+        public Användare StartadAv { get; set; } = null!;
 
     }
 }

@@ -9,7 +9,7 @@ namespace Models
 
         public string Namn { get; set; }
 
-        public double Pris { get; set; }
+        public decimal Pris { get; set; }
 
         public string Beskrivning { get; set; }
 

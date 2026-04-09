@@ -10,7 +10,7 @@ namespace Models
 
         public string namn { get; set; }
 
-        public double pris { get; set; }
+        public decimal pris { get; set; }
 
 
 
@@ -23,6 +23,10 @@ namespace Models
         public int OrderID { get; set; }
         public Order Order { get; set; }
 
+        [ForeignKey("TillverkadAv")]
+        public int TillverkadAVID { get; set; }
+
+        public Användare TillverkadAv { get; set; } = null!;
 
     }
 }

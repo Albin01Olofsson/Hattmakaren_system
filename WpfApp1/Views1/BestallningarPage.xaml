@@ -1,0 +1,116 @@
+﻿<Page x:Class="WpfApp1.Views1.BestallningarPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#FF1A1A1D">
+
+    <ScrollViewer>
+        <StackPanel Margin="40" Width="400">
+
+            <!-- Titel -->
+            <TextBlock Text="Skapa beställning"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,0,0,25"/>
+
+            <!-- Material -->
+            <TextBlock Text="Material"
+                       Foreground="#FFC5A059"
+                       FontWeight="SemiBold"/>
+            <ComboBox x:Name="MaterialComboBox"
+                      Height="40"
+                      Margin="0,5,0,15"
+                      Background="#FF2C3E50"
+                      Foreground="White"
+                      BorderThickness="0"
+                      Padding="5"
+                      DisplayMemberPath="Namn"/>
+
+            <!-- Mängd -->
+            <TextBlock Text="Mängd (meter)"
+                       Foreground="#FFC5A059"
+                       FontWeight="SemiBold"/>
+            <TextBox x:Name="TxtAntal"
+                     Height="40"
+                     Margin="0,5,0,20"
+                     Background="#FF2C3E50"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="5"/>
+
+            <!-- Skapa beställning -->
+            <Button Content="Skapa beställning"
+                    Height="45"
+                    Background="#FFC5A059"
+                    Foreground="#FF1A1A1D"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Margin="0,0,0,25"
+                    Click="BtnSkapa_Click"/>
+
+            <!-- Lägg till material -->
+            <Button Content="➕ Lägg till nytt material"
+                    Height="40"
+                    Background="Transparent"
+                    Foreground="#FFC5A059"
+                    BorderBrush="#FFC5A059"
+                    BorderThickness="1"
+                    Click="ToggleMaterialForm_Click"/>
+
+            <!-- 🔥 DOLD FORM -->
+            <Border x:Name="MaterialForm"
+                    Background="#FF2C3E50"
+                    Padding="20"
+                    CornerRadius="12"
+                    Margin="0,20,0,0"
+                    Visibility="Collapsed">
+
+                <StackPanel>
+
+                    <TextBlock Text="Nytt material"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Margin="0,0,0,15"/>
+
+                    <TextBlock Text="Namn" Foreground="#FFC5A059"/>
+                    <TextBox x:Name="TxtNamn"
+                             Height="35"
+                             Margin="0,5,0,10"
+                             Background="#FF1A1A1D"
+                             Foreground="White"
+                             BorderThickness="0"
+                             Padding="5"/>
+
+                    <TextBlock Text="Pris" Foreground="#FFC5A059"/>
+                    <TextBox x:Name="TxtPris"
+                             Height="35"
+                             Margin="0,5,0,10"
+                             Background="#FF1A1A1D"
+                             Foreground="White"
+                             BorderThickness="0"
+                             Padding="5"/>
+
+                    <TextBlock Text="Typ (meter/st)" Foreground="#FFC5A059"/>
+                    <TextBox x:Name="TxtTyp"
+                             Height="35"
+                             Margin="0,5,0,15"
+                             Background="#FF1A1A1D"
+                             Foreground="White"
+                             BorderThickness="0"
+                             Padding="5"/>
+
+                    <Button Content="Spara material"
+                            Height="40"
+                            Background="#FFC5A059"
+                            Foreground="#FF1A1A1D"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Click="BtnAddMaterial_Click"/>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

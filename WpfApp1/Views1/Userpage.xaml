@@ -1,0 +1,82 @@
+﻿<Page x:Class="WpfApp1.Views1.AnvandarePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="AnvandarePage"
+      Background="#FF1A1A1D">
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+            <TextBlock x:Name="TxtHeaderTitle" Text="ANVÄNDARHANTERING" FontSize="32" Foreground="#FFC5A059" FontWeight="Black"/>
+            <Rectangle Height="2" Fill="#FFC5A059" HorizontalAlignment="Left" Width="100" Margin="0,5,0,5" Opacity="0.6"/>
+            <TextBlock x:Name="TxtHeaderSub" Text="Systemadministration och Register" Foreground="White" FontSize="14" Opacity="0.5"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="0,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#FF2C3E50" CornerRadius="15" Margin="0,0,10,0" Padding="20">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="PERSONAL" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+                        <Button x:Name="BtnDeleteStaff" DockPanel.Dock="Bottom" Content="INAKTIVERA PERSONAL" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
+
+                        <ListBox Background="Transparent" BorderThickness="0" Foreground="White">
+                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👤 Johan (Admin)</ListBoxItem>
+                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👤 Anna (Anställd)</ListBoxItem>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="1" Background="#FF2C3E50" CornerRadius="15" Margin="10,0,0,0" Padding="20">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="KUNDER" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+                        <Button x:Name="BtnDeleteCustomer" DockPanel.Dock="Bottom" Content="TA BORT KUND" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
+
+                        <ListBox Background="Transparent" BorderThickness="0" Foreground="White">
+                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👥 Karl Karlsson</ListBoxItem>
+                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👥 Maria Larsson</ListBoxItem>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Column="1" Background="#FFC5A059" CornerRadius="15" Padding="25">
+                <StackPanel>
+                    <TextBlock x:Name="TxtFormTitle" Text="REGISTRERA NY" FontSize="20" FontWeight="Black" Foreground="#FF2C3E50" Margin="0,0,0,25"/>
+
+                    <TextBlock Text="NAMN" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="InputName" Margin="0,0,0,15" Height="35" VerticalContentAlignment="Center" Padding="10" Background="White" BorderThickness="0"/>
+
+                    <TextBlock Text="E-POST" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="InputEmail" Margin="0,0,0,15" Height="35" VerticalContentAlignment="Center" Padding="10" Background="White" BorderThickness="0"/>
+
+                    <StackPanel x:Name="AdminPanel">
+                        <TextBlock Text="KATEGORI" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="ComboRole" Margin="0,0,0,25" Height="35" SelectedIndex="0">
+                            <ComboBoxItem Content="Kund"/>
+                            <ComboBoxItem Content="Anställd"/>
+                            <ComboBoxItem Content="Administratör"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button x:Name="BtnSave" Content="BEKRÄFTA OCH SPARA" Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Height="50" BorderThickness="0"/>
+
+                    <TextBlock x:Name="TxtFooterNote" Text="* Historik bevaras vid radering." Foreground="#FF2C3E50" FontSize="10" TextAlignment="Center" FontWeight="Bold" Margin="0,20,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

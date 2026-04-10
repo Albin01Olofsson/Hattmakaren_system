@@ -3,104 +3,113 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Mainpage" Background="#FF1A1A1D">
 
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-		<Border Grid.Column="0" Background="#FFC5A059" CornerRadius="0,30,30,0">
-			<DockPanel LastChildFill="True">
-				<StackPanel DockPanel.Dock="Bottom" Margin="15,0,15,20">
-					<Button x:Name="BtnLoggaUt" Margin="0,0,0,10" Background="#FFB08D46" BorderThickness="0" Click="BtnLoggaUt_Click">
-						<Border Padding="10">
-							<TextBlock Text="Logga ut" FontSize="13" FontWeight="Bold" Foreground="#FF2C3E50" HorizontalAlignment="Center"/>
-						</Border>
-					</Button>
-					<Border Padding="10" Background="#22000000" CornerRadius="12">
-						<StackPanel Orientation="Horizontal">
-							<Border Width="35" Height="35" Background="#FF2C3E50" CornerRadius="17.5">
-								<TextBlock Text="JD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
-							</Border>
-							<StackPanel Margin="10,0,0,0">
-								<TextBlock Text="John Doe" FontSize="12" FontWeight="Bold" Foreground="#FF2C3E50"/>
-								<TextBlock Text="Administratör" FontSize="10" Foreground="#FF2C3E50" Opacity="0.6"/>
-							</StackPanel>
-						</StackPanel>
-					</Border>
-				</StackPanel>
+        <Border Grid.Column="0" Background="#FFC5A059" CornerRadius="0,30,30,0">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Bottom" Margin="15,0,15,20">
+                    <Button x:Name="BtnLoggaUt" Margin="0,0,0,10" Background="#FFB08D46" BorderThickness="0" Click="BtnLoggaUt_Click">
+                        <Border Padding="10">
+                            <TextBlock Text="Logga ut" FontSize="13" FontWeight="Bold" Foreground="#FF2C3E50" HorizontalAlignment="Center"/>
+                        </Border>
+                    </Button>
+                    <Border Padding="10" Background="#22000000" CornerRadius="12">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="35" Height="35" Background="#FF2C3E50" CornerRadius="17.5">
+                                <TextBlock Text="JD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            </Border>
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock Text="John Doe" FontSize="12" FontWeight="Bold" Foreground="#FF2C3E50"/>
+                                <TextBlock Text="Administratör" FontSize="10" Foreground="#FF2C3E50" Opacity="0.6"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
-				<StackPanel Margin="20,20,20,0">
-					<TextBlock Text="HATTMAKAREN" FontSize="20" FontWeight="Black" Foreground="#FF2C3E50" HorizontalAlignment="Center" Margin="0,10,0,30"/>
-					<Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnAnvandare_Click">
-						<Border Padding="10">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="👤" Width="25"/>
-								<TextBlock Text="Användare" FontSize="14" Foreground="#FF2C3E50"/>
-							</StackPanel>
-						</Border>
-					</Button>
-					<Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnKunder_Click">
-						<Border Padding="10">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="👥" Width="25"/>
-								<TextBlock Text="Kunder" FontSize="14" Foreground="#FF2C3E50"/>
-							</StackPanel>
-						</Border>
-					</Button>
-					<Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnLager_Click">
-						<Border Padding="10">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="🎩" Width="25"/>
-								<TextBlock Text="Lager" FontSize="14" Foreground="#FF2C3E50"/>
-							</StackPanel>
-						</Border>
-					</Button>
-					<Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnOrder_Click">
-						<Border Padding="10">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="📋" Width="25"/>
-								<TextBlock Text="Order" FontSize="14" Foreground="#FF2C3E50"/>
-							</StackPanel>
-						</Border>
-					</Button>
-					<Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnBestallningar_Click">
-						<Border Padding="10">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="📦" Width="25"/>
-								<TextBlock Text="Beställningar" FontSize="14" Foreground="#FF2C3E50"/>
-							</StackPanel>
-						</Border>
-					</Button>
-				</StackPanel>
-			</DockPanel>
-		</Border>
+                <StackPanel Margin="20,20,20,0">
+                    <TextBlock Text="HATTMAKAREN" FontSize="20" FontWeight="Black" Foreground="#FF2C3E50" HorizontalAlignment="Center" Margin="0,10,0,30"/>
 
-		<Grid Grid.Column="1" Margin="40">
-			<StackPanel>
-				<TextBlock Text="Dashboard Översikt" FontSize="28" Foreground="White" Margin="0,0,0,8"/>
-				<TextBlock Text="Välkommen till dagens arbete." Foreground="White" Opacity="0.4" Margin="0,0,0,40"/>
-				<UniformGrid Columns="3">
-					<Border Background="#FF2C3E50" Margin="0,0,10,0" Padding="20" CornerRadius="15">
-						<StackPanel>
-							<TextBlock Text="Nya Order" Foreground="#FFC5A059"/>
-							<TextBlock Text="14" Foreground="White" FontSize="28" FontWeight="Bold"/>
-						</StackPanel>
-					</Border>
-					<Border Background="#FF2C3E50" Margin="5,0,5,0" Padding="20" CornerRadius="15">
-						<StackPanel>
-							<TextBlock Text="Lågt Lager" Foreground="#FFC5A059"/>
-							<TextBlock Text="3" Foreground="White" FontSize="28" FontWeight="Bold"/>
-						</StackPanel>
-					</Border>
-					<Border Background="#FF2C3E50" Margin="10,0,0,0" Padding="20" CornerRadius="15">
-						<StackPanel>
-							<TextBlock Text="Dagens Intäkt" Foreground="#FFC5A059"/>
-							<TextBlock Text="12 450 kr" Foreground="White" FontSize="24" FontWeight="Bold"/>
-						</StackPanel>
-					</Border>
-				</UniformGrid>
-			</StackPanel>
-		</Grid>
-	</Grid>
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnAnvandare_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="👤" Width="25"/>
+                                <TextBlock Text="Användare" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnKunder_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="👥" Width="25"/>
+                                <TextBlock Text="Kunder" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnLager_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🎩" Width="25"/>
+                                <TextBlock Text="Lager" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnOrder_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📋" Width="25"/>
+                                <TextBlock Text="Order" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnBestallningar_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📦" Width="25"/>
+                                <TextBlock Text="Beställningar" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="40">
+
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
+
+            <StackPanel x:Name="DashboardStartView">
+                <TextBlock Text="Dashboard Översikt" FontSize="28" Foreground="White" Margin="0,0,0,8"/>
+                <TextBlock Text="Välkommen till dagens arbete." Foreground="White" Opacity="0.4" Margin="0,0,0,40"/>
+                <UniformGrid Columns="3">
+                    <Border Background="#FF2C3E50" Margin="0,0,10,0" Padding="20" CornerRadius="15">
+                        <StackPanel>
+                            <TextBlock Text="Nya Order" Foreground="#FFC5A059"/>
+                            <TextBlock Text="14" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF2C3E50" Margin="5,0,5,0" Padding="20" CornerRadius="15">
+                        <StackPanel>
+                            <TextBlock Text="Lågt Lager" Foreground="#FFC5A059"/>
+                            <TextBlock Text="3" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF2C3E50" Margin="10,0,0,0" Padding="20" CornerRadius="15">
+                        <StackPanel>
+                            <TextBlock Text="Dagens Intäkt" Foreground="#FFC5A059"/>
+                            <TextBlock Text="12 450 kr" Foreground="White" FontSize="24" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
 </Page>

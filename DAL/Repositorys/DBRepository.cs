@@ -14,7 +14,7 @@ namespace DAL.Repositorys
             _dbSet = _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             return _dbSet.ToList();
         }

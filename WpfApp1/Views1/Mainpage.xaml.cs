@@ -25,7 +25,7 @@ namespace WpfApp1.Views1
         private void BtnKunder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Kunder senare
-            // MainFrame.Navigate(new KunderPage());
+            MainFrame.Navigate(new KunderPage());
         }
 
         private void BtnLager_Click(object sender, RoutedEventArgs e)
@@ -36,6 +36,7 @@ namespace WpfApp1.Views1
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Order senare
+            MainFrame.Navigate(new OrderPage());
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)

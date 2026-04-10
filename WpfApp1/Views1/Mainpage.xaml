@@ -1,0 +1,50 @@
+﻿<Page x:Class="WpfApp1.Views1.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Title="MainPage">
+
+    <Grid Background="#0A0A0C">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="AFFÄRSSYSTEM" Foreground="White" FontSize="42" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="White" Opacity="0.3"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <UniformGrid Columns="3" Rows="2" Margin="60,0,60,0">
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Kunder" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Beställningar" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Lager" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Personal" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Ekonomi" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+
+                <Grid Margin="15" Cursor="Hand">
+                    <Border Background="#1A1A1C" CornerRadius="15" BorderBrush="#333" BorderThickness="1"/>
+                    <TextBlock Text="Inställningar" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+                </Grid>
+            </UniformGrid>
+        </StackPanel>
+    </Grid>
+</Page>

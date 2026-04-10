@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL.Interfaces
 {
-    internal interface IProduktService
+    public interface IProduktService
     {
     }
 }

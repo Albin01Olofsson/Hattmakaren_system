@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.Intefaces;
+using Models;
 
 namespace DAL.Repositorys
 {
-    internal class KundRepo
+    public class KundRepo : DBRepository<Kund>, IKundRepo
     {
+
+        public KundRepo(DBcontext context) : base(context)
+        {
+
+        }
+    
     }
 }

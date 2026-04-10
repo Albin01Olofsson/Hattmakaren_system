@@ -40,7 +40,8 @@ namespace WpfApp1.Views1
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)
         {
-            // Här kan du lägga till navigering för Beställningar senare
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new BestallningarPage());
         }
 
         private void BtnLoggaUt_Click(object sender, RoutedEventArgs e)

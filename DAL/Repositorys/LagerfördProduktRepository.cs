@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
-    public class LagerfördProduktRepository : DBRepository<Order>, ILagerfördProduktRepository
+    public class LagerfördProduktRepository : DBRepository<LagerfördProdukt>, ILagerfördProduktRepository
     {
         public LagerfördProduktRepository(DBcontext context) : base(context)
         {

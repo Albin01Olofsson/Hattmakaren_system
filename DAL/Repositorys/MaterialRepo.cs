@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
-    internal class MaterialRepo : DBRepository<Material>, IMaterialRepo
+    public class MaterialRepo : DBRepository<Material>, IMaterialRepo
     {
         public MaterialRepo(DBcontext context) : base(context)
         {

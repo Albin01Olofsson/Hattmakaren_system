@@ -1,4 +1,5 @@
-﻿namespace BL
+﻿
+namespace BL
 {
     public class Hattar
     {

@@ -2,7 +2,7 @@
 
 namespace DAL.Intefaces
 {
-    internal interface ISpecialBeställningsRepo : IRepository<SpecialBeställning>
+    public interface ISpecialBeställningsRepo : IRepository<SpecialBeställning>
     {
     }
 }

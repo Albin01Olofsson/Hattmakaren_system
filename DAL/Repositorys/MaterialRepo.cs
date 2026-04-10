@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
-    public class MaterialBeställning : DBRepository<Order>, IMaterialBeställningRepository
+    public class MaterialRepo : DBRepository<Material>, IMaterialRepo
     {
-        public MaterialBeställning(DBcontext context) : base(context)
+        public MaterialRepo(DBcontext context) : base(context)
         {
+           
         }
     }
 }

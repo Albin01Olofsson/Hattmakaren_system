@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Models;
 
-namespace DAL.Intefaces
+namespace BL.Interfaces
 {
-    public interface IMaterialBeställningRepository : IRepository<MaterialBeställning>
+    public interface IProduktService
     {
     }
 }

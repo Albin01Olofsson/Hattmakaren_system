@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 
-namespace DAL.Intefaces
+namespace BL.Interfaces
 {
-    public interface IMaterialBeställningRepository : IRepository<MaterialBeställning>
+    public interface IAnvändarService
     {
+        
     }
 }

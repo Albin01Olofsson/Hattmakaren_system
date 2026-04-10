@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace WpfApp1.Views1
 {
+   
     public partial class LoginPage : Page
     {
         public LoginPage()
@@ -11,11 +12,19 @@ namespace WpfApp1.Views1
             InitializeComponent();
         }
 
-        // Denna kod körs när man klickar på knappen
+        // Denna metod körs när man klickar på "LOGGA IN" i din XAML
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Vi navigerar till MainPage
-            NavigationService.Navigate(new MainPage());
+            try
+            {
+                // Vi navigerar till dashboarden (Mainpage.xaml)
+                // Vi använder Uri för att vara säkra på att den hittar rätt i mappen Views1
+                this.NavigationService.Navigate(new Uri("Views1/Mainpage.xaml", UriKind.Relative));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ett fel uppstod vid navigering: " + ex.Message);
+            }
         }
     }
 }

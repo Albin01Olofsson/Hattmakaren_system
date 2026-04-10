@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
-    public class ProduktRepo : DBRepository<Produkt>, IProduktRepo
+    public class MaterialBeställning : DBRepository<Order>, IMaterialBeställningRepository
     {
-        public ProduktRepo(DBcontext context) : base(context)
+        public MaterialBeställning(DBcontext context) : base(context)
         {
         }
     }

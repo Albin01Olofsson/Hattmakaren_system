@@ -28,7 +28,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Background="#FF2C3E50" CornerRadius="15" Margin="0,0,10,0" Padding="20">
+                <Border Grid.Column="0" Background="#FF2C3E50" CornerRadius="15" Margin="0,0,1,0" Padding="20">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top" Text="PERSONAL" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
                         <Button x:Name="BtnDeleteStaff" DockPanel.Dock="Bottom" Content="INAKTIVERA PERSONAL" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>

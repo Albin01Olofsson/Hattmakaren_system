@@ -20,6 +20,17 @@ namespace BL.Services
             {
                 throw new ArgumentException("Ordern måste ha en kund, en startande användare och minst en produkt.");
             }
+            foreach (var produkt in nyOrder.Produkter)
+            {
+                // Om det är en specialbeställning ser vi till att den är "false" vid start
+                if (produkt is SpecialBeställning)
+                {
+                    produkt.Färdig = false;
+                }
+
+                // Vi sätter även datumet på produkten om ni har ett sådant fält, 
+                // eller kopplar på annan logik.
+            }
 
             try
             {

@@ -12,7 +12,7 @@ namespace Models
 
         public decimal pris { get; set; }
 
-
+        public bool Färdig { get; set; } = false;
 
         public string Storlek { get; set; }
 
@@ -20,8 +20,8 @@ namespace Models
 
 
         [ForeignKey("Order")]
-        public int OrderID { get; set; }
-        public Order Order { get; set; }
+        public int? OrderID { get; set; }
+        public Order? Order { get; set; }
 
         [ForeignKey("TillverkadAv")]
         public int TillverkadAVID { get; set; }

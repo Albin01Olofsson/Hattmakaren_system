@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BCrypt.Net;
+﻿using BL.Interfaces;
 using DAL.Intefaces;
-using BL.Interfaces;
+using Models;
 
 namespace BL.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IAnvändarRepo _annvändarRepo;
+        // håller koll på vem som är inloggad
+        public Användare InloggadAnvändare { get; private set; }
+
+
         public AuthenticationService(IAnvändarRepo användarRepo)
         {
             _annvändarRepo = användarRepo;
@@ -19,10 +18,20 @@ namespace BL.Services
         public bool Login(string email, string lösenord)
         {
             var användare = _annvändarRepo.GetByEmail(email);
-            if (användare == null) 
+            if (användare == null)
                 return false;
 
-            return BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
+            // Kontrollera om lösenordet stämmer
+            bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
+
+            if (isPasswordCorrect)
+            {
+                // Om lösenordet är rätt, kom ihåg användaren!
+                InloggadAnvändare = användare;
+                return true;
+            }
+
+            return false;
         }
 
     }

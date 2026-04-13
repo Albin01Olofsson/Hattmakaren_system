@@ -13,7 +13,8 @@ namespace DAL.Repositorys
 
         public Användare GetByEmail(string email)
         {
-            return _dbSet.FirstOrDefault(u => u.Email == email);
+            email = email.ToLower();
+            return _dbSet.FirstOrDefault(u => u.Email.ToLower() == email);
         }
 
     }

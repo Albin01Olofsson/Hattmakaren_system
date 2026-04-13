@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 using Models;
 namespace DAL
 {
@@ -91,13 +92,14 @@ namespace DAL
             //Exempeldata ----------------
 
             //ANVÄNDARE
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("Hattkungen1");
             modelBuilder.Entity<Användare>().HasData(
                     new Användare { 
                         AnvändarID = 1,
                         Namn = "Otto",
                         Telefon = "07085652321",
                         Email = "ottoHattman@hotmail.com",
-                        Lösenord = "Hattkungen1"
+                        Lösenord = passwordHash
                     },
                     new Användare { 
                         AnvändarID = 2,

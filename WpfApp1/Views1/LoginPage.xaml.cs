@@ -14,6 +14,17 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
         }
+        private void PassInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.Lösenord = PassInput.Password;
+            }
+            PasswordPlaceholder.Visibility =
+                string.IsNullOrWhiteSpace(PassInput.Password)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
         //private void OnLoginSuccess()
         //{
         //    NavigationService.Navigate(new Mainpage());

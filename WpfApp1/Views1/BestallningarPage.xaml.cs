@@ -1,4 +1,6 @@
-﻿using DAL;
+﻿using BL.Interfaces;
+using BL.Services;
+using DAL;
 using DAL.Intefaces;
 using DAL.Repositorys;
 using Models;
@@ -24,6 +26,7 @@ using System.Windows.Shapes;
     {
     public partial class BestallningarPage : Page
     {
+        private readonly MaterialBeställningService _bestallningService;
         private readonly DBcontext _context;
         private readonly MaterialBeställningRepo _bestallningRepo;
         private readonly MaterialRepo _materialRepo;
@@ -32,11 +35,13 @@ using System.Windows.Shapes;
         {
             InitializeComponent();
 
+            _bestallningService = new MaterialBeställningService(_bestallningRepo);
             _context = new DBcontext();
-            _bestallningRepo = new MaterialBeställningRepo(_context);
             _materialRepo = new MaterialRepo(_context);
 
-            //LoadMaterial(); // Viktig – fyller ComboBox
+            _bestallningService = new MaterialBeställningService(_bestallningRepo);
+
+            LoadMaterial(); //fyller ComboBox
         }
 
         // 🔹 Visa/dölj formulär
@@ -65,23 +70,19 @@ using System.Windows.Shapes;
 
             var valtMaterial = (Material)MaterialComboBox.SelectedItem;
 
-            // workaround – använder Lagerantal som beställd mängd
-            valtMaterial.Lagerantal = antal;
-
-            var bestallning = new MaterialBeställning
+            try
             {
-                MaterialLista = new List<Material> { valtMaterial },
-                TotalPris = valtMaterial.Pris * antal,
-                StartadAvID = 1
-            };
+                _bestallningService.SkapaBestallning(valtMaterial, antal);
+                MessageBox.Show("Beställning sparad!");
 
-            _bestallningRepo.Add(bestallning);
-
-            MessageBox.Show("Beställning sparad!");
-
-            // Rensa UI
-            MaterialComboBox.SelectedItem = null;
-            TxtAntal.Clear();
+                // 🔄 Rensa UI
+                MaterialComboBox.SelectedItem = null;
+                TxtAntal.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         //  Lägg till nytt material
@@ -111,10 +112,11 @@ using System.Windows.Shapes;
             };
 
             _materialRepo.Add(material);
+            _bestallningRepo.Save();
 
             MessageBox.Show("Material tillagt!");
 
-            //LoadMaterial(); //  uppdatera ComboBox
+            LoadMaterial(); //  uppdatera ComboBox
 
             // Rensa
             TxtNamn.Clear();
@@ -126,10 +128,10 @@ using System.Windows.Shapes;
         }
 
         //     Ladda material till ComboBox
-        //private void LoadMaterial()
-        //{
-        //    MaterialComboBox.ItemsSource = null;
-        //    MaterialComboBox.ItemsSource = _materialRepo.GetAll();
-        //}
+        private void LoadMaterial()
+        {
+            MaterialComboBox.ItemsSource = null;
+            MaterialComboBox.ItemsSource = _materialRepo.GetAll();
+        }
     }
 }

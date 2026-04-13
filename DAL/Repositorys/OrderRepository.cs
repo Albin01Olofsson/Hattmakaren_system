@@ -1,10 +1,6 @@
 ﻿using DAL.Intefaces;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
@@ -12,6 +8,19 @@ namespace DAL.Repositorys
     {
         public OrderRepo(DBcontext context) : base(context)
         {
+
+
         }
+
+        public Order HämtaMedDetaljer(int id)
+        {
+            // .Include gör att EF laddar in de relaterade objekten istället för att de är null
+            return _dbSet
+                .Include(o => o.Kund)
+                .Include(o => o.StartadAv)
+                .Include(o => o.Produkter)
+                .FirstOrDefault(o => o.OrderID == id);
+        }
+
     }
 }

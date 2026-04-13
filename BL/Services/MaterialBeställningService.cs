@@ -1,19 +1,46 @@
-﻿using System;
+﻿using BL.Interfaces;
+using DAL.Intefaces;
+using DAL.Repositorys;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BL.Interfaces;
-using DAL.Intefaces;
 
 namespace BL.Services
 {
     public class MaterialBeställningService : IMaterialBeställningService
     {
-        private readonly IMaterialBeställningRepository _materialBeställningRepo;
-        public MaterialBeställningService(IMaterialBeställningRepository materialBeställningRepo)
+        private readonly MaterialBeställningRepo _bestallningRepo;
+
+        public MaterialBeställningService(MaterialBeställningRepo bestallningRepo)
         {
-            _materialBeställningRepo = materialBeställningRepo;
+            _bestallningRepo = bestallningRepo;
+        }
+
+        public void SkapaBestallning(Material material, int antal)
+        {
+            // 🔴 Validering
+            if (material == null)
+                throw new Exception("Material måste väljas.");
+
+            if (antal <= 0)
+                throw new Exception("Antal måste vara större än 0.");
+
+            // 🔧 Skapa beställning
+            var bestallning = new MaterialBeställning
+            {
+                MaterialLista = new List<Material> { material },
+                TotalPris = material.Pris * antal,
+                StartadAvID = 1 // TODO: koppla till inloggad användare senare
+            };
+
+            // 💾 Spara via repo
+            _bestallningRepo.Add(bestallning);
+            _bestallningRepo.Save();
         }
     }
 }
+    
+

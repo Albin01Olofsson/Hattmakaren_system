@@ -217,16 +217,17 @@
                     </TextBlock>
                     
                     <!--DATUM-->
-                    <TextBlock Text="Datum till" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <DatePicker Margin="0,0,0,10"></DatePicker>
+                    <TextBlock Text="Datum Från" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
+                    <DatePicker SelectedDate="{Binding DatumFrånFilter}" Margin="0,0,0,10"></DatePicker>
                     
-                    <TextBlock Text="Datum från" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <DatePicker Margin="0,0,0,10"></DatePicker>
+                    <TextBlock Text="Datum till" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
+                    <DatePicker SelectedDate="{Binding DatumTillFilter}" Margin="0,0,0,10"></DatePicker>
                     
                     <!--ORDER STARTARE-->
                     <TextBlock Text="Order Startare" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
                     
                     <ComboBox x:Name="OrderStartareComboBox"
+                              SelectedValue="{Binding OrderStartareFilter}"
                               Margin="0,0,0,10"
                               Text="Startade Order" 
                               SelectedIndex="0">
@@ -238,6 +239,7 @@
                     <!--MARKERAD SOM KLAR-->
                     <TextBlock Text="Markerad som klar" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
                     <ComboBox x:Name="MarkeradSomKlarComboBox"
+                              SelectedValue="{Binding KlarFilter}"
                               Margin="0,0,0,10"
                               Text="Startade Order"
                               SelectedIndex="0">
@@ -249,6 +251,7 @@
                     <!--Specialbeställning-->
                     <TextBlock Text="Specialbeställning" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
                     <ComboBox x:Name="SpecialbeställningComboBox"
+                              SelectedValue="{Binding SpecialBeställningFilter}"
                               Margin="0,0,0,10"
                               Text="Startade Order"
                               SelectedIndex="0">

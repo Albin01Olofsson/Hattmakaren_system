@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BL.Services;
+using BL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,11 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class OrderPage : Page
     {
+        //public OrderService _service;
         public OrderPage()
         {
             InitializeComponent();
+            //_service = new OrderService();
         }
     }
 }

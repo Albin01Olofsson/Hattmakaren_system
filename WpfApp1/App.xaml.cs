@@ -17,6 +17,10 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
+<<<<<<< HEAD
+=======
+        private ServiceProvider _provider;
+>>>>>>> master
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -27,11 +31,16 @@ namespace WpfApp1
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddTransient<LoginViewModel>();
 
+<<<<<<< HEAD
             var provider = services.BuildServiceProvider();
+=======
+            _provider = services.BuildServiceProvider();
+>>>>>>> master
 
             var mainWindow = new MainWindow();
             mainWindow.Show();
 
+<<<<<<< HEAD
             var loginVm = provider.GetService<LoginViewModel>();
 
             var loginPage = new LoginPage();
@@ -43,6 +52,22 @@ namespace WpfApp1
             {
                 mainWindow.MainFrame.Navigate(new Mainpage());
             };
+=======
+            var loginPage = new LoginPage
+            {
+                DataContext = _provider.GetRequiredService<LoginViewModel>()
+            };
+
+
+            var loginVm = (LoginViewModel)loginPage.DataContext;
+
+            loginVm.LoginSucceeded += () =>
+            {
+                mainWindow.MainFrame.Navigate(new Mainpage());
+            };
+            mainWindow.MainFrame.Navigate(loginPage);
+
+>>>>>>> master
         }
     }
 }

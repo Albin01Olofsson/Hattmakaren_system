@@ -7,6 +7,8 @@ using BCrypt.Net;
 using DAL.Intefaces;
 using BL.Interfaces;
 
+
+
 namespace BL.Services
 {
     public class AuthenticationService : IAuthenticationService
@@ -18,9 +20,16 @@ namespace BL.Services
         }
         public bool Login(string email, string lösenord)
         {
-            var användare = _annvändarRepo.GetByEmail(email);
-            if (användare == null) 
+            if(string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(lösenord))
+            {
                 return false;
+            }
+            var användare = _annvändarRepo.GetByEmail(email);
+            if (användare == null)
+            {
+                return false;
+            }
+                
 
             return BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
         }

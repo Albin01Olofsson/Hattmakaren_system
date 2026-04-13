@@ -85,7 +85,11 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
+<<<<<<< HEAD
                             Lösenord = "Hattkungen1",
+=======
+                            Lösenord = "$2a$11$OzbBO0J7kURjXvX710ctIeBcZqXFQoIyQ92UzEBMNpcCrKLO5GnvW",
+>>>>>>> master
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },

@@ -229,7 +229,7 @@
                     <ComboBox x:Name="OrderStartareComboBox"
                               SelectedValue="{Binding OrderStartareFilter}"
                               Margin="0,0,0,10"
-                              Text="Startade Order" 
+                              SelectedValuePath="Content"
                               SelectedIndex="0">
                         <ComboBoxItem Content="Alla"></ComboBoxItem>
                         <ComboBoxItem Content="Otto"></ComboBoxItem>

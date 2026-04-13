@@ -33,7 +33,7 @@ namespace WpfApp1.ViewModels
         public DateTime? datumFrånFilter;
 
         [ObservableProperty]
-        public string orderStartareFilter = "Alla";
+        public string orderStartareFilter;
 
         [ObservableProperty]
         public string klarFilter = "Ospecificerat";
@@ -76,11 +76,11 @@ namespace WpfApp1.ViewModels
                 sökResultat = sökResultat.Where(o => o.Datum.Date <= DatumTillFilter.Value.Date).ToList();
             }
 
-            ////Order startare Filter
-            //if (OrderStartareFilter != "Alla")
-            //{
-            //    sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter).ToList();
-            //}
+            //Order startare Filter
+            if (OrderStartareFilter != "Alla")
+            {
+                sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter.ToString()).ToList();
+            }
 
             ////Klar status Filter
             //if(KlarFilter == "Klar")

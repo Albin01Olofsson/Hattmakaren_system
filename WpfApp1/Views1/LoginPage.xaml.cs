@@ -8,19 +8,16 @@ using WpfApp1.ViewModels;
 namespace WpfApp1.Views1
 {
    
-    public partial class LoginPage : Window
+    public partial class LoginPage : Page
     {
-        public LoginPage(LoginViewModel vm)
+        public LoginPage()
         {
             InitializeComponent();
-            DataContext = vm;
-
-            vm.LoginSucceeded += OnLoginSuccess;
         }
-        private void OnLoginSuccess()
-        {
-            
-        }
+        //private void OnLoginSuccess()
+        //{
+        //    NavigationService.Navigate(new Mainpage());
+        //}
 
         // Denna metod körs när man klickar på "LOGGA IN" i din XAML
         //private void LoginButton_Click(object sender, RoutedEventArgs e)

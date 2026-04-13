@@ -25,6 +25,7 @@
                     HorizontalAlignment="Center">
             
             <TextBox x:Name="SökFält"
+                     Text="{Binding SökString, UpdateSourceTrigger=PropertyChanged}"
                      Width="290"
                      Height="33"
                      FontSize="16"
@@ -32,12 +33,13 @@
                 
             </TextBox>
 
-            <Button x:Name="SökKnapp"
+            <Button x:Name="BtnSök"
+                    Content="Sök"
+                    Command="{Binding SökCommand}"
                     Padding="10,0"
                     Background="#FFC5A059"
                     Foreground="#F4F1EA"
                     FontWeight="Bold">
-                Sök
             </Button>
         
         </StackPanel>

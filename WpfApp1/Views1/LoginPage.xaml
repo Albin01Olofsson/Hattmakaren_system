@@ -37,20 +37,23 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=EmailInput}" Value="">
+                                            <DataTrigger Binding="{Binding Email}" Value="">
                                                 <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Email}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Hidden"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBox x:Name="EmailInput" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" FontSize="14"/>
+                            <TextBox Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" FontSize="14" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Border>
 
                     <Border Background="White" Height="40" CornerRadius="10" Margin="0,0,0,30">
                         <Grid Margin="10,0">
-                            <TextBlock Text="Lösenord" Foreground="DarkGray" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock Text="Lösenord" Foreground="DarkGray" VerticalAlignment="Center" IsHitTestVisible="False" x:Name="PasswordPlaceholder">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -65,7 +68,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <PasswordBox x:Name="PassInput" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" FontSize="14"/>
+                            <PasswordBox x:Name="PassInput" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" FontSize="14" PasswordChanged="PassInput_PasswordChanged"/>
                         </Grid>
                     </Border>
 

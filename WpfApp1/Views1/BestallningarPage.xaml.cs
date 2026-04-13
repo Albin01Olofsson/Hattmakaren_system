@@ -26,34 +26,28 @@ using System.Windows.Shapes;
     {
     public partial class BestallningarPage : Page
     {
-        private readonly MaterialBeställningService _bestallningService;
         private readonly DBcontext _context;
         private readonly MaterialBeställningRepo _bestallningRepo;
         private readonly MaterialRepo _materialRepo;
+        private readonly MaterialBeställningService _bestallningService;
 
         public BestallningarPage()
         {
             InitializeComponent();
 
-            _bestallningService = new MaterialBeställningService(_bestallningRepo);
             _context = new DBcontext();
+
+            _bestallningRepo = new MaterialBeställningRepo(_context);
             _materialRepo = new MaterialRepo(_context);
 
             _bestallningService = new MaterialBeställningService(_bestallningRepo);
 
-            LoadMaterial(); //fyller ComboBox
+            LoadMaterial();
         }
 
-        // 🔹 Visa/dölj formulär
-        private void ToggleMaterialForm_Click(object sender, RoutedEventArgs e)
-        {
-            if (MaterialForm.Visibility == Visibility.Collapsed)
-                MaterialForm.Visibility = Visibility.Visible;
-            else
-                MaterialForm.Visibility = Visibility.Collapsed;
-        }
 
-        // 🔹 Skapa beställning
+
+
         private void BtnSkapa_Click(object sender, RoutedEventArgs e)
         {
             if (MaterialComboBox.SelectedItem == null)
@@ -75,17 +69,22 @@ using System.Windows.Shapes;
                 _bestallningService.SkapaBestallning(valtMaterial, antal);
                 MessageBox.Show("Beställning sparad!");
 
-                // 🔄 Rensa UI
                 MaterialComboBox.SelectedItem = null;
                 TxtAntal.Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
         }
 
-        //  Lägg till nytt material
+        private void ToggleMaterialForm_Click(object sender, RoutedEventArgs e)
+        {
+            if (MaterialForm.Visibility == Visibility.Collapsed)
+                MaterialForm.Visibility = Visibility.Visible;
+            else
+                MaterialForm.Visibility = Visibility.Collapsed;
+        }
         private void BtnAddMaterial_Click(object sender, RoutedEventArgs e)
         {
             string namn = TxtNamn.Text;
@@ -112,26 +111,30 @@ using System.Windows.Shapes;
             };
 
             _materialRepo.Add(material);
-            _bestallningRepo.Save();
+            _materialRepo.Save(); // 🔥 rätt repo
 
             MessageBox.Show("Material tillagt!");
 
-            LoadMaterial(); //  uppdatera ComboBox
+            LoadMaterial();
 
-            // Rensa
             TxtNamn.Clear();
             TxtPris.Clear();
             TxtTyp.Clear();
 
-            // Dölj formulär
             MaterialForm.Visibility = Visibility.Collapsed;
         }
 
-        //     Ladda material till ComboBox
         private void LoadMaterial()
         {
-            MaterialComboBox.ItemsSource = null;
-            MaterialComboBox.ItemsSource = _materialRepo.GetAll();
+            try
+            {
+                MaterialComboBox.ItemsSource = _materialRepo.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }
+

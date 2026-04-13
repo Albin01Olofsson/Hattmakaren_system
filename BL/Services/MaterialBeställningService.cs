@@ -21,22 +21,22 @@ namespace BL.Services
 
         public void SkapaBestallning(Material material, int antal)
         {
-            // 🔴 Validering
             if (material == null)
                 throw new Exception("Material måste väljas.");
 
             if (antal <= 0)
                 throw new Exception("Antal måste vara större än 0.");
 
-            // 🔧 Skapa beställning
+            // 🔥 viktigt – EF tracking fix
+            _bestallningRepo.AttachMaterial(material);
+
             var bestallning = new MaterialBeställning
             {
                 MaterialLista = new List<Material> { material },
                 TotalPris = material.Pris * antal,
-                StartadAvID = 1 // TODO: koppla till inloggad användare senare
+                StartadAvID = 1 // ⚠️ kräver att user med ID=1 finns
             };
 
-            // 💾 Spara via repo
             _bestallningRepo.Add(bestallning);
             _bestallningRepo.Save();
         }

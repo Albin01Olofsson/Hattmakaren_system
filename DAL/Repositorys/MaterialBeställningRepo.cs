@@ -13,5 +13,10 @@ namespace DAL.Repositorys
         public MaterialBeställningRepo(DBcontext context) : base(context)
         {
         }
+
+        public void AttachMaterial(Material material)
+        {
+            _context.Attach(material);
+        }
     }
 }

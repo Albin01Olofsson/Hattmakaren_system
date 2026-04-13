@@ -69,7 +69,7 @@
                         </Grid>
                     </Border>
 
-                    <Button Content="LOGGA IN" Command="{Binding LogginCommand}" Cursor="Hand"
+                    <Button Content="LOGGA IN" Command="{Binding LoginCommand}" Cursor="Hand"
                             Background="#FFC5A059" Foreground="#FF2C3E50" FontSize="16" 
                             FontWeight="Bold" Height="45" BorderThickness="0">
                         <Button.Resources>

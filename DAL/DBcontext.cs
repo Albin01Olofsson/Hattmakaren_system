@@ -88,6 +88,146 @@ namespace DAL
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
 
+            //Exempeldata ----------------
+
+            //ANVÄNDARE
+            modelBuilder.Entity<Användare>().HasData(
+                    new Användare { 
+                        AnvändarID = 1,
+                        Namn = "Otto",
+                        Telefon = "07085652321",
+                        Email = "ottoHattman@hotmail.com",
+                        Lösenord = "Hattkungen1"
+                    },
+                    new Användare { 
+                        AnvändarID = 2,
+                        Namn = "Judith",
+                        Telefon = "0727639856",
+                        Email = "JudithHattman@hotmail.com",
+                        Lösenord = "HattPrinsessan1"
+                    }
+                );
+
+            //KUNDER
+            modelBuilder.Entity<Kund>().HasData(
+                    new Kund
+                    {
+                        KundID = 1001,
+                        Namn = "Per Larsson",
+                        Adress = "Kullstigen 78",
+                        Telefon = "076312129",
+                        Email = "Per.Larsson@hotmail.com"
+                    },
+                    new Kund
+                    {
+                        KundID = 1002,
+                        Namn = "Eva Von Milen",
+                        Adress = "Milvägen 1",
+                        Telefon = "0727728432",
+                        Email = "Eva.Milen@hotmail.com"
+                    },
+                    new Kund
+                    {
+                        KundID = 1003,
+                        Namn = "Yvonne Fjord",
+                        Adress = "Fjordaberg 51",
+                        Telefon = "0702127345",
+                        Email = "yvonne.fjord@hotmail.com"
+                    }
+                );
+            //MATERIAL
+            modelBuilder.Entity<Material>().HasData(
+                    new Material { 
+                        MaterialID = 100001,
+                        Namn = "Filt",
+                        Pris = 54,
+                        Beskrivning = "Inte filt man sover med",
+                        Typ = "Tyg",
+                        Lagerantal = 23
+                    },
+                    new Material { 
+                        MaterialID = 100002,
+                        Namn = "Bomull",
+                        Pris = 34,
+                        Beskrivning = "100% obesprutat bomull",
+                        Typ = "Tyg",
+                        Lagerantal = 52
+                    },
+                    new Material { 
+                        MaterialID = 100003,
+                        Namn = "Svart tråd",
+                        Pris = 28,
+                        Beskrivning = "1.2 mm svar syträd av silikon och polyester",
+                        Typ = "Tråd",
+                        Lagerantal = 2
+                    }
+                );
+            //MATERIALBESTÄLLNINGAR
+            modelBuilder.Entity<MaterialBeställning>().HasData(
+                    new MaterialBeställning
+                    {
+                        MaterialBeställningID = 1000001,
+                        TotalPris = 1890,
+                        StartadAvID = 1
+                    },
+                    new MaterialBeställning
+                    {
+                        MaterialBeställningID = 1000002,
+                        TotalPris = 769,
+                        StartadAvID = 2
+                    },
+                    new MaterialBeställning
+                    {
+                        MaterialBeställningID = 1000003,
+                        TotalPris = 3419,
+                        StartadAvID = 1
+                    }
+                );
+            //MATERIALMATERIALPRODUKT
+            //är en mellantabell, kodade in relationerna vi keyes istället bara
+
+            //MATERIALPRODUKT
+
+            //ORDRAR
+            modelBuilder.Entity<Order>().HasData(
+                    new Order { 
+                        OrderID = 100000001,
+                        Pris = 1099,
+                        Datum = new DateTime(2024, 6, 11),
+                        Färdig = true,
+                        StartadAvID = 1,
+                        KundID = 1001
+                    },
+                    new Order { 
+                        OrderID = 100000002,
+                        Pris = 949,
+                        Datum = new DateTime(2025, 1, 18),
+                        Färdig = true,
+                        StartadAvID = 2,
+                        KundID = 1002
+                    }
+                );
+            //PRODUKTER
+            modelBuilder.Entity<Produkt>().HasData(
+                    new Produkt
+                    {
+                        ProduktID = 10000001,
+                        namn = "Filt hatt",
+                        pris = 1099,
+                        Storlek = "M",
+                        OrderID = 100000001,
+                        TillverkadAVID = 1
+                    },
+                    new Produkt
+                    {
+                        ProduktID = 10000002,
+                        namn = "Siden hatt",
+                        pris = 949,
+                        Storlek = "M",
+                        OrderID = 100000002,
+                        TillverkadAVID = 2
+                    }
+                );
         }
 
     }

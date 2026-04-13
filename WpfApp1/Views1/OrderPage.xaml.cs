@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
 {
@@ -22,11 +23,10 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class OrderPage : Page
     {
-        //public OrderService _service;
-        public OrderPage()
+        public OrderPage(OrderVM vm)
         {
             InitializeComponent();
-            //_service = new OrderService();
+            DataContext = vm;
         }
     }
 }

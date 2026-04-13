@@ -19,15 +19,21 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Order> orderList;
+
+        public int AntalOrders => OrderList.Count;
         public OrderVM(IOrderService s)
         {
             _service = s;
+            OrderList = new ObservableCollection<Order>(_service.GetOrderList());
         }
 
         [RelayCommand]
         private void Sök()
         {
             var sökResultat = _service.GetOrderList();
+            OrderList = new ObservableCollection<Order>(sökResultat);
+
+            OnPropertyChanged(nameof(AntalOrders));
         }
     }
 }

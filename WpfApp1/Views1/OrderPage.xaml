@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfApp1.Views1"
+      xmlns:local="clr-namespace:WpfApp1.Views1" xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OrderVM}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="#FF1A1A1D"
@@ -54,7 +54,7 @@
                           HorizontalScrollBarVisibility="Disabled">
                 <Border Margin="0,0,20,0" Background="#FF2C3E50" CornerRadius="15" Padding="10">
                     <StackPanel>
-                        <TextBlock Text="Sökresultat: ''2''"
+                        <TextBlock Text="{Binding AntalOrders, StringFormat=Sökresultat: {0}}"
                                    FontWeight="Bold"
                                    FontSize="18"
                                    Foreground="#F4F1EA"
@@ -64,10 +64,88 @@
                         </TextBlock>
 
                         <ListBox x:Name="SökResultat"
+                                 ItemsSource="{Binding OrderList}"
                                  Background="Transparent"
                                  HorizontalContentAlignment="Stretch">
-                            <ListBoxItem>
-                                <!-- Dessa ska loopas och läggas till med "SökResultat.Items.Add(VariabelFörOrder);"-->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid x:Name="EttSökresultat"
+                                          Background="#11FFFFFF">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock x:Name="KundNamn" 
+                                                   Grid.Column="0" 
+                                                   Grid.Row="0" 
+                                                   Text="{Binding Kund.Namn}"
+                                                   FontSize="14" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="#F4F1EA" 
+                                                   HorizontalAlignment="Center">
+                                        </TextBlock>
+
+                                        <TextBlock x:Name="OrderNummer" 
+                                                   Grid.Column="0" 
+                                                   Grid.Row="1" 
+                                                   Text="{Binding OrderID, StringFormat=Order: {0}}"
+                                                   FontSize="12" 
+                                                   Foreground="#F4F1EA" 
+                                                   HorizontalAlignment="Center">
+                                        </TextBlock>
+
+                                        
+                                        <TextBlock x:Name="Datum"
+                                                   Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   Text="{Binding Datum, StringFormat=Datum: {0}}" 
+                                                   FontSize="12" 
+                                                   Foreground="#F4F1EA" 
+                                                   HorizontalAlignment="Center">
+                                            
+                                        </TextBlock>
+
+                                        <TextBlock x:Name="ÄrSpecialBeställning"
+                                                   Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   Text="Ej i model"
+                                                   FontSize="12"
+                                                   Foreground="#F4F1EA"
+                                                   HorizontalAlignment="Center">
+                                            
+                                        </TextBlock>
+
+                                        <TextBlock x:Name="ÄrMarkeradSomKlar"
+                                                   Grid.Column="2"
+                                                   Grid.Row="0"
+                                                   Text="{Binding Färdig, StringFormat=Klar: {0}}" 
+                                                   FontSize="12"
+                                                   Foreground="#F4F1EA"
+                                                   HorizontalAlignment="Center">
+                                            
+                                        </TextBlock>
+                                        <TextBlock x:Name="OrderStartare" 
+                                                   Grid.Column="2"
+                                                   Grid.Row="1" 
+                                                   Text="{Binding StartadAv, StringFormat=Startare: {0}}" 
+                                                   FontSize="12" 
+                                                   Foreground="#F4F1EA"
+                                                   HorizontalAlignment="Center">
+                                            
+                                        </TextBlock>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <!--<ListBoxItem>
+                                --><!-- Dessa ska loopas och läggas till med "SökResultat.Items.Add(VariabelFörOrder);"--><!--
                                 <Grid x:Name="EttSökresultat"
                                       Background="#11FFFFFF">
                                     <Grid.ColumnDefinitions>
@@ -114,7 +192,7 @@
                                     <TextBlock x:Name="OrderStartare2" Grid.Column="2" Grid.Row="1" Text="Startad av: Judith" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
 
                                 </Grid>
-                            </ListBoxItem>
+                            </ListBoxItem>-->
                         </ListBox>
                     </StackPanel>
                 </Border>

@@ -36,7 +36,7 @@ namespace WpfApp1.Views1
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Order senare
-            MainFrame.Navigate(new OrderPage());
+            //MainFrame.Navigate(new OrderPage());
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)

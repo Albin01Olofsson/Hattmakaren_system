@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1.csproj", "{CC68CF0C-B104-408E-9078-E6F1B6D1F506}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL.csproj", "{8AF49CCD-F089-4BD6-9291-1AFCECB4883B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "..\Models\Models.csproj", "{80EE0B18-E80D-4461-AD58-5A9E64D19EEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HattmakarenTest", "..\HattmakarenTest\HattmakarenTest.csproj", "{FEC56DD0-76E9-42D7-BD7E-B02A581630FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{80EE0B18-E80D-4461-AD58-5A9E64D19EEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80EE0B18-E80D-4461-AD58-5A9E64D19EEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80EE0B18-E80D-4461-AD58-5A9E64D19EEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC56DD0-76E9-42D7-BD7E-B02A581630FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC56DD0-76E9-42D7-BD7E-B02A581630FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC56DD0-76E9-42D7-BD7E-B02A581630FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC56DD0-76E9-42D7-BD7E-B02A581630FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,5 +44,22 @@ namespace BL.Services
                 throw new Exception("Något gick fel när ordern skulle skapas. Kontrollera att alla fält är korrekt ifyllda och försök igen.", ex);
             }
         }
+
+
+
+        public Order HämtaMedDetaljer(int id)
+        {
+            var order = _orderRepo.HämtaMedDetaljer(id);
+
+            // Om Judith råkar söka på ett ID som inte finns, vill vi inte att appen kraschar
+            if (order == null)
+            {
+                throw new Exception($"Ordern med ID {id} kunde inte hittas i systemet.");
+            }
+
+            return order;
+        }
     }
+
+
 }

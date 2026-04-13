@@ -79,6 +79,24 @@ namespace DAL.Migrations
                     b.HasKey("AnvändarID");
 
                     b.ToTable("Användare");
+
+                    b.HasData(
+                        new
+                        {
+                            AnvändarID = 1,
+                            Email = "ottoHattman@hotmail.com",
+                            Lösenord = "Hattkungen1",
+                            Namn = "Otto",
+                            Telefon = "07085652321"
+                        },
+                        new
+                        {
+                            AnvändarID = 2,
+                            Email = "JudithHattman@hotmail.com",
+                            Lösenord = "HattPrinsessan1",
+                            Namn = "Judith",
+                            Telefon = "0727639856"
+                        });
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -108,6 +126,32 @@ namespace DAL.Migrations
                     b.HasKey("KundID");
 
                     b.ToTable("Kunder");
+
+                    b.HasData(
+                        new
+                        {
+                            KundID = 1001,
+                            Adress = "Kullstigen 78",
+                            Email = "Per.Larsson@hotmail.com",
+                            Namn = "Per Larsson",
+                            Telefon = "076312129"
+                        },
+                        new
+                        {
+                            KundID = 1002,
+                            Adress = "Milvägen 1",
+                            Email = "Eva.Milen@hotmail.com",
+                            Namn = "Eva Von Milen",
+                            Telefon = "0727728432"
+                        },
+                        new
+                        {
+                            KundID = 1003,
+                            Adress = "Fjordaberg 51",
+                            Email = "yvonne.fjord@hotmail.com",
+                            Namn = "Yvonne Fjord",
+                            Telefon = "0702127345"
+                        });
                 });
 
             modelBuilder.Entity("Models.Material", b =>
@@ -139,6 +183,35 @@ namespace DAL.Migrations
                     b.HasKey("MaterialID");
 
                     b.ToTable("Material");
+
+                    b.HasData(
+                        new
+                        {
+                            MaterialID = 100001,
+                            Beskrivning = "Inte filt man sover med",
+                            Lagerantal = 23,
+                            Namn = "Filt",
+                            Pris = 54m,
+                            Typ = "Tyg"
+                        },
+                        new
+                        {
+                            MaterialID = 100002,
+                            Beskrivning = "100% obesprutat bomull",
+                            Lagerantal = 52,
+                            Namn = "Bomull",
+                            Pris = 34m,
+                            Typ = "Tyg"
+                        },
+                        new
+                        {
+                            MaterialID = 100003,
+                            Beskrivning = "1.2 mm svar syträd av silikon och polyester",
+                            Lagerantal = 2,
+                            Namn = "Svart tråd",
+                            Pris = 28m,
+                            Typ = "Tråd"
+                        });
                 });
 
             modelBuilder.Entity("Models.MaterialBeställning", b =>
@@ -160,6 +233,26 @@ namespace DAL.Migrations
                     b.HasIndex("StartadAvID");
 
                     b.ToTable("MaterialBeställningar");
+
+                    b.HasData(
+                        new
+                        {
+                            MaterialBeställningID = 1000001,
+                            StartadAvID = 1,
+                            TotalPris = 1890m
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000002,
+                            StartadAvID = 2,
+                            TotalPris = 769m
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000003,
+                            StartadAvID = 1,
+                            TotalPris = 3419m
+                        });
                 });
 
             modelBuilder.Entity("Models.Order", b =>
@@ -192,6 +285,26 @@ namespace DAL.Migrations
                     b.HasIndex("StartadAvID");
 
                     b.ToTable("Ordrar");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderID = 100000001,
+                            Datum = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1001,
+                            Pris = 1099m,
+                            StartadAvID = 1
+                        },
+                        new
+                        {
+                            OrderID = 100000002,
+                            Datum = new DateTime(2025, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1002,
+                            Pris = 949m,
+                            StartadAvID = 2
+                        });
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -202,7 +315,10 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktID"));
 
-                    b.Property<int>("OrderID")
+                    b.Property<bool>("Färdig")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OrderID")
                         .HasColumnType("int");
 
                     b.Property<string>("ProduktTyp")
@@ -235,6 +351,28 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            ProduktID = 10000001,
+                            Färdig = false,
+                            OrderID = 100000001,
+                            Storlek = "M",
+                            TillverkadAVID = 1,
+                            namn = "Filt hatt",
+                            pris = 1099m
+                        },
+                        new
+                        {
+                            ProduktID = 10000002,
+                            Färdig = false,
+                            OrderID = 100000002,
+                            Storlek = "M",
+                            TillverkadAVID = 2,
+                            namn = "Siden hatt",
+                            pris = 949m
+                        });
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -335,8 +473,7 @@ namespace DAL.Migrations
                     b.HasOne("Models.Order", "Order")
                         .WithMany("Produkter")
                         .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Models.Användare", "TillverkadAv")
                         .WithMany("produktLista")

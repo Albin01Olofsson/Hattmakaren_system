@@ -6,22 +6,27 @@ namespace WpfApp1.Views1
     public partial class AnvandarePage : Page
     {
        
-        public AnvandarePage() : this("Admin")
-        {
-            // Den här säger: "Om ingen säger vem jag är, låtsas att jag är Admin"
-        }
-
-        // 2. Den här använder vi när vi faktiskt kör programmet på riktigt
-        public AnvandarePage(string userRole)
+        public AnvandarePage()
         {
             InitializeComponent();
-            SetupView(userRole);
+            SetupView();
         }
 
-        private void SetupView(string role)
+        private void SetupView()
         {
+            var användare = Session.CurrentUser;
+
+            if(användare == null)
+            {
+                AdminPanel.Visibility = Visibility.Collapsed;
+                BtnDeleteStaff.Visibility = Visibility.Collapsed;
+                BtnDeleteCustomer.Visibility = Visibility.Collapsed;
+
+                return;
+            }
+
             // Kontrollera att namnen (AdminPanel, BtnDeleteStaff osv) matchar x:Name i din XAML
-            if (role == "Admin")
+            if (användare.IsAdmin)
             {
                 AdminPanel.Visibility = Visibility.Visible;
                 BtnDeleteStaff.Visibility = Visibility.Visible;
@@ -40,8 +45,8 @@ namespace WpfApp1.Views1
                 TxtFormTitle.Text = "DIN PROFIL";
 
                 // Här fyller vi i testdata så länge
-                InputName.Text = "Anna Hattmakare";
-                InputEmail.Text = "anna@hatt.se";
+                InputName.Text = användare.Namn;
+                InputEmail.Text = användare.Email;
             }
         }
     }

@@ -99,14 +99,16 @@ namespace DAL
                         Namn = "Otto",
                         Telefon = "07085652321",
                         Email = "ottoHattman@hotmail.com",
-                        Lösenord = passwordHash
+                        Lösenord = passwordHash,
+                        IsAdmin = true
                     },
                     new Användare { 
                         AnvändarID = 2,
                         Namn = "Judith",
                         Telefon = "0727639856",
                         Email = "JudithHattman@hotmail.com",
-                        Lösenord = "HattPrinsessan1"
+                        Lösenord = passwordHash,
+                        IsAdmin = false
                     }
                 );
 

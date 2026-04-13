@@ -17,25 +17,26 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider _provider;
+        public IServiceProvider ServiceProvider { get; private set; }// Här sätter vi upp vår Dependency Injection-container
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var services = new ServiceCollection();
+            var services = new ServiceCollection();// Skapa en ny ServiceCollection som kommer att hålla alla våra tjänster
 
-            services.AddDbContext<DBcontext>();
-            services.AddScoped<IAnvändarRepo, AnvändarRepo>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<LoginViewModel>();
+            services.AddDbContext<DBcontext>();// Registrera vår DbContext så att den kan injiceras där den behövs
+            services.AddScoped<IAnvändarRepo, AnvändarRepo>();// Registrera våra repositorys och tjänster i DI-containern
+            services.AddScoped<IAuthenticationService, AuthenticationService>();// Genom att använda AddScoped så skapas en ny instans av dessa klasser för varje scope (t.ex. varje gång de injiceras i en ViewModel)
+            services.AddTransient<LoginViewModel>();// Registrera LoginViewModel som transient eftersom vi vill ha en ny instans varje gång den används (t.ex. varje gång den injiceras i en View)
 
-            _provider = services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();// Bygg vår ServiceProvider som kommer att hantera instansiering av våra klasser och deras beroenden
+            ServiceProvider = provider;// Spara ServiceProvider i en egenskap så att vi kan komma åt den senare (t.ex. i våra Views)
 
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+            var mainWindow = new MainWindow();// Skapa huvudfönstret för applikationen
+            mainWindow.Show();// Visa huvudfönstret
 
-            var loginPage = new LoginPage
+            var loginPage = new LoginPage// Skapa inloggningssidan
             {
-                DataContext = _provider.GetRequiredService<LoginViewModel>()
+                DataContext = provider.GetRequiredService<LoginViewModel>()// Sätt DataContext för inloggningssidan till en instans av LoginViewModel som hämtas från DI-containern
             };
 
 

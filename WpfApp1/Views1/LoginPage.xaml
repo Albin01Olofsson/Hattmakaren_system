@@ -37,11 +37,11 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Email}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                            <DataTrigger Binding="{Binding Email}" Value=""><!--// Empty string-->
+                                                <Setter Property="Visibility" Value="Visible"/> <!--// Show placeholder when Email is empty-->
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Email}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Hidden"/>
+                                            <DataTrigger Binding="{Binding Email}" Value="{x:Null}"><!--// Null value-->
+                                                <Setter Property="Visibility" Value="Visible"/> <!--// Hide placeholder when Email is null-->
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -58,10 +58,10 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsKeyboardFocusWithin, ElementName=PassInput}" Value="True">
+                                            <DataTrigger Binding="{Binding IsKeyboardFocusWithin, ElementName=PassInput}" Value="True"><!--// When PasswordBox is focused, hide the placeholder-->
                                                 <Setter Property="Visibility" Value="Hidden"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Password, ElementName=PassInput}" Value="">
+                                            <DataTrigger Binding="{Binding Password, ElementName=PassInput}" Value=""><!--// When PasswordBox is empty, show the placeholder-->
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -72,9 +72,9 @@
                         </Grid>
                     </Border>
 
-                    <Button Content="LOGGA IN" Command="{Binding LoginCommand}" Cursor="Hand"
+                    <Button Content="LOGGA IN" Command="{Binding LoginCommand}" Cursor="Hand" 
                             Background="#FFC5A059" Foreground="#FF2C3E50" FontSize="16" 
-                            FontWeight="Bold" Height="45" BorderThickness="0">
+                            FontWeight="Bold" Height="45" BorderThickness="0"><!--// Click="LoginButton_Click"-->
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>

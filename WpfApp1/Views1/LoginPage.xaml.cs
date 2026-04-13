@@ -15,35 +15,16 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
         }
-        private void PassInput_PasswordChanged(object sender, RoutedEventArgs e)
+        private void PassInput_PasswordChanged(object sender, RoutedEventArgs e)// Denna metod körs varje gång användaren ändrar texten i lösenordsfältet
         {
-            if (DataContext is LoginViewModel viewModel)
+            if (DataContext is LoginViewModel viewModel)// Först kollar vi att DataContext är av typen LoginViewModel, så att vi kan uppdatera Lösenord-egenskapen i vår ViewModel
             {
-                viewModel.Lösenord = PassInput.Password;
+                viewModel.Lösenord = PassInput.Password;// Sedan sätter vi Lösenord-egenskapen i vår ViewModel till det nya lösenordet som användaren har skrivit in
             }
-            PasswordPlaceholder.Visibility =
+            PasswordPlaceholder.Visibility =// Slutligen så uppdaterar vi synligheten för vår placeholder-text, så att den bara visas när lösenordsfältet är tomt
                 string.IsNullOrWhiteSpace(PassInput.Password)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
         }
-        //private void OnLoginSuccess()
-        //{
-        //    NavigationService.Navigate(new Mainpage());
-        //}
-
-        // Denna metod körs när man klickar på "LOGGA IN" i din XAML
-        //private void LoginButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        // Vi navigerar till dashboarden (Mainpage.xaml)
-        //        // Vi använder Uri för att vara säkra på att den hittar rätt i mappen Views1
-        //        this.NavigationService.Navigate(new Uri("Views1/Mainpage.xaml", UriKind.Relative));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Ett fel uppstod vid navigering: " + ex.Message);
-        //    }
-        //}
     }
 }

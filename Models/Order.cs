@@ -13,6 +13,8 @@ namespace Models
 
         public bool Färdig { get; set; } = false;
 
+        public decimal Rabatt { get; set; } = 0;
+
 
         [ForeignKey("StartadAv")]
         public int StartadAvID { get; set; }

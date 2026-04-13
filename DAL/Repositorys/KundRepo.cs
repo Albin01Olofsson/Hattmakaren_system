@@ -10,6 +10,9 @@ namespace DAL.Repositorys
         {
 
         }
-    
+        public Kund GetByEmail(string email)
+        {
+            return _context.Kunder.FirstOrDefault(k => k.Email.ToLower() == email.ToLower());
+        }
     }
 }

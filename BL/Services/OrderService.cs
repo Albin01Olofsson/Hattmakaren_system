@@ -28,29 +28,47 @@ namespace BL.Services
         public void SaveOrder() => _orderRepo.Save();
         public void skapaOrder(Order nyOrder)
         {
-            //Kollar så att det som inte får vara null i DB inte är det, och att det finns minst en produkt i ordern. Annars kastas ett undantag.
+            // 1. Grundläggande validering (Fail-fast)
             if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || nyOrder.Produkter == null || !nyOrder.Produkter.Any())
             {
                 throw new ArgumentException("Ordern måste ha en kund, en startande användare och minst en produkt.");
             }
+
+            // Skapa en variabel för att räkna ut priset
+            decimal totalPris = 0;
+
+            // 2. Loopa igenom produkterna och räkna ihop priset
             foreach (var produkt in nyOrder.Produkter)
             {
-                // Om det är en specialbeställning ser vi till att den är "false" vid start
                 if (produkt is SpecialBeställning)
                 {
                     produkt.Färdig = false;
                 }
 
-                // Vi sätter även datumet på produkten om ni har ett sådant fält, 
-                // eller kopplar på annan logik.
+                // Lägg till hattens pris till totalen
+                totalPris += produkt.pris;
             }
 
+            // --- HÄR ÄR DET NYA FÖR RABATTEN ---
+            // 3. Dra av rabatten från totalpriset
+            totalPris -= nyOrder.Rabatt;
+
+            // Säkerhetsspärr: Priset får aldrig bli mindre än 0 kr (om rabatten är högre än priset)
+            if (totalPris < 0)
+            {
+                totalPris = 0;
+            }
+
+            // 4. Sätt det slutgiltiga, uträknade priset på ordern
+            nyOrder.Pris = totalPris;
+
+            // 5. Spara ordern till databasen
             try
             {
                 nyOrder.Datum = DateTime.Now;
+
                 _orderRepo.Add(nyOrder);
                 _orderRepo.Save();
-
             }
             catch (Exception ex)
             {

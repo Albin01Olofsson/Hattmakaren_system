@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using BL.Interfaces;
 using BL.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -20,25 +21,35 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private ObservableCollection<Order> orderList;
 
+        [ObservableProperty]
+        private String sökString = string.Empty;
+
         public int AntalOrders => OrderList.Count;
+
         public OrderVM(IOrderService s)
         {
             _service = s;
             OrderList = new ObservableCollection<Order>(_service.GetOrdersWithNavProps());
-
-            //var sökResultat = _service.GetOrdersWithNavProps();
-            //OrderList = new ObservableCollection<Order>(sökResultat);
-
-            //OnPropertyChanged(nameof(AntalOrders));
         }
 
         [RelayCommand]
         private void Sök()
         {
-            //var sökResultat = _service.GetOrdersWithNavProps();
-            //OrderList = new ObservableCollection<Order>(sökResultat);
+            var sökResultat = _service.GetOrdersWithNavProps();
 
-            //OnPropertyChanged(nameof(AntalOrders));
+            if (!string.IsNullOrWhiteSpace(SökString))
+            {
+                sökResultat = sökResultat.Where(
+                    o => o.Kund.Namn.StartsWith(SökString, StringComparison.OrdinalIgnoreCase) || 
+                    o.OrderID.ToString().StartsWith(SökString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            OrderList = new ObservableCollection<Order>(sökResultat);
+            OnPropertyChanged(nameof(AntalOrders));
         }
+
+
+        
+
     }
 }

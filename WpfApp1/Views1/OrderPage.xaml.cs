@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 
 namespace WpfApp1.Views1
 {
@@ -27,6 +28,11 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
             DataContext = vm;
+        }
+
+
+        private void BtnSök_Click(object sender, RoutedEventArgs ev)
+        {
         }
     }
 }

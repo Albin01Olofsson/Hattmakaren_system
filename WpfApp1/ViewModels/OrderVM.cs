@@ -79,17 +79,18 @@ namespace WpfApp1.ViewModels
             //Order startare Filter
             if (OrderStartareFilter != "Alla")
             {
-                sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter.ToString()).ToList();
+                sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter).ToList();
             }
 
-            ////Klar status Filter
-            //if(KlarFilter == "Klar")
-            //{
-            //    sökResultat = sökResultat.Where(o => o.Färdig == true).ToList();
-            //}else if(KlarFilter == "Ej klar")
-            //{
-            //    sökResultat = sökResultat.Where(o => o.Färdig == false).ToList();
-            //}
+            //Klar status Filter
+            if (KlarFilter == "Klar")
+            {
+                sökResultat = sökResultat.Where(o => o.Färdig == true).ToList();
+            }
+            else if (KlarFilter == "Ej klar")
+            {
+                sökResultat = sökResultat.Where(o => o.Färdig == false).ToList();
+            }
 
             //Specialbeställning Filter
             //if(SpecialBeställning == "Ja")

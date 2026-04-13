@@ -241,7 +241,7 @@
                     <ComboBox x:Name="MarkeradSomKlarComboBox"
                               SelectedValue="{Binding KlarFilter}"
                               Margin="0,0,0,10"
-                              Text="Startade Order"
+                              SelectedValuePath="Content"
                               SelectedIndex="0">
                         <ComboBoxItem Content="Ospecificerat"></ComboBoxItem>
                         <ComboBoxItem Content="Klar"></ComboBoxItem>
@@ -253,7 +253,7 @@
                     <ComboBox x:Name="SpecialbeställningComboBox"
                               SelectedValue="{Binding SpecialBeställningFilter}"
                               Margin="0,0,0,10"
-                              Text="Startade Order"
+                              SelectedValuePath="Content"
                               SelectedIndex="0">
                         <ComboBoxItem Content="Ospecificerat"></ComboBoxItem>
                         <ComboBoxItem Content="Ja"></ComboBoxItem>

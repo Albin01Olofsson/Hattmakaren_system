@@ -13,6 +13,17 @@ namespace BL.Services
             _orderRepo = orderRepo;
         }
 
+        public List<Order> GetOrderList() => _orderRepo.GetAll();
+
+        public Order GetOrder(int id) => _orderRepo.GetById(id);
+
+        public void AddOrder(Order o) => _orderRepo.Add(o);
+
+        public void UpdateOrder(Order o) => _orderRepo.Update(o);
+
+        public void DeleteOrder(int id) => _orderRepo.Delete(id);
+
+        public void SaveOrder() => _orderRepo.Save();
         public void skapaOrder(Order nyOrder)
         {
             //Kollar så att det som inte får vara null i DB inte är det, och att det finns minst en produkt i ordern. Annars kastas ett undantag.

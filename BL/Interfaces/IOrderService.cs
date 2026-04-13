@@ -4,6 +4,18 @@ namespace BL.Interfaces
 {
     public interface IOrderService
     {
-        public void skapaOrder(Order nyOrder);
+        List<Order> GetOrderList();
+
+        Order GetOrder(int id);
+
+        void AddOrder(Order o);
+
+        void UpdateOrder(Order o);
+
+        void DeleteOrder(int id);
+
+        void SaveOrder();
+
+        void skapaOrder(Order nyOrder);
     }
 }

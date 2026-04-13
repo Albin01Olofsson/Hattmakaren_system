@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 using WpfApp1.ViewModels;
+using WpfApp1.Views1;
 
 namespace WpfApp1
 {
@@ -16,8 +17,6 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
-        public static ServiceProvider ServiceProvider { get; private set; }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -28,17 +27,22 @@ namespace WpfApp1
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddTransient<LoginViewModel>();
 
-            ServiceProvider = services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
 
-            var loginPage = new Views1.LoginPage
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            var loginVm = provider.GetService<LoginViewModel>();
+
+            var loginPage = new LoginPage();
+            loginPage.DataContext = loginVm;
+
+            mainWindow.MainFrame.Navigate(loginPage);
+
+            loginVm.LoginSucceeded += () =>
             {
-                DataContext = ServiceProvider.GetService<LoginViewModel>()
+                mainWindow.MainFrame.Navigate(new Mainpage());
             };
-            loginPage.Show();
-
         }
-
-        
     }
-
 }

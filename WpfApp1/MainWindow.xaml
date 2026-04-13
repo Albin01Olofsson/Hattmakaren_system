@@ -4,6 +4,7 @@
         Title="Hattmakaren System" Height="700" Width="1100"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <Frame x:Name="MainFrame" Source="Views1/Mainpage.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <!--<Frame x:Name="MainFrame" Source="Views1/Mainpage.xaml" NavigationUIVisibility="Hidden"/>-->
     </Grid>
 </Window>

@@ -12,6 +12,15 @@ namespace DAL.Repositorys
 
         }
 
+        public List<Order> GetOrdersAndNavPropertiesList()
+        {
+            return _context.Ordrar
+                .Include(o => o.Kund)
+                .Include(o => o.StartadAv)
+                .Include(o => o.Produkter)
+                .ToList();
+        }
+
         public Order HämtaMedDetaljer(int id)
         {
             // .Include gör att EF laddar in de relaterade objekten istället för att de är null

@@ -24,16 +24,21 @@ namespace WpfApp1.ViewModels
         public OrderVM(IOrderService s)
         {
             _service = s;
-            OrderList = new ObservableCollection<Order>(_service.GetOrderList());
+            OrderList = new ObservableCollection<Order>(_service.GetOrdersWithNavProps());
+
+            //var sökResultat = _service.GetOrdersWithNavProps();
+            //OrderList = new ObservableCollection<Order>(sökResultat);
+
+            //OnPropertyChanged(nameof(AntalOrders));
         }
 
         [RelayCommand]
         private void Sök()
         {
-            var sökResultat = _service.GetOrderList();
-            OrderList = new ObservableCollection<Order>(sökResultat);
+            //var sökResultat = _service.GetOrdersWithNavProps();
+            //OrderList = new ObservableCollection<Order>(sökResultat);
 
-            OnPropertyChanged(nameof(AntalOrders));
+            //OnPropertyChanged(nameof(AntalOrders));
         }
     }
 }

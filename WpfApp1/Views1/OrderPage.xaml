@@ -134,7 +134,7 @@
                                         <TextBlock x:Name="OrderStartare" 
                                                    Grid.Column="2"
                                                    Grid.Row="1" 
-                                                   Text="{Binding StartadAv, StringFormat=Startare: {0}}" 
+                                                   Text="{Binding StartadAv.Namn, StringFormat=Startare: {0}}" 
                                                    FontSize="12" 
                                                    Foreground="#F4F1EA"
                                                    HorizontalAlignment="Center">

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
+using WpfApp1.Views1;
 
 namespace WpfApp1.ViewModels
 {

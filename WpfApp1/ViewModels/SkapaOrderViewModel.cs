@@ -56,7 +56,7 @@ namespace WpfApp1.ViewModels
             _kundService = kundService;
 
             // Hämta vem som loggade in
-            InloggadAnvändare = _authService.InloggadAnvändare;
+            InloggadAnvändare = Session.CurrentUser;
 
             // Starta tomma listor så programmet inte kraschar
             AllaProdukter = new ObservableCollection<Produkt>();

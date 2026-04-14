@@ -3,114 +3,46 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
-using WpfApp1.Views1;
 
 namespace WpfApp1.ViewModels
 {
     public partial class SkapaOrderViewModel : ObservableObject
     {
-
-
         private readonly IOrderService _orderService;
-        private readonly IAuthenticationService _authService;
         private readonly IKundService _kundService;
+        private readonly IProduktService _produktService;
 
-
-        //  VARIABLER FÖR GRÄNSSNITTET (Data Binding)
-
-
-        [ObservableProperty]
-        private Användare inloggadAnvändare;
-
-        [ObservableProperty]
-        private string kundEpost;
-
-        // Listor för produkter
+        // LISTOR (ItemsSource för rullistorna)
+        public ObservableCollection<Kund> AllaKunder { get; set; }
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
         public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
 
-        [ObservableProperty]
-        private Produkt valdProdukt;
+        // VALDA OBJEKT (SelectedItem i rullistorna)
+        [ObservableProperty] private Kund valdKund;
+        [ObservableProperty] private Produkt valdProdukt;
 
-        // Material och mått 
-        public ObservableCollection<Material> material { get; set; }
+        // ÖVRIGT
+        [ObservableProperty] private decimal rabatt;
+        [ObservableProperty] private string orderOversiktText;
+        [ObservableProperty] private Användare inloggadAnvändare;
 
-        [ObservableProperty]
-        private Material valtMaterial;
-
-        [ObservableProperty]
-        private decimal meterMaterial;
-
-        [ObservableProperty]
-        private decimal rabatt;
-
-        [ObservableProperty]
-        private string orderOversiktText;
-
-        [ObservableProperty]
-        private string epostSök;
-
-        [ObservableProperty]
-        private string kundDisplay;
-
-        [ObservableProperty]
-        private Kund valdKund;
-
-
-        //  Konstruktor 
-
-        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService)
+        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService)
         {
             _orderService = orderService;
-            _authService = authService;
             _kundService = kundService;
+            _produktService = produktService;
 
-            // Hämta vem som loggade in
-            InloggadAnvändare = Session.CurrentUser;
+            // Hämta data från databasen direkt vid start
+            var kunderFrånDb = _kundService.HämtaAllaKunder() ?? new System.Collections.Generic.List<Kund>();
+            var produkterFrånDb = _produktService.GetProdukt() ?? new System.Collections.Generic.List<Produkt>();
 
-            // Starta tomma listor så programmet inte kraschar
-            AllaProdukter = new ObservableCollection<Produkt>();
+            AllaKunder = new ObservableCollection<Kund>(kunderFrånDb);
+            AllaProdukter = new ObservableCollection<Produkt>(produkterFrånDb);
             TillagdaProdukter = new ObservableCollection<Produkt>();
-            material = new ObservableCollection<Material>();
 
-            OrderOversiktText = "Inga produkter tillagda ännu.";
-        }
+            InloggadAnvändare = Session.CurrentUser ?? new Användare { AnvändarID = 1, Namn = "Test" };
 
-        partial void OnEpostSökChanged(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                KundDisplay = "Vänligen skriv in epost";
-                ValdKund = null;
-                return;
-            }
-
-            var hittadK = _kundService.HämtaAllaKunder().FirstOrDefault(k => k.Email.Equals(value));
-
-            if (hittadK != null)
-            {
-                ValdKund = hittadK;
-                KundDisplay = $"Kunden är medlem! \nNamn: {hittadK.Namn}";
-            }
-            else
-            {
-                ValdKund = null;
-                KundDisplay = "Kunden är ny \nTryck på Ny Kund";
-            }
-        }
-
-        // COMMANDS (Knapptryckningar från XAML)
-
-        [RelayCommand]
-        private void NyKund()
-        {
-            // Öppna ett fönster för att regga en ny kund (implementeras senare)
-        }
-
-        [RelayCommand]
-        private void Specialbestallning()
-        {
-            // öppna ett fönster för att skapa en specialbeställning (implementeras senare)
+            UppdateraOversikt();
         }
 
         [RelayCommand]
@@ -119,16 +51,6 @@ namespace WpfApp1.ViewModels
             if (ValdProdukt != null)
             {
                 TillagdaProdukter.Add(ValdProdukt);
-                ValdProdukt = null; // Töm rullistan så den är redo för nästa val
-                UppdateraOversikt();
-            }
-        }
-
-        [RelayCommand]
-        private void LaggTillMaterial()
-        {
-            if (ValtMaterial != null && MeterMaterial > 0)
-            {
                 UppdateraOversikt();
             }
         }
@@ -136,77 +58,54 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LaggTillRabatt()
         {
-            // Uppdaterar bara texten i vyn. Rabatten dras av "på riktigt" i Servicen när vi sparar.
+            // Priset räknas om här när man trycker på knappen
             UppdateraOversikt();
         }
 
         [RelayCommand]
         private void LaggOrder()
         {
-            //  UI-Validering
-            if (string.IsNullOrWhiteSpace(KundEpost) || !TillagdaProdukter.Any())
+            if (ValdKund == null || !TillagdaProdukter.Any())
             {
-                OrderOversiktText = "FEL: Du måste fylla i kundens e-post och lägga till minst en produkt.";
+                OrderOversiktText = "FEL: Du måste välja en kund och minst en produkt.";
                 return;
             }
 
-            //  Hämta kund från databasen 
-            var kund = _kundService.GetByEmail(KundEpost);
-
-            if (kund == null)
-            {
-                OrderOversiktText = $"FEL: Hittade ingen kund med e-post '{KundEpost}'. Skapa kunden först!";
-                return;
-            }
-
-            //  Bygg Order-objektet 
-            var nyOrder = new Order
-            {
-                KundID = kund.KundID,
-                StartadAvID = InloggadAnvändare.AnvändarID,
-                Produkter = TillagdaProdukter.ToList(),
-                Rabatt = this.Rabatt
-
-            };
-
-            //  Skicka till Service
             try
             {
+                var nyOrder = new Order
+                {
+                    KundID = ValdKund.KundID,
+                    StartadAvID = InloggadAnvändare.AnvändarID,
+                    Produkter = TillagdaProdukter.ToList(),
+                    Rabatt = this.Rabatt
+                };
+
                 _orderService.skapaOrder(nyOrder);
+                OrderOversiktText = "KLART! Ordern har sparats.";
 
-                // Töm fönstret för nästa kund
+                // Nollställ formuläret
                 TillagdaProdukter.Clear();
-                KundEpost = string.Empty;
                 Rabatt = 0;
-                MeterMaterial = 0;
-                ValtMaterial = null;
-
-                OrderOversiktText = "Ordern har skapats och sparats i databasen!";
+                ValdKund = null;
+                UppdateraOversikt();
             }
             catch (Exception ex)
             {
-                OrderOversiktText = "ETT FEL UPPSTOD: " + ex.Message;
+                OrderOversiktText = "Ett fel uppstod: " + ex.Message;
             }
         }
 
-
-        //  HJÄLPMETODER
-
         private void UppdateraOversikt()
         {
-            // Visuellt pris för att Judith ska se vad det kostar medan hon bygger ordern
             decimal totalt = TillagdaProdukter.Sum(p => p.pris);
-            decimal prisEfterRabatt = totalt - Rabatt;
+            decimal slutpris = Math.Max(0, totalt - Rabatt);
 
-            if (prisEfterRabatt < 0) prisEfterRabatt = 0;
-
-            string materialText = ValtMaterial != null && MeterMaterial > 0
-                ? $"\nValt material: {ValtMaterial.Namn} ({MeterMaterial} m)"
-                : "";
-
-            OrderOversiktText = $"Produkter i order: {TillagdaProdukter.Count} st.{materialText}\n" +
-                                $"Rabatt: {Rabatt} kr\n" +
-                                $"Preliminärt pris: {prisEfterRabatt} kr";
+            OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen valda")}\n" +
+                                $"Antal produkter: {TillagdaProdukter.Count} st\n" +
+                                $"Summa: {totalt:C}\n" +
+                                $"Avdragen rabatt: {Rabatt:C}\n" +
+                                $"Slutpris: {slutpris:C}";
         }
     }
 }

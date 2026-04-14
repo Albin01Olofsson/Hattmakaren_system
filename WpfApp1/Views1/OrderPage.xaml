@@ -228,15 +228,11 @@
                     
                     <!--ORDER STARTARE-->
                     <TextBlock Text="Order Startare" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    
+
                     <ComboBox x:Name="OrderStartareComboBox"
-                              SelectedValue="{Binding OrderStartareFilter}"
-                              Margin="0,0,0,10"
-                              SelectedValuePath="Content"
-                              SelectedIndex="0">
-                        <ComboBoxItem Content="Alla"></ComboBoxItem>
-                        <ComboBoxItem Content="Otto"></ComboBoxItem>
-                        <ComboBoxItem Content="Judith"></ComboBoxItem>
+                              ItemsSource="{Binding OrderStartareNamnList}"
+                              SelectedItem="{Binding OrderStartareFilter}"
+                              Margin="0,0,0,10">
                     </ComboBox>
                     
                     <!--MARKERAD SOM KLAR-->

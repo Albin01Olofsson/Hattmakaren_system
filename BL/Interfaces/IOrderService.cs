@@ -8,6 +8,8 @@ namespace BL.Interfaces
 
         List<Order> GetOrdersWithNavProps();
 
+        List<string> GetOrderStartareNamnList();
+
         Order GetOrder(int id);
 
         void AddOrder(Order o);

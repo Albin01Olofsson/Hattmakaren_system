@@ -1,14 +1,22 @@
-﻿using System;
+﻿using DAL.Repositorys;
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using WpfApp1.ViewModels;
+using BL.Services;
+using DAL;
 
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
     {
+        public OrderVM vm { get; set; }
         public Mainpage()
         {
             InitializeComponent();
+            OrderRepo repo = new OrderRepo(new DBcontext());
+            OrderService service = new OrderService(repo);
+            vm = new OrderVM(service);
         }
 
         // Här är koden som körs när du klickar på "Användare"
@@ -19,7 +27,7 @@ namespace WpfApp1.Views1
 
             // 2. Öppna användarsidan. 
             // Ändra "Admin" till "Personal" här om du vill se hur det ser ut för anställda
-            MainFrame.Navigate(new AnvandarePage("Admin"));
+            MainFrame.Navigate(new AnvandarePage());
         }
 
         private void BtnKunder_Click(object sender, RoutedEventArgs e)
@@ -36,7 +44,7 @@ namespace WpfApp1.Views1
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Order senare
-            //MainFrame.Navigate(new OrderPage());
+            MainFrame.Navigate(new OrderPage(vm));
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)
@@ -47,11 +55,22 @@ namespace WpfApp1.Views1
 
         private void BtnLoggaUt_Click(object sender, RoutedEventArgs e)
         {
-            // Går tillbaka till inloggningssidan
-            if (this.NavigationService != null)
+            
+            Session.CurrentUser = null;// Rensa sessionen
+            // Navigera till inloggningssidan
+            var app = (App)Application.Current;// Hämta applikationsinstansen för att komma åt DI-container
+            var vm = (LoginViewModel)app.ServiceProvider.GetService(typeof(LoginViewModel));// Hämta LoginViewModel från DI-container
+            var loginPage = new LoginPage
             {
-                this.NavigationService.Navigate(new Uri("Views1/LoginPage.xaml", UriKind.Relative));
-            }
+                DataContext = vm// Sätt DataContext för inloggningssidan
+            };
+
+            vm.LoginSucceeded += () =>// Prenumerera på inloggningshändelsen
+            {
+                ((MainWindow)Application.Current.MainWindow)
+                .MainFrame.Navigate(new Mainpage());// Navigera tillbaka till dashboarden efter inloggning
+            };
+            this.NavigationService.Navigate(loginPage);// Navigera till inloggningssidan
         }
     }
 }

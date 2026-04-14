@@ -1,10 +1,6 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models;
 
 namespace BL.Services
 {
@@ -15,6 +11,12 @@ namespace BL.Services
         public AnvändarService(IAnvändarRepo användarRepo)
         {
             _användarRepo = användarRepo;
+        }
+
+        // Metod för att hämta den som är inloggad eller en specifik användare
+        public Användare HämtaAnvändareMedId(int id)
+        {
+            return _användarRepo.GetById(id);
         }
     }
 }

@@ -64,6 +64,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Lösenord")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -85,7 +88,8 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
-                            Lösenord = "Hattkungen1",
+                            IsAdmin = true,
+                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -93,7 +97,8 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
-                            Lösenord = "HattPrinsessan1",
+                            IsAdmin = false,
+                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         });
@@ -275,6 +280,9 @@ namespace DAL.Migrations
                     b.Property<decimal>("Pris")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("Rabatt")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
@@ -294,6 +302,7 @@ namespace DAL.Migrations
                             Färdig = true,
                             KundID = 1001,
                             Pris = 1099m,
+                            Rabatt = 0m,
                             StartadAvID = 1
                         },
                         new
@@ -303,6 +312,7 @@ namespace DAL.Migrations
                             Färdig = true,
                             KundID = 1002,
                             Pris = 949m,
+                            Rabatt = 0m,
                             StartadAvID = 2
                         });
                 });

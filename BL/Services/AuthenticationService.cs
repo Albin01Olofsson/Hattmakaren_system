@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using BCrypt.Net;
 using DAL.Intefaces;
 using BL.Interfaces;
+using Models;
+
+
 
 namespace BL.Services
 {
@@ -16,13 +19,25 @@ namespace BL.Services
         {
             _annvändarRepo = användarRepo;
         }
-        public bool Login(string email, string lösenord)
+        public Användare Login(string email, string lösenord)
         {
+            if(string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(lösenord))
+            {
+                return null;
+            }
             var användare = _annvändarRepo.GetByEmail(email);
-            if (användare == null) 
-                return false;
+            if (användare == null)
+            {
+                return null;
+            }
+                
 
-            return BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
+            var success = BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
+            if (!success)
+            {
+                return null;
+            }
+            return användare;
         }
 
     }

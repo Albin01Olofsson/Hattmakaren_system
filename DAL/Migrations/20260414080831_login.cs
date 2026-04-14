@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class aa : Migration
+    public partial class login : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,8 @@ namespace DAL.Migrations
                     Namn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefon = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lösenord = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Lösenord = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,6 +92,7 @@ namespace DAL.Migrations
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
                     KundID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -197,11 +199,11 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Användare",
-                columns: new[] { "AnvändarID", "Email", "Lösenord", "Namn", "Telefon" },
+                columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", "Hattkungen1", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", "HattPrinsessan1", "Judith", "0727639856" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Judith", "0727639856" }
                 });
 
             migrationBuilder.InsertData(
@@ -236,11 +238,11 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Ordrar",
-                columns: new[] { "OrderID", "Datum", "Färdig", "KundID", "Pris", "StartadAvID" },
+                columns: new[] { "OrderID", "Datum", "Färdig", "KundID", "Pris", "Rabatt", "StartadAvID" },
                 values: new object[,]
                 {
-                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1001, 1099m, 1 },
-                    { 100000002, new DateTime(2025, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1002, 949m, 2 }
+                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1001, 1099m, 0m, 1 },
+                    { 100000002, new DateTime(2025, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1002, 949m, 0m, 2 }
                 });
 
             migrationBuilder.InsertData(

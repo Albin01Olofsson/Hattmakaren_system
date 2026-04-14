@@ -15,6 +15,8 @@ namespace Models
 
         public string Lösenord { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public List<MaterialBeställning> materialBeställningsLista { get; set; } = new List<MaterialBeställning>();
 
         public List<Order> orderLista { get; set; } = new List<Order>();

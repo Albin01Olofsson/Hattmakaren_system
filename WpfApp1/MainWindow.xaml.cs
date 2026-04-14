@@ -25,10 +25,10 @@ namespace WpfApp1
         {
             InitializeComponent();
             //Skrivet här för att jag bypassar MainPage
-            OrderRepo repo = new OrderRepo(new DBcontext());
-            OrderService service = new OrderService(repo);
-            OrderVM vm = new OrderVM(service);
-            Content = new OrderPage(vm);
+            //OrderRepo repo = new OrderRepo(new DBcontext());
+            //OrderService service = new OrderService(repo);
+            //OrderVM vm = new OrderVM(service);
+            //Content = new OrderPage(vm);
         }
     }
 }

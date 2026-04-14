@@ -1,15 +1,22 @@
-﻿using System;
+﻿using DAL.Repositorys;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
+using BL.Services;
+using DAL;
 
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
     {
+        public OrderVM vm { get; set; }
         public Mainpage()
         {
             InitializeComponent();
+            OrderRepo repo = new OrderRepo(new DBcontext());
+            OrderService service = new OrderService(repo);
+            vm = new OrderVM(service);
         }
 
         // Här är koden som körs när du klickar på "Användare"
@@ -37,7 +44,7 @@ namespace WpfApp1.Views1
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Order senare
-            //MainFrame.Navigate(new OrderPage());
+            MainFrame.Navigate(new OrderPage(vm));
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)

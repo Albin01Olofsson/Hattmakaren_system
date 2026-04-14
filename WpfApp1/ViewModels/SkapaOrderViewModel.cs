@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
+using WpfApp1.Views1;
 
 namespace WpfApp1.ViewModels
 {
@@ -56,7 +57,7 @@ namespace WpfApp1.ViewModels
             _kundService = kundService;
 
             // Hämta vem som loggade in
-            InloggadAnvändare = _authService.InloggadAnvändare;
+            InloggadAnvändare = Session.CurrentUser;
 
             // Starta tomma listor så programmet inte kraschar
             AllaProdukter = new ObservableCollection<Produkt>();

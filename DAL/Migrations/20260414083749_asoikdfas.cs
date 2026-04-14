@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class login : Migration
+    public partial class asoikdfas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
-                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
                     KundID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -202,8 +202,8 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Judith", "0727639856" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG", "Judith", "0727639856" }
                 });
 
             migrationBuilder.InsertData(

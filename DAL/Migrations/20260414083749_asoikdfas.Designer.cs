@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260414080831_login")]
-    partial class login
+    [Migration("20260414083749_asoikdfas")]
+    partial class asoikdfas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
+                            Lösenord = "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -101,7 +101,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
+                            Lösenord = "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         });
@@ -284,7 +284,8 @@ namespace DAL.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Rabatt")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");

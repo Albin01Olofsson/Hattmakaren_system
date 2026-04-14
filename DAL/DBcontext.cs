@@ -57,6 +57,10 @@ namespace DAL
                 .HasForeignKey(o => o.StartadAvID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Rabatt)
+                .HasPrecision(5, 2);
+
             // Användare -> Produkt (Vem som tillverkade hatten)
             modelBuilder.Entity<Produkt>()
                 .HasOne(p => p.TillverkadAv)
@@ -110,13 +114,6 @@ namespace DAL
                         Lösenord = passwordHash,
                         IsAdmin = false
                     }
-                    //new Användare { 
-                    //    AnvändarID = 3,
-                    //    Namn = "Joakim",
-                    //    Telefon = "0727639856",
-                    //    Email = "JudithHattman@hotmail.com",
-                    //    Lösenord = "HattPrinsessan1"
-                    //}
                 );
 
             //KUNDER
@@ -204,6 +201,7 @@ namespace DAL
                     new Order { 
                         OrderID = 100000001,
                         Pris = 1099,
+                        Rabatt = 0,
                         Datum = new DateTime(2024, 6, 11),
                         Färdig = true,
                         StartadAvID = 1,
@@ -212,6 +210,7 @@ namespace DAL
                     new Order { 
                         OrderID = 100000002,
                         Pris = 949,
+                        Rabatt = 0,
                         Datum = new DateTime(2025, 1, 18),
                         Färdig = true,
                         StartadAvID = 2,

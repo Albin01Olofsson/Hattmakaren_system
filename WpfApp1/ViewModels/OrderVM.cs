@@ -87,7 +87,7 @@ namespace WpfApp1.ViewModels
             {
                 sökResultat = sökResultat.Where(o => o.Färdig == true).ToList();
             }
-            else if (KlarFilter == "Ej klar")
+            else if (KlarFilter == "Ej Klar")
             {
                 sökResultat = sökResultat.Where(o => o.Färdig == false).ToList();
             }

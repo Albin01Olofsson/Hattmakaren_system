@@ -47,6 +47,12 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string orderOversiktText;
 
+        [ObservableProperty]
+        private string epostSök;
+
+        [ObservableProperty]
+        private string kundDisplay;
+
 
         //  Konstruktor 
 
@@ -67,6 +73,28 @@ namespace WpfApp1.ViewModels
             OrderOversiktText = "Inga produkter tillagda ännu.";
         }
 
+        partial void OnEpostSökChanged(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                KundDisplay = "Vänligen skriv in epost";
+                ValdKund = null;
+                return;
+            }
+
+            var hittadK = _kundService.HämtaAllaKunder().FirstOrDefault(k => k.Email.Equals(value));
+
+            if (hittadK != null)
+            {
+                ValdKund = hittadK;
+                KundDisplay = $"Kunden är medlem! \nNamn: {hittadK.Namn}";
+            }
+            else
+            {
+                ValdKund = null;
+                KundDisplay = "Kunden är ny \nTryck på Ny Kund";
+            }
+        }
 
         // COMMANDS (Knapptryckningar från XAML)
 

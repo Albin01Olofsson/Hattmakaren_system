@@ -105,13 +105,14 @@ namespace WpfApp1.ViewModels
             }
 
             //Specialbeställning Filter
-            //if(SpecialBeställning == "Ja")
-            //{
-            //    sökResultat = sökResultat.Where(o => o.IsSpecialBeställning == true).ToList();
-            //}else if(SpecialBeställning == "Nej")
-            //{
-            //    sökResultat = sökResultat.Where(o => o.IsSpecialBeställning == false).ToList();
-            //}
+            if (SpecialBeställningFilter == "Ja")
+            {
+                sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == true).ToList();
+            }
+            else if (SpecialBeställningFilter == "Nej")
+            {
+                sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == false).ToList();
+            }
 
 
             OrderList = new ObservableCollection<Order>(sökResultat);

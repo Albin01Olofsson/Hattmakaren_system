@@ -53,6 +53,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string kundDisplay;
 
+        [ObservableProperty]
+        private Kund valdKund;
+
 
         //  Konstruktor 
 

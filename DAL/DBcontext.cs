@@ -113,6 +113,22 @@ namespace DAL
                         Email = "JudithHattman@hotmail.com",
                         Lösenord = passwordHash,
                         IsAdmin = false
+                    },
+                    new Användare { 
+                        AnvändarID = 3,
+                        Namn = "Millie",
+                        Telefon = "0709825533",
+                        Email = "MillieHattman@hotmail.com",
+                        Lösenord = passwordHash,
+                        IsAdmin = false
+                    },
+                    new Användare { 
+                        AnvändarID = 4,
+                        Namn = "Herbert",
+                        Telefon = "0705512322",
+                        Email = "HerbertHattman@hotmail.com",
+                        Lösenord = passwordHash,
+                        IsAdmin = false
                     }
                 );
 
@@ -141,6 +157,22 @@ namespace DAL
                         Adress = "Fjordaberg 51",
                         Telefon = "0702127345",
                         Email = "yvonne.fjord@hotmail.com"
+                    },
+                    new Kund
+                    {
+                        KundID = 1004,
+                        Namn = "Ahmed Khan",
+                        Adress = "Javatorget 23",
+                        Telefon = "070123382",
+                        Email = "ahmed.khan@hotmail.com"
+                    },
+                    new Kund
+                    {
+                        KundID = 1005,
+                        Namn = "Jasmin Barsk",
+                        Adress = "Tetornet 3",
+                        Telefon = "0702427373",
+                        Email = "jasmin.barsk@hotmail.com"
                     }
                 );
             //MATERIAL
@@ -200,7 +232,7 @@ namespace DAL
             modelBuilder.Entity<Order>().HasData(
                     new Order { 
                         OrderID = 100000001,
-                        Pris = 1099,
+                        Pris = 1299,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 11),
                         Färdig = true,
@@ -209,12 +241,183 @@ namespace DAL
                     },
                     new Order { 
                         OrderID = 100000002,
+                        Pris = 1099,
+                        Rabatt = 0,
+                        Datum = new DateTime(2024, 8, 1),
+                        Färdig = false,
+                        StartadAvID = 1,
+                        KundID = 1002
+                    },
+                    new Order { 
+                        OrderID = 100000003,
+                        Pris = 299,
+                        Rabatt = 0,
+                        Datum = new DateTime(2024, 6, 21),
+                        Färdig = true,
+                        StartadAvID = 1,
+                        KundID = 1003
+                    },
+                    new Order { 
+                        OrderID = 100000004,
+                        Pris = 2399,
+                        Rabatt = 0,
+                        Datum = new DateTime(2024, 6, 21),
+                        Färdig = true,
+                        StartadAvID = 1,
+                        KundID = 1004
+                    },
+                    new Order { 
+                        OrderID = 100000005,
+                        Pris = 779,
+                        Rabatt = 0,
+                        Datum = new DateTime(2024, 6, 21),
+                        Färdig = false,
+                        StartadAvID = 1,
+                        KundID = 1005
+                    },
+                    new Order { 
+                        OrderID = 100000006,
                         Pris = 949,
                         Rabatt = 0,
-                        Datum = new DateTime(2025, 1, 18),
+                        Datum = new DateTime(2026, 2, 18),
+                        Färdig = false,
+                        StartadAvID = 2,
+                        KundID = 1001
+                    },
+                    new Order { 
+                        OrderID = 100000007,
+                        Pris = 1049,
+                        Rabatt = 0,
+                        Datum = new DateTime(2025, 10, 6),
                         Färdig = true,
                         StartadAvID = 2,
                         KundID = 1002
+                    },
+                    new Order { 
+                        OrderID = 100000008,
+                        Pris = 749,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 2,
+                        KundID = 1003
+                    },
+                    new Order { 
+                        OrderID = 100000009,
+                        Pris = 999,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 2,
+                        KundID = 1004
+                    },
+                    new Order { 
+                        OrderID = 100000010,
+                        Pris = 899,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 2,
+                        KundID = 1004
+                    },
+                    new Order { 
+                        OrderID = 100000011,
+                        Pris = 1099,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 2,
+                        KundID = 1005
+                    },
+                    new Order { 
+                        OrderID = 100000012,
+                        Pris = 2019,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 3,
+                        KundID = 1001
+                    },
+                    new Order { 
+                        OrderID = 100000013,
+                        Pris = 1829,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 3,
+                        KundID = 1002
+                    },
+                    new Order { 
+                        OrderID = 100000014,
+                        Pris = 599,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 3,
+                        KundID = 1003
+                    },
+                    new Order { 
+                        OrderID = 100000015,
+                        Pris = 899,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 3,
+                        KundID = 1004
+                    },
+                    new Order { 
+                        OrderID = 100000016,
+                        Pris = 1299,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 3,
+                        KundID = 1005
+                    },
+                    new Order { 
+                        OrderID = 100000017,
+                        Pris = 499,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 4,
+                        KundID = 1001
+                    },
+                    new Order { 
+                        OrderID = 100000018,
+                        Pris = 499,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 4,
+                        KundID = 1002
+                    },
+                    new Order { 
+                        OrderID = 100000019,
+                        Pris = 499,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 4,
+                        KundID = 1003
+                    },
+                    new Order { 
+                        OrderID = 100000020,
+                        Pris = 499,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = false,
+                        StartadAvID = 4,
+                        KundID = 1004
+                    },
+                    new Order { 
+                        OrderID = 100000021,
+                        Pris = 499,
+                        Rabatt = 0,
+                        Datum = new DateTime(2026, 4, 11),
+                        Färdig = true,
+                        StartadAvID = 4,
+                        KundID = 1005
                     }
                 );
             //PRODUKTER

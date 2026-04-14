@@ -106,6 +106,13 @@ namespace DAL
                         Email = "JudithHattman@hotmail.com",
                         Lösenord = "HattPrinsessan1"
                     }
+                    //new Användare { 
+                    //    AnvändarID = 3,
+                    //    Namn = "Joakim",
+                    //    Telefon = "0727639856",
+                    //    Email = "JudithHattman@hotmail.com",
+                    //    Lösenord = "HattPrinsessan1"
+                    //}
                 );
 
             //KUNDER

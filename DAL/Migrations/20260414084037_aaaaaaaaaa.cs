@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class asoikdfas : Migration
+    public partial class aaaaaaaaaa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -202,8 +202,8 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG", "Judith", "0727639856" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$o.Q40tirZYpK84gZXXJ3Z.qQIP7RhSJA751JX7n8Yqy8FmkGNNg.O", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$o.Q40tirZYpK84gZXXJ3Z.qQIP7RhSJA751JX7n8Yqy8FmkGNNg.O", "Judith", "0727639856" }
                 });
 
             migrationBuilder.InsertData(

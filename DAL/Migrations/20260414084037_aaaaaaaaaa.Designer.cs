@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260414083749_asoikdfas")]
-    partial class asoikdfas
+    [Migration("20260414084037_aaaaaaaaaa")]
+    partial class aaaaaaaaaa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG",
+                            Lösenord = "$2a$11$o.Q40tirZYpK84gZXXJ3Z.qQIP7RhSJA751JX7n8Yqy8FmkGNNg.O",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -101,7 +101,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$AZsG03YaOlwKAr.41lh5B.YhgafAwV2ZPnad5Pj8SyEP5jZcxTvdG",
+                            Lösenord = "$2a$11$o.Q40tirZYpK84gZXXJ3Z.qQIP7RhSJA751JX7n8Yqy8FmkGNNg.O",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         });

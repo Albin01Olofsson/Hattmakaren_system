@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 using Models;
 namespace DAL
 {
@@ -87,27 +88,27 @@ namespace DAL
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
-            modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
 
             //Exempeldata ----------------
 
             //ANVÄNDARE
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("Hattkungen1");
             modelBuilder.Entity<Användare>().HasData(
-                    new Användare
-                    {
+                    new Användare { 
                         AnvändarID = 1,
                         Namn = "Otto",
                         Telefon = "07085652321",
                         Email = "ottoHattman@hotmail.com",
-                        Lösenord = "Hattkungen1"
+                        Lösenord = passwordHash,
+                        IsAdmin = true
                     },
-                    new Användare
-                    {
+                    new Användare { 
                         AnvändarID = 2,
                         Namn = "Judith",
                         Telefon = "0727639856",
                         Email = "JudithHattman@hotmail.com",
-                        Lösenord = "HattPrinsessan1"
+                        Lösenord = passwordHash,
+                        IsAdmin = false
                     }
                 );
 
@@ -140,8 +141,7 @@ namespace DAL
                 );
             //MATERIAL
             modelBuilder.Entity<Material>().HasData(
-                    new Material
-                    {
+                    new Material { 
                         MaterialID = 100001,
                         Namn = "Filt",
                         Pris = 54,
@@ -149,8 +149,7 @@ namespace DAL
                         Typ = "Tyg",
                         Lagerantal = 23
                     },
-                    new Material
-                    {
+                    new Material { 
                         MaterialID = 100002,
                         Namn = "Bomull",
                         Pris = 34,
@@ -158,8 +157,7 @@ namespace DAL
                         Typ = "Tyg",
                         Lagerantal = 52
                     },
-                    new Material
-                    {
+                    new Material { 
                         MaterialID = 100003,
                         Namn = "Svart tråd",
                         Pris = 28,
@@ -196,8 +194,7 @@ namespace DAL
 
             //ORDRAR
             modelBuilder.Entity<Order>().HasData(
-                    new Order
-                    {
+                    new Order { 
                         OrderID = 100000001,
                         Pris = 1099,
                         Datum = new DateTime(2024, 6, 11),
@@ -205,22 +202,13 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1001
                     },
-                    new Order
-                    {
+                    new Order { 
                         OrderID = 100000002,
                         Pris = 949,
                         Datum = new DateTime(2025, 1, 18),
                         Färdig = true,
                         StartadAvID = 2,
                         KundID = 1002
-                    },
-                    new Order { 
-                        OrderID = 100000003,
-                        Pris = 1899,
-                        Datum = new DateTime(2026, 3, 21),
-                        Färdig = false,
-                        StartadAvID = 1,
-                        KundID = 1001
                     }
                 );
             //PRODUKTER

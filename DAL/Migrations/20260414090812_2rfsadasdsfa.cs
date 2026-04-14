@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class login : Migration
+    public partial class _2rfsadasdsfa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
-                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
                     KundID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -202,8 +202,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO", "Judith", "0727639856" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -213,7 +215,9 @@ namespace DAL.Migrations
                 {
                     { 1001, "Kullstigen 78", "Per.Larsson@hotmail.com", "Per Larsson", "076312129" },
                     { 1002, "Milvägen 1", "Eva.Milen@hotmail.com", "Eva Von Milen", "0727728432" },
-                    { 1003, "Fjordaberg 51", "yvonne.fjord@hotmail.com", "Yvonne Fjord", "0702127345" }
+                    { 1003, "Fjordaberg 51", "yvonne.fjord@hotmail.com", "Yvonne Fjord", "0702127345" },
+                    { 1004, "Javatorget 23", "ahmed.khan@hotmail.com", "Ahmed Khan", "070123382" },
+                    { 1005, "Tetornet 3", "jasmin.barsk@hotmail.com", "Jasmin Barsk", "0702427373" }
                 });
 
             migrationBuilder.InsertData(
@@ -241,8 +245,27 @@ namespace DAL.Migrations
                 columns: new[] { "OrderID", "Datum", "Färdig", "KundID", "Pris", "Rabatt", "StartadAvID" },
                 values: new object[,]
                 {
-                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1001, 1099m, 0m, 1 },
-                    { 100000002, new DateTime(2025, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1002, 949m, 0m, 2 }
+                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1001, 1299m, 0m, 1 },
+                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1002, 1099m, 0m, 1 },
+                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1003, 299m, 0m, 1 },
+                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1004, 2399m, 0m, 1 },
+                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1005, 779m, 0m, 1 },
+                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1001, 949m, 0m, 2 },
+                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1002, 1049m, 0m, 2 },
+                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1003, 749m, 0m, 2 },
+                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1004, 999m, 0m, 2 },
+                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1004, 899m, 0m, 2 },
+                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1005, 1099m, 0m, 2 },
+                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1001, 2019m, 0m, 3 },
+                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1002, 1829m, 0m, 3 },
+                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1003, 599m, 0m, 3 },
+                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1004, 899m, 0m, 3 },
+                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1005, 1299m, 0m, 3 },
+                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1001, 499m, 0m, 4 },
+                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1002, 499m, 0m, 4 },
+                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1003, 499m, 0m, 4 },
+                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1004, 499m, 0m, 4 },
+                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1005, 499m, 0m, 4 }
                 });
 
             migrationBuilder.InsertData(

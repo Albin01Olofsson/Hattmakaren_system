@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260414080831_login")]
-    partial class login
+    [Migration("20260414090812_2rfsadasdsfa")]
+    partial class _2rfsadasdsfa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
+                            Lösenord = "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -101,9 +101,27 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$3esHI8LWNL97rmfpiYsVwOi9YCHFxJzm734Yypqc21thkHHKgPtXO",
+                            Lösenord = "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly",
                             Namn = "Judith",
                             Telefon = "0727639856"
+                        },
+                        new
+                        {
+                            AnvändarID = 3,
+                            Email = "MillieHattman@hotmail.com",
+                            IsAdmin = false,
+                            Lösenord = "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly",
+                            Namn = "Millie",
+                            Telefon = "0709825533"
+                        },
+                        new
+                        {
+                            AnvändarID = 4,
+                            Email = "HerbertHattman@hotmail.com",
+                            IsAdmin = false,
+                            Lösenord = "$2a$11$Nj6f1fuNOlmLuW8B.G/cJOHd5JvyhUaJ9TyCIjYzBpbp9QN4ML4ly",
+                            Namn = "Herbert",
+                            Telefon = "0705512322"
                         });
                 });
 
@@ -159,6 +177,22 @@ namespace DAL.Migrations
                             Email = "yvonne.fjord@hotmail.com",
                             Namn = "Yvonne Fjord",
                             Telefon = "0702127345"
+                        },
+                        new
+                        {
+                            KundID = 1004,
+                            Adress = "Javatorget 23",
+                            Email = "ahmed.khan@hotmail.com",
+                            Namn = "Ahmed Khan",
+                            Telefon = "070123382"
+                        },
+                        new
+                        {
+                            KundID = 1005,
+                            Adress = "Tetornet 3",
+                            Email = "jasmin.barsk@hotmail.com",
+                            Namn = "Jasmin Barsk",
+                            Telefon = "0702427373"
                         });
                 });
 
@@ -284,7 +318,8 @@ namespace DAL.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Rabatt")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
@@ -304,19 +339,209 @@ namespace DAL.Migrations
                             Datum = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = true,
                             KundID = 1001,
-                            Pris = 1099m,
+                            Pris = 1299m,
                             Rabatt = 0m,
                             StartadAvID = 1
                         },
                         new
                         {
                             OrderID = 100000002,
-                            Datum = new DateTime(2025, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Datum = new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
                             KundID = 1002,
+                            Pris = 1099m,
+                            Rabatt = 0m,
+                            StartadAvID = 1
+                        },
+                        new
+                        {
+                            OrderID = 100000003,
+                            Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1003,
+                            Pris = 299m,
+                            Rabatt = 0m,
+                            StartadAvID = 1
+                        },
+                        new
+                        {
+                            OrderID = 100000004,
+                            Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1004,
+                            Pris = 2399m,
+                            Rabatt = 0m,
+                            StartadAvID = 1
+                        },
+                        new
+                        {
+                            OrderID = 100000005,
+                            Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1005,
+                            Pris = 779m,
+                            Rabatt = 0m,
+                            StartadAvID = 1
+                        },
+                        new
+                        {
+                            OrderID = 100000006,
+                            Datum = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1001,
                             Pris = 949m,
                             Rabatt = 0m,
                             StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000007,
+                            Datum = new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1002,
+                            Pris = 1049m,
+                            Rabatt = 0m,
+                            StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000008,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1003,
+                            Pris = 749m,
+                            Rabatt = 0m,
+                            StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000009,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1004,
+                            Pris = 999m,
+                            Rabatt = 0m,
+                            StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000010,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1004,
+                            Pris = 899m,
+                            Rabatt = 0m,
+                            StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000011,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1005,
+                            Pris = 1099m,
+                            Rabatt = 0m,
+                            StartadAvID = 2
+                        },
+                        new
+                        {
+                            OrderID = 100000012,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1001,
+                            Pris = 2019m,
+                            Rabatt = 0m,
+                            StartadAvID = 3
+                        },
+                        new
+                        {
+                            OrderID = 100000013,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1002,
+                            Pris = 1829m,
+                            Rabatt = 0m,
+                            StartadAvID = 3
+                        },
+                        new
+                        {
+                            OrderID = 100000014,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1003,
+                            Pris = 599m,
+                            Rabatt = 0m,
+                            StartadAvID = 3
+                        },
+                        new
+                        {
+                            OrderID = 100000015,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1004,
+                            Pris = 899m,
+                            Rabatt = 0m,
+                            StartadAvID = 3
+                        },
+                        new
+                        {
+                            OrderID = 100000016,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1005,
+                            Pris = 1299m,
+                            Rabatt = 0m,
+                            StartadAvID = 3
+                        },
+                        new
+                        {
+                            OrderID = 100000017,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1001,
+                            Pris = 499m,
+                            Rabatt = 0m,
+                            StartadAvID = 4
+                        },
+                        new
+                        {
+                            OrderID = 100000018,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1002,
+                            Pris = 499m,
+                            Rabatt = 0m,
+                            StartadAvID = 4
+                        },
+                        new
+                        {
+                            OrderID = 100000019,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1003,
+                            Pris = 499m,
+                            Rabatt = 0m,
+                            StartadAvID = 4
+                        },
+                        new
+                        {
+                            OrderID = 100000020,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = false,
+                            KundID = 1004,
+                            Pris = 499m,
+                            Rabatt = 0m,
+                            StartadAvID = 4
+                        },
+                        new
+                        {
+                            OrderID = 100000021,
+                            Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Färdig = true,
+                            KundID = 1005,
+                            Pris = 499m,
+                            Rabatt = 0m,
+                            StartadAvID = 4
                         });
                 });
 

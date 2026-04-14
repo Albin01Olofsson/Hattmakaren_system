@@ -7,6 +7,12 @@ namespace BL.Services
     public class KundService : IKundService
     {
         private readonly IKundRepo _kundRepo;
+
+
+        public KundService(IKundRepo kundRepo)
+        {
+            _kundRepo = kundRepo;
+        }
         public List<Kund> HämtaAllaKunder()
         {
 

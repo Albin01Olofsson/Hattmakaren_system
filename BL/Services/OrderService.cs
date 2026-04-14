@@ -17,6 +17,11 @@ namespace BL.Services
 
         public List<Order> GetOrdersWithNavProps() => _orderRepo.GetOrdersAndNavPropertiesList();
 
+        public List<string> GetOrderStartareNamnList()
+        {
+            return GetOrdersWithNavProps().Select(o => o.StartadAv.Namn).Distinct().ToList();
+        }
+
         public Order GetOrder(int id) => _orderRepo.GetById(id);
 
         public void AddOrder(Order o) => _orderRepo.Add(o);

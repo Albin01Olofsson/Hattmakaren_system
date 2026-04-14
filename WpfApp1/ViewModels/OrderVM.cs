@@ -33,7 +33,7 @@ namespace WpfApp1.ViewModels
         public DateTime? datumFrånFilter;
 
         [ObservableProperty]
-        public string orderStartareFilter;
+        public string orderStartareFilter = "Alla";
 
         [ObservableProperty]
         public string klarFilter = "Ospecificerat";
@@ -42,11 +42,23 @@ namespace WpfApp1.ViewModels
         public string specialBeställningFilter = "Ospecificerat";
 
 
+        //Lista för att fylla Order Startares namn som options i Combobox
+        [ObservableProperty]
+        public ObservableCollection<string> orderStartareNamnList;
 
         public OrderVM(IOrderService s)
         {
             _service = s;
             OrderList = new ObservableCollection<Order>(_service.GetOrdersWithNavProps());
+
+            OrderStartareNamnList = new ObservableCollection<string>();
+
+            OrderStartareNamnList.Add("Alla");
+
+            foreach(string namn in _service.GetOrderStartareNamnList().OrderBy(n => n))
+            {
+                OrderStartareNamnList.Add(namn);
+            }
         }
 
         [RelayCommand]

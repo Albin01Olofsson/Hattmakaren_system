@@ -213,6 +213,14 @@ namespace DAL
                         Färdig = true,
                         StartadAvID = 2,
                         KundID = 1002
+                    },
+                    new Order { 
+                        OrderID = 100000003,
+                        Pris = 1899,
+                        Datum = new DateTime(2026, 3, 21),
+                        Färdig = false,
+                        StartadAvID = 1,
+                        KundID = 1001
                     }
                 );
             //PRODUKTER

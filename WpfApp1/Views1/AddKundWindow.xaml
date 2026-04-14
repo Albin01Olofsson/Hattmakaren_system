@@ -33,19 +33,19 @@
                 <!-- Email -->
                 <TextBlock Text="Email"
                            Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding Email}"
+                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0,5,0,10"/>
 
                 <!-- Telefon -->
                 <TextBlock Text="Telefon"
                            Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding Telefon}"
+                <TextBox Text="{Binding Telefon, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0,5,0,10"/>
 
                 <!-- Adress -->
                 <TextBlock Text="Adress"
                            Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding Adress}"
+                <TextBox Text="{Binding Adress, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0,5,0,20"/>
 
                 <!-- Knapp -->

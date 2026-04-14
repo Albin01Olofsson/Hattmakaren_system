@@ -47,6 +47,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="👥" Width="25"/>
                                 <TextBlock Text="Kunder" FontSize="14" Foreground="#FF2C3E50"/>
+                                <Button Content="Testa Ny Kund" Width="200" Height="40" Click="TestAddKund_Click"/><!--//testknapp-->
                             </StackPanel>
                         </Border>
                     </Button>

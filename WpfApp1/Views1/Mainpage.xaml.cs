@@ -1,16 +1,19 @@
-﻿using DAL.Repositorys;
+﻿using BL.Interfaces;
+using BL.Services;
+using DAL;
+using DAL.Repositorys;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
-using BL.Services;
-using DAL;
 
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
     {
         public OrderVM vm { get; set; }
+        //bara för att testa addKund, kan tas bort senare
+        private IKundService _kundService = new KundService(new KundRepo(new DBcontext()));
         public Mainpage()
         {
             InitializeComponent();
@@ -71,6 +74,25 @@ namespace WpfApp1.Views1
                 .MainFrame.Navigate(new Mainpage());// Navigera tillbaka till dashboarden efter inloggning
             };
             this.NavigationService.Navigate(loginPage);// Navigera till inloggningssidan
+        }
+
+        // Testknapp för att lägga till en kund, kan tas bort senare
+        private void TestAddKund_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddKundWindow();
+
+            if (window.ShowDialog() == true)
+            {
+                try
+                {
+                    _kundService.AddKund(window.CreatedKund);
+                    MessageBox.Show("Kund sparad!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
     }
 }

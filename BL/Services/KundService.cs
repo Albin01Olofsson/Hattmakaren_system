@@ -36,6 +36,7 @@ namespace BL.Services
             }
             // Skicka vidare till Repot (Databasen) för att lägga till kunden
             _kundRepo.Add(kund);
+            _kundRepo.Save();
         }
 
         public void UpdateKund(Kund kund)
@@ -52,6 +53,7 @@ namespace BL.Services
             }
             // Skicka vidare till Repot (Databasen) för att uppdatera kunden
             _kundRepo.Update(kund);
+            _kundRepo.Save();
         }
 
         public void DeleteKund(int id)
@@ -63,6 +65,7 @@ namespace BL.Services
             }
             // Skicka vidare till Repot (Databasen) för att ta bort kunden
             _kundRepo.Delete(id);
+            _kundRepo.Save();
         }
 
         public Kund GetByEmail(string email)

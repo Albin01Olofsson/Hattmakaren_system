@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Models;
+using WpfApp1.ViewModels;
+
+namespace WpfApp1.Views1
+{
+    /// <summary>
+    /// Interaction logic for AddKundWindow.xaml
+    /// </summary>
+    public partial class AddKundWindow : Window
+    {
+        public Kund CreatedKund { get; private set; }
+        public AddKundWindow()
+        {
+            InitializeComponent();
+
+            var vm = new AddKundViewModel();
+            vm.KundAdded += (kund) =>
+            {
+                CreatedKund = kund; // Spara den skapade kunden i en property
+                DialogResult = true; // Stäng dialogen och indikera att en kund skapades
+            };
+            DataContext = vm;
+        }
+    }
+}

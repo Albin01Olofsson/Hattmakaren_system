@@ -35,7 +35,7 @@
                         <TextBlock Text="Kundens Epost: " Margin="0, 15" Foreground="#FFC5A059"></TextBlock>
                         <TextBox Width="200" Margin="0, 15"/>
                     </StackPanel>
-                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46"></Button>
+                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46" Click="Button_Click"></Button>
                     <RichTextBox Grid.Row="1" Margin="50, 15" HorizontalAlignment="Left" VerticalAlignment="Bottom"></RichTextBox>
                 </Grid>
             </Border>

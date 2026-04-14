@@ -15,6 +15,8 @@ namespace Models
 
         public decimal Rabatt { get; set; } = 0;
 
+        public bool IsSpecialbeställning { get; set; }
+
 
         [ForeignKey("StartadAv")]
         public int StartadAvID { get; set; }

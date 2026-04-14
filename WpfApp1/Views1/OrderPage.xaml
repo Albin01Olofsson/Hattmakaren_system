@@ -52,8 +52,6 @@
             </Grid.ColumnDefinitions>
 
             <!--SÖKRESULTAT-->
-            <!--<ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled">-->
                 <Border Grid.Column="0" Margin="0,0,20,0" Background="#FF2C3E50" CornerRadius="15" Padding="10">
                     <StackPanel>
                         <TextBlock Text="{Binding AntalOrders, StringFormat=Sökresultat: {0}}"
@@ -120,7 +118,7 @@
                                         <TextBlock x:Name="ÄrSpecialBeställning"
                                                    Grid.Column="1"
                                                    Grid.Row="1"
-                                                   Text="Ej i model"
+                                                   Text="{Binding IsSpecialbeställning, StringFormat=Specialbeställning: {0}}"
                                                    FontSize="12"
                                                    Foreground="#F4F1EA"
                                                    HorizontalAlignment="Center">
@@ -149,60 +147,10 @@
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-                            <!--<ListBoxItem>
-                                --><!-- Dessa ska loopas och läggas till med "SökResultat.Items.Add(VariabelFörOrder);"--><!--
-                                <Grid x:Name="EttSökresultat"
-                                      Background="#11FFFFFF">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock x:Name="KundNamn" Grid.Column="0" Grid.Row="0" Text="Sören Gren" FontSize="14" FontWeight="Bold" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="OrderNummer" Grid.Column="0" Grid.Row="1" Text="Order: OXB7141NM" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-
-                                    <TextBlock x:Name="Datum" Grid.Column="1" Grid.Row="0" Text="Datum: 2026-04-16" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="ÄrSpecialBeställning" Grid.Column="1" Grid.Row="1" Text="Specialbeställning: Nej" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-
-                                    <TextBlock x:Name="ÄrMarkeradSomKlar" Grid.Column="2" Grid.Row="0" Text="Klar: Ja" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="OrderStartare" Grid.Column="2" Grid.Row="1" Text="Startad av: Otto" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                </Grid>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <Grid x:Name="TvåSökresultat" 
-                                      Background="#11FFFFFF">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock x:Name="KundNamn2" Grid.Column="0" Grid.Row="0" Text="Britt-Marie Sjödal" FontSize="14" FontWeight="Bold" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="OrderNummer2" Grid.Column="0" Grid.Row="1" Text="Order: OXB821LAS" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-
-                                    <TextBlock x:Name="Datum2" Grid.Column="1" Grid.Row="0" Text="Datum: 20224-01-16" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="ÄrSpecialBeställning2" Grid.Column="1" Grid.Row="1" Text="Specialbeställning: Ja" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-
-                                    <TextBlock x:Name="ÄrMarkeradSomKlar2" Grid.Column="2" Grid.Row="0" Text="Klar: Nej" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-                                    <TextBlock x:Name="OrderStartare2" Grid.Column="2" Grid.Row="1" Text="Startad av: Judith" FontSize="12" Foreground="#F4F1EA" HorizontalAlignment="Center"></TextBlock>
-
-                                </Grid>
-                            </ListBoxItem>-->
                         </ListBox>
                     </StackPanel>
                 </Border>
 
-            <!--</ScrollViewer>-->
             <!--FILTER-->
             <Border x:Name="FilterBar"
                     Grid.Column="1"

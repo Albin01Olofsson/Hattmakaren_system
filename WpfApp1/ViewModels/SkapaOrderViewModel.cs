@@ -8,16 +8,15 @@ namespace WpfApp1.ViewModels
 {
     public partial class SkapaOrderViewModel : ObservableObject
     {
-        // ==========================================
-        // 1. INJICERADE TJÄNSTER (Kockarna)
-        // ==========================================
+
+
         private readonly IOrderService _orderService;
         private readonly IAuthenticationService _authService;
         private readonly IKundService _kundService;
 
-        // ==========================================
-        // 2. VARIABLER FÖR GRÄNSSNITTET (Data Binding)
-        // ==========================================
+
+        //  VARIABLER FÖR GRÄNSSNITTET (Data Binding)
+
 
         [ObservableProperty]
         private Användare inloggadAnvändare;
@@ -32,7 +31,7 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private Produkt valdProdukt;
 
-        // Material och mått (Dessa matchar din XAML exakt)
+        // Material och mått 
         public ObservableCollection<Material> material { get; set; }
 
         [ObservableProperty]
@@ -47,9 +46,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string orderOversiktText;
 
-        // ==========================================
-        // 3. KONSTRUKTOR (Körs när fönstret öppnas)
-        // ==========================================
+
+        //  Konstruktor 
+
         public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService)
         {
             _orderService = orderService;
@@ -67,20 +66,19 @@ namespace WpfApp1.ViewModels
             OrderOversiktText = "Inga produkter tillagda ännu.";
         }
 
-        // ==========================================
-        // 4. COMMANDS (Knapptryckningar från XAML)
-        // ==========================================
+
+        // COMMANDS (Knapptryckningar från XAML)
 
         [RelayCommand]
         private void NyKund()
         {
-            // Här kan du senare öppna ett fönster för att registrera en ny kund
+            // Öppna ett fönster för att regga en ny kund (implementeras senare)
         }
 
         [RelayCommand]
         private void Specialbestallning()
         {
-            // Här kan du senare hantera specialbeställningar (t.ex. öppna ett nytt fönster)
+            // öppna ett fönster för att skapa en specialbeställning (implementeras senare)
         }
 
         [RelayCommand]
@@ -113,14 +111,14 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LaggOrder()
         {
-            // 1. UI-Validering
+            //  UI-Validering
             if (string.IsNullOrWhiteSpace(KundEpost) || !TillagdaProdukter.Any())
             {
                 OrderOversiktText = "FEL: Du måste fylla i kundens e-post och lägga till minst en produkt.";
                 return;
             }
 
-            // 2. Hämta kund från databasen (Säkerställ att GetByEmail finns i din IKundService)
+            //  Hämta kund från databasen 
             var kund = _kundService.GetByEmail(KundEpost);
 
             if (kund == null)
@@ -129,17 +127,17 @@ namespace WpfApp1.ViewModels
                 return;
             }
 
-            // 3. Bygg Order-objektet och packa med allt från fönstret
+            //  Bygg Order-objektet 
             var nyOrder = new Order
             {
                 KundID = kund.KundID,
                 StartadAvID = InloggadAnvändare.AnvändarID,
                 Produkter = TillagdaProdukter.ToList(),
                 Rabatt = this.Rabatt
-                // Har ni lagt till material i databasen kan ni lägga till: ValtMaterial = this.ValtMaterial
+
             };
 
-            // 4. Skicka till Service och städa upp!
+            //  Skicka till Service
             try
             {
                 _orderService.skapaOrder(nyOrder);
@@ -159,9 +157,9 @@ namespace WpfApp1.ViewModels
             }
         }
 
-        // ==========================================
-        // 5. HJÄLPMETODER
-        // ==========================================
+
+        //  HJÄLPMETODER
+
         private void UppdateraOversikt()
         {
             // Visuellt pris för att Judith ska se vad det kostar medan hon bygger ordern

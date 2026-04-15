@@ -76,6 +76,7 @@
 
                         <ListBox x:Name="SökResultat"
                                  ItemsSource="{Binding OrderList}"
+                                 SelectionChanged="SökResultat_SelectionChanged"
                                  Background="Transparent"
                                  HorizontalContentAlignment="Stretch"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"

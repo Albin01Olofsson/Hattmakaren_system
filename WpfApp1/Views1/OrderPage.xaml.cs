@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using Models;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
@@ -19,6 +21,14 @@ namespace WpfApp1.Views1
 
         private void BtnSök_Click(object sender, RoutedEventArgs ev)
         {
+        }
+
+        private void SökResultat_SelectionChanged(object sender, RoutedEventArgs ev)
+        {
+            if(SökResultat.SelectedItem is Order valdOrder)
+            {
+                NavigationService.Navigate(new OrderBeskrivningPage(valdOrder));
+            }
         }
 
         private void BtnSkapaOrder_Click(object sender, RoutedEventArgs e)

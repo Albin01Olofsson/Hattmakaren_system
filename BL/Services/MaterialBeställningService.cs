@@ -2,43 +2,36 @@
 using DAL.Intefaces;
 using DAL.Repositorys;
 using Models;
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace BL.Services
 {
     public class MaterialBeställningService : IMaterialBeställningService
     {
-        private readonly MaterialBeställningRepo _bestallningRepo;
+        private readonly DBcontext _context;
 
-        public MaterialBeställningService(MaterialBeställningRepo bestallningRepo)
+        public MaterialBeställningService(DBcontext context)
         {
-            _bestallningRepo = bestallningRepo;
+            _context = context;
         }
 
-        public void SkapaBestallning(Material material, int antal)
+        public void SkapaBestallning(Material material, int antal, int användarId)
         {
-            // 🔴 Validering
-            if (material == null)
-                throw new Exception("Material måste väljas.");
-
-            if (antal <= 0)
-                throw new Exception("Antal måste vara större än 0.");
-
-            // 🔧 Skapa beställning
-            var bestallning = new MaterialBeställning
+            var beställning = new MaterialBeställning
             {
+                StartadAvID = användarId,
                 MaterialLista = new List<Material> { material },
-                TotalPris = material.Pris * antal,
-                StartadAvID = 1 // TODO: koppla till inloggad användare senare
+                TotalPris = material.Pris * antal
             };
 
-            // 💾 Spara via repo
-            _bestallningRepo.Add(bestallning);
-            _bestallningRepo.Save();
+            _context.MaterialBeställningar.Add(beställning);
+            _context.SaveChanges();
         }
     }
 }

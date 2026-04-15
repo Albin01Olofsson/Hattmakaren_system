@@ -4,130 +4,51 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
-      mc:Ignorable="d" d:DesignWidth="800"
-      Title="CreateOrderPage" Background="#FF1A1A1D" Height="778">
+      mc:Ignorable="d" 
+      d:DesignHeight="778" d:DesignWidth="800"
+      Title="CreateOrderPage" Background="#FF1A1A1D">
 
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Skapa Order" FontSize="26" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-            <TextBlock Margin="0, 15, 0, 15" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" FontWeight="Bold" Text="Skapa Order" Foreground="White"></TextBlock>
-
-            <Border Grid.Row="1" Background="#FF2C3E50" Padding="20" CornerRadius="15" Margin="10, 10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Kundens Epost: " Margin="0, 15" Foreground="#FFC5A059"></TextBlock>
-                        <TextBox Width="200" Margin="0, 15"/>
-                    </StackPanel>
-                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46"></Button>
-                    <RichTextBox Grid.Row="1" Margin="50, 15" HorizontalAlignment="Left" VerticalAlignment="Bottom"></RichTextBox>
-                </Grid>
+            <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Välj Kund: " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
+                    <ComboBox Width="250" 
+                              ItemsSource="{Binding AllaKunder}" 
+                              SelectedItem="{Binding ValdKund}" 
+                              DisplayMemberPath="Namn"/>
+                    <Button Content="Ny Kund" Margin="20,0,0,0" Width="100" Background="#FFB08D46" Command="{Binding NyKundCommand}"/>
+                </StackPanel>
             </Border>
 
-
-            <Border Grid.Row="2" Background="#FF2C3E50" Padding="20" CornerRadius="15" Margin="10, 10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock  Text="Produkt" Foreground="#FFC5A059"></TextBlock>
-                    <Grid Width="200" Margin="50, 15, 0, 15" HorizontalAlignment="Left">
-                        <ComboBox x:Name="ProduktVal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFB08D46">
-
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="#FFB08D46"/>
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
-
-                            <ComboBox.Resources>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="Background" Value="#FFB08D46"/>
-                                </Style>
-                            </ComboBox.Resources>
-                        </ComboBox>
-
-                        <TextBlock Text="Välj Produkt" IsHitTestVisible="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10, 0, 0, 0" Opacity="0.8">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=ProduktVal, Path=SelectedItem}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Grid>
-
-                    <Button Grid.Column="1" Width="150" Content="Specialbeställning" Margin="0, 15, 50, 15" HorizontalAlignment="Left" Background="#FFB08D46"></Button>
-                    <Button Grid.Column="1" Width="150" Content="Lägg Till Produkt" Margin="0, 15, 50, 15" HorizontalAlignment="Right" Background="#FFB08D46"></Button>
-                </Grid>
+            <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Välj Produkt: " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
+                    <ComboBox Width="250" 
+                              ItemsSource="{Binding AllaProdukter}" 
+                              SelectedItem="{Binding ValdProdukt}" 
+                              DisplayMemberPath="namn"/>
+                    <Button Content="Lägg Till" Margin="20,0,0,0" Width="100" Background="#FFB08D46" Command="{Binding LaggTillProduktCommand}"/>
+                </StackPanel>
             </Border>
 
-            <Border Grid.Row="3" Background="#FF2C3E50" Padding="20" CornerRadius="15" Margin="10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Material" Foreground="#FFC5A059"></TextBlock>
-                    <Button Grid.Column="1" Width="200" Margin="0, 15, 50, 15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Lägg Till Material" Background="#FFB08D46"></Button>
-                    <ComboBox Width="200" Margin="50, 15, 0, 50" HorizontalAlignment="Left" ItemsSource="{Binding material}" SelectedItem="{Binding valtMaterial}" Text="Välj Material"></ComboBox>
-                    <StackPanel Orientation="Horizontal" Margin="50, 0, 0, 15" VerticalAlignment="Bottom">
-                        <TextBox Width="200"/>
-                        <TextBlock Text="meter" VerticalAlignment="center" Foreground="#FFC5A059"/>
-                    </StackPanel>
-                </Grid>
+            <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Rabatt (kr): " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
+                    <TextBox Width="100" Text="{Binding Rabatt}"/>
+                    <Button Content="Aktivera Rabatt" Margin="20,0,0,0" Width="130" Background="#FFB08D46" Command="{Binding LaggTillRabattCommand}"/>
+                </StackPanel>
             </Border>
 
-
-            <Border Grid.Row="4" Background="#FF2C3E50" Padding="20" CornerRadius="15" Margin="10, 10">
-                <Grid>
-                    <TextBlock Text="Rabatt" Foreground="#FFC5A059"></TextBlock>
-                    <TextBox Width="200" Margin="50, 15" HorizontalAlignment="Left"></TextBox>
-                    <Button Grid.Row="4" Width="200"  Margin="50, 15" HorizontalAlignment="Right" Content="Lägg Till Rabatt" Background="#FFB08D46"></Button>
-                </Grid>
+            <Border Background="#FF2C3E50" Padding="20" CornerRadius="10" Margin="0,10">
+                <StackPanel>
+                    <TextBlock Text="ORDERÖVERSIKT" Foreground="#FFB08D46" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding OrderOversiktText}" Foreground="White" FontSize="16" Margin="0,0,0,20"/>
+                    <Button Content="SPARA ORDER I DATABAS" Height="45" FontSize="18" Background="#FFB08D46" Command="{Binding LaggOrderCommand}"/>
+                </StackPanel>
             </Border>
-
-            <Border Grid.Row="5" Background="#FF2C3E50" Padding="20" CornerRadius="15" Margin="10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Översikt" Foreground="#FFB08D46"></TextBlock>
-                    <RichTextBox Margin="50, 15"></RichTextBox>
-                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Lägg Order" Background="#FFB08D46"></Button>
-                </Grid>
-            </Border>
-
-
-
-        </Grid>
+        </StackPanel>
     </Grid>
 </Page>

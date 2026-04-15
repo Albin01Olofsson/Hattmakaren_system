@@ -20,6 +20,17 @@
                    Foreground="#F4F1EA"
                    HorizontalAlignment="Center">
         </TextBlock>
+        <Button Content="Gå till Skapa Order" 
+        Click="BtnSkapaOrder_Click" 
+        Width="200" Height="50" 
+        Background="#FFB08D46" Foreground="White" 
+        FontSize="16" Cursor="Hand">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center">

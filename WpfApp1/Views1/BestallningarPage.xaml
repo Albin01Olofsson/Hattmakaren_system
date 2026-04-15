@@ -17,26 +17,29 @@
             <TextBlock Text="Material"
                        Foreground="#FFC5A059"
                        FontWeight="SemiBold"/>
-            <ComboBox x:Name="MaterialComboBox"
-                      Height="40"
+
+            <ComboBox Height="40"
                       Margin="0,5,0,15"
                       Background="#FF2C3E50"
-                      Foreground="White"
+                      Foreground="Black"
                       BorderThickness="0"
                       Padding="5"
+                      ItemsSource="{Binding MaterialLista}"
+                      SelectedItem="{Binding SelectedMaterial}"
                       DisplayMemberPath="Namn"/>
 
             <!-- Mängd -->
             <TextBlock Text="Mängd (meter)"
                        Foreground="#FFC5A059"
                        FontWeight="SemiBold"/>
-            <TextBox x:Name="TxtAntal"
-                     Height="40"
+
+            <TextBox Height="40"
                      Margin="0,5,0,20"
                      Background="#FF2C3E50"
                      Foreground="White"
                      BorderThickness="0"
-                     Padding="5"/>
+                     Padding="5"
+                     Text="{Binding Antal, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Skapa beställning -->
             <Button Content="Skapa beställning"
@@ -46,7 +49,7 @@
                     FontWeight="Bold"
                     BorderThickness="0"
                     Margin="0,0,0,25"
-                    Click="BtnSkapa_Click"/>
+                    Command="{Binding SkapaBestallningCommand}"/>
 
             <!-- Lägg till material -->
             <Button Content="➕ Lägg till nytt material"
@@ -55,15 +58,13 @@
                     Foreground="#FFC5A059"
                     BorderBrush="#FFC5A059"
                     BorderThickness="1"
-                    Click="ToggleMaterialForm_Click"/>
+                    Command="{Binding ToggleMaterialFormCommand}"/>
 
-            <!-- 🔥 DOLD FORM -->
-            <Border x:Name="MaterialForm"
-                    Background="#FF2C3E50"
+            <!-- FORM (du kan styra synlighet senare via VM) -->
+            <Border Background="#FF2C3E50"
                     Padding="20"
                     CornerRadius="12"
-                    Margin="0,20,0,0"
-                    Visibility="Collapsed">
+                    Margin="0,20,0,0">
 
                 <StackPanel>
 
@@ -74,31 +75,31 @@
                                Margin="0,0,0,15"/>
 
                     <TextBlock Text="Namn" Foreground="#FFC5A059"/>
-                    <TextBox x:Name="TxtNamn"
-                             Height="35"
+                    <TextBox Height="35"
                              Margin="0,5,0,10"
                              Background="#FF1A1A1D"
                              Foreground="White"
                              BorderThickness="0"
-                             Padding="5"/>
+                             Padding="5"
+                             Text="{Binding Namn}"/>
 
                     <TextBlock Text="Pris" Foreground="#FFC5A059"/>
-                    <TextBox x:Name="TxtPris"
-                             Height="35"
+                    <TextBox Height="35"
                              Margin="0,5,0,10"
                              Background="#FF1A1A1D"
                              Foreground="White"
                              BorderThickness="0"
-                             Padding="5"/>
+                             Padding="5"
+                             Text="{Binding Pris}"/>
 
                     <TextBlock Text="Typ (meter/st)" Foreground="#FFC5A059"/>
-                    <TextBox x:Name="TxtTyp"
-                             Height="35"
+                    <TextBox Height="35"
                              Margin="0,5,0,15"
                              Background="#FF1A1A1D"
                              Foreground="White"
                              BorderThickness="0"
-                             Padding="5"/>
+                             Padding="5"
+                             Text="{Binding Typ}"/>
 
                     <Button Content="Spara material"
                             Height="40"
@@ -106,7 +107,7 @@
                             Foreground="#FF1A1A1D"
                             FontWeight="Bold"
                             BorderThickness="0"
-                            Click="BtnAddMaterial_Click"/>
+                            Command="{Binding AddMaterialCommand}"/>
 
                 </StackPanel>
             </Border>

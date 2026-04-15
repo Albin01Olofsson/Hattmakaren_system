@@ -76,9 +76,9 @@ namespace WpfApp1.Views1
             this.NavigationService.Navigate(loginPage);// Navigera till inloggningssidan
         }
 
-        
 
-        // Testknapp för att lägga till en kund, kan tas bort senare
+
+        //Testknapp för att lägga till en kund, kan tas bort senare
         //private void TestAddKund_Click(object sender, RoutedEventArgs e)
         //{
         //    var window = new AddKundWindow();

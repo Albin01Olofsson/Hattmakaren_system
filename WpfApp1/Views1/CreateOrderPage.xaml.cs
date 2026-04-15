@@ -25,7 +25,7 @@ namespace WpfApp1.Views1
             if (window.ShowDialog() == true)
             {
                 _kundService.AddKund(window.CreatedKund);
-                MessageBox.Show("Kund tillagd!");
+                MessageBox.Show("Kund tillagd!");//hej
             }
         }
     }

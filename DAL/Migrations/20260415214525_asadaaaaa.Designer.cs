@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260415103703_asdas")]
-    partial class asdas
+    [Migration("20260415214525_asadaaaaa")]
+    partial class asadaaaaa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$DJ3cP48yEbuA/pxE9h.NluXjIKAQgtuTTphv78TgCEHss3ggUja46",
+                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -101,7 +101,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$DJ3cP48yEbuA/pxE9h.NluXjIKAQgtuTTphv78TgCEHss3ggUja46",
+                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -110,7 +110,7 @@ namespace DAL.Migrations
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$DJ3cP48yEbuA/pxE9h.NluXjIKAQgtuTTphv78TgCEHss3ggUja46",
+                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -119,7 +119,7 @@ namespace DAL.Migrations
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$DJ3cP48yEbuA/pxE9h.NluXjIKAQgtuTTphv78TgCEHss3ggUja46",
+                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });

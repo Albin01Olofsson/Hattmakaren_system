@@ -13,6 +13,10 @@ namespace WpfApp1.Views1
     {
         private readonly IKundService _kundService;
 
+        public CreateOrderPage(SkapaOrderViewModel viewModel)
+        {
+        }
+
         public CreateOrderPage(SkapaOrderViewModel viewModel, IKundService kundService)
         {
             InitializeComponent();

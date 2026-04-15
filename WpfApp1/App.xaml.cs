@@ -4,8 +4,6 @@ using DAL;
 using DAL.Intefaces;
 using DAL.Repositorys;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 using WpfApp1.ViewModels;
 using WpfApp1.Views1;
@@ -17,37 +15,54 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
-        public IServiceProvider ServiceProvider { get; private set; }// Här sätter vi upp vår Dependency Injection-container
+
+        public IServiceProvider ServiceProvider { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var services = new ServiceCollection();// Skapa en ny ServiceCollection som kommer att hålla alla våra tjänster
+            var services = new ServiceCollection();
 
-            services.AddDbContext<DBcontext>();// Registrera vår DbContext så att den kan injiceras där den behövs
-            services.AddScoped<IAnvändarRepo, AnvändarRepo>();// Registrera våra repositorys och tjänster i DI-containern
-            services.AddScoped<IAuthenticationService, AuthenticationService>();// Genom att använda AddScoped så skapas en ny instans av dessa klasser för varje scope (t.ex. varje gång de injiceras i en ViewModel)
-            services.AddTransient<LoginViewModel>();// Registrera LoginViewModel som transient eftersom vi vill ha en ny instans varje gång den används (t.ex. varje gång den injiceras i en View)
+            // 1. REGISTRERA DATABAS
+            services.AddDbContext<DBcontext>();
 
-            var provider = services.BuildServiceProvider();// Bygg vår ServiceProvider som kommer att hantera instansiering av våra klasser och deras beroenden
-            ServiceProvider = provider;// Spara ServiceProvider i en egenskap så att vi kan komma åt den senare (t.ex. i våra Views)
+            // 2. REGISTRERA REPOSITORYS (DAL)
+            services.AddScoped<IAnvändarRepo, AnvändarRepo>();
+            services.AddScoped<IKundRepo, KundRepo>();      // SAKNADES
+            services.AddScoped<IProduktRepo, ProduktRepo>();  // SAKNADES
+            services.AddScoped<IOrderRepository, OrderRepo>(); // SAKNADES
 
-            var mainWindow = new MainWindow();// Skapa huvudfönstret för applikationen
-            mainWindow.Show();// Visa huvudfönstret
+            // 3. REGISTRERA TJÄNSTER (BL)
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IKundService, KundService>();      // SAKNADES
+            services.AddScoped<IProduktService, ProduktService>();  // SAKNADES
+            services.AddScoped<IOrderService, OrderService>();      // SAKNADES
 
-            var loginPage = new LoginPage// Skapa inloggningssidan
+            // 4. REGISTRERA VIEWMODELS
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<SkapaOrderViewModel>(); // DETTA VAR FELET PÅ BILDEN!
+
+            // 5. BYGG PROVIDER
+            ServiceProvider = services.BuildServiceProvider();
+
+            // 6. STARTA APPLIKATIONEN
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            // Starta med inloggningssidan
+            var loginPage = new LoginPage
             {
-                DataContext = provider.GetRequiredService<LoginViewModel>()// Sätt DataContext för inloggningssidan till en instans av LoginViewModel som hämtas från DI-containern
+                DataContext = ServiceProvider.GetRequiredService<LoginViewModel>()
             };
-
 
             var loginVm = (LoginViewModel)loginPage.DataContext;
-
             loginVm.LoginSucceeded += () =>
             {
+                // Här navigerar vi till din startsida efter lyckad inloggning
                 mainWindow.MainFrame.Navigate(new Mainpage());
             };
-            mainWindow.MainFrame.Navigate(loginPage);
 
+            mainWindow.MainFrame.Navigate(loginPage);
         }
     }
 }

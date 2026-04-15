@@ -1,21 +1,7 @@
-﻿using BL.Services;
-using BL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
-using CommunityToolkit.Mvvm.Input;
 
 namespace WpfApp1.Views1
 {
@@ -33,6 +19,29 @@ namespace WpfApp1.Views1
 
         private void BtnSök_Click(object sender, RoutedEventArgs ev)
         {
+        }
+
+        private void BtnSkapaOrder_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 1. Vi hämtar vår "robot" (ServiceProvider) från App.xaml.cs
+                var serviceProvider = ((App)Application.Current).ServiceProvider;
+
+                // 2. Vi ber roboten bygga en helt färdig SkapaOrderViewModel
+                // Den kommer automatiskt skicka in alla Services i konstruktorn!
+                var viewModel = serviceProvider.GetRequiredService<SkapaOrderViewModel>();
+
+                // 3. Vi skapar själva sidan och skickar med den färdiga ViewModeln
+                var orderSida = new CreateOrderPage(viewModel);
+
+                // 4. Vi utför själva navigeringen i fönstret
+                this.NavigationService.Navigate(orderSida);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Kunde inte öppna ordersidan: " + ex.Message);
+            }
         }
     }
 }

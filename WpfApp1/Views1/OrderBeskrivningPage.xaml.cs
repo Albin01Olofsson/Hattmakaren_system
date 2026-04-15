@@ -21,12 +21,10 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class OrderBeskrivningPage : Page
     {
-        private Order order;
-
         public OrderBeskrivningPage(Order valdOrder)
         {
             InitializeComponent();
-            valdOrder = order;
+            DataContext = valdOrder;
         }
     }
 }

@@ -17,6 +17,8 @@ namespace Models
 
         public bool IsAdmin { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         public List<MaterialBeställning> materialBeställningsLista { get; set; } = new List<MaterialBeställning>();
 
         public List<Order> orderLista { get; set; } = new List<Order>();

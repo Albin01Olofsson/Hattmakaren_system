@@ -34,6 +34,7 @@ namespace WpfApp1
 
             // 3. REGISTRERA TJÄNSTER (BL)
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAnvändarService, AnvändarService>();
             services.AddScoped<IKundService, KundService>();      // SAKNADES
             services.AddScoped<IProduktService, ProduktService>();  // SAKNADES
             services.AddScoped<IOrderService, OrderService>();      // SAKNADES

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class asdasdasdasdadfad : Migration
+    public partial class asdasd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,10 +203,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(

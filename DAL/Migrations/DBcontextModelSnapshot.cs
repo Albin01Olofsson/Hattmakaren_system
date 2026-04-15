@@ -89,7 +89,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6",
+                            Lösenord = "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -98,7 +98,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6",
+                            Lösenord = "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -107,7 +107,7 @@ namespace DAL.Migrations
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6",
+                            Lösenord = "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -116,7 +116,7 @@ namespace DAL.Migrations
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$X0xWYhvE0n8gNbnd8mkjv.0LVh15QTI0CEN02JwnQCIkOZZou8XZ6",
+                            Lösenord = "$2a$11$P1LRCy7qqKenR/.LHJ/gFuS/LZOnlxCi84KZWlFfZJFv0r9gbocJO",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });

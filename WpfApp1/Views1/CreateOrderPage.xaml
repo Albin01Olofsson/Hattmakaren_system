@@ -19,7 +19,7 @@
                               ItemsSource="{Binding AllaKunder}" 
                               SelectedItem="{Binding ValdKund}" 
                               DisplayMemberPath="Namn"/>
-                    <Button Content="Ny Kund" Margin="20,0,0,0" Width="100" Background="#FFB08D46" Command="{Binding NyKundCommand}"/>
+                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46" Click="Button_Click"></Button>
                 </StackPanel>
             </Border>
 

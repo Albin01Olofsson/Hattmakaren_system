@@ -12,6 +12,10 @@ namespace BL.Services
         {
             _användarRepo = användarRepo;
         }
+        public List<Användare> HämtaAllaAnvändare()
+        {
+            return _användarRepo.GetAll();
+        }
 
         // Metod för att hämta den som är inloggad eller en specifik användare
         public Användare HämtaAnvändareMedId(int id)
@@ -39,6 +43,20 @@ namespace BL.Services
         {
             _användarRepo.Update(användare);
             _användarRepo.Save();
+        }
+
+        public void InaktiveraAnvändare(int id)
+        {
+            var användare = _användarRepo.GetById(id);
+
+            if(användare == null)
+            {
+                throw new Exception("Användare finns inte!");
+            }
+            användare.IsActive = false;
+            _användarRepo.Update(användare);
+            _användarRepo.Save();
+
         }
 
         public void TaBortAnvändare(int id)

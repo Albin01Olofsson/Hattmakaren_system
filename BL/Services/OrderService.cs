@@ -58,10 +58,17 @@ namespace BL.Services
             // 3. Dra av rabatten från totalpriset
             totalPris -= nyOrder.Rabatt;
 
+
+
             // Säkerhetsspärr: Priset får aldrig bli mindre än 0 kr (om rabatten är högre än priset)
             if (totalPris < 0)
             {
                 totalPris = 0;
+            }
+
+            if (nyOrder.IsPrio)
+            {
+                totalPris *= 1.20m;
             }
 
             // 4. Sätt det slutgiltiga, uträknade priset på ordern

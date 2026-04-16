@@ -10,6 +10,7 @@ namespace BL.Interfaces
     public interface IProduktService
     {
         List<Produkt> GetProdukt();
+        List<Produkt> GetProdukter(); //Med Include
         Produkt GetProduktId(int id);
         void AddProdukt(Produkt p);
         void UpdateProdukt(Produkt p);

@@ -36,7 +36,7 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Background="#FF2C3E50">
                 <CheckBox Content="Markera som klar" Margin="10" Foreground="#F4F1EA" VerticalAlignment="Center">
                 </CheckBox>
-                <Button Content="Ladda ner pdf" Margin="10" Background="#FFB08D46" VerticalAlignment="Center" Padding="10" Foreground="#F4F1EA" FontWeight="Bold">
+                <Button x:Name="LaddaNerPdfKnapp" Click="LaddaNerPdfKnapp_Click" Content="Ladda ner pdf" Margin="10" Background="#FFB08D46" VerticalAlignment="Center" Padding="10" Foreground="#F4F1EA" FontWeight="Bold">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="10"/>

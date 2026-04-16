@@ -50,7 +50,22 @@
                     <TextBlock Text="{Binding KundNamn, StringFormat=Kund: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                     <TextBlock Text="{Binding Pris, StringFormat=Pris: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                     <TextBlock Text="{Binding Rabatt, StringFormat=Rabatt: {0} %}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Produklista: Produkt - Pris" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+
+                    <TextBlock Text="Tillagda prokuter" Margin="0,0,0,4" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
+                    <ListBox ItemsSource="{Binding ProdukLista}" Margin="0,0,0,7">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="0,0,0,7">
+                                    <TextBlock.Inlines>
+                                        <Run Text="{Binding namn}"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="{Binding pris}"/>
+                                    </TextBlock.Inlines>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
                     <TextBlock Text="{Binding Datum, StringFormat=Datum: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                     <TextBlock Text="{Binding OrderStartareNamn, StringFormat=Startare: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                     <TextBlock Text="{Binding Färdig, StringFormat=Klar: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>

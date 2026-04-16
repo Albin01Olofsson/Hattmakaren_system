@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20260416091506_AddAntalToBestallning")]
+    partial class AddAntalToBestallning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +92,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy",
+                            Lösenord = "$2a$11$Re596b9Jkryri6MYBeQVze89xFxkkOZ38AW2quh3CrlaNmeNZq7Gu",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -98,7 +101,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy",
+                            Lösenord = "$2a$11$Re596b9Jkryri6MYBeQVze89xFxkkOZ38AW2quh3CrlaNmeNZq7Gu",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -107,7 +110,7 @@ namespace DAL.Migrations
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy",
+                            Lösenord = "$2a$11$Re596b9Jkryri6MYBeQVze89xFxkkOZ38AW2quh3CrlaNmeNZq7Gu",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -116,7 +119,7 @@ namespace DAL.Migrations
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy",
+                            Lösenord = "$2a$11$Re596b9Jkryri6MYBeQVze89xFxkkOZ38AW2quh3CrlaNmeNZq7Gu",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -261,6 +264,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
 
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
@@ -277,18 +283,21 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
+                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 1890m
                         },
                         new
                         {
                             MaterialBeställningID = 1000002,
+                            Antal = 0,
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
+                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });

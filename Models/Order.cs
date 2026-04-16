@@ -15,7 +15,9 @@ namespace Models
 
         public decimal Rabatt { get; set; } = 0;
 
-        public bool IsSpecialbeställning { get; set; }
+        public bool IsSpecialbeställning { get; set; } = false;
+
+        public bool IsPrio { get; set; } = false;
 
 
         [ForeignKey("StartadAv")]

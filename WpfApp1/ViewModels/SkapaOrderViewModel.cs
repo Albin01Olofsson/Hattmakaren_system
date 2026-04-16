@@ -25,6 +25,7 @@ namespace WpfApp1.ViewModels
         [ObservableProperty] private decimal rabatt;
         [ObservableProperty] private string orderOversiktText;
         [ObservableProperty] private Användare inloggadAnvändare;
+        [ObservableProperty] private bool isPrioVald;
 
         public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService)
         {
@@ -62,6 +63,13 @@ namespace WpfApp1.ViewModels
             UppdateraOversikt();
         }
 
+
+        partial void OnIsPrioValdChanged(bool value)
+        {
+            // Varje gång Judith klickar i/ur Prio, räknar vi om texten i översikten
+            UppdateraOversikt();
+        }
+
         [RelayCommand]
         private void LaggOrder()
         {
@@ -78,7 +86,8 @@ namespace WpfApp1.ViewModels
                     KundID = ValdKund.KundID,
                     StartadAvID = InloggadAnvändare.AnvändarID,
                     Produkter = TillagdaProdukter.ToList(),
-                    Rabatt = this.Rabatt
+                    Rabatt = this.Rabatt,
+                    IsPrio = this.IsPrioVald
                 };
 
                 _orderService.skapaOrder(nyOrder);
@@ -98,14 +107,25 @@ namespace WpfApp1.ViewModels
 
         private void UppdateraOversikt()
         {
+            // 1. Grundsumma för alla produkter
             decimal totalt = TillagdaProdukter.Sum(p => p.pris);
-            decimal slutpris = Math.Max(0, totalt - Rabatt);
+            // 2. Dra av rabatten och se till att det inte blir negativt
+            decimal efterRabatt = Math.Max(0, totalt - Rabatt);
+            decimal slutpris = efterRabatt;
+            if (IsPrioVald)
+            {
+                slutpris *= 1.20m;
+            }
 
-            OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen valda")}\n" +
+
+            OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen vald")}\n" +
                                 $"Antal produkter: {TillagdaProdukter.Count} st\n" +
                                 $"Summa: {totalt:C}\n" +
                                 $"Avdragen rabatt: {Rabatt:C}\n" +
+                                $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
                                 $"Slutpris: {slutpris:C}";
         }
+
+
     }
 }

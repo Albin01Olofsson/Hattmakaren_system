@@ -10,6 +10,6 @@ namespace DAL.Intefaces
 {
     public interface IProduktRepo : IRepository<Produkt>
     {
-
+        List<Produkt> GetAllaProdukter(); //Med include
     }
 }

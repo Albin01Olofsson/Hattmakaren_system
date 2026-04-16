@@ -35,6 +35,8 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Produkt> produkLista;
+        //Funktionaliteten att visa produktlista i programmet funkar, men måste vänta på att riktiga ordar skapas,
+        //eftersom att man inte kan lägga till produkter i produktlista på en order för exempeldata
 
         [ObservableProperty]
         private string orderStartareNamn;
@@ -58,7 +60,7 @@ namespace WpfApp1.ViewModels
             Pris = ValdOrder.Pris;
             Rabatt = ValdOrder.Rabatt;
             Datum = ValdOrder.Datum;
-            ProdukLista = new ObservableCollection<Produkt>(_service.GetProdukter());
+            ProdukLista = new ObservableCollection<Produkt>(ValdOrder.Produkter);
             OrderStartareNamn = ValdOrder.StartadAv.Namn;
             Färdig = ValdOrder.Färdig;
             IsSpecialbeställning = ValdOrder.IsSpecialbeställning;

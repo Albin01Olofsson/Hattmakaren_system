@@ -89,10 +89,26 @@ namespace WpfApp1.ViewModels
                 Namn = Namn,
                 Telefon = Telefon,
                 Email = Email,
-                Lösenord = Lösenord,
-                IsAdmin = IsAdmin
+                Lösenord = BCrypt.Net.BCrypt.HashPassword(Lösenord),
+                IsAdmin = IsAdmin,
+                IsActive = true
             };
             AnvändareAdded?.Invoke(nyAnvändare);
+            Namn = "";
+            Telefon = "";
+            Email = "";
+            Lösenord = "";
+        }
+
+        public void LoadUser(Användare användare)
+        {
+            if (!användare.IsAdmin)
+            {
+                Namn = användare.Namn;
+                Telefon = användare.Telefon;
+                Email = användare.Email;
+            }
+            
         }
     }
 }

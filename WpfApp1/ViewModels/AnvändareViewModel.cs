@@ -33,11 +33,24 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void Inaktivera()
         {
-            if(valdAnvändare == null)
+            if(ValdAnvändare == null)
             {
                 MessageBox.Show("Välj en användare först!");
                 return;
             }
+
+            if (Session.CurrentUser.IsAdmin == false)
+            {
+                MessageBox.Show("Du har inte behörighet att inaktivera användare!");
+                return;
+            }
+
+            if (ValdAnvändare.AnvändarID == Session.CurrentUser.AnvändarID)
+            {
+                MessageBox.Show("Du kan inte inaktivera ditt eget konto!");
+                return;
+            }
+
             var resultat = MessageBox.Show("Är du säker?", "Bekräfta", MessageBoxButton.YesNo);
             if(resultat != MessageBoxResult.Yes) 
             {
@@ -47,10 +60,16 @@ namespace WpfApp1.ViewModels
             AnvändareLista.Remove(ValdAnvändare);
         }
 
+        public void Reload()
+        {
+            AnvändareLista.Clear();
 
-
-
-
-
+            var users = _användareService.HämtaAllaAnvändare()
+                .Where(a => a.IsActive);
+            foreach(var u in users)
+            {
+                AnvändareLista.Add(u);
+            }
+        }
     }
 }

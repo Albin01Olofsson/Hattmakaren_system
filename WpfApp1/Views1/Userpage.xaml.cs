@@ -21,34 +21,22 @@ namespace WpfApp1.Views1
         private void SetupView()
         {
             var användare = Session.CurrentUser;
-
-            if(användare == null)
-            {
-                AdminPanel.Visibility = Visibility.Collapsed;
-                //BtnDeleteStaff.Visibility = Visibility.Collapsed;
-                //BtnDeleteCustomer.Visibility = Visibility.Collapsed;
-
-                return;
-            }
-
-            // Kontrollera att namnen (AdminPanel, BtnDeleteStaff osv) matchar x:Name i din XAML
             if (användare.IsAdmin)
             {
-                AdminPanel.IsEnabled = true;
-                //BtnDeleteStaff.IsEnabled = true;
-                //BtnDeleteCustomer.IsEnabled = true;
-                TxtHeaderTitle.Text = "SYSTEMADMINISTRATION";
-                TxtFormTitle.Text = "REGISTRERA KONTO";
+                AdminPanel.Visibility = Visibility.Visible;
             }
             else
             {
-                AdminPanel.IsEnabled = false;
-                //BtnDeleteStaff.IsEnabled = false;
-                //BtnDeleteCustomer.IsEnabled = false;
+                AdminPanel.Visibility = Visibility.Visible;
+                TxtHeaderTitle.Text = "MIN PROFIL";
+                
+                //InputName.Text = användare.Namn;
+                //InputTelefon.Text = användare.Telefon;
+                //InputEmail.Text = användare.Email;
 
-                TxtHeaderTitle.Text = "MINA INSTÄLLNINGAR";
-                TxtHeaderSub.Text = "Här kan du hantera din profil och se kundregistret";
-                TxtFormTitle.Text = "DIN PROFIL";
+                InputName.IsReadOnly = true;
+                InputTelefon.IsReadOnly = true;
+                InputEmail.IsReadOnly = true;
             }
         }
     }

@@ -64,8 +64,8 @@
             </Grid>
             <!--Registrera ny användare-->
             <Border Grid.Column="1" Background="#FFC5A059" CornerRadius="15" Padding="18">
-                <StackPanel x:Name="AdminPanel">
-                    <TextBlock x:Name="TxtFormTitle" Text="REGISTRERA ANVÄNDARE" FontSize="20" FontWeight="Black"
+                <StackPanel x:Name="AdminPanel" IsEnabled="{Binding CanEditUsers}">
+                    <TextBlock Text="{Binding FormTitle}" FontSize="20" FontWeight="Black"
                         Foreground="#FF2C3E50" Margin="0,0,0,5"/>
                     
                     <!-- NAMN -->
@@ -108,7 +108,7 @@
                     </ComboBox>
 
                     <!-- BUTTON -->
-                    <Button Content="BEKRÄFTA OCH SPARA" Command="{Binding AddAnvändareVM.AddAnvändareCommand}"
+                    <Button Content="BEKRÄFTA OCH SPARA" Command="{Binding AddAnvändareVM.AddAnvändareCommand}" IsEnabled="{Binding CanEditUsers}"
                         Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0"/>
 
                     <TextBlock Text="* Historik bevaras vid radering." Foreground="#FF2C3E50" FontSize="10"

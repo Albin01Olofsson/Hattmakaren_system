@@ -53,5 +53,7 @@ namespace WpfApp1.Views1
                 MessageBox.Show("Kunde inte öppna ordersidan: " + ex.Message);
             }
         }
+
+
     }
 }

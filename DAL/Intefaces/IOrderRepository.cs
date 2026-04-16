@@ -7,5 +7,7 @@ namespace DAL.Intefaces
         public List<Order> GetOrdersAndNavPropertiesList();
 
         public Order HämtaMedDetaljer(int id);
+
+        Order GetMedDetaljer(int oid);
     }
 }

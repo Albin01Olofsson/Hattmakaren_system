@@ -235,7 +235,7 @@ namespace DAL
                         Pris = 1299,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
                         KundID = 1001
@@ -255,7 +255,7 @@ namespace DAL
                         Pris = 299,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 21),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 1,
                         KundID = 1003
@@ -265,7 +265,7 @@ namespace DAL
                         Pris = 2399,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 21),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
                         KundID = 1004
@@ -295,7 +295,7 @@ namespace DAL
                         Pris = 1049,
                         Rabatt = 0,
                         Datum = new DateTime(2025, 10, 6),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 2,
                         KundID = 1002
@@ -305,7 +305,7 @@ namespace DAL
                         Pris = 749,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1003
@@ -325,7 +325,7 @@ namespace DAL
                         Pris = 899,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1004
@@ -335,7 +335,7 @@ namespace DAL
                         Pris = 1099,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1005
@@ -355,7 +355,7 @@ namespace DAL
                         Pris = 1829,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 3,
                         KundID = 1002
@@ -375,7 +375,7 @@ namespace DAL
                         Pris = 899,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 3,
                         KundID = 1004
@@ -395,7 +395,7 @@ namespace DAL
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1001
@@ -415,7 +415,7 @@ namespace DAL
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1003
@@ -435,7 +435,7 @@ namespace DAL
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1005

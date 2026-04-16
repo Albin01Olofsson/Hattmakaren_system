@@ -24,6 +24,8 @@ namespace BL.Services
 
         public Order GetOrder(int id) => _orderRepo.GetById(id);
 
+        public Order GetFullOrder(int id) => _orderRepo.GetMedDetaljer(id);
+
         public void AddOrder(Order o) => _orderRepo.Add(o);
 
         public void UpdateOrder(Order o) => _orderRepo.Update(o);

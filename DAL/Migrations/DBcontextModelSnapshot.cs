@@ -89,7 +89,7 @@ namespace DAL.Migrations
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
                             IsAdmin = true,
-                            Lösenord = "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG",
+                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -98,7 +98,7 @@ namespace DAL.Migrations
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG",
+                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -107,7 +107,7 @@ namespace DAL.Migrations
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG",
+                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -116,7 +116,7 @@ namespace DAL.Migrations
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
                             IsAdmin = false,
-                            Lösenord = "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG",
+                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -346,7 +346,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000001,
                             Datum = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1001,
@@ -370,7 +370,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000003,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
@@ -382,7 +382,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000004,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1004,
@@ -418,7 +418,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000007,
                             Datum = new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
@@ -430,7 +430,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000008,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
@@ -454,7 +454,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000010,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
@@ -466,7 +466,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000011,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
@@ -490,7 +490,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000013,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
@@ -514,7 +514,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000015,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
@@ -538,7 +538,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000017,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1001,
@@ -562,7 +562,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000019,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
@@ -586,7 +586,7 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000021,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,

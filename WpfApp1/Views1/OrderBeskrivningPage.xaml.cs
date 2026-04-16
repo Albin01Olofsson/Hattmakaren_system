@@ -34,13 +34,23 @@ namespace WpfApp1.Views1
     public partial class OrderBeskrivningPage : Page
     {
         private Order order;
+        private IOrderService _orderService;
+        private IProduktService _produktService;
         public OrderBeskrivningPage(Order o)
         {
             InitializeComponent();
-            IProduktService produktService = new ProduktService(new ProduktRepo(new DBcontext()));
-            DataContext = new OrderBeskrivningVM(o, produktService);
+            _produktService = new ProduktService(new ProduktRepo(new DBcontext()));
             order = o;
+            DataContext = new OrderBeskrivningVM(order, _produktService);
+            _orderService = new OrderService(new OrderRepo(new DBcontext()));
 ;       }
+
+        private void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
+        {
+            _orderService.MarkeraFärdig(order.OrderID);
+            DataContext = new OrderBeskrivningVM(_orderService.GetFullOrder(order.OrderID), _produktService);
+            MessageBox.Show($"Ordern är nu markerad som: {_orderService.GetOrder(order.OrderID).Färdig}");//Måste hämta nya värdet efter uppdateringen för att det ska synas rätt
+        }
 
         private void LaddaNerPdfKnapp_Click(object sender, RoutedEventArgs e)
         {
@@ -55,11 +65,16 @@ namespace WpfApp1.Views1
             Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
 
             dokument.Add(new iText.Layout.Element.Paragraph($"Order: {order.OrderID}"));
-            dokument.Add(new iText.Layout.Element.Paragraph($"Kund: {order.Kund}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Kund: {order.Kund.Namn}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} kr"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Rabatt: {order.Rabatt} %"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Datum: {order.Datum}"));
+            foreach (Produkt p in order.Produkter)
+            {
+                dokument.Add(new iText.Layout.Element.Paragraph($" - {p.namn} - {p.pris}"));
+            }
             dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Klar: {order.Färdig}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));
             dokument.Close();
             MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");

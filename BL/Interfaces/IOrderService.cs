@@ -12,6 +12,8 @@ namespace BL.Interfaces
 
         Order GetOrder(int id);
 
+        Order GetFullOrder(int id);
+
         void AddOrder(Order o);
 
         void UpdateOrder(Order o);

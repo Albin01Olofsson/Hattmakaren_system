@@ -26,7 +26,7 @@ namespace BL.Services
                 return null;
             }
             var användare = _annvändarRepo.GetByEmail(email);
-            if (användare == null)
+            if (användare == null || !användare.IsActive)
             {
                 return null;
             }

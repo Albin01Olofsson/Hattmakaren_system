@@ -69,9 +69,11 @@
                                 </TextBlock.Style>
                             </TextBlock>
                             <PasswordBox x:Name="PassInput" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" FontSize="14" PasswordChanged="PassInput_PasswordChanged"/>
+                            
                         </Grid>
+                        
                     </Border>
-
+                    <TextBlock Text="{Binding LoginFel}" Foreground="#FFE74C3C" FontSize="12" Margin="0,0,0,10" TextAlignment="Center" FontWeight="SemiBold"/>
                     <Button Content="LOGGA IN" Command="{Binding LoginCommand}" Cursor="Hand" 
                             Background="#FFC5A059" Foreground="#FF2C3E50" FontSize="16" 
                             FontWeight="Bold" Height="45" BorderThickness="0"><!--// Click="LoginButton_Click"-->

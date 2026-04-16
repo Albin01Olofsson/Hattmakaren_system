@@ -25,15 +25,29 @@ namespace WpfApp1.ViewModels
         private string email;
         [ObservableProperty]// Samma sak här för Lösenord
         private string lösenord;
+        [ObservableProperty]
+        private string loginFel;
 
         [RelayCommand]// Med hjälp av [RelayCommand] så skapas en ICommand egenskap som vi kan binda till i vår View, och när den kommandot körs så kommer Login() metoden att anropas
         private void Login()
         {
+            LoginFel = "";
+            if(string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Lösenord))
+            {
+                LoginFel = "Fyll i alla fält!";
+                return; 
+            }
+
             var användare = _authService.Login(Email, Lösenord);
             if (användare != null)
             {
                 Session.CurrentUser = användare;
                 LoginSucceeded?.Invoke();
+            }
+            else
+            {
+                LoginFel = "Fel email eller lösenord!";
+                return;
             }
         }
 

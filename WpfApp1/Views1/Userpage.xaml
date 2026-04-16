@@ -67,24 +67,36 @@
                 <StackPanel x:Name="AdminPanel">
                     <TextBlock x:Name="TxtFormTitle" Text="REGISTRERA ANVÄNDARE" FontSize="20" FontWeight="Black"
                         Foreground="#FF2C3E50" Margin="0,0,0,5"/>
-
+                    
                     <!-- NAMN -->
-                    <TextBlock Text="NAMN" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="NAMN" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.NamnFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
                     <TextBox x:Name="InputName" Text="{Binding AddAnvändareVM.Namn, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
                     <!-- EMAIL -->
-                    <TextBlock Text="E-POST" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="E-POST" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.EmailFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
                     <TextBox x:Name="InputEmail" Text="{Binding AddAnvändareVM.Email, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
                     <!-- TELEFON -->
-                    <TextBlock Text="TELEFON" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="TELEFON" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.TelefonFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
                     <TextBox x:Name="InputTelefon" Text="{Binding AddAnvändareVM.Telefon, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
                     <!-- LÖSENORD -->
-                    <TextBlock Text="LÖSENORD" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="LÖSENORD" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.LösenordFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
                     <TextBox Text="{Binding AddAnvändareVM.Lösenord, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 

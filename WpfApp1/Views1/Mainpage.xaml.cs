@@ -14,6 +14,7 @@ namespace WpfApp1.Views1
         public Mainpage()
         {
             InitializeComponent();
+            LoadUser();
             OrderRepo repo = new OrderRepo(new DBcontext());
             OrderService service = new OrderService(repo);
             vm = new OrderVM(service);
@@ -71,6 +72,19 @@ namespace WpfApp1.Views1
                 .MainFrame.Navigate(new Mainpage());// Navigera tillbaka till dashboarden efter inloggning
             };
             this.NavigationService.Navigate(loginPage);// Navigera till inloggningssidan
+        }
+
+        public void LoadUser()
+        {
+            var användare = Session.CurrentUser;
+            if(användare == null)
+            {
+                UserNameText.Text = "Välkommen, gäst!";
+                RoleText.Text = "Du är inte inloggad.";
+                return;
+            }
+            UserNameText.Text = användare.Namn;
+            RoleText.Text = användare.IsAdmin ? "Administratör" : "Anställd";
         }
     }
 }

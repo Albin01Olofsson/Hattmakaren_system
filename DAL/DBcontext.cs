@@ -104,7 +104,8 @@ namespace DAL
                         Telefon = "07085652321",
                         Email = "ottoHattman@hotmail.com",
                         Lösenord = passwordHash,
-                        IsAdmin = true
+                        IsAdmin = true,
+                        IsActive = true
                     },
                     new Användare { 
                         AnvändarID = 2,
@@ -112,7 +113,8 @@ namespace DAL
                         Telefon = "0727639856",
                         Email = "JudithHattman@hotmail.com",
                         Lösenord = passwordHash,
-                        IsAdmin = false
+                        IsAdmin = false,
+                        IsActive = true
                     },
                     new Användare { 
                         AnvändarID = 3,
@@ -120,7 +122,8 @@ namespace DAL
                         Telefon = "0709825533",
                         Email = "MillieHattman@hotmail.com",
                         Lösenord = passwordHash,
-                        IsAdmin = false
+                        IsAdmin = false,
+                        IsActive = true
                     },
                     new Användare { 
                         AnvändarID = 4,
@@ -128,7 +131,8 @@ namespace DAL
                         Telefon = "0705512322",
                         Email = "HerbertHattman@hotmail.com",
                         Lösenord = passwordHash,
-                        IsAdmin = false
+                        IsAdmin = false,
+                        IsActive = true
                     }
                 );
 

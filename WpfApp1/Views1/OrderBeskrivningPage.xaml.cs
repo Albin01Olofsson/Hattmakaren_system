@@ -44,7 +44,7 @@ namespace WpfApp1.Views1
         {
             string fileName = $"Order_{order.OrderID}.pdf";
 
-            string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+            string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
             string pdfMapp = System.IO.Path.Combine(baseDirectory, "DAL", "OrderPdf");
             string orderPdfFullPath = System.IO.Path.Combine(pdfMapp, fileName);
 

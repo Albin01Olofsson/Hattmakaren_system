@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class asasas : Migration
+    public partial class asdwq : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -69,6 +69,7 @@ namespace DAL.Migrations
                 {
                     MaterialBeställningID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Antal = table.Column<int>(type: "int", nullable: false),
                     TotalPris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -94,6 +95,7 @@ namespace DAL.Migrations
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
                     Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     IsSpecialbeställning = table.Column<bool>(type: "bit", nullable: false),
+                    IsPrio = table.Column<bool>(type: "bit", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
                     KundID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -203,10 +205,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$AB/S33X3Heuzo0HyfDFYVuZmVV/puYiN8B80Oab4OzhtLSqh/GEoy", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$U/6fHYNG0noix4xs0naTDOAFxRfcHqLT2TPmjMVEkJ6o7VZb82UZG", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -233,40 +235,40 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "MaterialBeställningar",
-                columns: new[] { "MaterialBeställningID", "StartadAvID", "TotalPris" },
+                columns: new[] { "MaterialBeställningID", "Antal", "StartadAvID", "TotalPris" },
                 values: new object[,]
                 {
-                    { 1000001, 1, 1890m },
-                    { 1000002, 2, 769m },
-                    { 1000003, 1, 3419m }
+                    { 1000001, 0, 1, 1890m },
+                    { 1000002, 0, 2, 769m },
+                    { 1000003, 0, 1, 3419m }
                 });
 
             migrationBuilder.InsertData(
                 table: "Ordrar",
-                columns: new[] { "OrderID", "Datum", "Färdig", "IsSpecialbeställning", "KundID", "Pris", "Rabatt", "StartadAvID" },
+                columns: new[] { "OrderID", "Datum", "Färdig", "IsPrio", "IsSpecialbeställning", "KundID", "Pris", "Rabatt", "StartadAvID" },
                 values: new object[,]
                 {
-                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1001, 1299m, 0m, 1 },
-                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, 1099m, 0m, 1 },
-                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1003, 299m, 0m, 1 },
-                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1004, 2399m, 0m, 1 },
-                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, 779m, 0m, 1 },
-                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, 949m, 0m, 2 },
-                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1002, 1049m, 0m, 2 },
-                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1003, 749m, 0m, 2 },
-                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 999m, 0m, 2 },
-                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1004, 899m, 0m, 2 },
-                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1005, 1099m, 0m, 2 },
-                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, 2019m, 0m, 3 },
-                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, true, 1002, 1829m, 0m, 3 },
-                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, 599m, 0m, 3 },
-                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1004, 899m, 0m, 3 },
-                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1005, 1299m, 0m, 3 },
-                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1001, 499m, 0m, 4 },
-                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1002, 499m, 0m, 4 },
-                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1003, 499m, 0m, 4 },
-                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 499m, 0m, 4 },
-                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, 1005, 499m, 0m, 4 }
+                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, true, 1001, 1299m, 0m, 1 },
+                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, true, 1002, 1099m, 0m, 1 },
+                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1003, 299m, 0m, 1 },
+                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, true, 1004, 2399m, 0m, 1 },
+                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1005, 779m, 0m, 1 },
+                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1001, 949m, 0m, 2 },
+                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, true, 1002, 1049m, 0m, 2 },
+                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1003, 749m, 0m, 2 },
+                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1004, 999m, 0m, 2 },
+                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1004, 899m, 0m, 2 },
+                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1005, 1099m, 0m, 2 },
+                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, true, 1001, 2019m, 0m, 3 },
+                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, true, 1002, 1829m, 0m, 3 },
+                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1003, 599m, 0m, 3 },
+                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1004, 899m, 0m, 3 },
+                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, true, 1005, 1299m, 0m, 3 },
+                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1001, 499m, 0m, 4 },
+                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1002, 499m, 0m, 4 },
+                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1003, 499m, 0m, 4 },
+                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, false, 1004, 499m, 0m, 4 },
+                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, false, 1005, 499m, 0m, 4 }
                 });
 
             migrationBuilder.InsertData(

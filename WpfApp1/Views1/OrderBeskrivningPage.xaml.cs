@@ -22,6 +22,7 @@ using WpfApp1.ViewModels;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
+using System.IO;
 
 namespace WpfApp1.Views1
 {
@@ -41,13 +42,26 @@ namespace WpfApp1.Views1
 
         private void LaddaNerPdfKnapp_Click(object sender, RoutedEventArgs e)
         {
-
             string fileName = $"Order_{order.OrderID}.pdf";
 
-            Document dokument = new Document(new PdfDocument(new PdfWriter(fileName)));
-            dokument.Close();
+            string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+            string pdfMapp = System.IO.Path.Combine(baseDirectory, "DAL", "OrderPdf");
+            string orderPdfFullPath = System.IO.Path.Combine(pdfMapp, fileName);
 
-            MessageBox.Show($"En PDF har skapats med filnamnet: {fileName}");
+            Directory.CreateDirectory(pdfMapp);
+
+            Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
+
+            dokument.Add(new iText.Layout.Element.Paragraph($"Order: {order.OrderID}"));
+            dokument.Close();
+            MessageBox.Show($"En PDF har skapats med filnamnet: {orderPdfFullPath}");
+
+            //string fileName = $"Order_{order.OrderID}.pdf";
+
+            //Document dokument = new Document(new PdfDocument(new PdfWriter(fileName)));
+            //dokument.Close();
+
+            //MessageBox.Show($"En PDF har skapats med filnamnet: {fileName}");
         }
     }
 }

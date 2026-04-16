@@ -80,5 +80,9 @@ namespace BL.Services
                 throw new Exception("Något gick fel när ordern skulle skapas. Kontrollera att alla fält är korrekt ifyllda och försök igen.", ex);
             }
         }
+
+
+
     }
+
 }

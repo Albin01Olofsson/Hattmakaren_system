@@ -1,4 +1,8 @@
-﻿using Models;
+﻿using BL.Interfaces;
+using BL.Services;
+using DAL.Repositorys;
+using DAL;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +29,8 @@ namespace WpfApp1.Views1
         public OrderBeskrivningPage(Order o)
         {
             InitializeComponent();
-            DataContext = o;
-;        }
+            IProduktService produktService = new ProduktService(new ProduktRepo(new DBcontext()));
+            DataContext = new OrderBeskrivningVM(o, produktService);
+;       }
     }
 }

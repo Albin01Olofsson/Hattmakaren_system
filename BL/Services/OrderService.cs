@@ -80,5 +80,43 @@ namespace BL.Services
                 throw new Exception("Något gick fel när ordern skulle skapas. Kontrollera att alla fält är korrekt ifyllda och försök igen.", ex);
             }
         }
+
+        public void MarkeraFärdig(int OrderID)
+        {
+            var order = _orderRepo.GetById(OrderID);
+            if (order != null)
+            {
+                // Om den är true blir den false, om den är false blir den true
+                order.Färdig = !order.Färdig;
+
+                _orderRepo.Update(order);
+                _orderRepo.Save();
+            }
+        }
+
+        public void MarkeraSomPrio(int orderId)
+        {
+
+            var order = _orderRepo.GetById(orderId);
+
+            if (order != null)
+            {
+                // 2. Kontrollera så vi inte lägger på 20% dubbelt
+                if (!order.IsPrio)
+                {
+                    order.IsPrio = true;
+
+                    // 3. Räkna ut det nya priset (+20%)
+                    // 'm' står för decimal, vilket är standard för pengar
+                    order.Pris = order.Pris * 1.20m;
+
+
+                    _orderRepo.Update(order);
+                    _orderRepo.Save();
+                }
+            }
+        }
+
     }
+
 }

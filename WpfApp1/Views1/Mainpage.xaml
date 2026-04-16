@@ -20,11 +20,11 @@
                     <Border Padding="10" Background="#22000000" CornerRadius="12">
                         <StackPanel Orientation="Horizontal">
                             <Border Width="35" Height="35" Background="#FF2C3E50" CornerRadius="17.5">
-                                <TextBlock Text="JD" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                <TextBlock Text="👤" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
                             </Border>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="John Doe" FontSize="12" FontWeight="Bold" Foreground="#FF2C3E50"/>
-                                <TextBlock Text="Administratör" FontSize="10" Foreground="#FF2C3E50" Opacity="0.6"/>
+                                <TextBlock x:Name="UserNameText" FontSize="12" FontWeight="Bold" Foreground="#FF2C3E50"/>
+                                <TextBlock x:Name="RoleText" FontSize="10" Foreground="#FF2C3E50" Opacity="0.6"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>

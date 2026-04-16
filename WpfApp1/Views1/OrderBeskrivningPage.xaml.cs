@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
 {
@@ -21,10 +22,10 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class OrderBeskrivningPage : Page
     {
-        public OrderBeskrivningPage(Order valdOrder)
+        public OrderBeskrivningPage(Order o)
         {
             InitializeComponent();
-            DataContext = valdOrder;
-        }
+            DataContext = o;
+;        }
     }
 }

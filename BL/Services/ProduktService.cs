@@ -19,6 +19,8 @@ namespace BL.Services
 
         public List<Produkt> GetProdukt() => prodRepo.GetAll();
 
+        public List<Produkt> GetProdukter() => prodRepo.GetAllaProdukter(); //För att få med inkluderade nav properties
+
         public Produkt GetProduktId(int id) => prodRepo.GetById(id);
 
         public void AddProdukt(Produkt p) => prodRepo.Add(p);

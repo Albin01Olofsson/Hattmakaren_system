@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
+      xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OrderBeskrivningVM}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="#FF1A1A1D"
@@ -24,7 +25,7 @@
             <TextBlock x:Name="Rubrik"
                    Grid.Column="0"
                    Grid.Row="0"
-                   Text="Order: XXXXXXXXXXX"
+                   Text="{Binding OrdernsID, StringFormat=Order: {0}}"
                    Margin="0,0,0,10"
                    FontSize="28"
                    FontWeight="Black"
@@ -46,15 +47,14 @@
 
             <Border Grid.Column="0" Grid.Row="1" Margin="0,20,20,0" Background="#FF2C3E50" CornerRadius="10" Padding="10">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Kund: Kundens Namn" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Pris: Priset Kr" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Rabatt= x%" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding KundNamn, StringFormat=Kund: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding Pris, StringFormat=Pris: {0 Kr}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding Rabatt, StringFormat=Rabatt: {0} %}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                     <TextBlock Text="Produklista: Produkt - Pris" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Datum: XXXX-XX-XX" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Order startare: StartadAv" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Klar: Ja/Nej" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Specialbeställning: Ja/Nej" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="Specialbeställning: Ja/Nej" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding Datum, StringFormat=Datum: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding OrderStartareNamn, StringFormat=Startare: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding Klar, StringFormat=Klar: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                    <TextBlock Text="{Binding IsSpecialbeställning, StringFormat=Specialbeställning: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" Grid.Row="1" Margin="0,20,0,0" Background="#FFB08D46" CornerRadius="10" Padding="10">

@@ -53,6 +53,12 @@ namespace WpfApp1.Views1
             Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
 
             dokument.Add(new iText.Layout.Element.Paragraph($"Order: {order.OrderID}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Kund: {order.Kund}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} kr"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Rabatt: {order.Rabatt} %"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Datum: {order.Datum}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));
             dokument.Close();
             MessageBox.Show($"En PDF har skapats med filnamnet: {orderPdfFullPath}");
 

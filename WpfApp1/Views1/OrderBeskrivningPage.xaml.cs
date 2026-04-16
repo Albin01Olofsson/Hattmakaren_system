@@ -23,6 +23,8 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using System.IO;
+using iText.IO.Image;
+using iText.Layout.Element;
 
 namespace WpfApp1.Views1
 {
@@ -60,14 +62,7 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));
             dokument.Close();
-            MessageBox.Show($"En PDF har skapats med filnamnet: {orderPdfFullPath}");
-
-            //string fileName = $"Order_{order.OrderID}.pdf";
-
-            //Document dokument = new Document(new PdfDocument(new PdfWriter(fileName)));
-            //dokument.Close();
-
-            //MessageBox.Show($"En PDF har skapats med filnamnet: {fileName}");
+            MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");
         }
     }
 }

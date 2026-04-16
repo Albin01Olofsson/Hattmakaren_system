@@ -5,19 +5,22 @@ using System.Windows.Controls;
 using WpfApp1.ViewModels;
 using BL.Services;
 using DAL;
+using BL.Interfaces;
 
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
     {
         public OrderVM vm { get; set; }
+
+        private IOrderService _orderService;
         public Mainpage()
         {
             InitializeComponent();
             LoadUser();
             OrderRepo repo = new OrderRepo(new DBcontext());
-            OrderService service = new OrderService(repo);
-            vm = new OrderVM(service);
+            _orderService = new OrderService(repo);
+            vm = new OrderVM(_orderService);
         }
 
         // Här är koden som körs när du klickar på "Användare"
@@ -45,7 +48,7 @@ namespace WpfApp1.Views1
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             // Här kan du lägga till navigering för Order senare
-            MainFrame.Navigate(new OrderPage(vm));
+            MainFrame.Navigate(new OrderPage(new OrderVM(_orderService)));
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)

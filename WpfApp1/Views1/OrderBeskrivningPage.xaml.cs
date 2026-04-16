@@ -48,7 +48,8 @@ namespace WpfApp1.Views1
         private void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
         {
             _orderService.MarkeraFärdig(order.OrderID);
-            DataContext = new OrderBeskrivningVM(_orderService.GetFullOrder(order.OrderID), _produktService);
+            order = _orderService.GetFullOrder(order.OrderID);
+            DataContext = new OrderBeskrivningVM(order, _produktService);
             MessageBox.Show($"Ordern är nu markerad som: {_orderService.GetOrder(order.OrderID).Färdig}");//Måste hämta nya värdet efter uppdateringen för att det ska synas rätt
         }
 

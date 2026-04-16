@@ -64,6 +64,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -88,8 +91,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
+                            Lösenord = "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -97,8 +101,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
+                            Lösenord = "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -106,8 +111,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
+                            Lösenord = "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -115,8 +121,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2",
+                            Lösenord = "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });

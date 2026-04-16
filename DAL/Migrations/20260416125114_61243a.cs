@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class _61243 : Migration
+    public partial class _61243a : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,8 @@ namespace DAL.Migrations
                     Telefon = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Lösenord = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,13 +203,13 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Användare",
-                columns: new[] { "AnvändarID", "Email", "IsAdmin", "Lösenord", "Namn", "Telefon" },
+                columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", false, "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", false, "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", false, "$2a$11$dVmgB045ZHiF8.nYXU76iuv.WK43Gla/yQIFdGG6cYWCephpI2ge2", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(

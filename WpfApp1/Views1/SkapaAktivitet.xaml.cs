@@ -22,6 +22,12 @@ namespace WpfApp1.Views1
             vm.User = Session.CurrentUser;
 
             DataContext = vm;
+            vm.PlaneringAdded += (planering) =>
+            {
+                CreatedPlanering = planering;
+                this.DialogResult = true; // Stänger fönstret och indikerar att en planering skapades
+                Close();
+            };
         }
     }
 }

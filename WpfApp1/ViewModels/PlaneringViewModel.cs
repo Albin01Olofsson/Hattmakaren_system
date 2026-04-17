@@ -27,6 +27,12 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private Produkt _valdProdukt;
 
+        [ObservableProperty]
+        private DateTime? valdStartTid;
+
+        [ObservableProperty]
+        private int valdStartTimme;
+
         // KONSTRUKTOR: Tar nu endast emot tjänster som finns i App.xaml.cs
         public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
@@ -73,10 +79,13 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SparaAktivitet()
         {
-            if (ValdProdukt != null && User != null)
+            if (ValdProdukt != null && User != null && ValdStartTid.HasValue)
             {
-                _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, DateTime.Now);
+                var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme);
 
+                var planering = _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
+
+                PlaneringAdded?.Invoke(planering);
                 // Eventuellt stänga fönstret här eller skicka ett event
             }
         }

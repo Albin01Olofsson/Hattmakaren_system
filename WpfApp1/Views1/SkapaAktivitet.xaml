@@ -28,6 +28,14 @@
                 <ComboBox  ItemsSource="{Binding AllaProdukter}" SelectedItem="{Binding ValdProdukt}" 
                            DisplayMemberPath="namn" Margin="0,5,0,10"/>
                 
+                <!--välj datum-->
+                <TextBlock Text="Datum" Foreground="#FFC5A059"/>
+                <DatePicker SelectedDate="{Binding ValdStartTid}" Margin="0,5,0,10"/>
+
+                <!--völj tid-->
+                <TextBlock Text="Starttid (timme)" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding ValdStartTimme}" Margin="0,5,0,10"/>
+                
                 <!-- Knapp -->
                 <Button Content="Spara aktivitet" Height="40" Background="#FFB08D46" Foreground="Black" 
                         FontWeight="Bold" Command="{Binding SparaAktivitetCommand}"/>

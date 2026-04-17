@@ -32,7 +32,7 @@
                     <MenuItem Header="Material">
 
                     </MenuItem>
-                    <Button Content="Skapa aktivitet" Click="Button_Click"></Button>
+                    <!--<Button Content="Skapa aktivitet" Click="Button_Click"/>-->
                 </Menu>
             </StackPanel>
         </Border>

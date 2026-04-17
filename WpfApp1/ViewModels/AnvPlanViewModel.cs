@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BL.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace WpfApp1.ViewModels
 {
     public partial class AnvPlanViewModel : ObservableObject
     {
+        private readonly IPlaneringsYtaService _service;
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DennaVeckaTxt))]
         [NotifyPropertyChangedFor(nameof(MåndagDatum))]
@@ -34,23 +36,25 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private ObservableCollection<Bokning> bokningar;
 
-        public AnvPlanViewModel()
+        public AnvPlanViewModel(IPlaneringsYtaService service)
         {
+            _service = service;
             DateTime idag = DateTime.Today;
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
 
             LaddaTider();
+            
 
             Bokningar = new ObservableCollection<Bokning>();
 
-            Bokningar.Add(new Bokning
-            {
-                Titel = "Projekt Arbete",
-                StartTid = NuvarandeMåndag.AddHours(8),
-                LangdITimmar = 2.5
-            });
-
+            //Bokningar.Add(new Bokning
+            //{
+            //    Titel = "Projekt Arbete",
+            //    StartTid = NuvarandeMåndag.AddHours(8),
+            //    LangdITimmar = 2.5
+            //});
+            LaddaBokningar();
         }
 
         public void LaddaTider()
@@ -59,6 +63,40 @@ namespace WpfApp1.ViewModels
             for (int i = 8; i <= 17; i++)
             {
                 TidsIntervaller.Add($"{i:D2}:00");
+            }
+        }
+        public void LaddaBokningar()
+        {
+            Bokningar.Clear();
+
+            var veckaStart = NuvarandeMåndag.Date;
+            var veckaSlut = veckaStart.AddDays(7);
+
+            var planeringar = _service.HämtaAllaPlaneringar()
+                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut);
+            
+            foreach(var p in planeringar)
+            {
+                Bokningar.Add(new Bokning
+                {
+                    Titel = p.Produkt.namn,
+                    StartTid = p.StartTid,
+                    LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
+                });
+            }
+        }
+        public void LaddaMinaBokningar(int användarId)
+        {
+            Bokningar.Clear();
+            var planeringar = _service.HämtaMinPlanering(användarId);
+            foreach (var p in planeringar)
+            {
+                Bokningar.Add(new Bokning
+                {
+                    Titel = p.Produkt.namn,
+                    StartTid = p.StartTid,
+                    LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
+                });
             }
         }
 
@@ -74,12 +112,14 @@ namespace WpfApp1.ViewModels
         private void NästaVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(7);
+            LaddaBokningar();
         }
 
         [RelayCommand]
         private void TidigareVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(-7);
+            LaddaBokningar();
         }
 
         [RelayCommand]

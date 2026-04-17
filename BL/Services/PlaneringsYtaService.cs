@@ -32,6 +32,17 @@ namespace BL.Services
         // 2. Skapa själva bokningen i schemat
         public Planering PlaneraArbete(int användarId, int produktId, DateTime startTid)
         {
+            var slutTid = startTid.AddHours(2);
+
+            var finnsKrock = _planeringsRepo.GetAll()
+                .Any(p => p.ProduktID == produktId &&
+                          p.StartTid < slutTid &&
+                          p.SlutTid > startTid);
+
+            if (finnsKrock)
+            {
+                throw new Exception("Produkten är redan bokad denna tid!");
+            }
             var nyBokning = new Planering
             {
                 AnvändarID = användarId,

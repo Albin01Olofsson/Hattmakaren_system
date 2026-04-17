@@ -15,7 +15,7 @@ namespace WpfApp1.Views1.ViewModels
 
 
         // Hjälpmetod för att placera i rätt kolumn (Mån=1, Tis=2...)
-        public int Kolumn => ((int)StartTid.DayOfWeek + 6) % 7;
+        public int Kolumn => ((int)StartTid.DayOfWeek + 6) % 7 ;
 
         // Räknar ut avstånd från toppen (08:00 är start)
         public double TopPos

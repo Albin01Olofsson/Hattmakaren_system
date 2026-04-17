@@ -38,6 +38,7 @@ namespace WpfApp1
             services.AddScoped<IKundService, KundService>();      // SAKNADES
             services.AddScoped<IProduktService, ProduktService>();  // SAKNADES
             services.AddScoped<IOrderService, OrderService>();      // SAKNADES
+            services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();
@@ -59,7 +60,7 @@ namespace WpfApp1
             var loginVm = (LoginViewModel)loginPage.DataContext;
             loginVm.LoginSucceeded += () =>
             {
-                // Här navigerar vi till din startsida efter lyckad inloggning
+                // Här navigerar vi till startsida efter lyckad inloggning
                 mainWindow.MainFrame.Navigate(new Mainpage());
             };
 

@@ -60,7 +60,14 @@ namespace WpfApp1.ViewModels
         private string typ;
 
         [ObservableProperty]
-        private bool isMaterialFormVisible;
+        private string statusMessage;
+
+        [ObservableProperty]
+        private bool isStatusVisible;
+
+        [ObservableProperty]
+        private bool isMaterialFormVisible = false;
+
 
 
         // ===============================
@@ -96,6 +103,9 @@ namespace WpfApp1.ViewModels
                 antal,
                 Session.CurrentUser.AnvändarID
             );
+            // ✅ Visa bekräftelse i UI
+            StatusMessage = $"Beställning skapad! ({SelectedMaterial.Namn}, {antal} st)";
+            IsStatusVisible = true;
         }
 
         [RelayCommand]

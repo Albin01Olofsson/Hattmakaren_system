@@ -1,8 +1,9 @@
 ﻿using BL.Interfaces;
+using DAL;
 using DAL.Intefaces;
 using DAL.Repositorys;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,22 @@ namespace BL.Services
             var beställning = new MaterialBeställning
             {
                 StartadAvID = användarId,
-                MaterialLista = new List<Material> { material },
-                TotalPris = material.Pris * antal
+                /*MaterialLista = new List<Material> { material }*/
+                TotalPris = material.Pris * antal,
+                Antal=antal
             };
 
             _context.MaterialBeställningar.Add(beställning);
             _context.SaveChanges();
+            var all = _context.MaterialBeställningar.ToList();
+
+            System.Diagnostics.Debug.WriteLine("ANTAL RADER I DB: " + all.Count);
+
+            foreach (var b in all)
+            {
+                System.Diagnostics.Debug.WriteLine($"ID: {b.MaterialBeställningID}, Antal: {b.Antal}");
+            }
+            System.Diagnostics.Debug.WriteLine("DB NAME: " + _context.Database.GetDbConnection().Database);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,20 @@ namespace WpfApp1.ViewModels
         private ObservableCollection<Material> materialLista;
 
         [ObservableProperty]
-        private Produkt? valdMaterial;
+        private Material? valdMaterial;
+
+        [ObservableProperty]
+        private string nyttProduktNamn;
+
+        [ObservableProperty]
+        private string nyStorlek;
+
+        [ObservableProperty]
+        private string nyBeskrivning = String.Empty;
+
+        [ObservableProperty]
+        private string bildUrl = String.Empty;
+
         public SpcBestOrderPageVM(IOrderService orderService, IProduktService produktService, IMaterialService materialService, IKundService kundService, IAnvändarService användarService)
         {
             _orderService = orderService;
@@ -39,6 +53,23 @@ namespace WpfApp1.ViewModels
 
             ProduktLista = new ObservableCollection<Produkt>(_produktService.GetProdukter());
             MaterialLista = new ObservableCollection<Material>(_materialService.GetMaterialLista());
+        }
+
+        [RelayCommand]
+        private void LäggTillSpecialBeställning()
+        {
+            Användare startadAvAnvändare = Session.CurrentUser;
+
+            var nySpecBes = new SpecialBeställning
+            {
+                namn = NyttProduktNamn,
+                Storlek = NyStorlek,
+                Beskrivning = NyBeskrivning,
+                BildURL = BildUrl,
+                TillverkadAVID = startadAvAnvändare.AnvändarID
+            };
+
+            _produktService.AddSpecialBeställning(nySpecBes);
         }
     }
 }

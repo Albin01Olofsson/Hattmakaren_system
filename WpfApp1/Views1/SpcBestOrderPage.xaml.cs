@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,12 +46,21 @@ namespace WpfApp1.Views1
                 bild.EndInit();
 
                 ImgElementIXaml.Source = bild;
+
+                if(DataContext is SpcBestOrderPageVM vm)
+                {
+                    vm.BildUrl = filPath;
+                }
             }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void SparaSpecialbeställning_Click(object sender, RoutedEventArgs e)
+        {            
         }
     }
 }

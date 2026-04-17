@@ -9,6 +9,5 @@ namespace DAL.Intefaces
 {
     public interface IMaterialRepo : IRepository<Material>
     {
-
     }
 }

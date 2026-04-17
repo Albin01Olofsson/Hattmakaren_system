@@ -45,12 +45,18 @@ namespace WpfApp1.Views1
                 bild.CacheOption = BitmapCacheOption.OnLoad;
                 bild.EndInit();
 
-                ImgElementIXaml.Source = bild;
+                //ImgElementIXaml.Source = bild;
 
-                if(DataContext is SpcBestOrderPageVM vm)
+                if (DataContext is SpcBestOrderPageVM vm)
                 {
                     vm.BildUrl = filPath;
+                    vm.ValdBild = bild;
                 }
+
+                //if (DataContext is SpcBestOrderPageVM vm)
+                //{
+                //    vm.BildUrl = filPath; 
+                //}
             }
         }
 

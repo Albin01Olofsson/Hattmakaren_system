@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace WpfApp1.ViewModels
 {
@@ -47,6 +48,9 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private string bildUrl = String.Empty;
+
+        [ObservableProperty]
+        private BitmapImage? valdBild; //Bara för förhandvisning efter att man valt bild
 
         public SpcBestOrderPageVM(IOrderService orderService, IProduktService produktService, IMaterialService materialService, IKundService kundService, IAnvändarService användarService)
         {
@@ -100,7 +104,9 @@ namespace WpfApp1.ViewModels
             NyStorlek = string.Empty;
             NyBeskrivning = string.Empty;
             BildUrl = string.Empty;
+            ValdBild = null;
             ValdProdukt = null;
+            ValdMaterial = null;
         }
     }
 }

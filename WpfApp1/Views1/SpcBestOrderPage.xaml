@@ -26,10 +26,16 @@
 
             <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <Grid>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Produkt: " Foreground = "#FFC5A059"></TextBlock>
-                        <TextBlock Foreground = "#FFC5A059" Text = "{Binding}" TextWrapping = "Wrap" MaxWidth = "300" ></TextBlock> <!--Antar att produktens som ska specialbeställas Produknamn ska in här-->
-                    </StackPanel>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.35*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Välj Produkt: " Foreground = "#FFC5A059"></TextBlock>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding ALLAPRODUKTERLISTA}" SelectedItem="{Binding VETEJ}"></ComboBox>
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Center" Text="Eller vid ny produkt, Ange Namn;" Foreground = "#FFC5A059"></TextBlock>
+                    <TextBox Grid.Column="3" x:Name="ProdNamnTextFält" Width="200" HorizontalAlignment="Left"></TextBox>
                 </Grid>
             </Border>
 

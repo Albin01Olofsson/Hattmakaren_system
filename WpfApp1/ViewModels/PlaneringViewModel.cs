@@ -3,48 +3,68 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
-using System.Security.RightsManagement;
 
 namespace WpfApp1.ViewModels
 {
-    public partial class PlaneringViewModel :ObservableObject
+    public partial class PlaneringViewModel : ObservableObject
     {
         private readonly IPlaneringsYtaService _service;
-        private IOrderService _orderService;
+        private readonly IOrderService _orderService;
+
         public event Action<Planering> PlaneringAdded;
-        public Användare _user;
+
+        // Denna sätts manuellt i SkapaAktivitet.xaml.cs
+        [ObservableProperty]
+        private Användare _user;
+
+        // Samlingar som binds till UI
+        public ObservableCollection<Order> AllaOrdrar { get; } = new();
+        public ObservableCollection<Produkt> AllaProdukter { get; } = new();
 
         [ObservableProperty]
-        private ObservableCollection<Order> allaOrdrar;
-        [ObservableProperty]
-        private Order valdOrder;
-        [ObservableProperty]
-        private ObservableCollection<Produkt> allaProdukter;
-        [ObservableProperty]
-        private Produkt valdProdukt;
+        private Order _valdOrder;
 
-        public PlaneringViewModel(Användare user, IOrderService service)
+        [ObservableProperty]
+        private Produkt _valdProdukt;
+
+        // KONSTRUKTOR: Tar nu endast emot tjänster som finns i App.xaml.cs
+        public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
-            _user = user;
-            _orderService = service;
+            _orderService = orderService;
+            _service = planeringsService;
+
             LaddaOrdrar();
-            LaddaProdukter(ValdOrder.OrderID);
+        }
+
+        // Körs automatiskt när en order väljs i ComboBoxen
+        partial void OnValdOrderChanged(Order value)
+        {
+            if (value != null)
+            {
+                LaddaProdukter(value.OrderID);
+            }
+            else
+            {
+                AllaProdukter.Clear();
+            }
         }
 
         public void LaddaOrdrar()
         {
             var ordrarFrånDB = _orderService.GetOrdersWithNavProps();
             AllaOrdrar.Clear();
-            foreach(var oreder in ordrarFrånDB)
+            foreach (var order in ordrarFrånDB)
             {
-                AllaOrdrar.Add(oreder);
+                AllaOrdrar.Add(order);
             }
         }
+
         public void LaddaProdukter(int orderid)
         {
+            // Nu är _service inte längre null!
             var produkterFrånDB = _service.HämtaHattarFrånOrder(orderid);
             AllaProdukter.Clear();
-            foreach(var produkt in produkterFrånDB)
+            foreach (var produkt in produkterFrånDB)
             {
                 AllaProdukter.Add(produkt);
             }
@@ -53,8 +73,12 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SparaAktivitet()
         {
-            _service.PlaneraArbete(_user.AnvändarID, ValdProdukt.ProduktID, DateTime.Now);
-        }
+            if (ValdProdukt != null && User != null)
+            {
+                _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, DateTime.Now);
 
+                // Eventuellt stänga fönstret här eller skicka ett event
+            }
+        }
     }
 }

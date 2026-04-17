@@ -31,6 +31,7 @@ namespace WpfApp1
             services.AddScoped<IKundRepo, KundRepo>();      // SAKNADES
             services.AddScoped<IProduktRepo, ProduktRepo>();  // SAKNADES
             services.AddScoped<IOrderRepository, OrderRepo>(); // SAKNADES
+            services.AddScoped<IPlaneringsRepo, PlaneringsRepo>();
 
             // 3. REGISTRERA TJÄNSTER (BL)
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -43,6 +44,7 @@ namespace WpfApp1
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();
             services.AddTransient<SkapaOrderViewModel>(); // DETTA VAR FELET PÅ BILDEN!
+            services.AddTransient<PlaneringViewModel>();
 
             // 5. BYGG PROVIDER
             ServiceProvider = services.BuildServiceProvider();

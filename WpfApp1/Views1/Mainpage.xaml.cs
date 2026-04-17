@@ -1,11 +1,11 @@
-﻿using DAL.Repositorys;
-using System;
+﻿using BL.Interfaces;
+using BL.Services;
+using DAL;
+using DAL.Repositorys;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
-using BL.Services;
-using DAL;
-using BL.Interfaces;
+using WpfApp1.Views1.Planneringsviews;
 
 namespace WpfApp1.Views1
 {
@@ -57,9 +57,17 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new BestallningarPage());
         }
 
+        private void BtnSchema_Click(object sender, RoutedEventArgs e)
+        {
+            // Vi säger åt vår Frame att visa AnvPage
+            MainFrame.Navigate(new AnvPage());
+        }
+
+
+
         private void BtnLoggaUt_Click(object sender, RoutedEventArgs e)
         {
-            
+
             Session.CurrentUser = null;// Rensa sessionen
             // Navigera till inloggningssidan
             var app = (App)Application.Current;// Hämta applikationsinstansen för att komma åt DI-container
@@ -80,7 +88,7 @@ namespace WpfApp1.Views1
         public void LoadUser()
         {
             var användare = Session.CurrentUser;
-            if(användare == null)
+            if (användare == null)
             {
                 UserNameText.Text = "Välkommen, gäst!";
                 RoleText.Text = "Du är inte inloggad.";

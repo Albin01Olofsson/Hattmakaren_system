@@ -21,7 +21,7 @@
                 <!-- Välj en order -->
                 <TextBlock Text="Välj en order" Foreground="#FFC5A059"/>
                 <ComboBox  ItemsSource="{Binding AllaOrdrar}" SelectedItem="{Binding ValdOrder}" 
-                           DisplayMemberPath="namn" Margin="0,5,0,10"/>
+                           DisplayMemberPath="OrderID" Margin="0,5,0,10"/>
                 
                 <!-- Välj en produkt-->
                 <TextBlock Text="Välj en produkt" Foreground="#FFC5A059"/>

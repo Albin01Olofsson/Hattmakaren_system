@@ -23,7 +23,7 @@
             <StackPanel>
                 <TextBlock Text="Ditt Schema" FontSize="28" FontWeight="Bold" Margin="30, 0"/>
                 <Menu Margin="50,0" Background="#FFC5A059" FontWeight="Bold">
-                    <MenuItem Header="Projekt">
+                    <MenuItem Header="Ordrar" Click="Ordrar_Click">
 
                     </MenuItem>
                     <MenuItem Header="Plannering">

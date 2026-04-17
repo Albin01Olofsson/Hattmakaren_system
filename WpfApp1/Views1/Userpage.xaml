@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AnvandarePage"
       Background="#FF1A1A1D">
-
+    
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -31,16 +31,26 @@
                 <Border Grid.Column="0" Background="#FF2C3E50" CornerRadius="15" Margin="0,0,1,0" Padding="20">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top" Text="PERSONAL" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
-                        <Button x:Name="BtnDeleteStaff" DockPanel.Dock="Bottom" Content="INAKTIVERA PERSONAL" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
+                        <Button Command="{Binding ListaVM.InaktiveraCommand}" DockPanel.Dock="Bottom" Content="INAKTIVERA PERSONAL" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
 
-                        <ListBox Background="Transparent" BorderThickness="0" Foreground="White">
-                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👤 Johan (Admin)</ListBoxItem>
-                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👤 Anna (Anställd)</ListBoxItem>
+                        <ListBox ItemsSource="{Binding ListaVM.AnvändareLista}" SelectedItem="{Binding ListaVM.ValdAnvändare}"  Background="Transparent" BorderThickness="0" Foreground="White">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="👤 {0} ({1})">
+                                                <Binding Path="Namn"/>
+                                                <Binding Path="IsAdmin"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </DockPanel>
                 </Border>
 
-                <Border Grid.Column="1" Background="#FF2C3E50" CornerRadius="15" Margin="10,0,0,0" Padding="20">
+                <!--<Border Grid.Column="1" Background="#FF2C3E50" CornerRadius="15" Margin="10,0,0,0" Padding="20">
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top" Text="KUNDER" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
                         <Button x:Name="BtnDeleteCustomer" DockPanel.Dock="Bottom" Content="TA BORT KUND" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
@@ -50,31 +60,59 @@
                             <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👥 Maria Larsson</ListBoxItem>
                         </ListBox>
                     </DockPanel>
-                </Border>
+                </Border>-->
             </Grid>
-
-            <Border Grid.Column="1" Background="#FFC5A059" CornerRadius="15" Padding="25">
-                <StackPanel>
-                    <TextBlock x:Name="TxtFormTitle" Text="REGISTRERA NY" FontSize="20" FontWeight="Black" Foreground="#FF2C3E50" Margin="0,0,0,25"/>
-
-                    <TextBlock Text="NAMN" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <TextBox x:Name="InputName" Margin="0,0,0,15" Height="35" VerticalContentAlignment="Center" Padding="10" Background="White" BorderThickness="0"/>
-
-                    <TextBlock Text="E-POST" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <TextBox x:Name="InputEmail" Margin="0,0,0,15" Height="35" VerticalContentAlignment="Center" Padding="10" Background="White" BorderThickness="0"/>
-
-                    <StackPanel x:Name="AdminPanel">
-                        <TextBlock Text="KATEGORI" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="ComboRole" Margin="0,0,0,25" Height="35" SelectedIndex="0">
-                            <ComboBoxItem Content="Kund"/>
-                            <ComboBoxItem Content="Anställd"/>
-                            <ComboBoxItem Content="Administratör"/>
-                        </ComboBox>
+            <!--Registrera ny användare-->
+            <Border Grid.Column="1" Background="#FFC5A059" CornerRadius="15" Padding="18">
+                <StackPanel x:Name="AdminPanel" IsEnabled="{Binding CanEditUsers}">
+                    <TextBlock Text="{Binding FormTitle}" FontSize="20" FontWeight="Black"
+                        Foreground="#FF2C3E50" Margin="0,0,0,5"/>
+                    
+                    <!-- NAMN -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="NAMN" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.NamnFel}" Foreground="Red" FontSize="10"/>
                     </StackPanel>
+                    <TextBox x:Name="InputName" Text="{Binding AddAnvändareVM.Namn, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
-                    <Button x:Name="BtnSave" Content="BEKRÄFTA OCH SPARA" Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Height="50" BorderThickness="0"/>
+                    <!-- EMAIL -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="E-POST" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.EmailFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
+                    <TextBox x:Name="InputEmail" Text="{Binding AddAnvändareVM.Email, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
-                    <TextBlock x:Name="TxtFooterNote" Text="* Historik bevaras vid radering." Foreground="#FF2C3E50" FontSize="10" TextAlignment="Center" FontWeight="Bold" Margin="0,20,0,0"/>
+                    <!-- TELEFON -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="TELEFON" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.TelefonFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
+                    <TextBox x:Name="InputTelefon" Text="{Binding AddAnvändareVM.Telefon, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
+
+                    <!-- LÖSENORD -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="LÖSENORD" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding AddAnvändareVM.LösenordFel}" Foreground="Red" FontSize="10"/>
+                    </StackPanel>
+                    <TextBox Text="{Binding AddAnvändareVM.Lösenord, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
+
+                    <!-- ROLL -->
+                    <TextBlock Text="KATEGORI" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
+                    <ComboBox SelectedValue="{Binding AddAnvändareVM.IsAdmin}" SelectedValuePath="Tag" Margin="0,3,0,10" Height="30">
+                        <ComboBoxItem Content="Anställd" Tag="False"/>
+                        <ComboBoxItem Content="Administratör" Tag="True"/>
+                    </ComboBox>
+
+                    <!-- BUTTON -->
+                    <Button Content="BEKRÄFTA OCH SPARA" Command="{Binding AddAnvändareVM.AddAnvändareCommand}" IsEnabled="{Binding CanEditUsers}"
+                        Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0"/>
+
+                    <TextBlock Text="* Historik bevaras vid radering." Foreground="#FF2C3E50" FontSize="10"
+                        TextAlignment="Center" FontWeight="Bold" Margin="0,3,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>

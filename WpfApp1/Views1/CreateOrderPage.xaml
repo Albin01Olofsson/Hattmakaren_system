@@ -9,7 +9,9 @@
       Title="CreateOrderPage" Background="#FF1A1A1D">
 
     <Grid Margin="20">
-        <StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+       
+          <StackPanel>
             <TextBlock Text="Skapa Order" FontSize="26" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
             <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
@@ -36,6 +38,17 @@
 
             <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Prioritet: " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
+
+                    <CheckBox IsChecked="{Binding IsPrioVald}" 
+                  Content="Markera som Prio-order (+20% på priset)" 
+                  Foreground="White" 
+                  VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Rabatt (kr): " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
                     <TextBox Width="100" Text="{Binding Rabatt}"/>
                     <Button Content="Aktivera Rabatt" Margin="20,0,0,0" Width="130" Background="#FFB08D46" Command="{Binding LaggTillRabattCommand}"/>
@@ -43,12 +56,14 @@
             </Border>
 
             <Border Background="#FF2C3E50" Padding="20" CornerRadius="10" Margin="0,10">
-                <StackPanel>
+                
+                    <StackPanel>
                     <TextBlock Text="ORDERÖVERSIKT" Foreground="#FFB08D46" FontWeight="Bold" Margin="0,0,0,10"/>
                     <TextBlock Text="{Binding OrderOversiktText}" Foreground="White" FontSize="16" Margin="0,0,0,20"/>
                     <Button Content="SPARA ORDER I DATABAS" Height="45" FontSize="18" Background="#FFB08D46" Command="{Binding LaggOrderCommand}"/>
                 </StackPanel>
             </Border>
         </StackPanel>
+       </ScrollViewer>
     </Grid>
 </Page>

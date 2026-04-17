@@ -12,6 +12,8 @@ namespace BL.Interfaces
 
         Order GetOrder(int id);
 
+        Order GetFullOrder(int id);
+
         void AddOrder(Order o);
 
         void UpdateOrder(Order o);
@@ -21,5 +23,9 @@ namespace BL.Interfaces
         void SaveOrder();
 
         void skapaOrder(Order nyOrder);
+
+        public void MarkeraSomPrio(int OrderID);
+
+        public void MarkeraFärdig(int OrderID);
     }
 }

@@ -11,6 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 using System.IO;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using Microsoft.Win32;
 
 namespace WpfApp1.ViewModels
 {
@@ -18,6 +22,7 @@ namespace WpfApp1.ViewModels
     {
         private readonly MaterialBeställningService _bestallningService;
         private readonly MaterialRepo _materialRepo;
+        private MaterialBeställning senasteBestallning;
 
         public BestallningarViewModel()
         {
@@ -79,8 +84,11 @@ namespace WpfApp1.ViewModels
             {
                 MaterialLista = new List<Material> { SelectedMaterial },
                 TotalPris = SelectedMaterial.Pris * antal,
-                StartadAvID = Session.CurrentUser.AnvändarID
+                StartadAvID = Session.CurrentUser.AnvändarID,
+                Antal = antal
             };
+
+            senasteBestallning = bestallning;
 
             // 🔹 Spara i databasen (din service)
             _bestallningService.SkapaBestallning(
@@ -88,13 +96,18 @@ namespace WpfApp1.ViewModels
                 antal,
                 Session.CurrentUser.AnvändarID
             );
+        }
 
-            // 🔹 Spara till TXT
-            SparaTillTxt(bestallning, antal);
+        [RelayCommand]
+        private void ExportPdf()
+        {
+            if (senasteBestallning == null)
+                throw new Exception("Ingen beställning att exportera!");
 
-            // 🔄 Rensa UI
-            Antal = "";
-            SelectedMaterial = null;
+            if (!int.TryParse(Antal, out int antal))
+                throw new Exception("Fel antal!");
+
+            SparaTillPdf(senasteBestallning, antal);
         }
 
         [RelayCommand]
@@ -131,16 +144,29 @@ namespace WpfApp1.ViewModels
             Pris = "";
             Typ = "";
         }
-        private void SparaTillTxt(MaterialBeställning bestallning, int antal)
+        private void SparaTillPdf(MaterialBeställning bestallning, int antal)
         {
-            string path = "bestallningar.txt";
+            var dialog = new SaveFileDialog
+            {
+                Filter = "PDF files (*.pdf)|*.pdf",
+                FileName = "bestallning.pdf"
+            };
 
-            string text = $"Material: {bestallning.MaterialLista[0].Namn}, " +
-                          $"Antal: {antal}, " +
-                          $"Pris: {bestallning.TotalPris}, " +
-                          $"Datum: {DateTime.Now}";
+            if (dialog.ShowDialog() == true)
+            {
+                using (var writer = new PdfWriter(dialog.FileName))
+                using (var pdf = new PdfDocument(writer))
+                using (var document = new Document(pdf))
+                {
+                    document.Add(new Paragraph("Materialbeställning"));
+                    document.Add(new Paragraph("----------------------"));
 
-            File.AppendAllText(path, text + Environment.NewLine);
+                    document.Add(new Paragraph($"Material: {bestallning.MaterialLista[0].Namn}"));
+                    document.Add(new Paragraph($"Antal: {antal}"));
+                    document.Add(new Paragraph($"Pris: {bestallning.TotalPris}"));
+                    document.Add(new Paragraph($"Datum: {DateTime.Now}"));
+                }
+            }
         }
     }
 }

@@ -24,6 +24,8 @@ namespace BL.Services
 
         public Order GetOrder(int id) => _orderRepo.GetById(id);
 
+        public Order GetFullOrder(int id) => _orderRepo.GetMedDetaljer(id);
+
         public void AddOrder(Order o) => _orderRepo.Add(o);
 
         public void UpdateOrder(Order o) => _orderRepo.Update(o);
@@ -58,10 +60,17 @@ namespace BL.Services
             // 3. Dra av rabatten från totalpriset
             totalPris -= nyOrder.Rabatt;
 
+
+
             // Säkerhetsspärr: Priset får aldrig bli mindre än 0 kr (om rabatten är högre än priset)
             if (totalPris < 0)
             {
                 totalPris = 0;
+            }
+
+            if (nyOrder.IsPrio)
+            {
+                totalPris *= 1.20m;
             }
 
             // 4. Sätt det slutgiltiga, uträknade priset på ordern
@@ -80,5 +89,43 @@ namespace BL.Services
                 throw new Exception("Något gick fel när ordern skulle skapas. Kontrollera att alla fält är korrekt ifyllda och försök igen.", ex);
             }
         }
+
+        public void MarkeraFärdig(int OrderID)
+        {
+            var order = _orderRepo.GetById(OrderID);
+            if (order != null)
+            {
+                // Om den är true blir den false, om den är false blir den true
+                order.Färdig = !order.Färdig;
+
+                _orderRepo.Update(order);
+                _orderRepo.Save();
+            }
+        }
+
+        public void MarkeraSomPrio(int orderId)
+        {
+
+            var order = _orderRepo.GetById(orderId);
+
+            if (order != null)
+            {
+                // 2. Kontrollera så vi inte lägger på 20% dubbelt
+                if (!order.IsPrio)
+                {
+                    order.IsPrio = true;
+
+                    // 3. Räkna ut det nya priset (+20%)
+                    // 'm' står för decimal, vilket är standard för pengar
+                    order.Pris = order.Pris * 1.20m;
+
+
+                    _orderRepo.Update(order);
+                    _orderRepo.Save();
+                }
+            }
+        }
+
     }
+
 }

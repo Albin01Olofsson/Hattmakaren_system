@@ -6,16 +6,12 @@ namespace Models
     {
         [Key]
         public int AnvändarID { get; set; }
-
         public string Namn { get; set; }
-
         public string Telefon { get; set; }
-
         public string Email { get; set; }
-
         public string Lösenord { get; set; }
-
         public bool IsAdmin { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public List<MaterialBeställning> materialBeställningsLista { get; set; } = new List<MaterialBeställning>();
 
@@ -23,6 +19,6 @@ namespace Models
 
         public List<Produkt> produktLista { get; set; } = new List<Produkt>();
 
-
+        public ICollection<Planering> Planeringar { get; set; } = new List<Planering>();
     }
 }

@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Models;
 namespace DAL
 {
@@ -13,6 +12,7 @@ namespace DAL
         public DbSet<Order> Ordrar { get; set; }
         public DbSet<Material> Material { get; set; }
         public DbSet<MaterialBeställning> MaterialBeställningar { get; set; }
+        public DbSet<Planering> Planeringar { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -86,6 +86,25 @@ namespace DAL
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
 
+            modelBuilder.Entity<Planering>(entity =>
+            {
+                // Primärnyckel
+                entity.HasKey(p => p.PlaneringsID);
+
+                // 1 -> många (Användare -> Planeringar)
+                entity.HasOne(p => p.Användare)
+                      .WithMany(a => a.Planeringar)
+                      .HasForeignKey(p => p.AnvändarID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                // 1 -> 1 (Produkt -> Planering)
+                entity.HasIndex(p => p.ProduktID).IsUnique();
+                entity.HasOne(p => p.Produkt)
+                      .WithOne(pr => pr.Planering)
+                      .HasForeignKey<Planering>(p => p.ProduktID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
             modelBuilder.Entity<Produkt>().Property(p => p.pris).HasColumnType("decimal(18,2)");
@@ -98,7 +117,8 @@ namespace DAL
             //ANVÄNDARE
             var passwordHash = BCrypt.Net.BCrypt.HashPassword("Hattkungen1");
             modelBuilder.Entity<Användare>().HasData(
-                    new Användare { 
+                    new Användare
+                    {
                         AnvändarID = 1,
                         Namn = "Otto",
                         Telefon = "07085652321",
@@ -106,7 +126,8 @@ namespace DAL
                         Lösenord = passwordHash,
                         IsAdmin = true
                     },
-                    new Användare { 
+                    new Användare
+                    {
                         AnvändarID = 2,
                         Namn = "Judith",
                         Telefon = "0727639856",
@@ -114,7 +135,8 @@ namespace DAL
                         Lösenord = passwordHash,
                         IsAdmin = false
                     },
-                    new Användare { 
+                    new Användare
+                    {
                         AnvändarID = 3,
                         Namn = "Millie",
                         Telefon = "0709825533",
@@ -122,7 +144,8 @@ namespace DAL
                         Lösenord = passwordHash,
                         IsAdmin = false
                     },
-                    new Användare { 
+                    new Användare
+                    {
                         AnvändarID = 4,
                         Namn = "Herbert",
                         Telefon = "0705512322",
@@ -177,7 +200,8 @@ namespace DAL
                 );
             //MATERIAL
             modelBuilder.Entity<Material>().HasData(
-                    new Material { 
+                    new Material
+                    {
                         MaterialID = 100001,
                         Namn = "Filt",
                         Pris = 54,
@@ -185,7 +209,8 @@ namespace DAL
                         Typ = "Tyg",
                         Lagerantal = 23
                     },
-                    new Material { 
+                    new Material
+                    {
                         MaterialID = 100002,
                         Namn = "Bomull",
                         Pris = 34,
@@ -193,7 +218,8 @@ namespace DAL
                         Typ = "Tyg",
                         Lagerantal = 52
                     },
-                    new Material { 
+                    new Material
+                    {
                         MaterialID = 100003,
                         Namn = "Svart tråd",
                         Pris = 28,
@@ -230,17 +256,19 @@ namespace DAL
 
             //ORDRAR
             modelBuilder.Entity<Order>().HasData(
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000001,
                         Pris = 1299,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
                         KundID = 1001
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000002,
                         Pris = 1099,
                         Rabatt = 0,
@@ -250,27 +278,30 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1002
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000003,
                         Pris = 299,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 21),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 1,
                         KundID = 1003
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000004,
                         Pris = 2399,
                         Rabatt = 0,
                         Datum = new DateTime(2024, 6, 21),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
                         KundID = 1004
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000005,
                         Pris = 779,
                         Rabatt = 0,
@@ -280,7 +311,8 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1005
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000006,
                         Pris = 949,
                         Rabatt = 0,
@@ -290,27 +322,30 @@ namespace DAL
                         StartadAvID = 2,
                         KundID = 1001
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000007,
                         Pris = 1049,
                         Rabatt = 0,
                         Datum = new DateTime(2025, 10, 6),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 2,
                         KundID = 1002
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000008,
                         Pris = 749,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1003
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000009,
                         Pris = 999,
                         Rabatt = 0,
@@ -320,27 +355,30 @@ namespace DAL
                         StartadAvID = 2,
                         KundID = 1004
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000010,
                         Pris = 899,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1004
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000011,
                         Pris = 1099,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
                         KundID = 1005
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000012,
                         Pris = 2019,
                         Rabatt = 0,
@@ -350,17 +388,19 @@ namespace DAL
                         StartadAvID = 3,
                         KundID = 1001
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000013,
                         Pris = 1829,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 3,
                         KundID = 1002
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000014,
                         Pris = 599,
                         Rabatt = 0,
@@ -370,17 +410,19 @@ namespace DAL
                         StartadAvID = 3,
                         KundID = 1003
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000015,
                         Pris = 899,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 3,
                         KundID = 1004
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000016,
                         Pris = 1299,
                         Rabatt = 0,
@@ -390,17 +432,19 @@ namespace DAL
                         StartadAvID = 3,
                         KundID = 1005
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000017,
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1001
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000018,
                         Pris = 499,
                         Rabatt = 0,
@@ -410,17 +454,19 @@ namespace DAL
                         StartadAvID = 4,
                         KundID = 1002
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000019,
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1003
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000020,
                         Pris = 499,
                         Rabatt = 0,
@@ -430,12 +476,13 @@ namespace DAL
                         StartadAvID = 4,
                         KundID = 1004
                     },
-                    new Order {
+                    new Order
+                    {
                         OrderID = 100000021,
                         Pris = 499,
                         Rabatt = 0,
                         Datum = new DateTime(2026, 4, 11),
-                        Färdig = true,
+                        Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
                         KundID = 1005

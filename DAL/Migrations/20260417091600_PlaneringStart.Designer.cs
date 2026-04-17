@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260415214525_asadaaaaa")]
-    partial class asadaaaaa
+    [Migration("20260417091600_PlaneringStart")]
+    partial class PlaneringStart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -91,8 +94,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 1,
                             Email = "ottoHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
+                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -100,8 +104,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 2,
                             Email = "JudithHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
+                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -109,8 +114,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 3,
                             Email = "MillieHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
+                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -118,8 +124,9 @@ namespace DAL.Migrations
                         {
                             AnvändarID = 4,
                             Email = "HerbertHattman@hotmail.com",
+                            IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$M4Y5bFoUaA4xkxmhUdq6peE3YyrfA/cjrMts7QsZMTREgIpCuzIYm",
+                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -264,6 +271,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
 
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
@@ -280,18 +290,21 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
+                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 1890m
                         },
                         new
                         {
                             MaterialBeställningID = 1000002,
+                            Antal = 0,
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
+                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
@@ -309,6 +322,9 @@ namespace DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Färdig")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrio")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSpecialbeställning")
@@ -340,7 +356,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000001,
                             Datum = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1001,
                             Pris = 1299m,
@@ -352,6 +369,7 @@ namespace DAL.Migrations
                             OrderID = 100000002,
                             Datum = new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1099m,
@@ -362,7 +380,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000003,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 299m,
@@ -373,7 +392,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000004,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1004,
                             Pris = 2399m,
@@ -385,6 +405,7 @@ namespace DAL.Migrations
                             OrderID = 100000005,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 779m,
@@ -396,6 +417,7 @@ namespace DAL.Migrations
                             OrderID = 100000006,
                             Datum = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1001,
                             Pris = 949m,
@@ -406,7 +428,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000007,
                             Datum = new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1049m,
@@ -417,7 +440,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000008,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 749m,
@@ -429,6 +453,7 @@ namespace DAL.Migrations
                             OrderID = 100000009,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 999m,
@@ -439,7 +464,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000010,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 899m,
@@ -450,7 +476,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000011,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 1099m,
@@ -462,6 +489,7 @@ namespace DAL.Migrations
                             OrderID = 100000012,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1001,
                             Pris = 2019m,
@@ -472,7 +500,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000013,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1829m,
@@ -484,6 +513,7 @@ namespace DAL.Migrations
                             OrderID = 100000014,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 599m,
@@ -494,7 +524,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000015,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 899m,
@@ -506,6 +537,7 @@ namespace DAL.Migrations
                             OrderID = 100000016,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1005,
                             Pris = 1299m,
@@ -516,7 +548,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000017,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1001,
                             Pris = 499m,
@@ -528,6 +561,7 @@ namespace DAL.Migrations
                             OrderID = 100000018,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1002,
                             Pris = 499m,
@@ -538,7 +572,8 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000019,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 499m,
@@ -550,6 +585,7 @@ namespace DAL.Migrations
                             OrderID = 100000020,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 499m,
@@ -560,13 +596,38 @@ namespace DAL.Migrations
                         {
                             OrderID = 100000021,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Färdig = true,
+                            Färdig = false,
+                            IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4
                         });
+                });
+
+            modelBuilder.Entity("Models.Planering", b =>
+                {
+                    b.Property<int>("PlaneringsID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaneringsID"));
+
+                    b.Property<int>("AnvändarID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaneringsID");
+
+                    b.HasIndex("AnvändarID");
+
+                    b.HasIndex("ProduktID")
+                        .IsUnique();
+
+                    b.ToTable("Planeringar");
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -730,6 +791,25 @@ namespace DAL.Migrations
                     b.Navigation("StartadAv");
                 });
 
+            modelBuilder.Entity("Models.Planering", b =>
+                {
+                    b.HasOne("Models.Användare", "Användare")
+                        .WithMany("Planeringar")
+                        .HasForeignKey("AnvändarID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithOne("Planering")
+                        .HasForeignKey("Models.Planering", "ProduktID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Användare");
+
+                    b.Navigation("Produkt");
+                });
+
             modelBuilder.Entity("Models.Produkt", b =>
                 {
                     b.HasOne("Models.Order", "Order")
@@ -750,6 +830,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Användare", b =>
                 {
+                    b.Navigation("Planeringar");
+
                     b.Navigation("materialBeställningsLista");
 
                     b.Navigation("orderLista");
@@ -765,6 +847,12 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Order", b =>
                 {
                     b.Navigation("Produkter");
+                });
+
+            modelBuilder.Entity("Models.Produkt", b =>
+                {
+                    b.Navigation("Planering")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

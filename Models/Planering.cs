@@ -7,6 +7,8 @@ namespace Models
     {
         [Key]
         public int PlaneringsID { get; set; }
+        public DateTime StartTid { get; set; } = DateTime.Now;
+        public DateTime SlutTid { get; set; } 
 
         [ForeignKey("Användare")]
         public int AnvändarID { get; set; }

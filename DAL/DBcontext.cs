@@ -12,6 +12,7 @@ namespace DAL
         public DbSet<Order> Ordrar { get; set; }
         public DbSet<Material> Material { get; set; }
         public DbSet<MaterialBeställning> MaterialBeställningar { get; set; }
+        public DbSet<Planering> Planeringar { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -84,6 +85,25 @@ namespace DAL
             modelBuilder.Entity<MaterialBeställning>()
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
+
+            modelBuilder.Entity<Planering>(entity =>
+            {
+                // Primärnyckel
+                entity.HasKey(p => p.PlaneringsID);
+
+                // 1 -> många (Användare -> Planeringar)
+                entity.HasOne(p => p.Användare)
+                      .WithMany(a => a.Planeringar)
+                      .HasForeignKey(p => p.AnvändarID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                // 1 -> 1 (Produkt -> Planering)
+                entity.HasIndex(p => p.ProduktID).IsUnique();
+                entity.HasOne(p => p.Produkt)
+                      .WithOne(pr => pr.Planering)
+                      .HasForeignKey<Planering>(p => p.ProduktID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
 
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.

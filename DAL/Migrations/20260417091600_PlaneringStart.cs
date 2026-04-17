@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class _61243a : Migration
+    public partial class PlaneringStart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -201,15 +201,41 @@ namespace DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Planeringar",
+                columns: table => new
+                {
+                    PlaneringsID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnvändarID = table.Column<int>(type: "int", nullable: false),
+                    ProduktID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Planeringar", x => x.PlaneringsID);
+                    table.ForeignKey(
+                        name: "FK_Planeringar_Användare_AnvändarID",
+                        column: x => x.AnvändarID,
+                        principalTable: "Användare",
+                        principalColumn: "AnvändarID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Planeringar_Produkter_ProduktID",
+                        column: x => x.ProduktID,
+                        principalTable: "Produkter",
+                        principalColumn: "ProduktID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Användare",
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$/FONNsMmJy/hf17Vejc4GOPGDmsa9eE6mR8hiPS2zfFEOMbyA44jG", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -307,6 +333,17 @@ namespace DAL.Migrations
                 column: "StartadAvID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Planeringar_AnvändarID",
+                table: "Planeringar",
+                column: "AnvändarID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Planeringar_ProduktID",
+                table: "Planeringar",
+                column: "ProduktID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Produkter_OrderID",
                 table: "Produkter",
                 column: "OrderID");
@@ -325,6 +362,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "MaterialProdukt");
+
+            migrationBuilder.DropTable(
+                name: "Planeringar");
 
             migrationBuilder.DropTable(
                 name: "MaterialBeställningar");

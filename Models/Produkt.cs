@@ -7,17 +7,11 @@ namespace Models
     {
         [Key]
         public int ProduktID { get; set; }
-
         public string namn { get; set; }
-
         public decimal pris { get; set; }
-
         public bool Färdig { get; set; } = false;
-
         public string Storlek { get; set; }
-
         public List<Material> MaterialLista { get; set; } = new List<Material>();
-
 
         [ForeignKey("Order")]
         public int? OrderID { get; set; }
@@ -25,8 +19,8 @@ namespace Models
 
         [ForeignKey("TillverkadAv")]
         public int TillverkadAVID { get; set; }
-
         public Användare TillverkadAv { get; set; } = null!;
 
+        public Planering Planering { get; set; }
     }
 }

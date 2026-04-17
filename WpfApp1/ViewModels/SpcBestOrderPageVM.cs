@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfApp1.ViewModels
 {
@@ -91,6 +92,15 @@ namespace WpfApp1.ViewModels
             nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
 
             _produktService.AddSpecialBeställning(nySpecBes);
+
+            MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            NyttProduktNamn = string.Empty;
+            NyttPris = 0;
+            NyStorlek = string.Empty;
+            NyBeskrivning = string.Empty;
+            BildUrl = string.Empty;
+            ValdProdukt = null;
         }
     }
 }

@@ -5,6 +5,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,15 +64,31 @@ namespace WpfApp1.ViewModels
         {
             Användare startadAvAnvändare = Session.CurrentUser;
 
+            string tillagdBildPath = string.Empty;
+
             var nySpecBes = new SpecialBeställning
             {
                 namn = NyttProduktNamn,
                 pris = NyttPris,
                 Storlek = NyStorlek,
                 Beskrivning = NyBeskrivning,
-                BildURL = BildUrl,
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
+
+            if (!string.IsNullOrWhiteSpace(BildUrl))
+            {
+                string extension = Path.GetExtension(BildUrl);
+                string bildNamn = $"SpecialBest-{nySpecBes.namn}-{Guid.NewGuid()}{extension}";
+
+                string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName; //Sökväg för lägsta nivån i projektet, stega bakåt till projektets lägsta nivå
+                string bildMapp = System.IO.Path.Combine(baseDirectory, "DAL", "Bilder"); //Från projektets basmapp, gå in i DAL, från DAL gå in I Bilder
+                string bildFullPath = System.IO.Path.Combine(bildMapp, bildNamn); //Slå ihop bildmappens sökväg med Bildens filnamn.
+                Directory.CreateDirectory(bildMapp); //Tvinga behövd mappstruktur att skapas om det har flyttats eller raderats något
+                File.Copy(BildUrl, bildFullPath, true);
+                tillagdBildPath = Path.Combine("Bilder", bildNamn);
+            }
+
+            nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
 
             _produktService.AddSpecialBeställning(nySpecBes);
         }

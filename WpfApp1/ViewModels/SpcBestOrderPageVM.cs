@@ -35,7 +35,7 @@ namespace WpfApp1.ViewModels
         private Material? valdMaterial;
 
         [ObservableProperty]
-        private string nyttProduktNamn;
+        private string nyttProduktNamn = String.Empty;
 
         [ObservableProperty]
         private decimal nyttPris;
@@ -67,6 +67,66 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LäggTillSpecialBeställning()
         {
+            //Validering - Start
+
+            //Produkt namn
+            if (ValdProdukt != null && !string.IsNullOrWhiteSpace(NyttProduktNamn)) //Om Man valt ett produktnamn och skrivit in ett produktnamn
+            {
+                MessageBox.Show("Du har valt ett produkt namn och angett ett eget produktnamn, du kan bara göra en av dem.", "Krock Produkt nammn!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyttProduktNamn = string.Empty;
+                ValdProdukt = null;
+                return;
+            }
+
+            if(NyttProduktNamn.Length < 3)
+            {
+                MessageBox.Show("Det angivna produktnamnet är för kort, ange ett prduktnamn som är 3-32 tecken långt", "Produkt nammn för kort!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyttProduktNamn = string.Empty;
+                return;
+            }else if(NyttProduktNamn.Length > 32)
+            {
+                MessageBox.Show("Det angivna produktnamnet är för kort, ange ett prduktnamn som är 3-32 tecken långt", "Produkt nammn för långt!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyttProduktNamn = string.Empty;
+                return;
+            }
+
+            //Pris
+            if(NyttPris == 0)
+            {
+                MessageBox.Show("För lågt pris, ange pris över 0 kr", "Pris för lågt!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyttPris = 0;
+                return;
+            }else if(NyttPris > 999999)
+            {
+                MessageBox.Show("För högt pris, ange pris över under 1 000 000 kr", "Pris för Högt!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyttPris = 0;
+                return;
+            }
+
+            //Storlek
+            if (string.IsNullOrWhiteSpace(NyStorlek))
+            {
+                MessageBox.Show("En storlek måste vara angiven.", "Storlek ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyStorlek = String.Empty;
+                return;
+            }
+            else if (NyStorlek.Length > 76)
+            {
+                MessageBox.Show("Max antal tecken är 76", "För många tecken storlek!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyStorlek = string.Empty;
+                return;
+            }
+
+            //Beskrivning
+            if(NyBeskrivning.Length > 500)
+            {
+                MessageBox.Show("Beskrivning är för lång, max 500 tecken", "För många tecken storlek!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyBeskrivning = string.Empty;
+                return;
+            }
+
+            //Validering - slut
+
             Användare startadAvAnvändare = Session.CurrentUser;
 
             string tillagdBildPath = string.Empty;

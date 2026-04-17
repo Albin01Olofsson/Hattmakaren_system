@@ -107,7 +107,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>-->
-                    <Image x:Name="ImgElementIXaml" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
+                    <Image Source="{Binding ValdBild}" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
                     <!--Ska jag vara här?-->
                 </StackPanel>
             </Border>

@@ -14,6 +14,11 @@ namespace BL.Services
             _planeringsRepo = planeringsRepo;
             _orderRepo = orederRepo;
         }
+        public void Add(Planering planering)
+        {
+            _planeringsRepo.Add(planering);
+            _planeringsRepo.Save();
+        }
         // 1. Hämta hattar från en vald order så Judith kan välja en
         public List<Produkt> HämtaHattarFrånOrder(int orderId)
         {
@@ -25,7 +30,7 @@ namespace BL.Services
         }
 
         // 2. Skapa själva bokningen i schemat
-        public void PlaneraArbete(int användarId, int produktId, DateTime startTid)
+        public Planering PlaneraArbete(int användarId, int produktId, DateTime startTid)
         {
             var nyBokning = new Planering
             {
@@ -37,6 +42,7 @@ namespace BL.Services
 
             _planeringsRepo.Add(nyBokning);
             _planeringsRepo.Save();
+            return nyBokning;
         }
 
         // 3. Hämta planeringar för att visa i schemat

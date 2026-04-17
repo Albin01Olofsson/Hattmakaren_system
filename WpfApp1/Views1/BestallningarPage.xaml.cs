@@ -30,7 +30,7 @@ using WpfApp1.ViewModels;
         public BestallningarPage()
         {
             InitializeComponent();
-            DataContext = new ViewModels.BestallningarViewModel();
+            DataContext = new BestallningarViewModel();
         }
     }
 }

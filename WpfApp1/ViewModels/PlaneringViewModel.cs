@@ -53,7 +53,8 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SparaAktivitet()
         {
-            _service.PlaneraArbete(_user.AnvändarID, ValdProdukt.ProduktID, DateTime.Now);
+            var planering = _service.PlaneraArbete(_user.AnvändarID, ValdProdukt.ProduktID, DateTime.Now);
+            PlaneringAdded?.Invoke(planering);
         }
 
     }

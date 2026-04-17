@@ -32,6 +32,7 @@
                     <MenuItem Header="Material">
 
                     </MenuItem>
+                    <Button Content="Skapa aktivitet" Click="Button_Click"></Button>
                 </Menu>
             </StackPanel>
         </Border>

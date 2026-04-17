@@ -19,6 +19,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             
@@ -39,7 +40,16 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row = "2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+            <Border Grid.Row="2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ange pris: " Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
+                    <TextBox Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
+                </StackPanel>
+            </Border>
+                
+
+            
+            <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -54,7 +64,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+            <Border Grid.Row = "4" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -72,7 +82,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row = "4" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+            <Border Grid.Row = "5" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal" Width="Auto">
                     <TextBlock Text="Beskrivning: " Foreground = "#FFC5A059"/>
                     <TextBox Text="{Binding NyBeskrivning, UpdateSourceTrigger=PropertyChanged}" Width="300" Height="100" Margin="15" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True"/>
@@ -80,7 +90,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="5" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+            <Border Grid.Row="6" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Referensbild: " Foreground = "#FFC5A059"/>
                     <!--<TextBox Width="200" Margin="15, 0"></TextBox>-->
@@ -102,7 +112,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="6" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
+            <Border Grid.Row="7" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

@@ -35,6 +35,9 @@ namespace WpfApp1.ViewModels
         private string nyttProduktNamn;
 
         [ObservableProperty]
+        private decimal nyttPris;
+
+        [ObservableProperty]
         private string nyStorlek;
 
         [ObservableProperty]
@@ -63,6 +66,7 @@ namespace WpfApp1.ViewModels
             var nySpecBes = new SpecialBeställning
             {
                 namn = NyttProduktNamn,
+                pris = NyttPris,
                 Storlek = NyStorlek,
                 Beskrivning = NyBeskrivning,
                 BildURL = BildUrl,

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
 {
@@ -21,9 +22,10 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class SpcBestOrderPage : Page
     {
-        public SpcBestOrderPage()
+        public SpcBestOrderPage(SpcBestOrderPageVM vm)
         {
             InitializeComponent();
+            DataContext = vm;
         }
 
         private void BtnLaddaUppBild_Click(object sender, RoutedEventArgs rev)
@@ -46,5 +48,9 @@ namespace WpfApp1.Views1
             }
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

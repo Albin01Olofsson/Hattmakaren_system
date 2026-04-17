@@ -1,4 +1,7 @@
 ﻿using BL.Interfaces;
+using BL.Services;
+using DAL.Repositorys;
+using DAL;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,7 +38,13 @@ namespace WpfApp1.Views1
 
         private void BtnSkapaSpecialbeställning_Click(object sender, RoutedEventArgs rea)
         {
-            NavigationService.Navigate(new SpcBestOrderPage());
+            NavigationService.Navigate(new SpcBestOrderPage(new SpcBestOrderPageVM(
+                    new OrderService(new OrderRepo(new DBcontext())),
+                    new ProduktService(new ProduktRepo(new DBcontext())),
+                    new MaterialService(new MaterialRepo(new DBcontext())),
+                    new KundService(new KundRepo(new DBcontext())),
+                    new AnvändarService(new AnvändarRepo(new DBcontext()))
+                )));
         }
 
     }

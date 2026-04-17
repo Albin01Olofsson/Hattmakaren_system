@@ -7,123 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="800"
       Title="SpcBestOrderPage"  Background="#FF1A1A1D">
-
-    <!--<ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Margin="0,0,0,-209" Grid.RowSpan="2" >
-                <Grid.RowDefinitions >
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                    <RowDefinition Height = "auto" />
-                </Grid.RowDefinitions >
-
-                <TextBlock Margin = "0, 15, 0, 15" HorizontalAlignment = "Center" VerticalAlignment = "Center" FontSize = "28" FontWeight = "Bold" Text = "Skapa Specialbeställning" Foreground = "White" ></TextBlock >
-
-                <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Produkt: " Foreground = "#FFC5A059"></TextBlock>
-                            <TextBlock Foreground = "#FFC5A059" Text = "{Binding}" TextWrapping = "Wrap" MaxWidth = "300" ></TextBlock>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row = "2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text = "Storlek" Foreground = "#FFC5A059" ></TextBlock>
-                        <Button Grid.Column = "1" Width = "200" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Storlek" Background = "#FFB08D46" ></Button>
-                        <StackPanel Orientation = "Horizontal" Margin = "50, 0, 0, 15" VerticalAlignment = "Bottom">
-                            <TextBox Width = "200"/>
-                            --><!--Förklarande text?--><!--
-                            <ComboBox VerticalAlignment = "center" Foreground = "#FFC5A059" ItemsSource="{Binding storlekInkrement}" SelectedItem="{Binding valtStlInkrement}"/>
-                            --><!--Behövs Text här?--><!--
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text = "Material" Foreground = "#FFC5A059" ></TextBlock>
-                        <Button Grid.Column = "1" Width = "200" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Material" Background = "#FFB08D46" ></Button>
-                        <ComboBox Width = "200" Margin = "50, 15, 0, 50" HorizontalAlignment = "Left" ItemsSource = "{Binding material}" SelectedItem = "{Binding valtMaterial}" Text = "Välj Material" ></ComboBox>
-                        <StackPanel Orientation = "Horizontal" Margin = "50, 0, 0, 15" VerticalAlignment = "Bottom">
-                            <TextBox Width = "200"/>
-                            <ComboBox VerticalAlignment = "center" Foreground = "#FFC5A059" ItemsSource="{Binding materialInkrement}" SelectedItem="{Binding valtInkrement}"/>
-                            --><!--Behövs Text här?--><!--
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row = "4" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <StackPanel Orientation="Horizontal" Width="Auto">
-                        <TextBlock Text="Beskrivning: " Foreground = "#FFC5A059"/>
-                        <TextBox Width="300" Height="100" Margin="15" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True"/>
-                        <Button Width = "200" Margin = "100, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Beskrivning" Background = "#FFB08D46" ></Button>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Row="5" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Referensbild: " Foreground = "#FFC5A059"/>
-                        <TextBox Width="200" Margin="15, 0"></TextBox>
-                        <Button Width = "100" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Bild" Background = "#FFB08D46" ></Button>
-                        <ListBox ItemsSource="{Binding}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding}" Width="50" Height="50" Margin="0, 0, 10, 0"/>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding}" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Image Source="{Binding}" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
-                        --><!--Ska jag vara här?--><!--
-                    </StackPanel>
-                </Border>
-
-
-                <Border Grid.Row="6" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Översikt" Foreground="#FFB08D46"></TextBlock>
-                        <TextBox Margin="50, 15" Width="300" Text="{Binding översikt}" TextWrapping="Wrap"></TextBox>
-                        <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Lägg Till Specialbeställning" Background="#FFB08D46"></Button>
-                    </Grid>
-                </Border>
-
-
-
-
-
-
-            </Grid >
-        </Grid>
-    </ScrollViewer>-->
+    
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
 
         <Grid>
@@ -136,13 +20,15 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+
+            
             <TextBlock Margin = "0, 15, 0, 15" HorizontalAlignment = "Center" VerticalAlignment = "Center" FontSize = "28" FontWeight = "Bold" Text = "Skapa Specialbeställning" Foreground = "White" ></TextBlock >
 
             <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Produkt: " Foreground = "#FFC5A059"></TextBlock>
-                        <TextBlock Foreground = "#FFC5A059" Text = "{Binding}" TextWrapping = "Wrap" MaxWidth = "300" ></TextBlock>
+                        <TextBlock Foreground = "#FFC5A059" Text = "{Binding}" TextWrapping = "Wrap" MaxWidth = "300" ></TextBlock> <!--Antar att produktens som ska specialbeställas Produknamn ska in här-->
                     </StackPanel>
                 </Grid>
             </Border>
@@ -195,8 +81,8 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Referensbild: " Foreground = "#FFC5A059"/>
                     <TextBox Width="200" Margin="15, 0"></TextBox>
-                    <Button Width = "100" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Bild" Background = "#FFB08D46" ></Button>
-                    <ListBox ItemsSource="{Binding}">
+                    <Button Click="BtnLaddaUppBild_Click" Width = "100" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Bild" Background = "#FFB08D46" ></Button>
+                    <!--<ListBox ItemsSource="{Binding}">     Vet inte vad detta är
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -207,8 +93,8 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Image Source="{Binding}" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
+                    </ListBox>-->
+                    <Image x:Name="ImgElementIXaml" Source="{Binding}" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
                     <!--Ska jag vara här?-->
                 </StackPanel>
             </Border>

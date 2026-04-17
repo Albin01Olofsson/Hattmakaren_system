@@ -1,19 +1,6 @@
-﻿using BL.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
@@ -27,10 +14,13 @@ namespace WpfApp1.Views1
         public SkapaAktivitet()
         {
             InitializeComponent();
-            var user = Session.CurrentUser;
+
+            // Hämta hela ViewModellen från din ServiceProvider istället för att skriva 'new'
             var serviceProvider = ((App)Application.Current).ServiceProvider;
-            var service = serviceProvider.GetRequiredService<IOrderService>();
-            var vm = new PlaneringViewModel(user, service);
+            var vm = serviceProvider.GetRequiredService<PlaneringViewModel>();
+
+            vm.User = Session.CurrentUser;
+
             DataContext = vm;
         }
     }

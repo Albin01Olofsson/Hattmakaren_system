@@ -1,4 +1,5 @@
 ﻿using BL.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels; // Se till att detta matchar mappen där din ViewModel ligger
@@ -30,6 +31,11 @@ namespace WpfApp1.Views1
                 vm.AllaKunder.Add(window.CreatedKund);
                 MessageBox.Show("Kund tillagd!");//hej
             }
+        }
+
+        private void BtnSkapaSpecialbeställning_Click(object sender, RoutedEventArgs rea)
+        {
+            NavigationService.Navigate(new SpcBestOrderPage());
         }
 
     }

@@ -9,7 +9,11 @@ namespace WpfApp1.Views1.ViewModels
 {
     public class Bokning
     {
-        public required string Titel { get; set; }
+        public int PlaneringsId { get; set; }
+        public string AnvändarNamn { get; set; }
+        public int OrderId { get; set; }
+        public int ProduktId { get; set; }
+        public string ProduktNamn { get; set; }
         public DateTime StartTid { get; set; }
         public double LangdITimmar { get; set; }
 

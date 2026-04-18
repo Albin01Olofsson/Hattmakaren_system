@@ -75,5 +75,15 @@ namespace BL.Services
                                  .Where(p => p.AnvändarID == id)
                                  .ToList();
         }
+
+        public void TaBortPlanering(int planeringId)
+        {
+            var planering = _planeringsRepo.GetById(planeringId);
+            if (planering != null)
+            {
+                _planeringsRepo.Delete(planering.PlaneringsID);
+                _planeringsRepo.Save();
+            }
+        }
     }
 }

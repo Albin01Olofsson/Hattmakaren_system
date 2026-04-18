@@ -9,5 +9,6 @@ namespace BL.Interfaces
         Planering HämtaPlaneringMedDetaljer(int planeringsID);
         List<Planering> HämtaAllaPlaneringar();
         List<Planering> HämtaMinPlanering(int id);
+        void TaBortPlanering(int planeringId);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -79,7 +80,11 @@ namespace WpfApp1.ViewModels
             {
                 Bokningar.Add(new Bokning
                 {
-                    Titel = p.Produkt.namn,
+                    PlaneringsId = p.PlaneringsID,
+                    AnvändarNamn = p.Användare.Namn,
+                    OrderId = p.Produkt.OrderID ?? 0,
+                    ProduktId = p.ProduktID,
+                    ProduktNamn = p.Produkt.namn,
                     StartTid = p.StartTid,
                     LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
                 });
@@ -93,7 +98,11 @@ namespace WpfApp1.ViewModels
             {
                 Bokningar.Add(new Bokning
                 {
-                    Titel = p.Produkt.namn,
+                    PlaneringsId = p.PlaneringsID,
+                    AnvändarNamn = p.Användare.Namn,
+                    OrderId = p.Produkt.OrderID ?? 0,
+                    ProduktId = p.ProduktID,
+                    ProduktNamn = p.Produkt.namn,
                     StartTid = p.StartTid,
                     LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
                 });
@@ -146,5 +155,11 @@ namespace WpfApp1.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void DeleteBokning(int planeringsId)
+        {
+            _service.TaBortPlanering(planeringsId);
+            LaddaBokningar();
+        }
     }
 }

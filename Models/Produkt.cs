@@ -22,7 +22,6 @@ namespace Models
 
         public string Decoration { get; set; } = string.Empty; //typ rosett, tygblomma
 
-
         [ForeignKey("Order")]
         public int? OrderID { get; set; }
         public Order? Order { get; set; }

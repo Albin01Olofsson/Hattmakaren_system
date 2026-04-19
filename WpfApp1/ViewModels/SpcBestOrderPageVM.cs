@@ -44,6 +44,18 @@ namespace WpfApp1.ViewModels
         private string nyStorlek;
 
         [ObservableProperty]
+        private string nyTyp;
+
+        [ObservableProperty]
+        private string nyModell;
+
+        [ObservableProperty]
+        private string nyFärg;
+
+        [ObservableProperty]
+        private string? nyDecoration;
+
+        [ObservableProperty]
         private string nyBeskrivning = String.Empty;
 
         [ObservableProperty]
@@ -136,10 +148,15 @@ namespace WpfApp1.ViewModels
                 namn = NyttProduktNamn,
                 pris = NyttPris,
                 Storlek = NyStorlek,
+                HattTyp = NyTyp,
+                Modell = NyModell,
+                Färg = NyFärg,
+                Decoration = NyDecoration,
                 Beskrivning = NyBeskrivning,
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
 
+            //Bild
             if (!string.IsNullOrWhiteSpace(BildUrl))
             {
                 string extension = Path.GetExtension(BildUrl);
@@ -154,6 +171,7 @@ namespace WpfApp1.ViewModels
             }
 
             nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
+            //Bild
 
             _produktService.AddSpecialBeställning(nySpecBes);
 
@@ -162,6 +180,10 @@ namespace WpfApp1.ViewModels
             NyttProduktNamn = string.Empty;
             NyttPris = 0;
             NyStorlek = string.Empty;
+            NyTyp = string.Empty;
+            NyModell = string.Empty;
+            NyFärg = string.Empty;
+            NyDecoration = string.Empty;
             NyBeskrivning = string.Empty;
             BildUrl = string.Empty;
             ValdBild = null;

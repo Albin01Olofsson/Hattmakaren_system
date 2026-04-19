@@ -36,6 +36,13 @@ namespace WpfApp1.Views1
             }
         }
 
+
+
+        private void BtnSkapaLagerfördProdukt_Click(object sender, RoutedEventArgs rea)
+        {
+            NavigationService.Navigate(new SkapaLagerfördProdukt());
+        }
+
         private void BtnSkapaSpecialbeställning_Click(object sender, RoutedEventArgs rea)
         {
             NavigationService.Navigate(new SpcBestOrderPage(new SpcBestOrderPageVM(

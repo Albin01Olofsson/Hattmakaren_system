@@ -40,7 +40,13 @@ namespace WpfApp1.Views1
 
         private void BtnSkapaLagerfördProdukt_Click(object sender, RoutedEventArgs rea)
         {
-            NavigationService.Navigate(new SkapaLagerfördProdukt());
+            NavigationService.Navigate(new SkapaLagerfördProdukt(new SkapaLagerfördProduktVM(
+                    new OrderService(new OrderRepo(new DBcontext())),
+                    new ProduktService(new ProduktRepo(new DBcontext())),
+                    new MaterialService(new MaterialRepo(new DBcontext())),
+                    new KundService(new KundRepo(new DBcontext())),
+                    new AnvändarService(new AnvändarRepo(new DBcontext()))
+                )));
         }
 
         private void BtnSkapaSpecialbeställning_Click(object sender, RoutedEventArgs rea)

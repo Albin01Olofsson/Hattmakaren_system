@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
 {
@@ -20,9 +21,10 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class SkapaLagerfördProdukt : Page
     {
-        public SkapaLagerfördProdukt()
+        public SkapaLagerfördProdukt(SkapaLagerfördProduktVM VM)
         {
             InitializeComponent();
+            DataContext = VM;
         }
     }
 }

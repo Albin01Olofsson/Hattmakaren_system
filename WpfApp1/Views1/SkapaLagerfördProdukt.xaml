@@ -33,7 +33,7 @@
                     <TextBlock Text="Produkt namn" Foreground="#FFB08D46" Margin="0,0,10,0">
                         
                     </TextBlock>
-                    <TextBox Width="245">
+                    <TextBox Width="245" Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}">
                         
                     </TextBox>
                 </StackPanel>
@@ -44,7 +44,7 @@
                     <TextBlock Text="Pris" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="280">
+                    <TextBox Width="280" Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
@@ -55,7 +55,7 @@
                     <TextBlock Text="Storlek" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="280">
+                    <TextBox Width="280" Text="{Binding NyStorlek, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
@@ -66,7 +66,7 @@
                     <TextBlock Text="Typ" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="280">
+                    <TextBox Width="280" Text="{Binding NyTyp, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
@@ -77,7 +77,7 @@
                     <TextBlock Text="Modell" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="280">
+                    <TextBox Width="280" Text="{Binding NyModell, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
@@ -88,7 +88,7 @@
                     <TextBlock Text="Färg" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="280">
+                    <TextBox Width="280" Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
@@ -99,14 +99,14 @@
                     <TextBlock Text="Dekoration" Foreground="#FFB08D46" Margin="0,0,10,0">
 
                     </TextBlock>
-                    <TextBox Width="650">
+                    <TextBox Width="650" Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}">
 
                     </TextBox>
                 </StackPanel>
             </Border>
 
 
-            <Button Command="{Binding}" 
+            <Button Command="{Binding LaggTillLagerfordProduktCommand}" 
                     Grid.Row="7" 
                     Grid.Column="0"
                     Grid.ColumnSpan="2"

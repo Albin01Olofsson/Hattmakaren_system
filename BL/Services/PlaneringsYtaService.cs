@@ -14,6 +14,11 @@ namespace BL.Services
             _planeringsRepo = planeringsRepo;
             _orderRepo = orederRepo;
         }
+        public void Add(Planering planering)
+        {
+            _planeringsRepo.Add(planering);
+            _planeringsRepo.Save();
+        }
         // 1. Hämta hattar från en vald order så Judith kan välja en
         public List<Produkt> HämtaHattarFrånOrder(int orderId)
         {
@@ -25,8 +30,19 @@ namespace BL.Services
         }
 
         // 2. Skapa själva bokningen i schemat
-        public void PlaneraArbete(int användarId, int produktId, DateTime startTid)
+        public Planering PlaneraArbete(int användarId, int produktId, DateTime startTid)
         {
+            var slutTid = startTid.AddHours(2);
+
+            var finnsKrock = _planeringsRepo.GetAll()
+                .Any(p => p.ProduktID == produktId &&
+                          p.StartTid < slutTid &&
+                          p.SlutTid > startTid);
+
+            if (finnsKrock)
+            {
+                throw new Exception("Produkten är redan bokad denna tid!");
+            }
             var nyBokning = new Planering
             {
                 AnvändarID = användarId,
@@ -37,6 +53,7 @@ namespace BL.Services
 
             _planeringsRepo.Add(nyBokning);
             _planeringsRepo.Save();
+            return nyBokning;
         }
 
         // 3. Hämta planeringar för att visa i schemat
@@ -57,6 +74,42 @@ namespace BL.Services
             return _planeringsRepo.HämtaAllaPlaneringarMedDetaljer()
                                  .Where(p => p.AnvändarID == id)
                                  .ToList();
+        }
+
+        public List<Planering> HämtaPlaneringar(bool alla, int userId)
+        {
+            var query = _planeringsRepo.HämtaAllaPlaneringarMedDetaljer();
+            if (!alla)
+            {
+                query = query.Where(p => p.AnvändarID == userId).ToList();
+            }
+            return query;
+        }
+
+        public void TaBortPlanering(int planeringId)
+        {
+            var planering = _planeringsRepo.GetById(planeringId);
+            if (planering != null)
+            {
+                _planeringsRepo.Delete(planering.PlaneringsID);
+                _planeringsRepo.Save();
+            }
+        }
+
+        public List<Produkt> HämtaLedigaProdukter(int orderId)
+        {
+            var order = _orderRepo.GetOrdersAndNavPropertiesList()
+                .FirstOrDefault(o => o.OrderID == orderId);
+
+            if (order == null)
+                return new List<Produkt>();
+
+            var upptagnaProdukterIds = _planeringsRepo.GetAll()
+                .Select(p => p.ProduktID)
+                .ToList();
+            return order.Produkter
+                .Where(p => !upptagnaProdukterIds.Contains(p.ProduktID))
+                .ToList();
         }
     }
 }

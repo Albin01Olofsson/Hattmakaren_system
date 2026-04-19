@@ -21,6 +21,6 @@ namespace Models
         public int TillverkadAVID { get; set; }
         public Användare TillverkadAv { get; set; } = null!;
 
-        public Planering Planering { get; set; }
+        public ICollection<Planering> Planeringar { get; set; } = new List<Planering>();
     }
 }

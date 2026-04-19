@@ -98,10 +98,9 @@ namespace DAL
                       .OnDelete(DeleteBehavior.Restrict);
 
                 // 1 -> 1 (Produkt -> Planering)
-                entity.HasIndex(p => p.ProduktID).IsUnique();
                 entity.HasOne(p => p.Produkt)
-                      .WithOne(pr => pr.Planering)
-                      .HasForeignKey<Planering>(p => p.ProduktID)
+                      .WithMany(pr => pr.Planeringar)
+                      .HasForeignKey(p => p.ProduktID)
                       .OnDelete(DeleteBehavior.Restrict);
             });
 

@@ -10,5 +10,6 @@ namespace BL.Interfaces
         List<Planering> HämtaAllaPlaneringar();
         List<Planering> HämtaMinPlanering(int id);
         void TaBortPlanering(int planeringId);
+        List<Produkt> HämtaLedigaProdukter(int orderId);
     }
 }

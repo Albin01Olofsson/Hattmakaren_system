@@ -22,10 +22,10 @@ namespace WpfApp1.ViewModels
         public ObservableCollection<Produkt> AllaProdukter { get; } = new();
 
         [ObservableProperty]
-        private Order _valdOrder;
+        private Order valdOrder;
 
         [ObservableProperty]
-        private Produkt _valdProdukt;
+        private Produkt valdProdukt;
 
         [ObservableProperty]
         private DateTime? valdStartTid;
@@ -33,7 +33,6 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private int valdStartTimme;
 
-        // KONSTRUKTOR: Tar nu endast emot tjänster som finns i App.xaml.cs
         public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
             _orderService = orderService;
@@ -42,35 +41,25 @@ namespace WpfApp1.ViewModels
             LaddaOrdrar();
         }
 
-        // Körs automatiskt när en order väljs i ComboBoxen
-        partial void OnValdOrderChanged(Order value)
-        {
-            if (value != null)
-            {
-                LaddaProdukter(value.OrderID);
-            }
-            else
-            {
-                AllaProdukter.Clear();
-            }
-        }
-
         public void LaddaOrdrar()
         {
-            var ordrarFrånDB = _orderService.GetOrdersWithNavProps();
             AllaOrdrar.Clear();
+
+            var ordrarFrånDB = _orderService.GetOrdersWithNavProps();
+            
             foreach (var order in ordrarFrånDB)
             {
                 AllaOrdrar.Add(order);
             }
         }
-
-        public void LaddaProdukter(int orderid)
+        partial void OnValdOrderChanged(Order value)
         {
-            // Nu är _service inte längre null!
-            var produkterFrånDB = _service.HämtaHattarFrånOrder(orderid);
             AllaProdukter.Clear();
-            foreach (var produkt in produkterFrånDB)
+            if (value == null)
+                return;
+
+            var produkter = _service.HämtaLedigaProdukter(value.OrderID);
+            foreach(var produkt in produkter)
             {
                 AllaProdukter.Add(produkt);
             }
@@ -79,15 +68,16 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SparaAktivitet()
         {
-            if (ValdProdukt != null && User != null && ValdStartTid.HasValue)
-            {
-                var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme);
+            if (ValdProdukt == null || User == null || !ValdStartTid.HasValue)
+                return;
+            
+            var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme);
 
-                var planering = _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
+            var planering = _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
 
-                PlaneringAdded?.Invoke(planering);
-                // Eventuellt stänga fönstret här eller skicka ett event
-            }
+            PlaneringAdded?.Invoke(planering);
+
+            ValdProdukt = null;
         }
     }
 }

@@ -34,8 +34,16 @@ namespace WpfApp1.Views1.ViewModels
             }
         }
 
-        public Thickness Margin => new Thickness(0, TopPos, 0, 0);
+        public Thickness Margin => new Thickness(LeftOffset, TopPos, 0, 0);
 
         public double Height => LangdITimmar * 60;
+
+        public int Index { get; set; }
+
+        public int AntalIKrock { get; set; }
+
+        public double LeftOffset => Index * (120.0 / AntalIKrock);
+
+        public double Width => 120.0 / AntalIKrock;
     }
 }

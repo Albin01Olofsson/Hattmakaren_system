@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfApp1.Views1.ViewModels;
 
 namespace WpfApp1.ViewModels
@@ -43,18 +44,8 @@ namespace WpfApp1.ViewModels
             DateTime idag = DateTime.Today;
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
-
             LaddaTider();
-            
-
             Bokningar = new ObservableCollection<Bokning>();
-
-            //Bokningar.Add(new Bokning
-            //{
-            //    Titel = "Projekt Arbete",
-            //    StartTid = NuvarandeMåndag.AddHours(8),
-            //    LangdITimmar = 2.5
-            //});
             LaddaBokningar();
         }
 
@@ -74,38 +65,75 @@ namespace WpfApp1.ViewModels
             var veckaSlut = veckaStart.AddDays(7);
 
             var planeringar = _service.HämtaAllaPlaneringar()
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut);
-            
-            foreach(var p in planeringar)
+                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToList();
+
+            var grupper = planeringar.GroupBy(p => p.StartTid.Date);
+
+            foreach(var dag in grupper)
             {
-                Bokningar.Add(new Bokning
+                var lista = dag.OrderBy(p => p.StartTid).ToList();
+                foreach(var current in lista)
                 {
-                    PlaneringsId = p.PlaneringsID,
-                    AnvändarNamn = p.Användare.Namn,
-                    OrderId = p.Produkt.OrderID ?? 0,
-                    ProduktId = p.ProduktID,
-                    ProduktNamn = p.Produkt.namn,
-                    StartTid = p.StartTid,
-                    LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
-                });
+                    var krockar = lista.Where(p => 
+                        p.StartTid < current.SlutTid && 
+                        current.StartTid < p.SlutTid)
+                        .ToList();
+
+                    int index = krockar.IndexOf(current);
+                    int count = krockar.Count;
+
+                    Bokningar.Add(new Bokning
+                    {
+                        PlaneringsId = current.PlaneringsID,
+                        AnvändarNamn = current.Användare.Namn,
+                        OrderId = current.Produkt.OrderID ?? 0,
+                        ProduktId = current.ProduktID,
+                        ProduktNamn = current.Produkt.namn,
+                        StartTid = current.StartTid,
+                        LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
+                        Index = index,
+                        AntalIKrock = count
+                    });
+                }
             }
         }
         public void LaddaMinaBokningar(int användarId)
         {
             Bokningar.Clear();
-            var planeringar = _service.HämtaMinPlanering(användarId);
-            foreach (var p in planeringar)
+
+            var veckaStart = NuvarandeMåndag.Date;
+            var veckaSlut = veckaStart.AddDays(7);
+
+            var planeringar = _service.HämtaMinPlanering(användarId)
+                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToList();
+            var grupper = planeringar.GroupBy(p => p.StartTid.Date);
+
+            foreach (var dag in grupper)
             {
-                Bokningar.Add(new Bokning
+                var lista = dag.OrderBy(p => p.StartTid).ToList();
+                foreach (var current in lista)
                 {
-                    PlaneringsId = p.PlaneringsID,
-                    AnvändarNamn = p.Användare.Namn,
-                    OrderId = p.Produkt.OrderID ?? 0,
-                    ProduktId = p.ProduktID,
-                    ProduktNamn = p.Produkt.namn,
-                    StartTid = p.StartTid,
-                    LangdITimmar = (p.SlutTid - p.StartTid).TotalHours
-                });
+                    var krockar = lista.Where(p =>
+                        p.StartTid < current.SlutTid &&
+                        current.StartTid < p.SlutTid)
+                        .ToList();
+
+                    int index = krockar.IndexOf(current);
+                    int count = krockar.Count;
+
+                    Bokningar.Add(new Bokning
+                    {
+                        PlaneringsId = current.PlaneringsID,
+                        AnvändarNamn = current.Användare.Namn,
+                        OrderId = current.Produkt.OrderID ?? 0,
+                        ProduktId = current.ProduktID,
+                        ProduktNamn = current.Produkt.namn,
+                        StartTid = current.StartTid,
+                        LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
+                        Index = index,
+                        AntalIKrock = count
+                    });
+                }
             }
         }
 

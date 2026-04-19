@@ -85,5 +85,22 @@ namespace BL.Services
                 _planeringsRepo.Save();
             }
         }
+
+        public List<Produkt> HämtaLedigaProdukter(int orderId)
+        {
+            //var order = HämtaHattarFrånOrder(orderId);
+            var order = _orderRepo.GetOrdersAndNavPropertiesList()
+                .FirstOrDefault(o => o.OrderID == orderId);
+
+            if (order == null)
+                return new List<Produkt>();
+
+            var upptagnaProdukterIds = _planeringsRepo.GetAll()
+                .Select(p => p.ProduktID)
+                .ToList();
+            return order.Produkter
+                .Where(p => !upptagnaProdukterIds.Contains(p.ProduktID))
+                .ToList();
+        }
     }
 }

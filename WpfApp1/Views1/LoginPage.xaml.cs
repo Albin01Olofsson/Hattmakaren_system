@@ -15,16 +15,23 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
         }
-        private void PassInput_PasswordChanged(object sender, RoutedEventArgs e)// Denna metod körs varje gång användaren ändrar texten i lösenordsfältet
+        private void PassInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is LoginViewModel viewModel)// Först kollar vi att DataContext är av typen LoginViewModel, så att vi kan uppdatera Lösenord-egenskapen i vår ViewModel
+            if (DataContext is LoginViewModel viewModel)
             {
-                viewModel.Lösenord = PassInput.Password;// Sedan sätter vi Lösenord-egenskapen i vår ViewModel till det nya lösenordet som användaren har skrivit in
+                viewModel.Lösenord = PassInput.Password;
             }
-            PasswordPlaceholder.Visibility =// Slutligen så uppdaterar vi synligheten för vår placeholder-text, så att den bara visas när lösenordsfältet är tomt
-                string.IsNullOrWhiteSpace(PassInput.Password)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            // Inga fler rader här!
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

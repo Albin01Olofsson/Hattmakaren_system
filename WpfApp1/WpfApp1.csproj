@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\00bce0939f636f2927b42f74f38d896a.jpg" />
+    <None Remove="Images\top-hat-transparent-background-6-removebg-preview.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="itext" Version="9.6.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.6.0" />
@@ -22,6 +27,11 @@
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\00bce0939f636f2927b42f74f38d896a.jpg" />
+    <Resource Include="Images\top-hat-transparent-background-6-removebg-preview.png" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +18,11 @@ namespace WpfApp1.ViewModels
     public partial class AnvPlanViewModel : ObservableObject
     {
         private readonly IPlaneringsYtaService _service;
+        private Användare user => Session.CurrentUser;//När vm skapas, spara in den inloggade användaren från session i lokal variabel
+
+        [ObservableProperty]
+        private string valtSchemaLäge;
+
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DennaVeckaTxt))]
         [NotifyPropertyChangedFor(nameof(MåndagDatum))]
@@ -57,6 +63,12 @@ namespace WpfApp1.ViewModels
                 TidsIntervaller.Add($"{i:D2}:00");
             }
         }
+
+        partial void OnValtSchemaLägeChanged(string value)
+        {
+            LaddaBokningar();
+        }
+
         public void LaddaBokningar()
         {
             Bokningar.Clear();
@@ -64,10 +76,15 @@ namespace WpfApp1.ViewModels
             var veckaStart = NuvarandeMåndag.Date;
             var veckaSlut = veckaStart.AddDays(7);
 
-            var planeringar = _service.HämtaAllaPlaneringar()
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToList();
+            var alla = _service.HämtaAllaPlaneringar()
+                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut);
 
-            var grupper = planeringar.GroupBy(p => p.StartTid.Date);
+            if(ValtSchemaLäge == "Mitt schema")
+            {
+                alla = alla.Where(p => p.AnvändarID == user.AnvändarID);
+            }
+
+            var grupper = alla.GroupBy(p => p.StartTid.Date);
 
             foreach(var dag in grupper)
             {
@@ -76,45 +93,6 @@ namespace WpfApp1.ViewModels
                 {
                     var krockar = lista.Where(p => 
                         p.StartTid < current.SlutTid && 
-                        current.StartTid < p.SlutTid)
-                        .ToList();
-
-                    int index = krockar.IndexOf(current);
-                    int count = krockar.Count;
-
-                    Bokningar.Add(new Bokning
-                    {
-                        PlaneringsId = current.PlaneringsID,
-                        AnvändarNamn = current.Användare.Namn,
-                        OrderId = current.Produkt.OrderID ?? 0,
-                        ProduktId = current.ProduktID,
-                        ProduktNamn = current.Produkt.namn,
-                        StartTid = current.StartTid,
-                        LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
-                        Index = index,
-                        AntalIKrock = count
-                    });
-                }
-            }
-        }
-        public void LaddaMinaBokningar(int användarId)
-        {
-            Bokningar.Clear();
-
-            var veckaStart = NuvarandeMåndag.Date;
-            var veckaSlut = veckaStart.AddDays(7);
-
-            var planeringar = _service.HämtaMinPlanering(användarId)
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToList();
-            var grupper = planeringar.GroupBy(p => p.StartTid.Date);
-
-            foreach (var dag in grupper)
-            {
-                var lista = dag.OrderBy(p => p.StartTid).ToList();
-                foreach (var current in lista)
-                {
-                    var krockar = lista.Where(p =>
-                        p.StartTid < current.SlutTid &&
                         current.StartTid < p.SlutTid)
                         .ToList();
 

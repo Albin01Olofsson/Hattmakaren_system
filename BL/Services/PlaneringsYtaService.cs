@@ -76,6 +76,16 @@ namespace BL.Services
                                  .ToList();
         }
 
+        public List<Planering> HämtaPlaneringar(bool alla, int userId)
+        {
+            var query = _planeringsRepo.HämtaAllaPlaneringarMedDetaljer();
+            if (!alla)
+            {
+                query = query.Where(p => p.AnvändarID == userId).ToList();
+            }
+            return query;
+        }
+
         public void TaBortPlanering(int planeringId)
         {
             var planering = _planeringsRepo.GetById(planeringId);
@@ -88,7 +98,6 @@ namespace BL.Services
 
         public List<Produkt> HämtaLedigaProdukter(int orderId)
         {
-            //var order = HämtaHattarFrånOrder(orderId);
             var order = _orderRepo.GetOrdersAndNavPropertiesList()
                 .FirstOrDefault(o => o.OrderID == orderId);
 

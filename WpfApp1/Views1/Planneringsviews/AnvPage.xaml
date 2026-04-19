@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:WpfApp1.Views1.Planneringsviews" 
       xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels" 
       mc:Ignorable="d"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AnvPage" Background="#FF1A1A1D">
     
@@ -32,7 +33,10 @@
                     <MenuItem Header="Material">
 
                     </MenuItem>
-                    <!--<Button Content="Skapa aktivitet" Click="Button_Click"/>-->
+                    <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}">
+                        <sys:String>Alla scheman</sys:String>
+                        <sys:String>Mitt schema</sys:String>
+                    </ComboBox>
                 </Menu>
             </StackPanel>
         </Border>

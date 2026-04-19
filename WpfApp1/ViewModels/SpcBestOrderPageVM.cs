@@ -53,7 +53,7 @@ namespace WpfApp1.ViewModels
         private string nyFärg;
 
         [ObservableProperty]
-        private string? nyDecoration;
+        private string? nyDecoration = string.Empty;
 
         [ObservableProperty]
         private string nyBeskrivning = String.Empty;
@@ -129,8 +129,50 @@ namespace WpfApp1.ViewModels
                 return;
             }
 
+            //Typ
+            if (string.IsNullOrWhiteSpace(NyTyp))
+            {
+                MessageBox.Show("En typ för hatten måste anges.", "Typ ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyTyp = String.Empty;
+                return;
+            }
+            else if (NyTyp.Length < 3 || NyTyp.Length > 76)
+            {
+                MessageBox.Show("Tecken antalet angivet för ''typ'' måste vara 3-76 tecken", "Problem med antal tecken!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyTyp = string.Empty;
+                return;
+            }
+
+            //Modell
+            if (string.IsNullOrWhiteSpace(NyModell))
+            {
+                MessageBox.Show("En Modell för hatten måste anges.", "Modell ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyModell = String.Empty;
+                return;
+            }
+            else if (NyModell.Length < 3 || NyModell.Length > 76)
+            {
+                MessageBox.Show("Tecken antalet angivet för ''Modell'' måste vara 3-76 tecken", "För många tecken Modell!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyModell = string.Empty;
+                return;
+            }
+
+            //Färg
+            if (string.IsNullOrWhiteSpace(NyFärg))
+            {
+                MessageBox.Show("Färg för hatten måste anges.", "Färg ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyFärg = String.Empty;
+                return;
+            }
+            else if (NyFärg.Length < 3 || NyFärg.Length > 76)
+            {
+                MessageBox.Show("Tecken antalet angivet för ''Färg'' måste vara 3-76 tecken", "För många tecken Färg!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                NyModell = string.Empty;
+                return;
+            }
+
             //Beskrivning
-            if(NyBeskrivning.Length > 500)
+            if (NyBeskrivning.Length > 500)
             {
                 MessageBox.Show("Beskrivning är för lång, max 500 tecken", "För många tecken storlek!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 NyBeskrivning = string.Empty;

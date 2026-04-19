@@ -93,7 +93,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
+                            Lösenord = "$2a$11$IbPFtBzld61HRR1vpUvM2OqoArvLIp8ZkOoKOe7QhZLKrWatjVOhC",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -103,7 +103,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
+                            Lösenord = "$2a$11$IbPFtBzld61HRR1vpUvM2OqoArvLIp8ZkOoKOe7QhZLKrWatjVOhC",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -113,7 +113,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
+                            Lösenord = "$2a$11$IbPFtBzld61HRR1vpUvM2OqoArvLIp8ZkOoKOe7QhZLKrWatjVOhC",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -123,7 +123,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
+                            Lösenord = "$2a$11$IbPFtBzld61HRR1vpUvM2OqoArvLIp8ZkOoKOe7QhZLKrWatjVOhC",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -641,8 +641,24 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktID"));
 
+                    b.Property<string>("Decoration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Färdig")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Färg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HattTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Modell")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("OrderID")
                         .HasColumnType("int");
@@ -682,7 +698,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000001,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000001,
                             Storlek = "M",
                             TillverkadAVID = 1,
@@ -692,7 +712,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000002,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000002,
                             Storlek = "M",
                             TillverkadAVID = 2,

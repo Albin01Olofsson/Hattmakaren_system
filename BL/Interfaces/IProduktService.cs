@@ -13,7 +13,7 @@ namespace BL.Interfaces
         List<Produkt> GetProdukter(); //Med Include
         Produkt GetProduktId(int id);
         void AddProdukt(Produkt p);
-        void AddSpecialBeställning(SpecialBeställning sb);
+        void AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn);
         void UpdateProdukt(Produkt p);
         void DeleteProdukt(int id);
         void SaveProdukt();

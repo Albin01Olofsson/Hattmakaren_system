@@ -218,6 +218,8 @@ namespace WpfApp1.ViewModels
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
 
+            var materialIdn = NyMaterialLista.Select(M => M.MaterialID).ToList();
+
             //Bild
             if (!string.IsNullOrWhiteSpace(BildUrl))
             {
@@ -235,13 +237,14 @@ namespace WpfApp1.ViewModels
             nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
             //Bild
 
-            _produktService.AddSpecialBeställning(nySpecBes);
+            _produktService.AddSpecialBeställning(nySpecBes, materialIdn);
 
             MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
 
             NyttProduktNamn = string.Empty;
             NyttPris = 0;
             NyStorlek = string.Empty;
+            NyMaterialLista = new ObservableCollection<Material>();
             NyTyp = string.Empty;
             NyModell = string.Empty;
             NyFärg = string.Empty;
@@ -251,6 +254,17 @@ namespace WpfApp1.ViewModels
             ValdBild = null;
             ValdProdukt = null;
             ValdMaterial = null;
+        }
+
+        private List<Material> MaterialListaKonvertering()
+        {
+            List<Material> mLista = new();
+            foreach(Material m in NyMaterialLista)
+            {
+                mLista.Add(m);
+            }
+
+            return mLista;
         }
     }
 }

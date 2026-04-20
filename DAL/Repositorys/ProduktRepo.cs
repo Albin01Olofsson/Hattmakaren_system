@@ -15,6 +15,19 @@ namespace DAL.Repositorys
         {
         }
 
+        public void AddSpecBes(SpecialBeställning sb, List<int> materialIdn)
+        {
+            foreach(int materialId in materialIdn)
+            {
+                var materialIdDb = _context.Material.FirstOrDefault(m => m.MaterialID == materialId);
+                sb.MaterialLista.Add(materialIdDb);
+            }
+
+            _context.SpecialBeställningar.Add(sb);
+            Save();
+        }
+
+
         public List<Produkt> GetAllaProdukter()
         {
             return _context.Produkter

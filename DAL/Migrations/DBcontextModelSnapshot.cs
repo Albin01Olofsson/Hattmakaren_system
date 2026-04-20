@@ -93,7 +93,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$RcpNqfOETg9t./W7O/bybeoq.RGS/oUMDxAWh1l22lAvU44HqgTfi",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -103,7 +103,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$RcpNqfOETg9t./W7O/bybeoq.RGS/oUMDxAWh1l22lAvU44HqgTfi",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -113,7 +113,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$RcpNqfOETg9t./W7O/bybeoq.RGS/oUMDxAWh1l22lAvU44HqgTfi",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -123,10 +123,36 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$RcpNqfOETg9t./W7O/bybeoq.RGS/oUMDxAWh1l22lAvU44HqgTfi",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
+                });
+
+            modelBuilder.Entity("Models.BestallningsRad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialBeställningID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialBeställningID");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("BestallningsRader");
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -268,9 +294,6 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
 
-                    b.Property<int>("Antal")
-                        .HasColumnType("int");
-
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
@@ -287,21 +310,18 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
-                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 1890m
                         },
                         new
                         {
                             MaterialBeställningID = 1000002,
-                            Antal = 0,
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
-                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
@@ -763,6 +783,25 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Models.BestallningsRad", b =>
+                {
+                    b.HasOne("Models.MaterialBeställning", "Bestallning")
+                        .WithMany("Rader")
+                        .HasForeignKey("MaterialBeställningID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bestallning");
+
+                    b.Navigation("Material");
+                });
+
             modelBuilder.Entity("Models.MaterialBeställning", b =>
                 {
                     b.HasOne("Models.Användare", "StartadAv")
@@ -844,6 +883,11 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Kund", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Models.MaterialBeställning", b =>
+                {
+                    b.Navigation("Rader");
                 });
 
             modelBuilder.Entity("Models.Order", b =>

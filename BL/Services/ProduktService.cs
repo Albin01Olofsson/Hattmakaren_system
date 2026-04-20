@@ -23,7 +23,11 @@ namespace BL.Services
 
         public Produkt GetProduktId(int id) => prodRepo.GetById(id);
 
-        public void AddProdukt(Produkt p) => prodRepo.Add(p);
+        public void AddProdukt(Produkt p)
+        {
+            prodRepo.Add(p);
+            prodRepo.Save();
+        }
 
         public void AddSpecialBeställning(SpecialBeställning sb)
         {

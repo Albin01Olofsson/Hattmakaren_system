@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1.Planneringsviews
 {
@@ -23,7 +13,26 @@ namespace WpfApp1.Views1.Planneringsviews
         public AnvPage()
         {
             InitializeComponent();
-            this.DataContext = new WpfApp1.ViewModels.AnvPlanViewModel();
+            //this.DataContext = new WpfApp1.ViewModels.AnvPlanViewModel();
+            var serviceProvider = ((App)Application.Current).ServiceProvider;
+            this.DataContext = serviceProvider.GetRequiredService<AnvPlanViewModel>();
+
         }
+        private void Ordrar_Click(object sender, RoutedEventArgs e)
+        {
+            // Vi skapar en ny instans av fönstret
+            var skapaFönster = new SkapaAktivitet();
+
+            if(skapaFönster.ShowDialog() == true)
+            {
+                var vm = (AnvPlanViewModel)DataContext;
+                vm.LaddaBokningar();
+            }
+            // ShowDialog() gör att man måste stänga fönstret innan man kan trycka på schemat igen
+            // Show() låter båda fönstren vara öppna samtidigt
+            //skapaFönster.ShowDialog();
+        }
+
+        
     }
 }

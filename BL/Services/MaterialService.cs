@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BL.Interfaces;
 using DAL.Intefaces;
+using Models;
 
 namespace BL.Services
 {
@@ -15,5 +16,7 @@ namespace BL.Services
         {
             _materialRepo = materialRepo;
         }
+
+        public List<Material> GetMaterialLista() => _materialRepo.GetAll();
     }
 }

@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:WpfApp1.Views1.Planneringsviews" 
       xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels" 
       mc:Ignorable="d"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AnvPage" Background="#FF1A1A1D">
     
@@ -23,7 +24,7 @@
             <StackPanel>
                 <TextBlock Text="Ditt Schema" FontSize="28" FontWeight="Bold" Margin="30, 0"/>
                 <Menu Margin="50,0" Background="#FFC5A059" FontWeight="Bold">
-                    <MenuItem Header="Projekt">
+                    <MenuItem Header="Ordrar" Click="Ordrar_Click">
 
                     </MenuItem>
                     <MenuItem Header="Plannering">
@@ -32,6 +33,10 @@
                     <MenuItem Header="Material">
 
                     </MenuItem>
+                    <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}">
+                        <sys:String>Alla scheman</sys:String>
+                        <sys:String>Mitt schema</sys:String>
+                    </ComboBox>
                 </Menu>
             </StackPanel>
         </Border>
@@ -135,11 +140,65 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#CCB08D46" CornerRadius="4" BorderBrush="#FFC5A059" BorderThickness="1" Height="{Binding Height}" Margin="2, 0">
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="{Binding Titel}" Foreground="White" FontSize="12" TextWrapping="Wrap"/>
-                                        </StackPanel>
-                                    </Border>
+                                    <Grid>
+                                        <!-- Bokningen -->
+                                        <Border x:Name="BookingBorder" Background="#CCB08D46" CornerRadius="4" BorderBrush="#FFC5A059" BorderThickness="1" Height="{Binding Height}" Margin="2,0" Width="{Binding Width}">
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="{Binding ProduktNamn}" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                                <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Popup -->
+                                        <Popup x:Name="PopupInfo" Placement="Right" PlacementTarget="{Binding ElementName=BookingBorder}" StaysOpen="True">
+                                            <Border Background="#222" Padding="10" CornerRadius="6" BorderBrush="#FFC5A059" BorderThickness="1">
+                                                <StackPanel Width="180">
+                                                    <TextBlock Text="{Binding ProduktNamn}" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                                    <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF"/>
+                                                    <TextBlock Foreground="#AAFFFFFF">
+                                                        <Run Text="Order: "/>
+                                                        <Run Text="{Binding OrderId}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="#AAFFFFFF">
+                                                        <Run Text="ProduktID: "/>
+                                                        <Run Text="{Binding ProduktId}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Foreground="#AAFFFFFF" Text="{Binding StartTid, StringFormat=Start: {0:HH:mm}}"/>
+
+                                                    <!-- Delete knapp -->
+                                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                                        <Button Content="Delete" 
+                                                                Command="{Binding DataContext.DeleteBokningCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                                                CommandParameter="{Binding PlaneringsId}"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </Popup>
+
+                                        <!-- Hover logik -->
+                                        <Grid.Triggers>
+                                            <!-- När mus går in -->
+                                            <EventTrigger RoutedEvent="MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <BooleanAnimationUsingKeyFrames  Storyboard.TargetName="PopupInfo" Storyboard.TargetProperty="IsOpen">
+                                                            <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                        </BooleanAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <!-- När mus lämnar -->
+                                            <EventTrigger RoutedEvent="MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <BooleanAnimationUsingKeyFrames Storyboard.TargetName="PopupInfo" Storyboard.TargetProperty="IsOpen">
+                                                            <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="False"/>
+                                                        </BooleanAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Grid.Triggers>
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

@@ -31,6 +31,7 @@ namespace WpfApp1
             services.AddScoped<IKundRepo, KundRepo>();      // SAKNADES
             services.AddScoped<IProduktRepo, ProduktRepo>();  // SAKNADES
             services.AddScoped<IOrderRepository, OrderRepo>(); // SAKNADES
+            services.AddScoped<IPlaneringsRepo, PlaneringsRepo>();
 
             // 3. REGISTRERA TJÄNSTER (BL)
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -38,10 +39,13 @@ namespace WpfApp1
             services.AddScoped<IKundService, KundService>();      // SAKNADES
             services.AddScoped<IProduktService, ProduktService>();  // SAKNADES
             services.AddScoped<IOrderService, OrderService>();      // SAKNADES
+            services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();
             services.AddTransient<SkapaOrderViewModel>(); // DETTA VAR FELET PÅ BILDEN!
+            services.AddTransient<PlaneringViewModel>();
+            services.AddTransient<AnvPlanViewModel>();
 
             // 5. BYGG PROVIDER
             ServiceProvider = services.BuildServiceProvider();
@@ -59,7 +63,7 @@ namespace WpfApp1
             var loginVm = (LoginViewModel)loginPage.DataContext;
             loginVm.LoginSucceeded += () =>
             {
-                // Här navigerar vi till din startsida efter lyckad inloggning
+                // Här navigerar vi till startsida efter lyckad inloggning
                 mainWindow.MainFrame.Navigate(new Mainpage());
             };
 

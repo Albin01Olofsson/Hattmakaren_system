@@ -25,6 +25,12 @@ namespace BL.Services
 
         public void AddProdukt(Produkt p) => prodRepo.Add(p);
 
+        public void AddSpecialBeställning(SpecialBeställning sb)
+        {
+            prodRepo.Add(sb);
+            prodRepo.Save();
+        }
+
         public void UpdateProdukt(Produkt p) => prodRepo.Update(p);
         public void DeleteProdukt(int id) => prodRepo.Delete(id);
         public void SaveProdukt() => prodRepo.Save();

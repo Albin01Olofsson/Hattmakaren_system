@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
 {
@@ -20,9 +23,50 @@ namespace WpfApp1.Views1
     /// </summary>
     public partial class SpcBestOrderPage : Page
     {
-        public SpcBestOrderPage()
+        public SpcBestOrderPage(SpcBestOrderPageVM vm)
         {
             InitializeComponent();
+            DataContext = vm;
+        }
+
+        private void BtnLaddaUppBild_Click(object sender, RoutedEventArgs rev)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+
+            fileDialog.Filter = "Tillåtna filnamn.Extensions (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                string filPath = fileDialog.FileName;
+
+                BitmapImage bild = new BitmapImage();
+                bild.BeginInit();
+                bild.UriSource = new Uri(filPath);
+                bild.CacheOption = BitmapCacheOption.OnLoad;
+                bild.EndInit();
+
+                //ImgElementIXaml.Source = bild;
+
+                if (DataContext is SpcBestOrderPageVM vm)
+                {
+                    vm.BildUrl = filPath;
+                    vm.ValdBild = bild;
+                }
+
+                //if (DataContext is SpcBestOrderPageVM vm)
+                //{
+                //    vm.BildUrl = filPath; 
+                //}
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void SparaSpecialbeställning_Click(object sender, RoutedEventArgs e)
+        {            
         }
     }
 }

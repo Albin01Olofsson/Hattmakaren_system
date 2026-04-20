@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20260417093123_Datetime")]
+    partial class Datetime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +96,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -103,7 +106,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -113,7 +116,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -123,7 +126,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$JUzSPnCSAh1.8Br0nunYeeIhC8HFd2w4kxxA43Et4Tf8627nx2uCq",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -627,7 +630,8 @@ namespace DAL.Migrations
 
                     b.HasIndex("AnvändarID");
 
-                    b.HasIndex("ProduktID");
+                    b.HasIndex("ProduktID")
+                        .IsUnique();
 
                     b.ToTable("Planeringar");
                 });
@@ -802,8 +806,8 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Models.Produkt", "Produkt")
-                        .WithMany("Planeringar")
-                        .HasForeignKey("ProduktID")
+                        .WithOne("Planering")
+                        .HasForeignKey("Models.Planering", "ProduktID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -853,7 +857,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Produkt", b =>
                 {
-                    b.Navigation("Planeringar");
+                    b.Navigation("Planering")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

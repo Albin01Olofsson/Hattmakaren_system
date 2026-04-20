@@ -64,6 +64,7 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void Sök()
         {
+            OrderList.Clear();
             var sökResultat = _service.GetOrdersWithNavProps();
 
             //Fylla orderlistan som visas på sökta ordrar, med filtreringen
@@ -118,8 +119,6 @@ namespace WpfApp1.ViewModels
             OrderList = new ObservableCollection<Order>(sökResultat);
             OnPropertyChanged(nameof(AntalOrders));
         }
-
-
         
 
     }

@@ -12,13 +12,12 @@ namespace DAL.Repositorys
 
         }
 
-        public async Task<List<Order>> GetOrdersAndNavPropertiesList()
+        public IQueryable<Order> GetOrdersAndNavPropertiesList()
         {
-            return await _context.Ordrar
+            return _context.Ordrar
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
-                .Include(o => o.Produkter)
-                .ToListAsync();
+                .Include(o => o.Produkter);
         }
 
         public async Task<Order> GetMedDetaljer(int oid)

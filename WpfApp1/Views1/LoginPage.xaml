@@ -97,9 +97,9 @@
 
                     <TextBlock Text="LÖSENORD" FontSize="11" FontWeight="Bold" Foreground="White" Opacity="0.6" Margin="0,0,0,2" FontFamily="Sitka Text"/>
                     <PasswordBox x:Name="PassInput" PasswordChanged="PassInput_PasswordChanged" 
-                                 Height="35" Background="Transparent" BorderBrush="#40FFFFFF" 
+                                 Height="25" Background="Transparent" BorderBrush="#40FFFFFF" 
                                  Foreground="White" CaretBrush="White"
-                                 BorderThickness="0,0,0,1.5"/>
+                                 BorderThickness="0,0,0,1.5" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
                 <Button Content="Logga in" Click="Button_Click"

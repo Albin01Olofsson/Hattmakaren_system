@@ -29,9 +29,14 @@ namespace BL.Services
             prodRepo.Save();
         }
 
-        public void AddSpecialBeställning(SpecialBeställning sb)
+        //public void AddSpecialBeställning(SpecialBeställning sb)
+        //{
+        //    prodRepo.Add(sb);
+        //    prodRepo.Save();
+        //}
+        public void AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn)
         {
-            prodRepo.Add(sb);
+            prodRepo.AddSpecBes(sb, materialIdn);
             prodRepo.Save();
         }
 

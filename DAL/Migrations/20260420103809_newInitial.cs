@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class addadepropertiesfad : Migration
+    public partial class newInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,7 +70,6 @@ namespace DAL.Migrations
                 {
                     MaterialBeställningID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Antal = table.Column<int>(type: "int", nullable: false),
                     TotalPris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -115,6 +114,33 @@ namespace DAL.Migrations
                         principalTable: "Kunder",
                         principalColumn: "KundID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BestallningsRader",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaterialId = table.Column<int>(type: "int", nullable: false),
+                    Antal = table.Column<int>(type: "int", nullable: false),
+                    MaterialBeställningID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BestallningsRader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BestallningsRader_MaterialBeställningar_MaterialBeställningID",
+                        column: x => x.MaterialBeställningID,
+                        principalTable: "MaterialBeställningar",
+                        principalColumn: "MaterialBeställningID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BestallningsRader_Material_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Material",
+                        principalColumn: "MaterialID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,10 +264,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -268,12 +294,12 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "MaterialBeställningar",
-                columns: new[] { "MaterialBeställningID", "Antal", "StartadAvID", "TotalPris" },
+                columns: new[] { "MaterialBeställningID", "StartadAvID", "TotalPris" },
                 values: new object[,]
                 {
-                    { 1000001, 0, 1, 1890m },
-                    { 1000002, 0, 2, 769m },
-                    { 1000003, 0, 1, 3419m }
+                    { 1000001, 1, 1890m },
+                    { 1000002, 2, 769m },
+                    { 1000003, 1, 3419m }
                 });
 
             migrationBuilder.InsertData(
@@ -314,6 +340,16 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BestallningsRader_MaterialBeställningID",
+                table: "BestallningsRader",
+                column: "MaterialBeställningID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BestallningsRader_MaterialId",
+                table: "BestallningsRader",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaterialBeställningar_StartadAvID",
                 table: "MaterialBeställningar",
                 column: "StartadAvID");
@@ -346,8 +382,7 @@ namespace DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Planeringar_ProduktID",
                 table: "Planeringar",
-                column: "ProduktID",
-                unique: true);
+                column: "ProduktID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Produkter_OrderID",
@@ -363,6 +398,9 @@ namespace DAL.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BestallningsRader");
+
             migrationBuilder.DropTable(
                 name: "MaterialMaterialBeställning");
 

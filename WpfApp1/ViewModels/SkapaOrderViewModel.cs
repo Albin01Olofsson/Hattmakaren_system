@@ -33,15 +33,31 @@ namespace WpfApp1.ViewModels
             _kundService = kundService;
             _produktService = produktService;
 
-            // Hämta data från databasen direkt vid start
-            var kunderFrånDb = _kundService.HämtaAllaKunder() ?? new System.Collections.Generic.List<Kund>();
-            var produkterFrånDb = _produktService.GetProdukt() ?? new System.Collections.Generic.List<Produkt>();
-
-            AllaKunder = new ObservableCollection<Kund>(kunderFrånDb);
-            AllaProdukter = new ObservableCollection<Produkt>(produkterFrånDb);
+            AllaKunder = new ObservableCollection<Kund>();
+            AllaProdukter = new ObservableCollection<Produkt>();
             TillagdaProdukter = new ObservableCollection<Produkt>();
-
+            
             InloggadAnvändare = Session.CurrentUser ?? new Användare { AnvändarID = 1, Namn = "Test" };
+
+            _ = LaddaData();
+        }
+        private async Task LaddaData()
+        {
+            var kunderFrånDb = await _kundService.HämtaAllaKunder() ?? new List<Kund>();
+
+            var produkterFrånDb = await _produktService.GetProdukt() ?? new List<Produkt>();
+
+            AllaKunder.Clear();
+            foreach (var k in kunderFrånDb)
+            {
+                AllaKunder.Add(k);
+            }
+
+            AllaProdukter.Clear();
+            foreach (var p in produkterFrånDb)
+            {
+                AllaProdukter.Add(p);
+            }
 
             UppdateraOversikt();
         }
@@ -71,7 +87,7 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void LaggOrder()
+        private async Task LaggOrder()
         {
             if (ValdKund == null || !TillagdaProdukter.Any())
             {
@@ -90,7 +106,7 @@ namespace WpfApp1.ViewModels
                     IsPrio = this.IsPrioVald
                 };
 
-                _orderService.skapaOrder(nyOrder);
+                await _orderService.skapaOrder(nyOrder);
                 OrderOversiktText = "KLART! Ordern har sparats.";
 
                 // Nollställ formuläret

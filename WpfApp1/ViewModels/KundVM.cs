@@ -25,16 +25,14 @@ namespace WpfApp1.ViewModels
         public KundVM(IKundService kundService)
         {
             _kundService = kundService;
-            LaddaData();
+            _ = LaddaData();
         }
 
-        private void LaddaData()
+        private async Task LaddaData()
         {
-            _allaKunder = _kundService.HämtaAllaKunder();
+            _allaKunder = await _kundService.HämtaAllaKunder();
             FiltreraKunder();
         }
-
-
 
         private void FiltreraKunder()
         {
@@ -48,18 +46,16 @@ namespace WpfApp1.ViewModels
             {
                 Kunder.Add(kund);
             }
-
-
         }
 
         [RelayCommand]
-        private void TaBortKund(Kund kund)
+        private async Task TaBortKund(Kund kund)
         {
             // 1. Kör din anonymisering
-            _kundService.Anonymiserakund(kund.KundID);
+            await _kundService.AnonymiseraKund(kund.KundID);
 
             // 2. Uppdatera listan så kunden försvinner direkt i UI
-            LaddaData();
+            await LaddaData();
         }
     }
 }

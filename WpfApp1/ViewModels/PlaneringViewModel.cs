@@ -51,11 +51,11 @@ namespace WpfApp1.ViewModels
             LaddaOrdrar();
         }
 
-        public void LaddaOrdrar()
+        public async Task LaddaOrdrar()
         {
             AllaOrdrar.Clear();
 
-            var ordrarFrånDB = _orderService.GetOrdersWithNavProps();
+            var ordrarFrånDB = await _orderService.GetOrdersWithNavProps();
             
             foreach (var order in ordrarFrånDB)
             {
@@ -64,19 +64,23 @@ namespace WpfApp1.ViewModels
         }
         partial void OnValdOrderChanged(Order value)
         {
+            _ = LaddaProdukter(value);// fire-and-forget kör async utan await
+        }
+        public async Task LaddaProdukter(Order value)
+        {
             AllaProdukter.Clear();
             if (value == null)
                 return;
 
-            var produkter = _service.HämtaLedigaProdukter(value.OrderID);
-            foreach(var produkt in produkter)
+            var produkter = await _service.HämtaLedigaProdukter(value.OrderID);
+            foreach (var produkt in produkter)
             {
                 AllaProdukter.Add(produkt);
             }
         }
 
         [RelayCommand]
-        private void SparaAktivitet()
+        private async Task SparaAktivitet()
         {
             OrdrarFel = "";
             ProdukterFel = "";
@@ -110,7 +114,7 @@ namespace WpfApp1.ViewModels
             
             var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
 
-            var planering = _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
+            var planering = await _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
 
             PlaneringAdded?.Invoke(planering);
 

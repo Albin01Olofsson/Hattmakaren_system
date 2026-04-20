@@ -49,7 +49,7 @@ namespace WpfApp1.ViewModels
         public OrderVM(IOrderService s)
         {
             _service = s;
-            OrderList = new ObservableCollection<Order>(_service.GetOrdersWithNavProps());
+            OrderList = new ObservableCollection<Order>();
 
             OrderStartareNamnList = new ObservableCollection<string>();
 
@@ -58,6 +58,16 @@ namespace WpfApp1.ViewModels
             foreach(string namn in _service.GetOrderStartareNamnList().OrderBy(n => n))
             {
                 OrderStartareNamnList.Add(namn);
+            }
+            _ = LaddaOrdrar();
+        }
+        public async Task LaddaOrdrar()
+        {
+            OrderList.Clear();
+            var ordrar = await _service.GetOrdersWithNavProps();
+            foreach (Order order in ordrar)
+            { 
+                OrderList.Add(order);
             }
         }
 

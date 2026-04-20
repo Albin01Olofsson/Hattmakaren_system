@@ -14,7 +14,8 @@ namespace BL.Services
         }
         public async Task<List<Användare>> HämtaAllaAnvändare()
         {
-            return await _användarRepo.GetAll();
+            var users = await _användarRepo.GetAll();
+            return users.Where(a => a.IsActive).ToList();
         }
 
         // Metod för att hämta den som är inloggad eller en specifik användare

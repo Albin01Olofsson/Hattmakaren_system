@@ -45,9 +45,10 @@ namespace WpfApp1.Views1
             _orderService = new OrderService(new OrderRepo(new DBcontext()));
 ;       }
 
-        private void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
+        private async void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
         {
-            _orderService.MarkeraFärdig(order.OrderID);
+            await _orderService.MarkeraFärdig(order.OrderID);
+            var enOrder = await _orderService.GetOrder(order.OrderID);//hämtade nya värdet asyncront
             //order = _orderService.GetFullOrder(order.OrderID);
             if (order.Färdig)
             {
@@ -59,7 +60,7 @@ namespace WpfApp1.Views1
             }
 
             DataContext = new OrderBeskrivningVM(order, _produktService);
-            MessageBox.Show($"Ordern är nu markerad som: {_orderService.GetOrder(order.OrderID).Färdig}");//Måste hämta nya värdet efter uppdateringen för att det ska synas rätt
+            MessageBox.Show($"Ordern är nu markerad som: {enOrder.Färdig}");//Måste hämta nya värdet efter uppdateringen för att det ska synas rätt
         }
 
         private void LaddaNerPdfKnapp_Click(object sender, RoutedEventArgs e)

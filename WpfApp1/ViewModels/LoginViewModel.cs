@@ -29,7 +29,7 @@ namespace WpfApp1.ViewModels
         private string loginFel;
 
         [RelayCommand]// Med hjälp av [RelayCommand] så skapas en ICommand egenskap som vi kan binda till i vår View, och när den kommandot körs så kommer Login() metoden att anropas
-        private void Login()
+        private async Task Login()
         {
             LoginFel = "";
             if(string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Lösenord))
@@ -38,7 +38,7 @@ namespace WpfApp1.ViewModels
                 return; 
             }
 
-            var användare = _authService.Login(Email, Lösenord);
+            var användare = await _authService.Login(Email, Lösenord);
             if (användare != null)
             {
                 Session.CurrentUser = användare;

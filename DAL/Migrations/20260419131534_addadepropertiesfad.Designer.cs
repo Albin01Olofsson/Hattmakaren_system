@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260417091600_PlaneringStart")]
-    partial class PlaneringStart
+    [Migration("20260419131534_addadepropertiesfad")]
+    partial class addadepropertiesfad
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
+                            Lösenord = "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -106,7 +106,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
+                            Lösenord = "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -116,7 +116,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
+                            Lösenord = "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -126,7 +126,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq",
+                            Lösenord = "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -620,6 +620,12 @@ namespace DAL.Migrations
                     b.Property<int>("ProduktID")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("SlutTid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTid")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("PlaneringsID");
 
                     b.HasIndex("AnvändarID");
@@ -638,8 +644,24 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktID"));
 
+                    b.Property<string>("Decoration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Färdig")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Färg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HattTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Modell")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("OrderID")
                         .HasColumnType("int");
@@ -679,7 +701,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000001,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000001,
                             Storlek = "M",
                             TillverkadAVID = 1,
@@ -689,7 +715,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000002,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000002,
                             Storlek = "M",
                             TillverkadAVID = 2,

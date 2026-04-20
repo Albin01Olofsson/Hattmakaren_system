@@ -1,4 +1,5 @@
 ﻿using DAL.Intefaces;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 
@@ -11,9 +12,9 @@ namespace DAL.Repositorys
 
         }
 
-        public Användare GetByEmail(string email)
+        public async Task<Användare> GetByEmail(string email)
         {
-            return _dbSet.FirstOrDefault(u => u.Email == email);
+            return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
         }
 
     }

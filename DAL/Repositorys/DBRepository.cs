@@ -14,44 +14,46 @@ namespace DAL.Repositorys
             _dbSet = _context.Set<T>();
         }
 
-        public List<T> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
         // READ: Hittar en specifik rad via ID
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
         // CREATE: Lägger till ett objekt i kön
-        public void Add(T entity)
+        public async Task Add(T entity)
         {
-            _dbSet.Add(entity);
+            await _dbSet.AddAsync(entity);
         }
 
         // UPDATE: Informerar EF om att objektet har ändrats
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         // DELETE: Tar bort objektet
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            T existing = _dbSet.Find(id);
+            T existing = await _dbSet.FindAsync(id);
             if (existing != null)
             {
                 _dbSet.Remove(existing);
+                await _context.SaveChangesAsync();
             }
         }
 
         // COMMIT: Sparar allt till databasen
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
     }

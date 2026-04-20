@@ -4,10 +4,10 @@ namespace DAL.Intefaces
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        public List<Order> GetOrdersAndNavPropertiesList();
+        public Task<List<Order>> GetOrdersAndNavPropertiesList();
 
-        public Order HämtaMedDetaljer(int id);
+        public Task<Order> HämtaMedDetaljer(int id);
 
-        Order GetMedDetaljer(int oid);
+        Task<Order> GetMedDetaljer(int oid);
     }
 }

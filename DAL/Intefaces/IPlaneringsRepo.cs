@@ -4,7 +4,7 @@ namespace DAL.Intefaces
 {
     public interface IPlaneringsRepo: IRepository<Planering>
     {
-        Planering HämtaPlaneringMedDetaljer(int id);
-        List<Planering> HämtaAllaPlaneringarMedDetaljer();
+        Task<Planering> HämtaPlaneringMedDetaljer(int id);
+        Task<List<Planering>> HämtaAllaPlaneringarMedDetaljer();
     }
 }

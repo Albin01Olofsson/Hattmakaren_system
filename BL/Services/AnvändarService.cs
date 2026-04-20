@@ -12,9 +12,9 @@ namespace BL.Services
         {
             _användarRepo = användarRepo;
         }
-        public List<Användare> HämtaAllaAnvändare()
+        public async Task<List<Användare>> HämtaAllaAnvändare()
         {
-            return _användarRepo.GetAll();
+            return await _användarRepo.GetAll();
         }
 
         // Metod för att hämta den som är inloggad eller en specifik användare

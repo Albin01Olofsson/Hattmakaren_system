@@ -1,6 +1,7 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
 using Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BL.Services
 {
@@ -14,16 +15,16 @@ namespace BL.Services
             _planeringsRepo = planeringsRepo;
             _orderRepo = orederRepo;
         }
-        public void Add(Planering planering)
+        public async Task Add(Planering planering)
         {
-            _planeringsRepo.Add(planering);
-            _planeringsRepo.Save();
+            await _planeringsRepo.Add(planering);
+            await _planeringsRepo.Save();
         }
         // 1. Hämta hattar från en vald order så Judith kan välja en
-        public List<Produkt> HämtaHattarFrånOrder(int orderId)
+        public async Task<List<Produkt>> HämtaHattarFrånOrder(int orderId)
         {
-            var order = _orderRepo.GetOrdersAndNavPropertiesList()
-                                  .FirstOrDefault(o => o.OrderID == orderId);
+            var order = await _orderRepo.GetOrdersAndNavPropertiesList()
+                                  .FirstOrDefaultAsync(o => o.OrderID == orderId);
 
             // Om ordern finns, returnera dess produkter, annars en tom lista
             return order?.Produkter ?? new List<Produkt>();

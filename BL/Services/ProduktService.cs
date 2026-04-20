@@ -17,32 +17,27 @@ namespace BL.Services
             prodRepo = repository;
         }
 
-        public List<Produkt> GetProdukt() => prodRepo.GetAll();
+        public async Task<List<Produkt>> GetProdukt() => await prodRepo.GetAll();
 
-        public List<Produkt> GetProdukter() => prodRepo.GetAllaProdukter(); //För att få med inkluderade nav properties
+        public async Task<List<Produkt>> GetProdukter() => await prodRepo.GetAllaProdukter(); //För att få med inkluderade nav properties
 
-        public Produkt GetProduktId(int id) => prodRepo.GetById(id);
+        public async Task<Produkt> GetProduktId(int id) => await prodRepo.GetById(id);
 
-        public void AddProdukt(Produkt p)
+        public async Task AddProdukt(Produkt p)
         {
-            prodRepo.Add(p);
-            prodRepo.Save();
+            await prodRepo.Add(p);
+            await prodRepo.Save();
         }
 
-        //public void AddSpecialBeställning(SpecialBeställning sb)
-        //{
-        //    prodRepo.Add(sb);
-        //    prodRepo.Save();
-        //}
-        public void AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn)
+        public async Task AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn)
         {
-            prodRepo.AddSpecBes(sb, materialIdn);
-            prodRepo.Save();
+            await prodRepo.AddSpecBes(sb, materialIdn);
+            await prodRepo.Save();
         }
 
-        public void UpdateProdukt(Produkt p) => prodRepo.Update(p);
-        public void DeleteProdukt(int id) => prodRepo.Delete(id);
-        public void SaveProdukt() => prodRepo.Save();
+        public async Task UpdateProdukt(Produkt p) => await prodRepo.Update(p);
+        public async Task DeleteProdukt(int id) => await prodRepo.Delete(id);
+        public async Task SaveProdukt() => await prodRepo.Save();
 
 
     }

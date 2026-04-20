@@ -6,9 +6,9 @@ namespace DAL.Repositorys
 {
     public class PlaneringsRepo : DBRepository<Planering>, IPlaneringsRepo
     {
-        public PlaneringsRepo(DBcontext context): base(context)
+        public PlaneringsRepo(DBcontext context) : base(context)
         {
-             
+
         }
 
         public async Task<Planering> HämtaPlaneringMedDetaljer(int id)
@@ -19,12 +19,12 @@ namespace DAL.Repositorys
                 .FirstOrDefaultAsync(p => p.PlaneringsID == id);
         }
 
-        public async Task<List<Planering>> HämtaAllaPlaneringarMedDetaljer()
+        public IQueryable<Planering> HämtaAllaPlaneringarMedDetaljer()
         {
-            return await _dbSet
+
+            return _dbSet
                 .Include(p => p.Användare)
-                .Include(p => p.Produkt)
-                .ToListAsync();
+                .Include(p => p.Produkt);
         }
 
     }

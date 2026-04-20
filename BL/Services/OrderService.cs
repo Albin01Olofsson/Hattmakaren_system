@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace BL.Services
@@ -13,27 +14,29 @@ namespace BL.Services
             _orderRepo = orderRepo;
         }
 
-        public List<Order> GetOrderList() => _orderRepo.GetAll();
+        public async Task<List<Order>> GetOrderList() => await _orderRepo.GetAll();
 
-        public List<Order> GetOrdersWithNavProps() => _orderRepo.GetOrdersAndNavPropertiesList();
-
-        public List<string> GetOrderStartareNamnList()
+        public async Task<List<Order>> GetOrdersWithNavProps()
         {
-            return GetOrdersWithNavProps().Select(o => o.StartadAv.Namn).Distinct().ToList();
+            return await _orderRepo.GetOrdersAndNavPropertiesList().ToListAsync();
+        }
+        public async Task<List<string>> GetOrderStartareNamnList()
+        {
+            return (await GetOrdersWithNavProps()).Select(o => o.StartadAv.Namn).Distinct().ToList();
         }
 
-        public Order GetOrder(int id) => _orderRepo.GetById(id);
+        public async Task<Order> GetOrder(int id) => await _orderRepo.GetById(id);
 
-        public Order GetFullOrder(int id) => _orderRepo.GetMedDetaljer(id);
+        public async Task<Order> GetFullOrder(int id) => await _orderRepo.GetMedDetaljer(id);
 
-        public void AddOrder(Order o) => _orderRepo.Add(o);
+        public async Task AddOrder(Order o) => await _orderRepo.Add(o);
 
-        public void UpdateOrder(Order o) => _orderRepo.Update(o);
+        public async Task UpdateOrder(Order o) => await _orderRepo.Update(o);
 
-        public void DeleteOrder(int id) => _orderRepo.Delete(id);
+        public async Task DeleteOrder(int id) => await _orderRepo.Delete(id);
 
-        public void SaveOrder() => _orderRepo.Save();
-        public void skapaOrder(Order nyOrder)
+        public async Task SaveOrder() => await _orderRepo.Save();
+        public async Task skapaOrder(Order nyOrder)
         {
             // 1. Grundläggande validering (Fail-fast)
             if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || nyOrder.Produkter == null || !nyOrder.Produkter.Any())
@@ -81,8 +84,8 @@ namespace BL.Services
             {
                 nyOrder.Datum = DateTime.Now;
 
-                _orderRepo.Add(nyOrder);
-                _orderRepo.Save();
+                await _orderRepo.Add(nyOrder);
+                await _orderRepo.Save();
             }
             catch (Exception ex)
             {
@@ -90,23 +93,23 @@ namespace BL.Services
             }
         }
 
-        public void MarkeraFärdig(int OrderID)
+        public async Task MarkeraFärdig(int OrderID)
         {
-            var order = _orderRepo.GetById(OrderID);
+            var order = await _orderRepo.GetById(OrderID);
             if (order != null)
             {
                 // Om den är true blir den false, om den är false blir den true
                 order.Färdig = !order.Färdig;
 
-                _orderRepo.Update(order);
-                _orderRepo.Save();
+                await _orderRepo.Update(order);
+                await _orderRepo.Save();
             }
         }
 
-        public void MarkeraSomPrio(int orderId)
+        public async Task MarkeraSomPrio(int orderId)
         {
 
-            var order = _orderRepo.GetById(orderId);
+            var order = await _orderRepo.GetById(orderId);
 
             if (order != null)
             {
@@ -120,8 +123,8 @@ namespace BL.Services
                     order.Pris = order.Pris * 1.20m;
 
 
-                    _orderRepo.Update(order);
-                    _orderRepo.Save();
+                    await _orderRepo.Update(order);
+                    await _orderRepo.Save();
                 }
             }
         }

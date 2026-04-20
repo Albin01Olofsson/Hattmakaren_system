@@ -18,6 +18,7 @@ namespace DAL.Repositorys
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
                 .Include(o => o.Produkter);
+
         }
 
         public async Task<Order> GetMedDetaljer(int oid)

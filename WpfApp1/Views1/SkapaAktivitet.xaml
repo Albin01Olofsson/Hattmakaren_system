@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1.Views1"
         mc:Ignorable="d"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-        Title="SkapaAktivitet" Height="450" Width="778">
+        Title="SkapaAktivitet" Height="550" Width="778">
     <Grid>
         <Border Background="#FF2C3E50"
        Padding="20"
@@ -21,21 +21,25 @@
 
                 <!-- Välj en order -->
                 <TextBlock Text="Välj en order" Foreground="#FFC5A059"/>
+                <TextBlock Text="{Binding OrdrarFel}" Foreground="Red" FontSize="10"/>
                 <ComboBox  ItemsSource="{Binding AllaOrdrar}" SelectedItem="{Binding ValdOrder, Mode=TwoWay}" 
                            DisplayMemberPath="OrderID" Margin="0,5,0,10"/>
                 
                 <!-- Välj en produkt-->
                 <TextBlock Text="Välj en produkt" Foreground="#FFC5A059"/>
+                <TextBlock Text="{Binding ProdukterFel}" Foreground="Red" FontSize="10"/>
                 <ComboBox  ItemsSource="{Binding AllaProdukter}" SelectedItem="{Binding ValdProdukt, Mode=TwoWay}" 
                            DisplayMemberPath="namn" Margin="0,5,0,10"/>
                 
                 <!--välj datum-->
                 <TextBlock Text="Datum" Foreground="#FFC5A059"/>
+                <TextBlock Text="{Binding StartTidFel}" Foreground="Red" FontSize="10"/>
                 <DatePicker SelectedDate="{Binding ValdStartTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
 
                 <!--völj tid-->
                 <TextBlock Text="Starttid (timme)" Foreground="#FFC5A059"/>
-                <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" Margin="0,5,0,10">
+                <TextBlock Text="{Binding TimmarFel}" Foreground="Red" FontSize="10"/>
+                <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" SelectedIndex="-1" IsSynchronizedWithCurrentItem="False" Margin="0,5,0,10">
                     <ComboBox.Items>
                         <sys:Int32>8</sys:Int32>
                         <sys:Int32>9</sys:Int32>

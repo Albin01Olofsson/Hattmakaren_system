@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace WpfApp1.ViewModels
 {
@@ -30,6 +31,9 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Material> materialLista;
+
+        [ObservableProperty]
+        private ObservableCollection<Material> nyMaterialLista;
 
         [ObservableProperty]
         private Material? valdMaterial;
@@ -74,6 +78,22 @@ namespace WpfApp1.ViewModels
 
             ProduktLista = new ObservableCollection<Produkt>(_produktService.GetProdukter());
             MaterialLista = new ObservableCollection<Material>(_materialService.GetMaterialLista());
+            NyMaterialLista = new ObservableCollection<Material>();
+        }
+
+        [RelayCommand]
+        private void LäggTillMaterial()
+        {
+            if (ValdMaterial == null)
+                return;
+
+            bool redanTillagd = NyMaterialLista.Any(m => m.Namn == ValdMaterial.Namn);
+
+            if (!redanTillagd)
+            {
+                NyMaterialLista.Add(ValdMaterial);
+            }
+            
         }
 
         [RelayCommand]

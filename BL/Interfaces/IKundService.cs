@@ -15,6 +15,8 @@ namespace BL.Interfaces
         void DeleteKund(int id);
 
         public Kund GetByEmail(string email);
+
+        void Anonymiserakund(int KundID);
     }
 
 }

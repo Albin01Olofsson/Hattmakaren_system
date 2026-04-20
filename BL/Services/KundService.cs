@@ -80,6 +80,36 @@ namespace BL.Services
             return _kundRepo.GetByEmail(email);
         }
 
+        public void Anonymiserakund(int KundID)
+
+        {
+
+            var kund = _kundRepo.GetById(KundID);
+
+
+
+            if (kund != null)
+
+            {
+
+                kund.Namn = "Borttagen kund";
+
+                kund.Email = "N/A";
+
+                kund.Telefon = "N/A";
+
+                kund.Adress = "N/A";
+
+            }
+
+
+
+            _kundRepo.Update(kund);
+
+            _kundRepo.Save();
+
+        }
+
 
     }
 

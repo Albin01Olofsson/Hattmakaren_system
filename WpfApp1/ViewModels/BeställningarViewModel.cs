@@ -47,6 +47,9 @@ namespace WpfApp1.ViewModels
         private Material selectedMaterial;
 
         [ObservableProperty]
+        private ObservableCollection<BestallningsRad> bestallningsRader = new();
+
+        [ObservableProperty]
         private string antal;
 
         // 🔹 Nytt material
@@ -77,35 +80,49 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SkapaBestallning()
         {
-            if (SelectedMaterial == null)
-                throw new Exception("Välj material!");
+            if (BestallningsRader.Count == 0)
+                throw new Exception("Inga material i beställningen!");
 
-            if (!int.TryParse(Antal, out int antal))
-                throw new Exception("Mängd måste vara ett nummer!");
+            // 🔥 SÄTT FK HÄR
+            foreach (var rad in BestallningsRader)
+            {
+                rad.MaterialId = rad.Material.MaterialID;
+            }
 
-            if (Session.CurrentUser == null)
-                throw new Exception("Ingen användare inloggad!");
-
-            // 🔥 SKAPA OBJEKTET
             var bestallning = new MaterialBeställning
             {
-                MaterialLista = new List<Material> { SelectedMaterial },
-                TotalPris = SelectedMaterial.Pris * antal,
                 StartadAvID = Session.CurrentUser.AnvändarID,
-                Antal = antal
+                Rader = BestallningsRader.ToList(),
+                TotalPris = BestallningsRader.Sum(r => r.RadPris)
             };
 
             senasteBestallning = bestallning;
 
-            // 🔹 Spara i databasen (din service)
-            _bestallningService.SkapaBestallning(
-                SelectedMaterial,
-                antal,
-                Session.CurrentUser.AnvändarID
-            );
-            // ✅ Visa bekräftelse i UI
-            StatusMessage = $"Beställning skapad! ({SelectedMaterial.Namn}, {antal} st)";
+            _bestallningService.SkapaBestallning(bestallning);
+
+            StatusMessage = "Beställning skapad!";
             IsStatusVisible = true;
+
+            BestallningsRader.Clear();
+        }
+
+        [RelayCommand]
+        private void AddToBestallning()
+        {
+            if (SelectedMaterial == null)
+                throw new Exception("Välj material!");
+
+            if (!int.TryParse(Antal, out int antal))
+                throw new Exception("Fel antal!");
+
+            BestallningsRader.Add(new BestallningsRad
+            {
+                Material = SelectedMaterial,
+                Antal = antal
+            });
+
+            // rensa input
+            Antal = "";
         }
 
         [RelayCommand]
@@ -114,10 +131,7 @@ namespace WpfApp1.ViewModels
             if (senasteBestallning == null)
                 throw new Exception("Ingen beställning att exportera!");
 
-            if (!int.TryParse(Antal, out int antal))
-                throw new Exception("Fel antal!");
-
-            SparaTillPdf(senasteBestallning, antal);
+            SparaTillPdf(senasteBestallning);
         }
 
         [RelayCommand]
@@ -154,7 +168,7 @@ namespace WpfApp1.ViewModels
             Pris = "";
             Typ = "";
         }
-        private void SparaTillPdf(MaterialBeställning bestallning, int antal)
+        private void SparaTillPdf(MaterialBeställning bestallning)
         {
             var dialog = new SaveFileDialog
             {
@@ -170,11 +184,21 @@ namespace WpfApp1.ViewModels
                 {
                     document.Add(new Paragraph("Materialbeställning"));
                     document.Add(new Paragraph("----------------------"));
-
-                    document.Add(new Paragraph($"Material: {bestallning.MaterialLista[0].Namn}"));
-                    document.Add(new Paragraph($"Antal: {antal}"));
-                    document.Add(new Paragraph($"Pris: {bestallning.TotalPris}"));
                     document.Add(new Paragraph($"Datum: {DateTime.Now}"));
+                    document.Add(new Paragraph(" "));
+
+                    // 🔥 Loopa igenom ALLA rader
+                    foreach (var rad in bestallning.Rader)
+                    {
+                        document.Add(new Paragraph($"Material: {rad.Material.Namn}"));
+                        document.Add(new Paragraph($"Antal: {rad.Antal}"));
+                        document.Add(new Paragraph($"Pris: {rad.RadPris}"));
+                        document.Add(new Paragraph(" "));
+                    }
+
+                    // 🔥 TOTAL
+                    document.Add(new Paragraph("----------------------"));
+                    document.Add(new Paragraph($"TOTALPRIS: {bestallning.TotalPris}"));
                 }
             }
         }

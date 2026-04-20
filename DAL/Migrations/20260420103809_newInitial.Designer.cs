@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260417150119_RemoveUniqueProduktPlanering")]
-    partial class RemoveUniqueProduktPlanering
+    [Migration("20260420103809_newInitial")]
+    partial class newInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -106,7 +106,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -116,7 +116,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -126,10 +126,36 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$zGqzfGaFl.cTN9lSXgDrHOwP0htkPjgPnFkGBEbPH0U4wJzr/cjYK",
+                            Lösenord = "$2a$11$AajXiQgfEjve3fbeBJpWHec24hO1Jo0yZ5/lS3jRIAXnCVuqDeEXm",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
+                });
+
+            modelBuilder.Entity("Models.BestallningsRad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialBeställningID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialBeställningID");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("BestallningsRader");
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -271,9 +297,6 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
 
-                    b.Property<int>("Antal")
-                        .HasColumnType("int");
-
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
@@ -290,21 +313,18 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
-                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 1890m
                         },
                         new
                         {
                             MaterialBeställningID = 1000002,
-                            Antal = 0,
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
-                            Antal = 0,
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
@@ -643,8 +663,24 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktID"));
 
+                    b.Property<string>("Decoration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Färdig")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Färg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HattTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Modell")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("OrderID")
                         .HasColumnType("int");
@@ -684,7 +720,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000001,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000001,
                             Storlek = "M",
                             TillverkadAVID = 1,
@@ -694,7 +734,11 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000002,
+                            Decoration = "",
                             Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Modell = "",
                             OrderID = 100000002,
                             Storlek = "M",
                             TillverkadAVID = 2,
@@ -764,6 +808,25 @@ namespace DAL.Migrations
                         .HasForeignKey("ProduktID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Models.BestallningsRad", b =>
+                {
+                    b.HasOne("Models.MaterialBeställning", "Bestallning")
+                        .WithMany("Rader")
+                        .HasForeignKey("MaterialBeställningID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bestallning");
+
+                    b.Navigation("Material");
                 });
 
             modelBuilder.Entity("Models.MaterialBeställning", b =>
@@ -847,6 +910,11 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Kund", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Models.MaterialBeställning", b =>
+                {
+                    b.Navigation("Rader");
                 });
 
             modelBuilder.Entity("Models.Order", b =>

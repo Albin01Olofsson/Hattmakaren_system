@@ -13,6 +13,7 @@ namespace DAL
         public DbSet<Material> Material { get; set; }
         public DbSet<MaterialBeställning> MaterialBeställningar { get; set; }
         public DbSet<Planering> Planeringar { get; set; }
+        public DbSet<BestallningsRad> BestallningsRader { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -22,27 +22,19 @@ namespace BL.Services
             _context = context;
         }
 
-        public void SkapaBestallning(Material material, int antal, int användarId)
+        public void SkapaBestallning(MaterialBeställning bestallning)
         {
-            var beställning = new MaterialBeställning
+            foreach (var rad in bestallning.Rader)
             {
-                StartadAvID = användarId,
-                /*MaterialLista = new List<Material> { material }*/
-                TotalPris = material.Pris * antal,
-                Antal=antal
-            };
+                // 🔥 SÄTT FK
+                rad.MaterialId = rad.Material.MaterialID;
 
-            _context.MaterialBeställningar.Add(beställning);
-            _context.SaveChanges();
-            var all = _context.MaterialBeställningar.ToList();
-
-            System.Diagnostics.Debug.WriteLine("ANTAL RADER I DB: " + all.Count);
-
-            foreach (var b in all)
-            {
-                System.Diagnostics.Debug.WriteLine($"ID: {b.MaterialBeställningID}, Antal: {b.Antal}");
+                // 🔥 SÄG TILL EF: detta material finns redan!
+                _context.Entry(rad.Material).State = EntityState.Unchanged;
             }
-            System.Diagnostics.Debug.WriteLine("DB NAME: " + _context.Database.GetDbConnection().Database);
+
+            _context.MaterialBeställningar.Add(bestallning);
+            _context.SaveChanges();
         }
     }
 }

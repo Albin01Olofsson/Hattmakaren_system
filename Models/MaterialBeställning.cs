@@ -10,7 +10,9 @@ namespace Models
 
         public List<Material> MaterialLista { get; set; } = null!;
 
-        public int Antal { get; set; }
+        public List<BestallningsRad> Rader { get; set; } = new();
+
+        //public int Antal { get; set; }
 
         public decimal TotalPris { get; set; }
 

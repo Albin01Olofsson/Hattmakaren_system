@@ -18,7 +18,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Skapa Order" FontSize="26" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20" />
-                    <Button Click="BtnSkapaSpecialbeställning_Click" Grid.Column="1" Content="Skapa special beställning" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10" Margin="0,0,15,0" Background="#FFC5A059" Foreground="#F4F1EA"></Button>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <Button Click="BtnSkapaLagerfördProdukt_Click" Content="Skapa lagerförd Produkt" VerticalAlignment="Center" Padding="10" Margin="0,0,15,0" Background="#FFC5A059" Foreground="#F4F1EA"></Button>
+                        <Button Click="BtnSkapaSpecialbeställning_Click" Content="Skapa special beställning" VerticalAlignment="Center" Padding="10" Margin="0,0,15,0" Background="#FFC5A059" Foreground="#F4F1EA"></Button>
+                    </StackPanel>
                 </Grid>
 
             <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">

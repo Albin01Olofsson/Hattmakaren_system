@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class PlaneringStart : Migration
+    public partial class addadepropertiesfad : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -151,6 +151,10 @@ namespace DAL.Migrations
                     pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
                     Storlek = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HattTyp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Modell = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Färg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Decoration = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderID = table.Column<int>(type: "int", nullable: true),
                     TillverkadAVID = table.Column<int>(type: "int", nullable: false),
                     ProduktTyp = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
@@ -207,6 +211,8 @@ namespace DAL.Migrations
                 {
                     PlaneringsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    StartTid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SlutTid = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AnvändarID = table.Column<int>(type: "int", nullable: false),
                     ProduktID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -232,10 +238,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$7dyaVVvUceUYS8sW9mbLvelFU38ldY9640omTDL89caHprCLcUXFq", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$K5joH48.EdahwC8uLfLQXeJ0d4ny4Srur.76wF0cZyiHkn2wdnO4i", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -300,11 +306,11 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Produkter",
-                columns: new[] { "ProduktID", "Färdig", "OrderID", "ProduktTyp", "Storlek", "TillverkadAVID", "namn", "pris" },
+                columns: new[] { "ProduktID", "Decoration", "Färdig", "Färg", "HattTyp", "Modell", "OrderID", "ProduktTyp", "Storlek", "TillverkadAVID", "namn", "pris" },
                 values: new object[,]
                 {
-                    { 10000001, false, 100000001, "Produkt", "M", 1, "Filt hatt", 1099m },
-                    { 10000002, false, 100000002, "Produkt", "M", 2, "Siden hatt", 949m }
+                    { 10000001, "", false, "", "", "", 100000001, "Produkt", "M", 1, "Filt hatt", 1099m },
+                    { 10000002, "", false, "", "", "", 100000002, "Produkt", "M", 2, "Siden hatt", 949m }
                 });
 
             migrationBuilder.CreateIndex(

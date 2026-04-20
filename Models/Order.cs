@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 namespace Models
 {
-    public class Order
+    public class Order : INotifyPropertyChanged
     {
         [Key]
         public int OrderID { get; set; }
@@ -11,7 +13,19 @@ namespace Models
 
         public DateTime Datum { get; set; }
 
-        public bool Färdig { get; set; } = false;
+        private bool _färdig;
+        public bool Färdig
+        {
+            get => _färdig;
+            set
+            {
+                if(_färdig != value)
+                {
+                    _färdig = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public decimal Rabatt { get; set; } = 0;
 
@@ -34,6 +48,13 @@ namespace Models
 
         [ForeignKey("Kund")]
         public int KundID { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyNamn = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyNamn));
+        }
 
     }
 }

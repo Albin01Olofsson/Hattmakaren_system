@@ -2,7 +2,6 @@
 using BL.Services;
 using DAL;
 using DAL.Repositorys;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
@@ -13,122 +12,90 @@ namespace WpfApp1.Views1
     public partial class Mainpage : Page
     {
         public OrderVM vm { get; set; }
-        private IOrderService _orderService;
 
+        private IOrderService _orderService;
         public Mainpage()
         {
             InitializeComponent();
-
-            // Initiera tjänster och databas
+            LoadUser();
             OrderRepo repo = new OrderRepo(new DBcontext());
             _orderService = new OrderService(repo);
             vm = new OrderVM(_orderService);
-
-            // Körs när sidan laddas
-            LoadUser();
         }
 
-        /// <summary>
-        /// Uppdaterar profilfältet längst ner i sidomenyn.
-        /// </summary>
-        public void LoadUser()
-        {
-            var användare = Session.CurrentUser;
-
-            // Kontrollera att elementen finns (viktigt för Blend)
-            if (UserNameText == null || RoleText == null) return;
-
-            if (användare == null)
-            {
-                UserNameText.Text = "Gäst";
-                RoleText.Text = "Ej inloggad";
-                return;
-            }
-
-            UserNameText.Text = användare.Namn;
-            RoleText.Text = användare.IsAdmin ? "Administratör" : "Anställd";
-        }
-
-        // --- NAVIGERINGSKOD ---
-
-        private void PrepareNavigation()
-        {
-            // Döljer startsidans statistik-kort så att Frame-innehållet syns
-            if (DashboardStartView != null)
-            {
-                DashboardStartView.Visibility = Visibility.Collapsed;
-            }
-        }
-
+        // Här är koden som körs när du klickar på "Användare"
         private void BtnAnvandare_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
+            // 1. Dölj startvyn (Dashboarden)
+            DashboardStartView.Visibility = Visibility.Collapsed;
+
+            // 2. Öppna användarsidan. 
+            // Ändra "Admin" till "Personal" här om du vill se hur det ser ut för anställda
             MainFrame.Navigate(new AnvandarePage());
         }
 
         private void BtnKunder_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
+            // Här kan du lägga till navigering för Kunder senare
             MainFrame.Navigate(new KunderPage());
         }
 
         private void BtnLager_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
-            // MainFrame.Navigate(new LagerPage()); // Lägg till när sidan finns
+            // Här kan du lägga till navigering för Lager senare
         }
 
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
+            // Här kan du lägga till navigering för Order senare
             MainFrame.Navigate(new OrderPage(new OrderVM(_orderService)));
         }
 
         private void BtnBestallningar_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
+            DashboardStartView.Visibility = Visibility.Collapsed;
             MainFrame.Navigate(new BestallningarPage());
         }
 
         private void BtnSchema_Click(object sender, RoutedEventArgs e)
         {
-            PrepareNavigation();
+            // Vi säger åt vår Frame att visa AnvPage
             MainFrame.Navigate(new AnvPage());
         }
 
+
+
         private void BtnLoggaUt_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Rensa sessionen
-            Session.CurrentUser = null;
 
-            // 2. Hämta tjänster för inloggningssidan
-            var app = (App)Application.Current;
-            var loginVm = (LoginViewModel)app.ServiceProvider.GetService(typeof(LoginViewModel));
-
+            Session.CurrentUser = null;// Rensa sessionen
+            // Navigera till inloggningssidan
+            var app = (App)Application.Current;// Hämta applikationsinstansen för att komma åt DI-container
+            var vm = (LoginViewModel)app.ServiceProvider.GetService(typeof(LoginViewModel));// Hämta LoginViewModel från DI-container
             var loginPage = new LoginPage
             {
-                DataContext = loginVm
+                DataContext = vm// Sätt DataContext för inloggningssidan
             };
 
-            // 3. Hantera vad som händer efter lyckad inloggning igen
-            loginVm.LoginSucceeded += () =>
+            vm.LoginSucceeded += () =>// Prenumerera på inloggningshändelsen
             {
-                if (Application.Current.MainWindow is MainWindow mw)
-                {
-                    mw.MainFrame.Navigate(new Mainpage());
-                }
+                ((MainWindow)Application.Current.MainWindow)
+                .MainFrame.Navigate(new Mainpage());// Navigera tillbaka till dashboarden efter inloggning
             };
-
-            // 4. Navigera bort
-            if (this.NavigationService != null)
-            {
-                this.NavigationService.Navigate(loginPage);
-            }
+            this.NavigationService.Navigate(loginPage);// Navigera till inloggningssidan
         }
 
-        private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        public void LoadUser()
         {
-            // Här kan man lägga logik som ska köras varje gång man byter sida i framen
+            var användare = Session.CurrentUser;
+            if (användare == null)
+            {
+                UserNameText.Text = "Välkommen, gäst!";
+                RoleText.Text = "Du är inte inloggad.";
+                return;
+            }
+            UserNameText.Text = användare.Namn;
+            RoleText.Text = användare.IsAdmin ? "Administratör" : "Anställd";
         }
     }
 }

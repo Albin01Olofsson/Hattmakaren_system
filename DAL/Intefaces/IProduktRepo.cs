@@ -13,5 +13,6 @@ namespace DAL.Intefaces
         Task<List<Produkt>> GetAllaProdukter(); //Med include
 
         Task AddSpecBes(SpecialBeställning sb, List<int> materialIdn);
+        Task AddProd(Produkt sb, List<int> materialIdn);
     }
 }

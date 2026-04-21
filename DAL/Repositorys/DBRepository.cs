@@ -16,7 +16,7 @@ namespace DAL.Repositorys
 
         public async Task<List<T>> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         // READ: Hittar en specifik rad via ID

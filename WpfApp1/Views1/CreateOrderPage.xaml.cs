@@ -36,7 +36,13 @@ namespace WpfApp1.Views1
             }
         }
 
-
+        private void KunderUpdate(object s, EventArgs e)
+        {
+            if(this.DataContext is SkapaOrderViewModel viewModel)
+            {
+                    _ = viewModel.LaddaDataCommand.ExecuteAsync(null);
+            }
+        }
 
         private void BtnSkapaLagerfördProdukt_Click(object sender, RoutedEventArgs rea)
         {

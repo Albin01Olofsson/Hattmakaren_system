@@ -138,6 +138,9 @@ namespace WpfApp1.ViewModels
             IsEditMode = true;
             EditorTitel = "Redigera material";
 
+            IsMaterialEditorVisible = true;
+            IsProduktEditorVisible = false;
+
             MaterialNamn = SelectedMaterial.Namn;
             MaterialTyp = SelectedMaterial.Typ;
             MaterialPris = SelectedMaterial.Pris.ToString();
@@ -162,6 +165,9 @@ namespace WpfApp1.ViewModels
             IsEditMode = true;
             EditorTitel = "Redigera hatt";
 
+            IsMaterialEditorVisible = false;
+            IsProduktEditorVisible = true;
+
             ProduktNamn = SelectedProdukt.namn;
             ProduktStorlek = SelectedProdukt.Storlek;
             ProduktPris = SelectedProdukt.pris.ToString();
@@ -174,6 +180,8 @@ namespace WpfApp1.ViewModels
         private void StangEditor()
         {
             IsEditorVisible = false;
+            IsMaterialEditorVisible = false;
+            IsProduktEditorVisible = false;
         }
 
         [RelayCommand]
@@ -262,6 +270,7 @@ namespace WpfApp1.ViewModels
             }
 
             IsEditorVisible = false;
+            IsMaterialEditorVisible = false;
             await LoadData();
         }
         [RelayCommand]
@@ -331,6 +340,7 @@ namespace WpfApp1.ViewModels
             await _produktRepo.Save();
 
             IsEditorVisible = false;
+            IsProduktEditorVisible = false;
             await LoadData();
         }
     }

@@ -97,7 +97,7 @@
                         BorderThickness="0"
                         Command="{Binding OppnaNyttMaterialCommand}"/>
 
-                <Button Content="Redigera fält"
+                <Button Content="Redigera material"
                         Padding="18,8"
                         Background="#FFC5A059"
                         Foreground="#FF1A1A1D"
@@ -137,112 +137,140 @@
 
             <StackPanel>
                 <TextBlock Text="{Binding EditorTitel}"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Margin="0,0,0,20"/>
+               FontSize="20"
+               FontWeight="Bold"
+               Foreground="White"
+               Margin="0,0,0,20"/>
 
-                <!-- Materialfält -->
-                <TextBlock Text="Materialnamn" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding MaterialNamn}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                <!-- Material-editor -->
+                <Border Margin="0,0,0,20">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMaterialEditorVisible}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
-                <TextBlock Text="Materialtyp" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding MaterialTyp}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                    <StackPanel>
+                        <TextBlock Text="Materialnamn" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding MaterialNamn}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                <TextBlock Text="Materialpris" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding MaterialPris}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                        <TextBlock Text="Materialtyp" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding MaterialTyp}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                <TextBlock Text="Materialsaldo" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding MaterialSaldo}"
-                         Height="36"
-                         Margin="0,5,0,20"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                        <TextBlock Text="Materialpris" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding MaterialPris}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                <!-- Hattfält -->
-                <TextBlock Text="Hattnamn" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding ProduktNamn}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                        <TextBlock Text="Materialsaldo" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding MaterialSaldo}"
+                     Height="36"
+                     Margin="0,5,0,20"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                <TextBlock Text="Storlek" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding ProduktStorlek}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                        <Button Content="Spara material"
+                    Padding="18,8"
+                    Margin="0,0,0,10"
+                    Background="#FFC5A059"
+                    Foreground="#FF1A1A1D"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Command="{Binding SparaMaterialCommand}"/>
+                    </StackPanel>
+                </Border>
 
-                <TextBlock Text="Hattpris" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding ProduktPris}"
-                         Height="36"
-                         Margin="0,5,0,12"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                <!-- Hatt-editor -->
+                <Border Margin="0,0,0,20">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsProduktEditorVisible}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
-                <TextBlock Text="Hattsaldo" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding ProduktSaldo}"
-                         Height="36"
-                         Margin="0,5,0,20"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         BorderThickness="0"
-                         Padding="6"/>
+                    <StackPanel>
+                        <TextBlock Text="Hattnamn" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding ProduktNamn}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Spara material"
-                            Padding="18,8"
-                            Margin="0,0,10,0"
-                            Background="#FFC5A059"
-                            Foreground="#FF1A1A1D"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Command="{Binding SparaMaterialCommand}"/>
+                        <TextBlock Text="Storlek" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding ProduktStorlek}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                    <Button Content="Spara hatt"
-                            Padding="18,8"
-                            Margin="0,0,10,0"
-                            Background="#FF8E7DBE"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Command="{Binding SparaProduktCommand}"/>
+                        <TextBlock Text="Hattpris" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding ProduktPris}"
+                     Height="36"
+                     Margin="0,5,0,12"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
 
-                    <Button Content="Stäng"
-                            Padding="18,8"
-                            Background="Transparent"
-                            Foreground="#FFC5A059"
-                            BorderBrush="#FFC5A059"
-                            BorderThickness="1"
-                            Command="{Binding StangEditorCommand}"/>
-                </StackPanel>
+                        <TextBlock Text="Hattsaldo" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding ProduktSaldo}"
+                     Height="36"
+                     Margin="0,5,0,20"
+                     Background="#FF1A1A1D"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="6"/>
+
+                        <Button Content="Spara hatt"
+                    Padding="18,8"
+                    Margin="0,0,0,10"
+                    Background="#FF8E7DBE"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Command="{Binding SparaProduktCommand}"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Content="Stäng"
+            Padding="18,8"
+            Background="Transparent"
+            Foreground="#FFC5A059"
+            BorderBrush="#FFC5A059"
+            BorderThickness="1"
+            Command="{Binding StangEditorCommand}"/>
             </StackPanel>
         </Border>
     </Grid>

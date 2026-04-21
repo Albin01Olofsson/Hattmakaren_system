@@ -123,6 +123,23 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
+        private void OppnaNyProdukt()
+        {
+            IsEditMode = false;
+            EditorTitel = "Ny hatt";
+
+            IsMaterialEditorVisible = false;
+            IsProduktEditorVisible = true;
+
+            ProduktNamn = "";
+            ProduktStorlek = "";
+            ProduktPris = "";
+            ProduktSaldo = "";
+
+            IsEditorVisible = true;
+        }
+
+        [RelayCommand]
         private void OppnaRedigeraMaterial()
         {
             if (SelectedMaterial == null)
@@ -309,38 +326,66 @@ namespace WpfApp1.ViewModels
                 return;
             }
 
-            if (SelectedProdukt == null)
+            if (IsEditMode)
             {
-                MessageBox.Show(
-                    "Ingen hatt vald.",
-                    "Fel",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return;
+                if (SelectedProdukt == null)
+                {
+                    MessageBox.Show(
+                        "Ingen hatt vald.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                var dbProdukt = await _produktRepo.GetById(SelectedProdukt.ProduktID);
+
+                if (dbProdukt == null)
+                {
+                    MessageBox.Show(
+                        "Hatten hittades inte.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                dbProdukt.namn = ProduktNamn;
+                dbProdukt.Storlek = ProduktStorlek;
+                dbProdukt.pris = pris;
+                dbProdukt.Lagerantal = saldo;
+
+                await _produktRepo.Update(dbProdukt);
+                await _produktRepo.Save();
             }
-
-            var dbProdukt = await _produktRepo.GetById(SelectedProdukt.ProduktID);
-
-            if (dbProdukt == null)
+            else
             {
-                MessageBox.Show(
-                    "Hatten hittades inte.",
-                    "Fel",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return;
+                var nyProdukt = new Produkt
+                {
+                    namn = ProduktNamn,
+                    Storlek = ProduktStorlek,
+                    pris = pris,
+                    Lagerantal = saldo,
+                    Färdig = true,
+                    HattTyp = "",
+                    Modell = "",
+                    Färg = "",
+                    Decoration = "",
+                    TillverkadAVID = Session.CurrentUser?.AnvändarID ?? 0
+                };
+
+                await _produktRepo.Add(nyProdukt);
+                await _produktRepo.Save();
             }
-
-            dbProdukt.namn = ProduktNamn;
-            dbProdukt.Storlek = ProduktStorlek;
-            dbProdukt.pris = pris;
-            dbProdukt.Lagerantal = saldo;
-
-            await _produktRepo.Update(dbProdukt);
-            await _produktRepo.Save();
 
             IsEditorVisible = false;
             IsProduktEditorVisible = false;
+
+            ProduktNamn = "";
+            ProduktStorlek = "";
+            ProduktPris = "";
+            ProduktSaldo = "";
+
             await LoadData();
         }
     }

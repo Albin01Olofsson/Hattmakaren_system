@@ -42,8 +42,9 @@ namespace WpfApp1.Views1
             _produktService = new ProduktService(new ProduktRepo(new DBcontext()));
             order = o;
             DataContext = new OrderBeskrivningVM(order, _produktService);
-            _orderService = new OrderService(new OrderRepo(new DBcontext()));
-;       }
+            var context = new DBcontext();
+            _orderService = new OrderService(new OrderRepo(context), context);
+        }
 
         private async void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
         {

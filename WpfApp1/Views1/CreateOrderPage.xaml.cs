@@ -46,8 +46,10 @@ namespace WpfApp1.Views1
 
         private void BtnSkapaLagerfördProdukt_Click(object sender, RoutedEventArgs rea)
         {
+            var orderContext = new DBcontext();
+
             NavigationService.Navigate(new SkapaLagerfördProdukt(new SkapaLagerfördProduktVM(
-                    new OrderService(new OrderRepo(new DBcontext())),
+                    new OrderService(new OrderRepo(orderContext), orderContext),
                     new ProduktService(new ProduktRepo(new DBcontext())),
                     new MaterialService(new MaterialRepo(new DBcontext())),
                     new KundService(new KundRepo(new DBcontext())),
@@ -57,8 +59,10 @@ namespace WpfApp1.Views1
 
         private void BtnSkapaSpecialbeställning_Click(object sender, RoutedEventArgs rea)
         {
+            var orderContext = new DBcontext();
+
             NavigationService.Navigate(new SpcBestOrderPage(new SpcBestOrderPageVM(
-                    new OrderService(new OrderRepo(new DBcontext())),
+                    new OrderService(new OrderRepo(orderContext), orderContext),
                     new ProduktService(new ProduktRepo(new DBcontext())),
                     new MaterialService(new MaterialRepo(new DBcontext())),
                     new KundService(new KundRepo(new DBcontext())),

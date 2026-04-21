@@ -97,29 +97,9 @@
             <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
 
             <StackPanel x:Name="DashboardStartView">
-                <TextBlock Text="Dashboard Översikt" FontSize="28" Foreground="White" Margin="0,0,0,8"/>
-                <TextBlock Text="Välkommen till dagens arbete." Foreground="White" Opacity="0.4" Margin="0,0,0,40"/>
-                <UniformGrid Columns="3">
-                    <Border Background="#FF2C3E50" Margin="0,0,10,0" Padding="20" CornerRadius="15">
-                        <StackPanel>
-                            <TextBlock Text="Nya Order" Foreground="#FFC5A059"/>
-                            <TextBlock Text="14" Foreground="White" FontSize="28" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Background="#FF2C3E50" Margin="5,0,5,0" Padding="20" CornerRadius="15">
-                        <StackPanel>
-                            <TextBlock Text="Lågt Lager" Foreground="#FFC5A059"/>
-                            <TextBlock Text="3" Foreground="White" FontSize="28" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Background="#FF2C3E50" Margin="10,0,0,0" Padding="20" CornerRadius="15">
-                        <StackPanel>
-                            <TextBlock Text="Dagens Intäkt" Foreground="#FFC5A059"/>
-                            <TextBlock Text="12 450 kr" Foreground="White" FontSize="24" FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                </UniformGrid>
-            </StackPanel>
+                <TextBlock Text="Välkommen till hattmakaren" FontSize="28" Foreground="White" Margin="0,0,0,8"/>
+                <TextBlock Text="Hattar i världsklass" Foreground="White" Opacity="0.4" Margin="0,0,0,40"/>
+                </StackPanel>
 
         </Grid>
     </Grid>

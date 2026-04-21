@@ -25,13 +25,22 @@ namespace WpfApp1.ViewModels
         public AnvändareViewModel(IAnvändarService användareService)
         {
             _användareService = användareService;
-            AnvändareLista = new ObservableCollection<Användare>(
-                _användareService.HämtaAllaAnvändare()
-                .Where(a => a.IsActive));
+            AnvändareLista = new ObservableCollection<Användare>();
+            _ = Ladda();
+        }
+
+        public async Task Ladda()
+        {
+            var users = await _användareService.HämtaAllaAnvändare();
+            AnvändareLista.Clear();
+            foreach (var u in users)
+            {
+                AnvändareLista.Add(u);
+            }
         }
 
         [RelayCommand]
-        private void Inaktivera()
+        private async Task Inaktivera()
         {
             if(ValdAnvändare == null)
             {
@@ -56,16 +65,15 @@ namespace WpfApp1.ViewModels
             {
                 return;
             }
-            _användareService.InaktiveraAnvändare(ValdAnvändare.AnvändarID);
+            await _användareService.InaktiveraAnvändare(ValdAnvändare.AnvändarID);
             AnvändareLista.Remove(ValdAnvändare);
         }
 
-        public void Reload()
+        public async Task Reload()
         {
             AnvändareLista.Clear();
 
-            var users = _användareService.HämtaAllaAnvändare()
-                .Where(a => a.IsActive);
+            var users = await _användareService.HämtaAllaAnvändare();
             foreach(var u in users)
             {
                 AnvändareLista.Add(u);

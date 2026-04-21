@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BCrypt.Net;
+﻿using BL.Interfaces;
 using DAL.Intefaces;
-using BL.Interfaces;
 using Models;
 
 
@@ -19,18 +13,18 @@ namespace BL.Services
         {
             _annvändarRepo = användarRepo;
         }
-        public Användare Login(string email, string lösenord)
+        public async Task<Användare> Login(string email, string lösenord)
         {
-            if(string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(lösenord))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(lösenord))
             {
                 return null;
             }
-            var användare = _annvändarRepo.GetByEmail(email);
+            var användare = await _annvändarRepo.GetByEmail(email);
             if (användare == null || !användare.IsActive)
             {
                 return null;
             }
-                
+
 
             var success = BCrypt.Net.BCrypt.Verify(lösenord, användare.Lösenord);
             if (!success)

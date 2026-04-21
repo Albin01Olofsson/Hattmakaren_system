@@ -76,9 +76,24 @@ namespace WpfApp1.ViewModels
             _kundService = kundService;
             _användarService = användarService;
 
-            ProduktLista = new ObservableCollection<Produkt>(_produktService.GetProdukter());
-            MaterialLista = new ObservableCollection<Material>(_materialService.GetMaterialLista());
+            ProduktLista = new ObservableCollection<Produkt>();
+            MaterialLista = new ObservableCollection<Material>();
             NyMaterialLista = new ObservableCollection<Material>();
+            _ = LaddaData();
+        }
+
+        private async Task LaddaData()
+        {
+            var produkter = await _produktService.GetProdukter();
+            var material = await _materialService.GetMaterialLista();
+
+            ProduktLista.Clear();
+            foreach (var p in produkter)
+                ProduktLista.Add(p);
+
+            MaterialLista.Clear();
+            foreach (var m in material)
+                MaterialLista.Add(m);
         }
 
         [RelayCommand]
@@ -97,7 +112,7 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void LäggTillSpecialBeställning()
+        private async Task LäggTillSpecialBeställning()
         {
             //Validering - Start
 
@@ -237,7 +252,7 @@ namespace WpfApp1.ViewModels
             nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
             //Bild
 
-            _produktService.AddSpecialBeställning(nySpecBes, materialIdn);
+            await _produktService.AddSpecialBeställning(nySpecBes, materialIdn);
 
             MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
 

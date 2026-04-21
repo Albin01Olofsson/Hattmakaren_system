@@ -1,4 +1,5 @@
 ﻿using DAL.Intefaces;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DAL.Repositorys
@@ -10,9 +11,9 @@ namespace DAL.Repositorys
         {
 
         }
-        public Kund GetByEmail(string email)
+        public async Task<Kund> GetByEmail(string email)
         {
-            return _context.Kunder.FirstOrDefault(k => k.Email.ToLower() == email.ToLower());
+            return await _context.Kunder.FirstOrDefaultAsync(k => k.Email.ToLower() == email.ToLower());
         }
     }
 }

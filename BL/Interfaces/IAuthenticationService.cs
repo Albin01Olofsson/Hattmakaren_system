@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
+﻿using Models;
 
 namespace BL.Interfaces
 {
     public interface IAuthenticationService
     {
-        Användare Login(string username, string password);
+        Task<Användare> Login(string email, string lösenord);
     }
 }

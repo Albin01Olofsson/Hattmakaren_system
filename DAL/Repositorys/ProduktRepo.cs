@@ -15,26 +15,26 @@ namespace DAL.Repositorys
         {
         }
 
-        public void AddSpecBes(SpecialBeställning sb, List<int> materialIdn)
+        public async Task AddSpecBes(SpecialBeställning sb, List<int> materialIdn)
         {
             foreach(int materialId in materialIdn)
             {
-                var materialIdDb = _context.Material.FirstOrDefault(m => m.MaterialID == materialId);
+                var materialIdDb = await _context.Material.FirstOrDefaultAsync(m => m.MaterialID == materialId);
                 sb.MaterialLista.Add(materialIdDb);
             }
 
-            _context.SpecialBeställningar.Add(sb);
-            Save();
+            await _context.SpecialBeställningar.AddAsync(sb);
+            await Save();
         }
 
 
-        public List<Produkt> GetAllaProdukter()
+        public async Task<List<Produkt>> GetAllaProdukter()
         {
-            return _context.Produkter
+            return await _context.Produkter
                 .Include(p => p.Order)
                 .Include(p => p.MaterialLista)
                 .Include(p => p.TillverkadAv)
-                .ToList();
+                .ToListAsync();
         }
     }
 }

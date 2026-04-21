@@ -4,19 +4,19 @@ namespace BL.Interfaces
 {
     public interface IKundService
     {
-        public List<Kund> HämtaAllaKunder();
+        Task<List<Kund>> HämtaAllaKunder();
 
-        Kund GetKundById(int id);
+        Task<Kund> GetKundById(int id);
 
-        void AddKund(Kund kund);
+        Task AddKund(Kund kund);
 
-        void UpdateKund(Kund kund);
+        Task UpdateKund(Kund kund);
 
-        void DeleteKund(int id);
+        Task DeleteKund(int id);
 
-        public Kund GetByEmail(string email);
+        Task<Kund> GetByEmail(string email);
 
-        void Anonymiserakund(int KundID);
+        Task AnonymiseraKund(int kundID);
     }
 
 }

@@ -2,16 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using WpfApp1.Views1.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace WpfApp1.ViewModels
 {
@@ -52,7 +46,7 @@ namespace WpfApp1.ViewModels
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
             LaddaTider();
             Bokningar = new ObservableCollection<Bokning>();
-            LaddaBokningar();
+            _ = LaddaBokningar(); // _ = beyder kör async men vänta inte, exceptions kan försvinna
         }
 
         public void LaddaTider()
@@ -66,22 +60,21 @@ namespace WpfApp1.ViewModels
 
         partial void OnValtSchemaLägeChanged(string value)
         {
-            LaddaBokningar();
+            _ = LaddaBokningar();
         }
 
-        public void LaddaBokningar()
+        public async Task LaddaBokningar()
         {
             Bokningar.Clear();
 
             var veckaStart = NuvarandeMåndag.Date;
             var veckaSlut = veckaStart.AddDays(7);
 
-            var alla = _service.HämtaAllaPlaneringar()
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut);
+            var alla = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
 
             if(ValtSchemaLäge == "Mitt schema")
             {
-                alla = alla.Where(p => p.AnvändarID == user.AnvändarID);
+                alla = alla.Where(p => p.AnvändarID == user.AnvändarID).ToList();
             }
 
             var grupper = alla.GroupBy(p => p.StartTid.Date);
@@ -124,17 +117,17 @@ namespace WpfApp1.ViewModels
         public string FredagDatum => NuvarandeMåndag.AddDays(4).ToString("dd/MM");
 
         [RelayCommand]
-        private void NästaVecka()
+        private async Task NästaVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(7);
-            LaddaBokningar();
+            await LaddaBokningar();
         }
 
         [RelayCommand]
-        private void TidigareVecka()
+        private async Task TidigareVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(-7);
-            LaddaBokningar();
+            await LaddaBokningar();
         }
 
         [RelayCommand]
@@ -162,10 +155,10 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void DeleteBokning(int planeringsId)
+        private async Task DeleteBokning(int planeringsId)
         {
-            _service.TaBortPlanering(planeringsId);
-            LaddaBokningar();
+            await _service.TaBortPlanering(planeringsId);
+            await LaddaBokningar();
         }
     }
 }

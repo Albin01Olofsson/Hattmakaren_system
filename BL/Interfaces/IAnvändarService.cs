@@ -4,11 +4,11 @@ namespace BL.Interfaces
 {
     public interface IAnvändarService
     {
-        public List<Användare> HämtaAllaAnvändare();
-        public Användare HämtaAnvändareMedId(int id);
-        void LäggTillAnvändare(Användare användare);
-        void UpdateraAnvändare(Användare användare);
-        void InaktiveraAnvändare(int id);
-        void TaBortAnvändare(int id);
+        Task<List<Användare>> HämtaAllaAnvändare();
+        Task<Användare> HämtaAnvändareMedId(int id);
+        Task LäggTillAnvändare(Användare användare);
+        Task UpdateraAnvändare(Användare användare);
+        Task InaktiveraAnvändare(int id);
+        Task TaBortAnvändare(int id);
     }
 }

@@ -12,18 +12,19 @@ namespace BL.Services
         {
             _användarRepo = användarRepo;
         }
-        public List<Användare> HämtaAllaAnvändare()
+        public async Task<List<Användare>> HämtaAllaAnvändare()
         {
-            return _användarRepo.GetAll();
+            var users = await _användarRepo.GetAll();
+            return users.Where(a => a.IsActive).ToList();
         }
 
         // Metod för att hämta den som är inloggad eller en specifik användare
-        public Användare HämtaAnvändareMedId(int id)
+        public async Task<Användare> HämtaAnvändareMedId(int id)
         {
-            return _användarRepo.GetById(id);
+            return await _användarRepo.GetById(id);
         }
 
-        public void LäggTillAnvändare(Användare användare)
+        public async Task LäggTillAnvändare(Användare användare)
         {
             if (användare == null)
             {
@@ -35,34 +36,34 @@ namespace BL.Services
                 throw new ArgumentException("Användarens namn kan inte vara tomt.", nameof(användare));
             }
             användare.IsActive = true; // Sätt användaren som aktiv när den läggs till
-            _användarRepo.Add(användare);
-            _användarRepo.Save();
+            await _användarRepo.Add(användare);
+            await _användarRepo.Save();
         }
 
-        public void UpdateraAnvändare(Användare användare)
+        public async Task UpdateraAnvändare(Användare användare)
         {
-            _användarRepo.Update(användare);
-            _användarRepo.Save();
+            await _användarRepo.Update(användare);
+            await _användarRepo.Save();
         }
 
-        public void InaktiveraAnvändare(int id)
+        public async Task InaktiveraAnvändare(int id)
         {
-            var användare = _användarRepo.GetById(id);
+            var användare = await _användarRepo.GetById(id);
 
             if (användare == null)
             {
                 throw new Exception("Användare finns inte!");
             }
             användare.IsActive = false;
-            _användarRepo.Update(användare);
-            _användarRepo.Save();
+            await _användarRepo.Update(användare);
+            await _användarRepo.Save();
 
         }
 
-        public void TaBortAnvändare(int id)
+        public async Task TaBortAnvändare(int id)
         {
-            _användarRepo.Delete(id);
-            _användarRepo.Save();
+            await _användarRepo.Delete(id);
+            await _användarRepo.Save();
         }
 
     }

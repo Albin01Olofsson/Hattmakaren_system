@@ -90,7 +90,9 @@ namespace WpfApp1.ViewModels
         private async Task SkapaBestallning()
         {
             if (BestallningsRader.Count == 0)
-                throw new Exception("Inga material i beställningen!");
+                StatusMessage = "❌ Lägg till minst ett material innan du skapar beställning!";
+                IsStatusVisible = true;
+                return; // 🔥 stoppa istället för crash
 
             // 🔥 SÄTT FK HÄR
             foreach (var rad in BestallningsRader)
@@ -119,10 +121,18 @@ namespace WpfApp1.ViewModels
         private void AddToBestallning()
         {
             if (SelectedMaterial == null)
-                throw new Exception("Välj material!");
+            {
+                StatusMessage = "❌ Välj ett material!";
+                IsStatusVisible = true;
+                return;
+            }
 
             if (!int.TryParse(Antal, out int antal))
-                throw new Exception("Fel antal!");
+            {
+                StatusMessage = "❌ Ange ett giltigt antal!";
+                IsStatusVisible = true;
+                return;
+            }
 
             BestallningsRader.Add(new BestallningsRad
             {

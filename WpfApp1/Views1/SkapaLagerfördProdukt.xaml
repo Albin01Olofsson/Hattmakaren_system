@@ -31,14 +31,14 @@
             <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Produkt namn" Foreground="#FFB08D46" Margin="0,0,10,0">
-                        
+
                     </TextBlock>
                     <TextBox Width="245" Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}">
-                        
+
                     </TextBox>
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Row = "1" Grid.Column="1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Pris" Foreground="#FFB08D46" Margin="0,0,10,0">
@@ -49,7 +49,7 @@
                     </TextBox>
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Row = "2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Storlek" Foreground="#FFB08D46" Margin="0,0,10,0">
@@ -71,7 +71,7 @@
                     </TextBox>
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Modell" Foreground="#FFB08D46" Margin="0,0,10,0">
@@ -82,7 +82,7 @@
                     </TextBox>
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Row = "3" Grid.Column="1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Färg" Foreground="#FFB08D46" Margin="0,0,10,0">
@@ -125,8 +125,7 @@
                          HorizontalContentAlignment="Left"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                         MaxHeight="290" >
-                    </ListBox>
+                         MaxHeight="290" Height="22" Margin="20,0,-20,0" VerticalAlignment="Center" />
                 </Grid>
             </Border>
 
@@ -142,5 +141,5 @@
             </Button>
         </Grid>
     </ScrollViewer>
-    
+
 </Page>

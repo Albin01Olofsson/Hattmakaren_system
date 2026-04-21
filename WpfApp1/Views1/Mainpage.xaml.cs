@@ -42,9 +42,20 @@ namespace WpfApp1.Views1
 
         private void BtnLager_Click(object sender, RoutedEventArgs e)
         {
-            DashboardStartView.Visibility = Visibility.Collapsed;
-            MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new LagerPage());
+            try
+            {
+                DashboardStartView.Visibility = Visibility.Collapsed;
+                MainFrame.Visibility = Visibility.Visible;
+                MainFrame.Navigate(new LagerPage());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Fel när Lager öppnas",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void BtnOrder_Click(object sender, RoutedEventArgs e)

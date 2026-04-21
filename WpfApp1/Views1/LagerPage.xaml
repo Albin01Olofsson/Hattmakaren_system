@@ -1,29 +1,43 @@
 ﻿<Page x:Class="WpfApp1.Views1.LagerPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfApp1.Views1"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="LagerPage">
+      Background="#FF1A1A1D">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="40" Width="900">
+    <Grid Margin="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Lager"
-                       FontSize="28"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Rubrik -->
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0"
+                   Text="Lager"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="0,0,0,20"/>
+
+        <!-- Vänster sida -->
+        <StackPanel Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.RowSpan="2">
+
+            <TextBlock Text="Material i lager"
+                       FontSize="22"
                        FontWeight="Bold"
                        Foreground="White"
-                       Margin="0,0,0,25"/>
+                       Margin="0,0,0,10"/>
 
-            <TextBlock Text="Lagersaldo"
-                       FontSize="20"
-                       FontWeight="SemiBold"
-                       Foreground="#FFC5A059"
-                       Margin="0,0,0,15"/>
-
-            <DataGrid ItemsSource="{Binding MaterialLista}"
+            <DataGrid ItemsSource="{Binding FiltreradMaterialLista}"
+                      SelectedItem="{Binding SelectedMaterial}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       HeadersVisibility="Column"
@@ -33,75 +47,203 @@
                       BorderThickness="1"
                       RowBackground="#FF1A1A1D"
                       AlternatingRowBackground="#FF2C3E50"
-                      Height="300"
-                      Margin="0,0,0,30">
+                      Height="220"
+                      Margin="0,0,0,20">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding MaterialID}" Width="80"/>
                     <DataGridTextColumn Header="Namn" Binding="{Binding Namn}" Width="*"/>
-                    <DataGridTextColumn Header="Typ" Binding="{Binding Typ}" Width="150"/>
+                    <DataGridTextColumn Header="Typ" Binding="{Binding Typ}" Width="140"/>
                     <DataGridTextColumn Header="Pris" Binding="{Binding Pris}" Width="120"/>
-                    <DataGridTextColumn Header="Lagersaldo" Binding="{Binding Lagerantal}" Width="120"/>
+                    <DataGridTextColumn Header="Saldo" Binding="{Binding Lagerantal}" Width="120"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Border Background="#FF2C3E50"
-                    Padding="20"
-                    CornerRadius="12">
-                <StackPanel>
+            <TextBlock Text="Hattar i lager"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,0,0,10"/>
 
-                    <TextBlock Text="Lägg till nytt material"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               Margin="0,0,0,15"/>
+            <DataGrid ItemsSource="{Binding ProduktLista}"
+                      SelectedItem="{Binding SelectedProdukt}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      Background="#FF2C3E50"
+                      Foreground="White"
+                      BorderBrush="#FFC5A059"
+                      BorderThickness="1"
+                      RowBackground="#FF1A1A1D"
+                      AlternatingRowBackground="#FF2C3E50"
+                      Height="220"
+                      Margin="0,0,0,20">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ProduktID}" Width="70"/>
+                    <DataGridTextColumn Header="Namn" Binding="{Binding namn}" Width="*"/>
+                    <DataGridTextColumn Header="Storlek" Binding="{Binding Storlek}" Width="120"/>
+                    <DataGridTextColumn Header="Pris" Binding="{Binding pris}" Width="100"/>
+                    <DataGridTextColumn Header="Saldo" Binding="{Binding Lagerantal}" Width="100"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
-                    <TextBlock Text="Namn" Foreground="#FFC5A059"/>
-                    <TextBox Height="35"
-                             Margin="0,5,0,10"
-                             Background="#FF1A1A1D"
-                             Foreground="White"
-                             BorderThickness="0"
-                             Padding="5"
-                             Text="{Binding Namn}"/>
+            <!-- Knappar -->
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Nytt material"
+                        Padding="18,8"
+                        Margin="0,0,12,0"
+                        Background="#FF3A7CA5"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        BorderThickness="0"
+                        Command="{Binding OppnaNyttMaterialCommand}"/>
 
-                    <TextBlock Text="Pris" Foreground="#FFC5A059"/>
-                    <TextBox Height="35"
-                             Margin="0,5,0,10"
-                             Background="#FF1A1A1D"
-                             Foreground="White"
-                             BorderThickness="0"
-                             Padding="5"
-                             Text="{Binding Pris}"/>
+                <Button Content="Redigera fält"
+                        Padding="18,8"
+                        Background="#FFC5A059"
+                        Foreground="#FF1A1A1D"
+                        FontWeight="Bold"
+                        BorderThickness="0"
+                        Command="{Binding OppnaRedigeraMaterialCommand}"/>
 
-                    <TextBlock Text="Typ (meter/st)" Foreground="#FFC5A059"/>
-                    <TextBox Height="35"
-                             Margin="0,5,0,10"
-                             Background="#FF1A1A1D"
-                             Foreground="White"
-                             BorderThickness="0"
-                             Padding="5"
-                             Text="{Binding Typ}"/>
+                <Button Content="Redigera hatt"
+                        Padding="18,8"
+                        Margin="12,0,0,0"
+                        Background="#FF8E7DBE"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        BorderThickness="0"
+                        Command="{Binding OppnaRedigeraProduktCommand}"/>
+            </StackPanel>
+        </StackPanel>
 
-                    <TextBlock Text="Startlager" Foreground="#FFC5A059"/>
-                    <TextBox Height="35"
-                             Margin="0,5,0,15"
-                             Background="#FF1A1A1D"
-                             Foreground="White"
-                             BorderThickness="0"
-                             Padding="5"
-                             Text="{Binding Lagerantal}"/>
+        <!-- Högerpanel -->
+        <Border Grid.Column="2"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Background="#FF2C3E50"
+                CornerRadius="12"
+                Padding="20"
+                MinWidth="280">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEditorVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
 
+            <StackPanel>
+                <TextBlock Text="{Binding EditorTitel}"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Margin="0,0,0,20"/>
+
+                <!-- Materialfält -->
+                <TextBlock Text="Materialnamn" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding MaterialNamn}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Materialtyp" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding MaterialTyp}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Materialpris" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding MaterialPris}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Materialsaldo" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding MaterialSaldo}"
+                         Height="36"
+                         Margin="0,5,0,20"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <!-- Hattfält -->
+                <TextBlock Text="Hattnamn" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding ProduktNamn}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Storlek" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding ProduktStorlek}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Hattpris" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding ProduktPris}"
+                         Height="36"
+                         Margin="0,5,0,12"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <TextBlock Text="Hattsaldo" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding ProduktSaldo}"
+                         Height="36"
+                         Margin="0,5,0,20"
+                         Background="#FF1A1A1D"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="6"/>
+
+                <StackPanel Orientation="Horizontal">
                     <Button Content="Spara material"
-                            Height="40"
+                            Padding="18,8"
+                            Margin="0,0,10,0"
                             Background="#FFC5A059"
                             Foreground="#FF1A1A1D"
                             FontWeight="Bold"
                             BorderThickness="0"
-                            Command="{Binding AddMaterialCommand}"/>
+                            Command="{Binding SparaMaterialCommand}"/>
 
+                    <Button Content="Spara hatt"
+                            Padding="18,8"
+                            Margin="0,0,10,0"
+                            Background="#FF8E7DBE"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Command="{Binding SparaProduktCommand}"/>
+
+                    <Button Content="Stäng"
+                            Padding="18,8"
+                            Background="Transparent"
+                            Foreground="#FFC5A059"
+                            BorderBrush="#FFC5A059"
+                            BorderThickness="1"
+                            Command="{Binding StangEditorCommand}"/>
                 </StackPanel>
-            </Border>
-
-        </StackPanel>
-    </ScrollViewer>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Page>

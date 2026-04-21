@@ -6,77 +6,332 @@ using Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfApp1.ViewModels
 {
     public partial class LagerViewModel : ObservableObject
     {
         private readonly MaterialRepo _materialRepo;
+        private readonly ProduktRepo _produktRepo;
 
         [ObservableProperty]
         private ObservableCollection<Material> materialLista = new();
 
         [ObservableProperty]
-        private string namn;
+        private ObservableCollection<Produkt> produktLista = new();
 
         [ObservableProperty]
-        private string pris;
+        private ObservableCollection<Material> filtreradMaterialLista = new();
 
         [ObservableProperty]
-        private string typ;
+        private Material selectedMaterial;
 
         [ObservableProperty]
-        private string lagerantal;
+        private Produkt selectedProdukt;
+
+        [ObservableProperty]
+        private bool isEditorVisible;
+
+        [ObservableProperty]
+        private bool isEditMode;
+
+        [ObservableProperty]
+        private bool isMaterialEditorVisible;
+
+        [ObservableProperty]
+        private bool isProduktEditorVisible;
+
+        [ObservableProperty]
+        private string editorTitel = "Nytt material";
+
+        [ObservableProperty]
+        private string materialNamn;
+
+        [ObservableProperty]
+        private string materialTyp;
+
+        [ObservableProperty]
+        private string materialPris;
+
+        [ObservableProperty]
+        private string materialSaldo;
+
+        [ObservableProperty]
+        private string produktNamn;
+
+        [ObservableProperty]
+        private string produktStorlek;
+
+        [ObservableProperty]
+        private string produktPris;
+
+        [ObservableProperty]
+        private string produktSaldo;
 
         public LagerViewModel()
         {
             var context = new DBcontext();
-            _materialRepo = new MaterialRepo(context);
 
-            _ = LoadMaterial();
+            _materialRepo = new MaterialRepo(context);
+            _produktRepo = new ProduktRepo(context);
+
+            _ = LoadDataSafe();
         }
 
-        private async Task LoadMaterial()
+        private async Task LoadDataSafe()
+        {
+            try
+            {
+                await LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Fel i LagerViewModel",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private async Task LoadData()
         {
             var material = await _materialRepo.GetAll();
             MaterialLista = new ObservableCollection<Material>(material);
+            FiltreradMaterialLista = new ObservableCollection<Material>(MaterialLista);
+
+            var produkter = await _produktRepo.GetAll();
+            ProduktLista = new ObservableCollection<Produkt>(produkter);
         }
 
         [RelayCommand]
-        private async Task AddMaterial()
+        private void OppnaNyttMaterial()
         {
-            if (string.IsNullOrWhiteSpace(Namn) ||
-                string.IsNullOrWhiteSpace(Pris) ||
-                string.IsNullOrWhiteSpace(Typ) ||
-                string.IsNullOrWhiteSpace(Lagerantal))
+            IsEditMode = false;
+            EditorTitel = "Nytt material";
+
+            IsMaterialEditorVisible = true;
+            IsProduktEditorVisible = false;
+
+            MaterialNamn = "";
+            MaterialTyp = "";
+            MaterialPris = "";
+            MaterialSaldo = "";
+
+            IsEditorVisible = true;
+        }
+
+        [RelayCommand]
+        private void OppnaRedigeraMaterial()
+        {
+            if (SelectedMaterial == null)
             {
-                throw new Exception("Fyll i alla fält!");
+                MessageBox.Show(
+                    "Välj ett material i listan först.",
+                    "Ingen rad markerad",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
             }
 
-            if (!decimal.TryParse(Pris, out decimal pris))
-                throw new Exception("Pris måste vara ett nummer!");
+            IsEditMode = true;
+            EditorTitel = "Redigera material";
 
-            if (!int.TryParse(Lagerantal, out int lagerantal))
-                throw new Exception("Lagerantal måste vara ett heltal!");
+            MaterialNamn = SelectedMaterial.Namn;
+            MaterialTyp = SelectedMaterial.Typ;
+            MaterialPris = SelectedMaterial.Pris.ToString();
+            MaterialSaldo = SelectedMaterial.Lagerantal.ToString();
 
-            var material = new Material
+            IsEditorVisible = true;
+        }
+
+        [RelayCommand]
+        private void OppnaRedigeraProdukt()
+        {
+            if (SelectedProdukt == null)
             {
-                Namn = Namn,
-                Pris = pris,
-                Typ = Typ,
-                Beskrivning = "",
-                Lagerantal = lagerantal
-            };
+                MessageBox.Show(
+                    "Välj en hatt i listan först.",
+                    "Ingen rad markerad",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
 
-            _materialRepo.Add(material);
-            await _materialRepo.Save();
+            IsEditMode = true;
+            EditorTitel = "Redigera hatt";
 
-            await LoadMaterial();
+            ProduktNamn = SelectedProdukt.namn;
+            ProduktStorlek = SelectedProdukt.Storlek;
+            ProduktPris = SelectedProdukt.pris.ToString();
+            ProduktSaldo = SelectedProdukt.Lagerantal.ToString();
 
-            Namn = "";
-            Pris = "";
-            Typ = "";
-            Lagerantal = "";
+            IsEditorVisible = true;
+        }
+
+        [RelayCommand]
+        private void StangEditor()
+        {
+            IsEditorVisible = false;
+        }
+
+        [RelayCommand]
+        private async Task SparaMaterial()
+        {
+            if (string.IsNullOrWhiteSpace(MaterialNamn) ||
+                string.IsNullOrWhiteSpace(MaterialTyp) ||
+                string.IsNullOrWhiteSpace(MaterialPris) ||
+                string.IsNullOrWhiteSpace(MaterialSaldo))
+            {
+                MessageBox.Show(
+                    "Fyll i alla fält.",
+                    "Ofullständig information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(MaterialPris, out decimal pris))
+            {
+                MessageBox.Show(
+                    "Pris måste vara ett nummer.",
+                    "Felaktigt pris",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(MaterialSaldo, out int saldo))
+            {
+                MessageBox.Show(
+                    "Saldo måste vara ett heltal.",
+                    "Felaktigt saldo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (IsEditMode)
+            {
+                if (SelectedMaterial == null)
+                {
+                    MessageBox.Show(
+                        "Inget material valt.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                var dbMaterial = await _materialRepo.GetById(SelectedMaterial.MaterialID);
+
+                if (dbMaterial == null)
+                {
+                    MessageBox.Show(
+                        "Materialet hittades inte.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+
+
+                dbMaterial.Namn = MaterialNamn;
+                dbMaterial.Typ = MaterialTyp;
+                dbMaterial.Pris = pris;
+                dbMaterial.Lagerantal = saldo;
+
+                await _materialRepo.Update(dbMaterial);
+                await _materialRepo.Save();
+            }
+            else
+            {
+                var nyttMaterial = new Material
+                {
+                    Namn = MaterialNamn,
+                    Typ = MaterialTyp,
+                    Pris = pris,
+                    Lagerantal = saldo,
+                    Beskrivning = ""
+                };
+
+                await _materialRepo.Add(nyttMaterial);
+                await _materialRepo.Save();
+            }
+
+            IsEditorVisible = false;
+            await LoadData();
+        }
+        [RelayCommand]
+        private async Task SparaProdukt()
+        {
+            if (string.IsNullOrWhiteSpace(ProduktNamn) ||
+                string.IsNullOrWhiteSpace(ProduktStorlek) ||
+                string.IsNullOrWhiteSpace(ProduktPris) ||
+                string.IsNullOrWhiteSpace(ProduktSaldo))
+            {
+                MessageBox.Show(
+                    "Fyll i alla hattfält.",
+                    "Ofullständig information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(ProduktPris, out decimal pris))
+            {
+                MessageBox.Show(
+                    "Pris måste vara ett nummer.",
+                    "Felaktigt pris",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(ProduktSaldo, out int saldo))
+            {
+                MessageBox.Show(
+                    "Saldo måste vara ett heltal.",
+                    "Felaktigt saldo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (SelectedProdukt == null)
+            {
+                MessageBox.Show(
+                    "Ingen hatt vald.",
+                    "Fel",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            var dbProdukt = await _produktRepo.GetById(SelectedProdukt.ProduktID);
+
+            if (dbProdukt == null)
+            {
+                MessageBox.Show(
+                    "Hatten hittades inte.",
+                    "Fel",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            dbProdukt.namn = ProduktNamn;
+            dbProdukt.Storlek = ProduktStorlek;
+            dbProdukt.pris = pris;
+            dbProdukt.Lagerantal = saldo;
+
+            await _produktRepo.Update(dbProdukt);
+            await _produktRepo.Save();
+
+            IsEditorVisible = false;
+            await LoadData();
         }
     }
 }

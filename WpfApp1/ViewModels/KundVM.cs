@@ -9,10 +9,9 @@ namespace WpfApp1.ViewModels
     public partial class KundVM : ObservableObject
     {
         private readonly IKundService _kundService;
-        private List<Kund> _allaKunder = new();
-
+        private List<Kund> kunder;
+        
         public ObservableCollection<Kund> Kunder { get; } = new();
-
 
         [ObservableProperty]
         private string _sökText;
@@ -30,15 +29,19 @@ namespace WpfApp1.ViewModels
 
         private async Task LaddaData()
         {
-            _allaKunder = await _kundService.HämtaAllaKunder();
+            kunder = await _kundService.HämtaAllaKunder();
+
+            Kunder.Clear();
+            foreach (var k in kunder)
+                Kunder.Add(k);
+
             FiltreraKunder();
         }
 
         private void FiltreraKunder()
         {
             Kunder.Clear();
-            var resultat = _allaKunder
-                .Where(k => k.Namn != "Borttagen kund") // Dölj de anonymiserade
+            var resultat = kunder
                 .Where(k => string.IsNullOrEmpty(SökText) ||
                             k.Namn.ToLower().Contains(SökText.ToLower()));
 
@@ -53,7 +56,7 @@ namespace WpfApp1.ViewModels
         {
             // 1. Kör din anonymisering
             await _kundService.AnonymiseraKund(kund.KundID);
-
+            
             // 2. Uppdatera listan så kunden försvinner direkt i UI
             await LaddaData();
         }

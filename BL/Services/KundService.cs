@@ -1,20 +1,25 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
 using Models;
+using System.Collections.ObjectModel;
 
 namespace BL.Services
 {
     public class KundService : IKundService
     {
         private readonly IKundRepo _kundRepo;
+        public event Action<Kund> KundBorttagen;
+        public ObservableCollection<Kund> Kunder { get; } = new();
+
         public KundService(IKundRepo kundRepo)
         {
             _kundRepo = kundRepo;
         }
         public async Task<List<Kund>> HämtaAllaKunder()
         {
-
-            return await _kundRepo.GetAll();
+            var kunder = await _kundRepo.GetAll();
+            kunder = kunder.Where(k => k.Namn != "Borttagen kund").ToList();
+            return kunder;
         }
 
         public async Task<Kund> GetKundById(int id)
@@ -81,35 +86,20 @@ namespace BL.Services
         }
 
         public async Task AnonymiseraKund(int kundID)
-
         {
-
             var kund = await _kundRepo.GetById(kundID);
 
-
-
             if (kund != null)
-
             {
-
                 kund.Namn = "Borttagen kund";
-
                 kund.Email = "N/A";
-
                 kund.Telefon = "N/A";
-
                 kund.Adress = "N/A";
-
             }
-
-
 
             await _kundRepo.Update(kund);
             await _kundRepo.Save();
-
+            Kunder.Remove(kund);
         }
-
-
     }
-
 }

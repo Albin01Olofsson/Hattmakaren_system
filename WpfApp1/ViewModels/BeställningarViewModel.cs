@@ -90,10 +90,12 @@ namespace WpfApp1.ViewModels
         private async Task SkapaBestallning()
         {
             if (BestallningsRader.Count == 0)
+            {
                 StatusMessage = "❌ Lägg till minst ett material innan du skapar beställning!";
                 IsStatusVisible = true;
                 return; // 🔥 stoppa istället för crash
-
+            }
+                
             // 🔥 SÄTT FK HÄR
             foreach (var rad in BestallningsRader)
             {

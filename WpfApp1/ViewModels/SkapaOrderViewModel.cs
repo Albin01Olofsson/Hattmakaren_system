@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace WpfApp1.ViewModels
 {
@@ -14,6 +15,7 @@ namespace WpfApp1.ViewModels
 
         // LISTOR (ItemsSource för rullistorna)
         public ObservableCollection<Kund> AllaKunder { get; set; }
+        public List<Kund> kunder;
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
         public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
 
@@ -33,7 +35,7 @@ namespace WpfApp1.ViewModels
             _kundService = kundService;
             _produktService = produktService;
 
-            AllaKunder = new ObservableCollection<Kund>();
+            AllaKunder = _kundService.Kunder;
             AllaProdukter = new ObservableCollection<Produkt>();
             TillagdaProdukter = new ObservableCollection<Produkt>();
             
@@ -43,15 +45,14 @@ namespace WpfApp1.ViewModels
         }
         private async Task LaddaData()
         {
-            var kunderFrånDb = await _kundService.HämtaAllaKunder() ?? new List<Kund>();
 
             var produkterFrånDb = await _produktService.GetProdukt() ?? new List<Produkt>();
 
+            kunder = await _kundService.HämtaAllaKunder();
+
             AllaKunder.Clear();
-            foreach (var k in kunderFrånDb)
-            {
+            foreach (var k in kunder)
                 AllaKunder.Add(k);
-            }
 
             AllaProdukter.Clear();
             foreach (var p in produkterFrånDb)
@@ -97,6 +98,11 @@ namespace WpfApp1.ViewModels
 
             try
             {
+                if(this.Rabatt < 0)
+                {
+                    OrderOversiktText = "Rabatt får inte vara negativ!";
+                    return;
+                }
                 var nyOrder = new Order
                 {
                     KundID = ValdKund.KundID,

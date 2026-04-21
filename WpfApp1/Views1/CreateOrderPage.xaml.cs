@@ -21,7 +21,6 @@ namespace WpfApp1.Views1
             InitializeComponent();
 
             _kundService = kundService;
-
             this.DataContext = viewModel;
         }
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -42,7 +42,9 @@ public partial class BestallningarListaViewModel : ObservableObject
     [RelayCommand]
     private void GoBack()
     {
-        var mainWindow = (MainWindow)Application.Current.MainWindow;
-        mainWindow.MainFrame.Navigate(new BestallningarPage());
+        var window = (MainWindow)Application.Current.MainWindow;
+        var mainPage = window.MainFrame.Content as Mainpage;
+
+        mainPage?.GetFrame().Navigate(new BestallningarPage());
     }
 }

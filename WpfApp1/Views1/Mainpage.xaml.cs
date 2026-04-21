@@ -42,7 +42,9 @@ namespace WpfApp1.Views1
 
         private void BtnLager_Click(object sender, RoutedEventArgs e)
         {
-            // Här kan du lägga till navigering för Lager senare
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Visibility = Visibility.Visible;
+            MainFrame.Navigate(new BestallningarPage());
         }
 
         private void BtnOrder_Click(object sender, RoutedEventArgs e)

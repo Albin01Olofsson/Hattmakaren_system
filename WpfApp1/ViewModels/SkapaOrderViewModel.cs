@@ -98,7 +98,11 @@ namespace WpfApp1.ViewModels
                 OrderOversiktText = "FEL: Du måste välja en kund och minst en produkt.";
                 return;
             }
-
+            if (this.Rabatt < 0)
+            {
+                OrderOversiktText = "Rabatt får inte vara negativ!";
+                return;
+            }
             try
             {
                 var nyOrder = new Order

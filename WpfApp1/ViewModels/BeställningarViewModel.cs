@@ -130,7 +130,8 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void NavigateToBestallningarLista()
         {
-            Application.Current.MainWindow.Content = new BestallningarListaPage();
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.MainFrame.Navigate(new BestallningarListaPage());
         }
 
         [RelayCommand]

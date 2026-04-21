@@ -53,13 +53,8 @@ namespace WpfApp1.ViewModels
 
             OrderStartareNamnList = new ObservableCollection<string>();
 
-            OrderStartareNamnList.Add("Alla");
-
-            foreach(string namn in _service.GetOrderStartareNamnList().OrderBy(n => n))
-            {
-                OrderStartareNamnList.Add(namn);
-            }
             _ = LaddaOrdrar();
+            _ = Init();
         }
         public async Task LaddaOrdrar()
         {
@@ -71,65 +66,97 @@ namespace WpfApp1.ViewModels
             }
         }
 
-        [RelayCommand]
-        private void Sök()
+        private async Task Init()
         {
+            OrderStartareNamnList.Clear();
+            OrderStartareNamnList.Add("Alla");
+
+            var namnLista = await _service.GetOrderStartareNamnList();
+
+            foreach (var namn in namnLista)
+            {
+                OrderStartareNamnList.Add(namn);
+            }
+        }
+
+        //[RelayCommand]
+        //private void Sök()
+        //{
+        //    OrderList.Clear();
+        //    var sökResultat = _service.GetOrdersWithNavProps();
+
+        //    //Fylla orderlistan som visas på sökta ordrar, med filtreringen
+
+        //    //Sökstring
+        //    if (!string.IsNullOrWhiteSpace(SökString))
+        //    {
+        //        sökResultat = sökResultat.Where(
+        //            o => o.Kund.Namn.StartsWith(SökString, StringComparison.OrdinalIgnoreCase) || 
+        //            o.OrderID.ToString().StartsWith(SökString, StringComparison.OrdinalIgnoreCase)).ToList();
+        //    }
+
+        //    //Datum från Filter
+        //    if (DatumFrånFilter.HasValue)
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.Datum.Date >= DatumFrånFilter.Value.Date).ToList();
+        //    }
+
+        //    //Datum till Filter
+        //    if (DatumTillFilter.HasValue)
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.Datum.Date <= DatumTillFilter.Value.Date).ToList();
+        //    }
+
+        //    //Order startare Filter
+        //    if (OrderStartareFilter != "Alla")
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter).ToList();
+        //    }
+
+        //    //Klar status Filter
+        //    if (KlarFilter == "Klar")
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.Färdig == true).ToList();
+        //    }
+        //    else if (KlarFilter == "Ej Klar")
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.Färdig == false).ToList();
+        //    }
+
+        //    //Specialbeställning Filter
+        //    if (SpecialBeställningFilter == "Ja")
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == true).ToList();
+        //    }
+        //    else if (SpecialBeställningFilter == "Nej")
+        //    {
+        //        sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == false).ToList();
+        //    }
+
+
+        //    OrderList = new ObservableCollection<Order>(sökResultat);
+        //    OnPropertyChanged(nameof(AntalOrders));
+        //}
+        [RelayCommand]
+        private async Task Sök()
+        {
+            var resultat = await _service.GetFilteredOrders(
+                SökString,
+                DatumFrånFilter,
+                DatumTillFilter,
+                OrderStartareFilter,
+                KlarFilter,
+                SpecialBeställningFilter);
+
             OrderList.Clear();
-            var sökResultat = _service.GetOrdersWithNavProps();
 
-            //Fylla orderlistan som visas på sökta ordrar, med filtreringen
-
-            //Sökstring
-            if (!string.IsNullOrWhiteSpace(SökString))
+            foreach (var order in resultat)
             {
-                sökResultat = sökResultat.Where(
-                    o => o.Kund.Namn.StartsWith(SökString, StringComparison.OrdinalIgnoreCase) || 
-                    o.OrderID.ToString().StartsWith(SökString, StringComparison.OrdinalIgnoreCase)).ToList();
+                OrderList.Add(order);
             }
 
-            //Datum från Filter
-            if (DatumFrånFilter.HasValue)
-            {
-                sökResultat = sökResultat.Where(o => o.Datum.Date >= DatumFrånFilter.Value.Date).ToList();
-            }
-
-            //Datum till Filter
-            if (DatumTillFilter.HasValue)
-            {
-                sökResultat = sökResultat.Where(o => o.Datum.Date <= DatumTillFilter.Value.Date).ToList();
-            }
-
-            //Order startare Filter
-            if (OrderStartareFilter != "Alla")
-            {
-                sökResultat = sökResultat.Where(o => o.StartadAv.Namn == OrderStartareFilter).ToList();
-            }
-
-            //Klar status Filter
-            if (KlarFilter == "Klar")
-            {
-                sökResultat = sökResultat.Where(o => o.Färdig == true).ToList();
-            }
-            else if (KlarFilter == "Ej Klar")
-            {
-                sökResultat = sökResultat.Where(o => o.Färdig == false).ToList();
-            }
-
-            //Specialbeställning Filter
-            if (SpecialBeställningFilter == "Ja")
-            {
-                sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == true).ToList();
-            }
-            else if (SpecialBeställningFilter == "Nej")
-            {
-                sökResultat = sökResultat.Where(o => o.IsSpecialbeställning == false).ToList();
-            }
-
-
-            OrderList = new ObservableCollection<Order>(sökResultat);
             OnPropertyChanged(nameof(AntalOrders));
         }
-        
 
     }
 }

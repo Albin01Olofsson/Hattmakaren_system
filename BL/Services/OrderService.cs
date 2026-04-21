@@ -22,7 +22,7 @@ namespace BL.Services
         }
         public async Task<List<string>> GetOrderStartareNamnList()
         {
-            return (await GetOrdersWithNavProps()).Select(o => o.StartadAv.Namn).Distinct().ToList();
+            return (await GetOrdersWithNavProps()).Select(o => o.StartadAv.Namn).Distinct().OrderBy(n => n).ToList();
         }
 
         public async Task<Order> GetOrder(int id) => await _orderRepo.GetById(id);
@@ -127,6 +127,53 @@ namespace BL.Services
                     await _orderRepo.Save();
                 }
             }
+        }
+
+        public async Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string klarFilter, string specialFilter)
+        {
+            var query = _orderRepo.GetOrdersAndNavPropertiesList();
+
+            if (!string.IsNullOrWhiteSpace(sökString))
+            {
+                query = query.Where(o =>
+                    o.Kund.Namn.StartsWith(sökString) ||
+                    o.OrderID.ToString().StartsWith(sökString));
+            }
+
+            if (datumFrån.HasValue)
+            {
+                query = query.Where(o => o.Datum >= datumFrån.Value);
+            }
+
+            if (datumTill.HasValue)
+            {
+                query = query.Where(o => o.Datum <= datumTill.Value);
+            }
+
+            if (orderStartare != "Alla")
+            {
+                query = query.Where(o => o.StartadAv.Namn == orderStartare);
+            }
+
+            if (klarFilter == "Klar")
+            {
+                query = query.Where(o => o.Färdig);
+            }
+            else if (klarFilter == "Ej Klar")
+            {
+                query = query.Where(o => !o.Färdig);
+            }
+
+            if (specialFilter == "Ja")
+            {
+                query = query.Where(o => o.IsSpecialbeställning);
+            }
+            else if (specialFilter == "Nej")
+            {
+                query = query.Where(o => !o.IsSpecialbeställning);
+            }
+
+            return await query.ToListAsync();
         }
 
     }

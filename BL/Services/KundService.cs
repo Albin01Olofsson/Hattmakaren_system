@@ -13,8 +13,10 @@ namespace BL.Services
         }
         public async Task<List<Kund>> HämtaAllaKunder()
         {
-
-            return await _kundRepo.GetAll();
+            var kunder = await _kundRepo.GetAll();
+            kunder = kunder.Where(k => k.Namn != "Borttagen kund").ToList();
+            return kunder;
+            //return await _kundRepo.GetAll();
         }
 
         public async Task<Kund> GetKundById(int id)

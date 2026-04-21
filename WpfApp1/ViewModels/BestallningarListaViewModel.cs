@@ -1,10 +1,25 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BL.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DAL;
-using Microsoft.EntityFrameworkCore;
+using DAL.Repositorys;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using Microsoft.Win32;
 using Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using WpfApp1.Views1;
+using System.Windows;
+using WpfApp1;
+using Microsoft.EntityFrameworkCore;
 public partial class BestallningarListaViewModel : ObservableObject
 {
     private readonly DBcontext _context;
@@ -23,4 +38,13 @@ public partial class BestallningarListaViewModel : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<MaterialBeställning> bestallningar;
+
+    [RelayCommand]
+    private void GoBack()
+    {
+        var window = (MainWindow)Application.Current.MainWindow;
+        var mainPage = window.MainFrame.Content as Mainpage;
+
+        mainPage?.GetFrame().Navigate(new BestallningarPage());
+    }
 }

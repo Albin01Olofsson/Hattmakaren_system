@@ -21,17 +21,7 @@
                    Foreground="#F4F1EA"
                    HorizontalAlignment="Center">
         </TextBlock>
-        <Button Content="Gå till Skapa Order" 
-        Click="BtnSkapaOrder_Click" 
-        Width="200" Height="50" 
-        Background="#FFB08D46" Foreground="White" 
-        FontSize="16" Cursor="Hand">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Button.Resources>
-        </Button>
+       
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center">
@@ -53,7 +43,13 @@
                     Foreground="#F4F1EA"
                     FontWeight="Bold">
             </Button>
-        
+            <Button Content="Gå till Skapa Order" Click="BtnSkapaOrder_Click" Width="200" Height="40" Background="#FFB08D46" Foreground="White" FontSize="16" Cursor="Hand" Margin="25,0,0,0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
         
         
@@ -65,6 +61,7 @@
 
             <!--SÖKRESULTAT-->
                 <Border Grid.Column="0" Margin="0,0,20,0" Background="#FF2C3E50" CornerRadius="15" Padding="10">
+                    
                     <StackPanel>
                         <TextBlock Text="{Binding AntalOrders, StringFormat=Sökresultat: {0}}"
                                    FontWeight="Bold"
@@ -163,6 +160,7 @@
                         </ListBox>
                     </StackPanel>
                 </Border>
+            
 
             <!--FILTER-->
             <Border x:Name="FilterBar"

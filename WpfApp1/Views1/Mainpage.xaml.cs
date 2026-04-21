@@ -77,6 +77,10 @@ namespace WpfApp1.Views1
         }
 
 
+        public Frame GetFrame()
+        {
+            return MainFrame;
+        }
 
         private void BtnLoggaUt_Click(object sender, RoutedEventArgs e)
         {

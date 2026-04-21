@@ -3,47 +3,127 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="#FF1A1A1D">
 
-    <ScrollViewer>
-        <StackPanel Margin="40">
+    <Grid>
 
-            <TextBlock Text="Alla beställningar"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       Margin="0,0,0,20"/>
+        <!-- 🔝 TOP BAR -->
+        <Grid Margin="40,20,40,0">
+            <Button Content="⬅ Tillbaka"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Padding="10,5"
+                    Background="#FF2C3E50"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Command="{Binding GoBackCommand}"/>
+        </Grid>
 
-            <ListBox ItemsSource="{Binding Bestallningar}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="#FF2C3E50" Padding="10" Margin="0,5">
-                            <StackPanel>
+        <!-- 🔽 CONTENT -->
+        <ScrollViewer Margin="0,60,0,0">
+            <StackPanel Margin="40">
 
-                                <TextBlock Text="Beställning"
-                                           Foreground="White"
-                                           FontWeight="Bold"/>
+                <!-- Titel -->
+                <TextBlock Text="📦 Alla beställningar"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Margin="0,0,0,25"/>
 
-                                <ItemsControl ItemsSource="{Binding Rader}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Material.Namn}" Width="120"/>
-                                                <TextBlock Text="{Binding Antal}" Width="50"/>
-                                                <TextBlock Text="{Binding RadPris}" Width="80"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                <!-- Lista -->
+                <ItemsControl ItemsSource="{Binding Bestallningar}">
 
-                                <TextBlock Text="{Binding TotalPris}"
-                                           Foreground="LightGreen"
-                                           FontWeight="Bold"/>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
 
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                            <!-- CARD -->
+                            <Border Background="#FF2C3E50"
+                                    CornerRadius="12"
+                                    Padding="15"
+                                    Margin="0,0,0,15">
 
-        </StackPanel>
-    </ScrollViewer>
+                                <StackPanel>
+
+                                    <!-- Header -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="Beställning"
+                                                   FontWeight="Bold"
+                                                   Foreground="White"
+                                                   FontSize="16"/>
+
+                                        <TextBlock Text="  |  "
+                                                   Foreground="Gray"/>
+
+                                        <TextBlock Text="{Binding MaterialBeställningID}"
+                                                   Foreground="#FFC5A059"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <!-- Kolumnrubriker -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                        <TextBlock Text="Material"
+                                                   Width="140"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="Antal"
+                                                   Width="60"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="Pris"
+                                                   Width="80"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                    </StackPanel>
+
+                                    <!-- Rader -->
+                                    <ItemsControl ItemsSource="{Binding Rader}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,2">
+
+                                                    <TextBlock Text="{Binding Material.Namn}"
+                                                               Width="140"
+                                                               Foreground="White"/>
+
+                                                    <TextBlock Text="{Binding Antal}"
+                                                               Width="60"
+                                                               Foreground="White"/>
+
+                                                    <TextBlock Text="{Binding RadPris}"
+                                                               Width="80"
+                                                               Foreground="#FFC5A059"/>
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Divider -->
+                                    <Border Height="1"
+                                            Background="#FF1A1A1D"
+                                            Margin="0,10,0,10"/>
+
+                                    <!-- Total -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <TextBlock Text="Total: "
+                                                   Foreground="White"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="{Binding TotalPris}"
+                                                   Foreground="LightGreen"
+                                                   FontWeight="Bold"
+                                                   FontSize="14"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </Border>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
 </Page>

@@ -23,9 +23,9 @@ namespace BL.Services
 
         public async Task<Produkt> GetProduktId(int id) => await prodRepo.GetById(id);
 
-        public async Task AddProdukt(Produkt p)
+        public async Task AddProdukt(Produkt p, List<int> materialIdn)
         {
-            await prodRepo.Add(p);
+            await prodRepo.AddProd(p, materialIdn);
             await prodRepo.Save();
         }
 

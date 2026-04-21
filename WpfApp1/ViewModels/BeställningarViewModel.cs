@@ -3,18 +3,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DAL;
 using DAL.Repositorys;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
-using System.IO;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using Microsoft.Win32;
+using Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using WpfApp1.Views1;
+using System.Windows;
 
 namespace WpfApp1.ViewModels
 {
@@ -56,6 +59,9 @@ namespace WpfApp1.ViewModels
         private Material selectedMaterial;
 
         [ObservableProperty]
+        private Brush statusColor = Brushes.White;
+
+        [ObservableProperty]
         private ObservableCollection<BestallningsRad> bestallningsRader = new();
 
         [ObservableProperty]
@@ -90,9 +96,13 @@ namespace WpfApp1.ViewModels
         private async Task SkapaBestallning()
         {
             if (BestallningsRader.Count == 0)
-                throw new Exception("Inga material i beställningen!");
+            {
+                StatusMessage = "❌ Lägg till minst ett material innan du skapar beställning!";
+                StatusColor = Brushes.Red;
+                IsStatusVisible = true;
+                return;
+            }
 
-            // 🔥 SÄTT FK HÄR
             foreach (var rad in BestallningsRader)
             {
                 rad.MaterialId = rad.Material.MaterialID;
@@ -105,24 +115,42 @@ namespace WpfApp1.ViewModels
                 TotalPris = BestallningsRader.Sum(r => r.RadPris)
             };
 
+            // 🔥 Sätt innan await
             senasteBestallning = bestallning;
 
             await _bestallningService.SkapaBestallning(bestallning);
 
-            StatusMessage = "Beställning skapad!";
+            StatusMessage = "✅ Beställning skapad!";
+            StatusColor = Brushes.LightGreen;
             IsStatusVisible = true;
 
             BestallningsRader.Clear();
         }
 
         [RelayCommand]
+        private void NavigateToBestallningarLista()
+        {
+            Application.Current.MainWindow.Content = new BestallningarListaPage();
+        }
+
+        [RelayCommand]
         private void AddToBestallning()
         {
             if (SelectedMaterial == null)
-                throw new Exception("Välj material!");
+            {
+                StatusMessage = "❌ Välj ett material!";
+                StatusColor = Brushes.Red;
+                IsStatusVisible = true;
+                return;
+            }
 
             if (!int.TryParse(Antal, out int antal))
-                throw new Exception("Fel antal!");
+            {
+                StatusMessage = "❌ Ange ett giltigt antal!";
+                StatusColor = Brushes.Red;
+                IsStatusVisible = true;
+                return;
+            }
 
             BestallningsRader.Add(new BestallningsRad
             {
@@ -130,7 +158,6 @@ namespace WpfApp1.ViewModels
                 Antal = antal
             });
 
-            // rensa input
             Antal = "";
         }
 
@@ -138,7 +165,12 @@ namespace WpfApp1.ViewModels
         private void ExportPdf()
         {
             if (senasteBestallning == null)
-                throw new Exception("Ingen beställning att exportera!");
+            {
+                StatusMessage = "❌ Skapa en beställning först!";
+                StatusColor = Brushes.Red;
+                IsStatusVisible = true;
+                return;
+            }
 
             SparaTillPdf(senasteBestallning, Session.CurrentUser.Namn);
         }
@@ -197,7 +229,6 @@ namespace WpfApp1.ViewModels
                     document.Add(new Paragraph($"Ansvarig: {ansvarigNamn}"));
                     document.Add(new Paragraph(" "));
 
-                    // 🔥 Loopa igenom ALLA rader
                     foreach (var rad in bestallning.Rader)
                     {
                         document.Add(new Paragraph($"Material: {rad.Material.Namn}"));
@@ -206,7 +237,6 @@ namespace WpfApp1.ViewModels
                         document.Add(new Paragraph(" "));
                     }
 
-                    // 🔥 TOTAL
                     document.Add(new Paragraph("----------------------"));
                     document.Add(new Paragraph($"TOTALPRIS: {bestallning.TotalPris}"));
                 }

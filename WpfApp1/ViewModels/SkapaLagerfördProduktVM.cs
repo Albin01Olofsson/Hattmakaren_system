@@ -24,6 +24,9 @@ namespace WpfApp1.ViewModels
         private ObservableCollection<Material> materialLista;
 
         [ObservableProperty]
+        private ObservableCollection<Material> nyMaterialLista;
+
+        [ObservableProperty]
         private Material? valdMaterial;
 
         [ObservableProperty]
@@ -57,10 +60,36 @@ namespace WpfApp1.ViewModels
             _materialService = materialService;
             _kundService = kundService;
             _användarService = användarService;
+
+            MaterialLista = new ObservableCollection<Material>();
+            NyMaterialLista = new ObservableCollection<Material>();
+            LaddaData();
+        }
+
+        private async Task LaddaData()
+        {
+            var material = await _materialService.GetMaterialLista();
+
+            foreach (var m in material)
+                MaterialLista.Add(m);
         }
 
         [RelayCommand]
-        private void LaggTillLagerfordProdukt()
+        private void LäggTillMaterial()
+        {
+            if (ValdMaterial == null)
+                return;
+
+            bool redanTillagd = NyMaterialLista.Any(m => m.Namn == ValdMaterial.Namn);
+
+            if (!redanTillagd)
+            {
+                NyMaterialLista.Add(ValdMaterial);
+            }
+        }
+
+        [RelayCommand]
+        private async Task LaggTillLagerfordProdukt()
         {
             if (NyttProduktNamn.Length < 3)
             {
@@ -159,7 +188,9 @@ namespace WpfApp1.ViewModels
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
 
-            _produktService.AddProdukt(nyProd);
+            List<int> materialIds = MaterialLista.Select(m => m.MaterialID).ToList();
+
+            await _produktService.AddProdukt(nyProd, materialIds);
 
             MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
 

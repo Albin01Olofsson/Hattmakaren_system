@@ -89,7 +89,7 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void LaggTillLagerfordProdukt()
+        private async Task LaggTillLagerfordProdukt()
         {
             if (NyttProduktNamn.Length < 3)
             {
@@ -190,7 +190,7 @@ namespace WpfApp1.ViewModels
 
             List<int> materialIds = MaterialLista.Select(m => m.MaterialID).ToList();
 
-            _produktService.AddProdukt(nyProd, materialIds);
+            await _produktService.AddProdukt(nyProd, materialIds);
 
             MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
 

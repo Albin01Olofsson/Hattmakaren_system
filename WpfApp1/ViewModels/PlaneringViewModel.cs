@@ -31,7 +31,17 @@ namespace WpfApp1.ViewModels
         private DateTime? valdStartTid;
 
         [ObservableProperty]
-        private int valdStartTimme;
+        private int? valdStartTimme;
+       
+
+        [ObservableProperty]
+        private string ordrarFel;
+        [ObservableProperty]
+        private string produkterFel;
+        [ObservableProperty]
+        private string startTidFel;
+        [ObservableProperty]
+        private string timmarFel;
 
         public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
@@ -68,16 +78,47 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void SparaAktivitet()
         {
-            if (ValdProdukt == null || User == null || !ValdStartTid.HasValue)
+            OrdrarFel = "";
+            ProdukterFel = "";
+            StartTidFel = "";
+            TimmarFel = "";
+            bool HasErrors = false;
+
+            if (ValdOrder == null)
+            {
+                OrdrarFel = "Vänligen välj en order!";
+                HasErrors = true;
+            }
+            if(ValdProdukt == null)
+            {
+                ProdukterFel = "Vänligen välj en produkt!";
+                HasErrors = true;
+            }
+            if(ValdStartTid == null)
+            {
+                StartTidFel = "Vänligen välj vilken dag bokningen startar!";
+                HasErrors = true;
+            }
+            if(ValdStartTimme == null)
+            {
+                TimmarFel = "Vänligen välj vilken tid bokningen börjar!";
+                HasErrors = true;
+            }
+            
+            if (ValdOrder == null || ValdProdukt == null || User == null || !ValdStartTid.HasValue || HasErrors)
                 return;
             
-            var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme);
+            var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
 
             var planering = _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
 
             PlaneringAdded?.Invoke(planering);
 
             ValdProdukt = null;
+            OrdrarFel = "";
+            ProdukterFel = "";
+            StartTidFel = "";
+            TimmarFel = "";
         }
     }
 }

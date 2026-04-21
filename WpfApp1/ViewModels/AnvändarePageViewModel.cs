@@ -47,10 +47,10 @@ namespace WpfApp1.ViewModels
                 : "DINPROFIL";
         }
 
-        private void OnUserAdded(Användare användare)
+        private async void OnUserAdded(Användare användare)
         {
-            _användarService.LäggTillAnvändare(användare);
-            ListaVM.Reload();
+            await _användarService.LäggTillAnvändare(användare);
+            await ListaVM.Reload();
         }
     }
 }

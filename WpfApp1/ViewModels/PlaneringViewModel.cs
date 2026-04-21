@@ -48,7 +48,7 @@ namespace WpfApp1.ViewModels
             _orderService = orderService;
             _service = planeringsService;
 
-            LaddaOrdrar();
+            _ = LaddaOrdrar();
         }
 
         public async Task LaddaOrdrar()

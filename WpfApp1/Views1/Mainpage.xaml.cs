@@ -44,7 +44,7 @@ namespace WpfApp1.Views1
         {
             DashboardStartView.Visibility = Visibility.Collapsed;
             MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new BestallningarPage());
+            MainFrame.Navigate(new LagerPage());
         }
 
         private void BtnOrder_Click(object sender, RoutedEventArgs e)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BL.Interfaces;
+﻿using BL.Interfaces;
 using DAL.Intefaces;
 using Models;
 
@@ -17,6 +12,6 @@ namespace BL.Services
             _materialRepo = materialRepo;
         }
 
-        public List<Material> GetMaterialLista() => _materialRepo.GetAll();
+        public async Task<List<Material>> GetMaterialLista() => await _materialRepo.GetAll();
     }
 }

@@ -3,6 +3,6 @@ namespace DAL.Intefaces
 {
     public interface IAnvändarRepo : IRepository<Användare>
     {
-        Användare GetByEmail(string email);
+        Task<Användare> GetByEmail(string email);
     }
 }

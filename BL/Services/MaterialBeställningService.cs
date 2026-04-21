@@ -1,15 +1,7 @@
 ﻿using BL.Interfaces;
 using DAL;
-using DAL.Intefaces;
-using DAL.Repositorys;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
 
 namespace BL.Services
 {
@@ -22,7 +14,7 @@ namespace BL.Services
             _context = context;
         }
 
-        public void SkapaBestallning(MaterialBeställning bestallning)
+        public async Task SkapaBestallning(MaterialBeställning bestallning)
         {
             foreach (var rad in bestallning.Rader)
             {
@@ -34,9 +26,9 @@ namespace BL.Services
             }
 
             _context.MaterialBeställningar.Add(bestallning);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
-    
+
 

@@ -33,9 +33,18 @@ namespace WpfApp1.ViewModels
             _materialRepo = new MaterialRepo(context);
 
             // 🔹 Ladda material till ComboBox
-            MaterialLista = new ObservableCollection<Material>(_materialRepo.GetAll());
+            MaterialLista = new ObservableCollection<Material>();
+            _ = LaddaMaterial();
         }
-
+        private async Task LaddaMaterial()
+        {
+            var material = await Task.Run(() => _materialRepo.GetAll());
+            MaterialLista.Clear();
+            foreach (var m in material)
+            {
+                MaterialLista.Add(m);
+            }
+        }
         // ===============================
         // 🔹 PROPERTIES (binding till UI)
         // ===============================
@@ -78,7 +87,7 @@ namespace WpfApp1.ViewModels
         // ===============================
 
         [RelayCommand]
-        private void SkapaBestallning()
+        private async Task SkapaBestallning()
         {
             if (BestallningsRader.Count == 0)
                 throw new Exception("Inga material i beställningen!");
@@ -98,7 +107,7 @@ namespace WpfApp1.ViewModels
 
             senasteBestallning = bestallning;
 
-            _bestallningService.SkapaBestallning(bestallning);
+            await _bestallningService.SkapaBestallning(bestallning);
 
             StatusMessage = "Beställning skapad!";
             IsStatusVisible = true;
@@ -141,7 +150,7 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void AddMaterial()
+        private async Task AddMaterial()
         {
             if (string.IsNullOrWhiteSpace(Namn) || string.IsNullOrWhiteSpace(Typ))
                 throw new Exception("Fyll i alla fält!");
@@ -157,8 +166,8 @@ namespace WpfApp1.ViewModels
                 Beskrivning = ""
             };
 
-            _materialRepo.Add(material);
-            _materialRepo.Save();
+            await _materialRepo.Add(material);
+            await _materialRepo.Save();
 
             // 🔄 Uppdatera listan direkt
             MaterialLista.Add(material);

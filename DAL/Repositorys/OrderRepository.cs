@@ -12,32 +12,31 @@ namespace DAL.Repositorys
 
         }
 
-        public List<Order> GetOrdersAndNavPropertiesList()
+        public IQueryable<Order> GetOrdersAndNavPropertiesList()
         {
             return _context.Ordrar
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
-                .Include(o => o.Produkter)
-                .ToList();
+                .Include(o => o.Produkter);
         }
 
-        public Order GetMedDetaljer(int oid)
+        public async Task<Order> GetMedDetaljer(int oid)
         {
-            return _context.Ordrar
+            return await _context.Ordrar
                 .Include(o => o.Kund)
                 .Include(o => o.Produkter)
                 .Include(o => o.StartadAv)
-                .FirstOrDefault(o => o.OrderID == oid);
+                .FirstOrDefaultAsync(o => o.OrderID == oid);
         }
 
-        public Order HämtaMedDetaljer(int id)
+        public async Task<Order> HämtaMedDetaljer(int id)
         {
             // .Include gör att EF laddar in de relaterade objekten istället för att de är null
-            return _dbSet
+            return await _dbSet
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
                 .Include(o => o.Produkter)
-                .FirstOrDefault(o => o.OrderID == id);
+                .FirstOrDefaultAsync(o => o.OrderID == id);
         }
 
     }

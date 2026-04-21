@@ -1,21 +1,16 @@
 ﻿using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BL.Interfaces
 {
     public interface IProduktService
     {
-        List<Produkt> GetProdukt();
-        List<Produkt> GetProdukter(); //Med Include
-        Produkt GetProduktId(int id);
-        void AddProdukt(Produkt p);
-        void AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn);
-        void UpdateProdukt(Produkt p);
-        void DeleteProdukt(int id);
-        void SaveProdukt();
+        Task<List<Produkt>> GetProdukt();
+        Task<List<Produkt>> GetProdukter(); //Med Include
+        Task<Produkt> GetProduktId(int id);
+        Task AddProdukt(Produkt p);
+        Task AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn);
+        Task UpdateProdukt(Produkt p);
+        Task DeleteProdukt(int id);
+        Task SaveProdukt();
     }
 }

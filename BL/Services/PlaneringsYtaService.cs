@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace BL.Services
@@ -14,28 +15,28 @@ namespace BL.Services
             _planeringsRepo = planeringsRepo;
             _orderRepo = orederRepo;
         }
-        public void Add(Planering planering)
+        public async Task Add(Planering planering)
         {
-            _planeringsRepo.Add(planering);
-            _planeringsRepo.Save();
+            await _planeringsRepo.Add(planering);
+            await _planeringsRepo.Save();
         }
         // 1. Hämta hattar från en vald order så Judith kan välja en
-        public List<Produkt> HämtaHattarFrånOrder(int orderId)
+        public async Task<List<Produkt>> HämtaHattarFrånOrder(int orderId)
         {
-            var order = _orderRepo.GetOrdersAndNavPropertiesList()
-                                  .FirstOrDefault(o => o.OrderID == orderId);
+            var order = await _orderRepo.GetOrdersAndNavPropertiesList()
+                                  .FirstOrDefaultAsync(o => o.OrderID == orderId);
 
             // Om ordern finns, returnera dess produkter, annars en tom lista
             return order?.Produkter ?? new List<Produkt>();
         }
 
         // 2. Skapa själva bokningen i schemat
-        public Planering PlaneraArbete(int användarId, int produktId, DateTime startTid)
+        public async Task<Planering> PlaneraArbete(int användarId, int produktId, DateTime startTid)
         {
             var slutTid = startTid.AddHours(2);
 
-            var finnsKrock = _planeringsRepo.GetAll()
-                .Any(p => p.ProduktID == produktId &&
+            var allaPlaneringar = await _planeringsRepo.GetAll();
+            var finnsKrock = allaPlaneringar.Any(p => p.ProduktID == produktId &&
                           p.StartTid < slutTid &&
                           p.SlutTid > startTid);
 
@@ -51,60 +52,67 @@ namespace BL.Services
                 SlutTid = startTid.AddHours(2) // Vi sätter ett standardpass på 2 timmar
             };
 
-            _planeringsRepo.Add(nyBokning);
-            _planeringsRepo.Save();
+            await _planeringsRepo.Add(nyBokning);
+            await _planeringsRepo.Save();
             return nyBokning;
         }
 
         // 3. Hämta planeringar för att visa i schemat
-        public Planering HämtaPlaneringMedDetaljer(int planeringsID)
+        public async Task<Planering> HämtaPlaneringMedDetaljer(int planeringsID)
         {
-            return _planeringsRepo.HämtaPlaneringMedDetaljer(planeringsID);
+            return await _planeringsRepo.HämtaPlaneringMedDetaljer(planeringsID);
         }
 
         // 4. Hämta alla planeringar för att visa i schemat
-        public List<Planering> HämtaAllaPlaneringar()
+        public async Task<List<Planering>> HämtaAllaPlaneringar(DateTime veckaStart, DateTime veckaSlut)
         {
-            return _planeringsRepo.HämtaAllaPlaneringarMedDetaljer();
+            return await _planeringsRepo.HämtaAllaPlaneringarMedDetaljer()
+                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToListAsync();
         }
 
         // 5. Hämta planeringar för en specifik användare
-        public List<Planering> HämtaMinPlanering(int id)
+        public async Task<List<Planering>> HämtaMinPlanering(int id)
         {
-            return _planeringsRepo.HämtaAllaPlaneringarMedDetaljer()
-                                 .Where(p => p.AnvändarID == id)
-                                 .ToList();
+
+            var query = _planeringsRepo.HämtaAllaPlaneringarMedDetaljer();
+
+            return await query.Where(p => p.AnvändarID == id).ToListAsync();
         }
 
-        public List<Planering> HämtaPlaneringar(bool alla, int userId)
+        public async Task<List<Planering>> HämtaPlaneringar(bool alla, int userId)
         {
             var query = _planeringsRepo.HämtaAllaPlaneringarMedDetaljer();
+
             if (!alla)
             {
-                query = query.Where(p => p.AnvändarID == userId).ToList();
+                // Vi lägger till WHERE-klausulen i receptet
+                query = query.Where(p => p.AnvändarID == userId);
             }
-            return query;
+
+            // NU först skickar vi frågan till SQL-servern
+            return await query.ToListAsync();
         }
 
-        public void TaBortPlanering(int planeringId)
+        public async Task TaBortPlanering(int planeringId)
         {
-            var planering = _planeringsRepo.GetById(planeringId);
+            var planering = await _planeringsRepo.GetById(planeringId);
             if (planering != null)
             {
-                _planeringsRepo.Delete(planering.PlaneringsID);
-                _planeringsRepo.Save();
+                await _planeringsRepo.Delete(planering.PlaneringsID);
+                await _planeringsRepo.Save();
             }
         }
 
-        public List<Produkt> HämtaLedigaProdukter(int orderId)
+        public async Task<List<Produkt>> HämtaLedigaProdukter(int orderId)
         {
-            var order = _orderRepo.GetOrdersAndNavPropertiesList()
-                .FirstOrDefault(o => o.OrderID == orderId);
+            var order = await _orderRepo.GetOrdersAndNavPropertiesList()
+                .FirstOrDefaultAsync(o => o.OrderID == orderId);
 
             if (order == null)
                 return new List<Produkt>();
 
-            var upptagnaProdukterIds = _planeringsRepo.GetAll()
+            var Allaplaneringar = await _planeringsRepo.GetAll();
+            var upptagnaProdukterIds = Allaplaneringar
                 .Select(p => p.ProduktID)
                 .ToList();
             return order.Produkter

@@ -4,28 +4,29 @@ namespace BL.Interfaces
 {
     public interface IOrderService
     {
-        List<Order> GetOrderList();
+        Task<List<Order>> GetOrderList();
 
-        List<Order> GetOrdersWithNavProps();
+        Task<List<Order>> GetOrdersWithNavProps();
 
-        List<string> GetOrderStartareNamnList();
+        Task<List<string>> GetOrderStartareNamnList();
 
-        Order GetOrder(int id);
+        Task<Order> GetOrder(int id);
 
-        Order GetFullOrder(int id);
+        Task<Order> GetFullOrder(int id);
 
-        void AddOrder(Order o);
+        Task AddOrder(Order o);
 
-        void UpdateOrder(Order o);
+        Task UpdateOrder(Order o);
 
-        void DeleteOrder(int id);
+        Task DeleteOrder(int id);
 
-        void SaveOrder();
+        Task SaveOrder();
 
-        void skapaOrder(Order nyOrder);
+        Task skapaOrder(Order nyOrder);
 
-        public void MarkeraSomPrio(int OrderID);
+        Task MarkeraSomPrio(int OrderID);
 
-        public void MarkeraFärdig(int OrderID);
+        Task MarkeraFärdig(int OrderID);
+        Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string klarFilter, string specialFilter);
     }
 }

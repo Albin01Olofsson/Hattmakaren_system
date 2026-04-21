@@ -4,13 +4,13 @@ namespace BL.Interfaces
 {
     public interface IPlaneringsYtaService
     {
-        List<Produkt> HämtaHattarFrånOrder(int orderId);
-        Planering PlaneraArbete(int användarId, int produktId, DateTime startTid);
-        Planering HämtaPlaneringMedDetaljer(int planeringsID);
-        List<Planering> HämtaAllaPlaneringar();
-        List<Planering> HämtaMinPlanering(int id);
-        List<Planering> HämtaPlaneringar(bool alla, int userId);
-        void TaBortPlanering(int planeringId);
-        List<Produkt> HämtaLedigaProdukter(int orderId);
+        Task<List<Produkt>> HämtaHattarFrånOrder(int orderId);
+        Task<Planering> PlaneraArbete(int användarId, int produktId, DateTime startTid);
+        Task<Planering> HämtaPlaneringMedDetaljer(int planeringsID);
+        Task<List<Planering>> HämtaAllaPlaneringar(DateTime veckaStart, DateTime veckaSlut);
+        Task<List<Planering>> HämtaMinPlanering(int id);
+        Task<List<Planering>> HämtaPlaneringar(bool alla, int userId);
+        Task TaBortPlanering(int planeringId);
+        Task<List<Produkt>> HämtaLedigaProdukter(int orderId);
     }
 }

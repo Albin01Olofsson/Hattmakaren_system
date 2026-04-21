@@ -4,6 +4,6 @@ namespace DAL.Intefaces
 {
     public interface IKundRepo : IRepository<Kund>
     {
-        public Kund GetByEmail(string email);
+        public Task<Kund> GetByEmail(string email);
     }
 }

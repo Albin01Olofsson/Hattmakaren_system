@@ -11,18 +11,18 @@ namespace BL.Services
         {
             _kundRepo = kundRepo;
         }
-        public List<Kund> HämtaAllaKunder()
+        public async Task<List<Kund>> HämtaAllaKunder()
         {
 
-            return _kundRepo.GetAll();
+            return await _kundRepo.GetAll();
         }
 
-        public Kund GetKundById(int id)
+        public async Task<Kund> GetKundById(int id)
         {
-            return _kundRepo.GetById(id);
+            return await _kundRepo.GetById(id);
         }
 
-        public void AddKund(Kund kund)
+        public async Task AddKund(Kund kund)
         {
             // Validera att kund inte är null
             if (kund == null)
@@ -35,11 +35,11 @@ namespace BL.Services
                 throw new ArgumentException("Kundens namn kan inte vara tomt.", nameof(kund));
             }
             // Skicka vidare till Repot (Databasen) för att lägga till kunden
-            _kundRepo.Add(kund);
-            _kundRepo.Save();
+            await _kundRepo.Add(kund);
+            await _kundRepo.Save();
         }
 
-        public void UpdateKund(Kund kund)
+        public async Task UpdateKund(Kund kund)
         {
             // Validera att kund inte är null
             if (kund == null)
@@ -52,11 +52,11 @@ namespace BL.Services
                 throw new ArgumentException("Kundens namn kan inte vara tomt.", nameof(kund));
             }
             // Skicka vidare till Repot (Databasen) för att uppdatera kunden
-            _kundRepo.Update(kund);
-            _kundRepo.Save();
+            await _kundRepo.Update(kund);
+            await _kundRepo.Save();
         }
 
-        public void DeleteKund(int id)
+        public async Task DeleteKund(int id)
         {
             // Validera att id är större än 0
             if (id <= 0)
@@ -64,11 +64,11 @@ namespace BL.Services
                 throw new ArgumentException("Id måste vara större än 0.", nameof(id));
             }
             // Skicka vidare till Repot (Databasen) för att ta bort kunden
-            _kundRepo.Delete(id);
-            _kundRepo.Save();
+            await _kundRepo.Delete(id);
+            await _kundRepo.Save();
         }
 
-        public Kund GetByEmail(string email)
+        public async Task<Kund> GetByEmail(string email)
         {
             // Validera att email inte är null eller tomt
             if (string.IsNullOrWhiteSpace(email))
@@ -77,14 +77,14 @@ namespace BL.Services
             }
 
             // Skicka frågan vidare till Repot (Databasen)
-            return _kundRepo.GetByEmail(email);
+            return await _kundRepo.GetByEmail(email);
         }
 
-        public void Anonymiserakund(int KundID)
+        public async Task AnonymiseraKund(int kundID)
 
         {
 
-            var kund = _kundRepo.GetById(KundID);
+            var kund = await _kundRepo.GetById(kundID);
 
 
 
@@ -104,9 +104,8 @@ namespace BL.Services
 
 
 
-            _kundRepo.Update(kund);
-
-            _kundRepo.Save();
+            await _kundRepo.Update(kund);
+            await _kundRepo.Save();
 
         }
 

@@ -27,11 +27,11 @@
             <Border Background="#FF2C3E50" Padding="15" CornerRadius="10" Margin="0,5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Välj Kund: " Foreground="#FFC5A059" VerticalAlignment="Center" Width="100"/>
-                    <ComboBox Width="250" 
+                        <ComboBox Width="250" 
                               ItemsSource="{Binding AllaKunder}" 
                               SelectedItem="{Binding ValdKund}" 
                               DisplayMemberPath="Namn"/>
-                    <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46" Click="Button_Click"></Button>
+                        <Button Grid.Column="1" Width="200" Margin="50, 15" HorizontalAlignment="Right" Content="Ny Kund" Background="#FFB08D46" Click="Button_Click"></Button>
                 </StackPanel>
             </Border>
 

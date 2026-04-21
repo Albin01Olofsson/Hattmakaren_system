@@ -13,7 +13,8 @@ namespace WpfApp1.ViewModels
         private readonly IProduktService _produktService;
 
         // LISTOR (ItemsSource för rullistorna)
-        public ObservableCollection<Kund> AllaKunder { get; set; }
+        [ObservableProperty]
+        public ObservableCollection<Kund> allaKunder = new();
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
         public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
 
@@ -41,6 +42,8 @@ namespace WpfApp1.ViewModels
 
             _ = LaddaData();
         }
+
+        [RelayCommand]
         private async Task LaddaData()
         {
             var kunderFrånDb = await _kundService.HämtaAllaKunder() ?? new List<Kund>();
@@ -61,6 +64,7 @@ namespace WpfApp1.ViewModels
 
             UppdateraOversikt();
         }
+
 
         [RelayCommand]
         private void LaggTillProdukt()

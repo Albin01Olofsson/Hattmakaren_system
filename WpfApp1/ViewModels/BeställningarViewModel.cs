@@ -131,7 +131,7 @@ namespace WpfApp1.ViewModels
             if (senasteBestallning == null)
                 throw new Exception("Ingen beställning att exportera!");
 
-            SparaTillPdf(senasteBestallning);
+            SparaTillPdf(senasteBestallning, Session.CurrentUser.Namn);
         }
 
         [RelayCommand]
@@ -168,7 +168,7 @@ namespace WpfApp1.ViewModels
             Pris = "";
             Typ = "";
         }
-        private void SparaTillPdf(MaterialBeställning bestallning)
+        private void SparaTillPdf(MaterialBeställning bestallning, string ansvarigNamn)
         {
             var dialog = new SaveFileDialog
             {
@@ -185,6 +185,7 @@ namespace WpfApp1.ViewModels
                     document.Add(new Paragraph("Materialbeställning"));
                     document.Add(new Paragraph("----------------------"));
                     document.Add(new Paragraph($"Datum: {DateTime.Now}"));
+                    document.Add(new Paragraph($"Ansvarig: {ansvarigNamn}"));
                     document.Add(new Paragraph(" "));
 
                     // 🔥 Loopa igenom ALLA rader

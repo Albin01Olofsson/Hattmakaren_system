@@ -65,6 +65,10 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new AnvPage());
         }
 
+        private void BtnFörfrågningar_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new FörfrågningarPage());
+        }
 
         public Frame GetFrame()
         {

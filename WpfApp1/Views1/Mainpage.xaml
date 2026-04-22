@@ -88,6 +88,15 @@
                             </StackPanel>
                         </Border>
                     </Button>
+                    
+                    <Button Margin="0,4" Background="Transparent" BorderThickness="0" Click="BtnFörfrågningar_Click">
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="¿?" Width="25" FontWeight="Bold"/>
+                                <TextBlock Text="Förfrågningar" FontSize="14" Foreground="#FF2C3E50"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
                 </StackPanel>
             </DockPanel>
         </Border>

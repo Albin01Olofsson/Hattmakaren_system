@@ -6,80 +6,143 @@
       xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels"
       d:DataContext="{d:DesignInstance Type=viewmodels:KundVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Background="#FF1A1A1D"
       Title="KundPage">
 
-    <StackPanel Orientation="Vertical" Margin="20">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock Text="KUNDER"
-                   FontSize="28"
-                   FontWeight="Black"
-                   Foreground="#F4F1EA"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="KUNDER"
+                       FontSize="28"
+                       FontWeight="Black"
+                       Foreground="#F4F1EA"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,10"/>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-            <TextBox x:Name="SökFält"
-                     Text="{Binding SökText, UpdateSourceTrigger=PropertyChanged}"
-                     Width="350"
-                     Height="33"
-                     FontSize="16"
-                     VerticalContentAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <TextBox x:Name="SökFält"
+                         Text="{Binding SökText, UpdateSourceTrigger=PropertyChanged}"
+                         Width="350"
+                         Height="33"
+                         FontSize="16"
+                         VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <Button Width="150" 
+                    Height="35" 
+                    HorizontalAlignment="Right" 
+                    Margin="0, 0, 5, 10"
+                    Click="Button_Click"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#FFB08D46"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Content" Value="Ny Kund"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" 
+                                            CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFC5A059"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
 
-        <Border Background="#FF2C3E50" CornerRadius="15" Padding="15" Margin="0,10,0,0">
-            <StackPanel>
-                <TextBlock Text="Registrerade Kunder"
+        <Border Grid.Row="1" 
+                Background="#FF2C3E50" 
+                CornerRadius="15" 
+                Padding="15" 
+                Margin="0,10,0,0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Registrerade Kunder"
                            FontWeight="Bold"
                            FontSize="18"
                            Foreground="#F4F1EA"
                            Margin="0,0,0,15"
                            HorizontalAlignment="Center"/>
 
-                <ListBox ItemsSource="{Binding Kunder}"
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Kunder}"
                          Background="Transparent"
                          BorderThickness="0"
                          HorizontalContentAlignment="Stretch"
-                         MaxHeight="350"
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="#11FFFFFF" Margin="0,2,0,2" Padding="10" CornerRadius="5">
+                            <Border Background="#11FFFFFF" Margin="0,5,0,5" Padding="15,12" CornerRadius="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.5*"/>
                                         <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1.2*"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Namn}" 
-                                                   FontSize="14" FontWeight="Bold" Foreground="#F4F1EA"/>
-                                        <TextBlock Text="{Binding Telefon, StringFormat=Tfn: {0}}" 
-                                                   FontSize="12" Foreground="#F4F1EA" Opacity="0.8"/>
+                                        <TextBlock Text="{Binding Namn}" FontSize="15" FontWeight="Bold" Foreground="#F4F1EA"/>
+                                        <TextBlock Text="{Binding Telefon, StringFormat=Tfn: {0}}" FontSize="12" Foreground="#F4F1EA" Opacity="0.6" Margin="0,2,0,0"/>
                                     </StackPanel>
 
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Email}" 
-                                                   FontSize="12" Foreground="#F4F1EA"/>
-                                        <TextBlock Text="{Binding Adress}" 
-                                                   FontSize="11" Foreground="#F4F1EA" Opacity="0.7"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
+                                        <TextBlock Text="{Binding Email}" FontSize="13" Foreground="#FFB08D46" FontWeight="Medium"/>
+                                        <TextBlock Text="{Binding Adress}" FontSize="12" Foreground="#F4F1EA" Opacity="0.8"/>
                                     </StackPanel>
 
-                                    <Button Grid.Column="2" 
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="5,0">
+                                        <TextBlock Text="{Binding Stad}" FontSize="12" Foreground="#F4F1EA" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Land}" FontSize="11" Foreground="#F4F1EA" Opacity="0.6"/>
+                                        <TextBlock Text="FÖRETAG" FontSize="9" Foreground="#FFB08D46" FontWeight="Black" Margin="0,2,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding FöretagsKund}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <Button Grid.Column="3" 
                                             Content="Ta bort"
                                             Background="#E74C3C" 
-                                            Foreground="White"
+                                            Foreground="White" 
                                             FontWeight="Bold"
-                                            Padding="10,5"
-                                            HorizontalAlignment="Right"
+                                            Padding="12,6" 
+                                            VerticalAlignment="Center"
                                             Command="{Binding DataContext.TaBortKundCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding}">
                                         <Button.Resources>
                                             <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="5"/>
+                                                <Setter Property="CornerRadius" Value="4"/>
                                             </Style>
                                         </Button.Resources>
                                     </Button>
@@ -88,7 +151,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
+            </Grid>
         </Border>
-    </StackPanel>
+    </Grid>
 </Page>

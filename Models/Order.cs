@@ -11,6 +11,7 @@ namespace Models
 
         public decimal Pris { get; set; }
 
+        public double? Moms { get; set; }
         public DateTime Datum { get; set; }
 
         private bool _färdig;
@@ -38,11 +39,11 @@ namespace Models
         public int StartadAvID { get; set; }
         public Användare StartadAv { get; set; } = null!;
 
-
+        public string Status { get; set; } = "Ej påbörjat";
 
         public List<Produkt> Produkter { get; set; } = new List<Produkt>();
 
-
+        public DateTime FörväntadTillverkningsTid { get; set; }
 
         public Kund Kund { get; set; } = null!;
 
@@ -55,6 +56,5 @@ namespace Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyNamn));
         }
-
     }
 }

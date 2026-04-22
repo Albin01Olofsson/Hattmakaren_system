@@ -10,6 +10,8 @@ namespace Models
         public DateTime StartTid { get; set; } = DateTime.Now;
         public DateTime SlutTid { get; set; } 
 
+        public string PlaneringsNamn { get; set; }
+
         [ForeignKey("Användare")]
         public int AnvändarID { get; set; }
         public Användare Användare { get; set; }

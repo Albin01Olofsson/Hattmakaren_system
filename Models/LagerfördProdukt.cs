@@ -10,10 +10,5 @@
 
         public int Lagerantal { get; set; }
 
-
-
-
-
-
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260421081251_AsyncStart")]
-    partial class AsyncStart
+    [Migration("20260422153428_neww")]
+    partial class neww
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$njFYdq7KQlMDhTBR//sUhO1NP43KQtpX0ZK7DwHWJSzphwOoC8rOm",
+                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -106,7 +106,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$njFYdq7KQlMDhTBR//sUhO1NP43KQtpX0ZK7DwHWJSzphwOoC8rOm",
+                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -116,7 +116,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$njFYdq7KQlMDhTBR//sUhO1NP43KQtpX0ZK7DwHWJSzphwOoC8rOm",
+                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -126,7 +126,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$njFYdq7KQlMDhTBR//sUhO1NP43KQtpX0ZK7DwHWJSzphwOoC8rOm",
+                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -174,7 +174,18 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("FöretagsKund")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Land")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Namn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Stad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -192,7 +203,10 @@ namespace DAL.Migrations
                             KundID = 1001,
                             Adress = "Kullstigen 78",
                             Email = "Per.Larsson@hotmail.com",
+                            FöretagsKund = true,
+                            Land = "Sverige",
                             Namn = "Per Larsson",
+                            Stad = "Stockholm",
                             Telefon = "076312129"
                         },
                         new
@@ -200,7 +214,10 @@ namespace DAL.Migrations
                             KundID = 1002,
                             Adress = "Milvägen 1",
                             Email = "Eva.Milen@hotmail.com",
+                            FöretagsKund = true,
+                            Land = "Sverige",
                             Namn = "Eva Von Milen",
+                            Stad = "Stockholm",
                             Telefon = "0727728432"
                         },
                         new
@@ -208,7 +225,10 @@ namespace DAL.Migrations
                             KundID = 1003,
                             Adress = "Fjordaberg 51",
                             Email = "yvonne.fjord@hotmail.com",
+                            FöretagsKund = false,
+                            Land = "Finland",
                             Namn = "Yvonne Fjord",
+                            Stad = "Helsingfors",
                             Telefon = "0702127345"
                         },
                         new
@@ -216,7 +236,10 @@ namespace DAL.Migrations
                             KundID = 1004,
                             Adress = "Javatorget 23",
                             Email = "ahmed.khan@hotmail.com",
+                            FöretagsKund = false,
+                            Land = "Sverige",
                             Namn = "Ahmed Khan",
+                            Stad = "Örebro",
                             Telefon = "070123382"
                         },
                         new
@@ -224,7 +247,10 @@ namespace DAL.Migrations
                             KundID = 1005,
                             Adress = "Tetornet 3",
                             Email = "jasmin.barsk@hotmail.com",
+                            FöretagsKund = false,
+                            Land = "Sverige",
                             Namn = "Jasmin Barsk",
+                            Stad = "Stockholm",
                             Telefon = "0702427373"
                         });
                 });
@@ -243,6 +269,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("Lagerantal")
                         .HasColumnType("int");
+
+                    b.Property<string>("Mått")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Namn")
                         .IsRequired()
@@ -265,6 +295,7 @@ namespace DAL.Migrations
                             MaterialID = 100001,
                             Beskrivning = "Inte filt man sover med",
                             Lagerantal = 23,
+                            Mått = "meter",
                             Namn = "Filt",
                             Pris = 54m,
                             Typ = "Tyg"
@@ -274,6 +305,7 @@ namespace DAL.Migrations
                             MaterialID = 100002,
                             Beskrivning = "100% obesprutat bomull",
                             Lagerantal = 52,
+                            Mått = "milimeter",
                             Namn = "Bomull",
                             Pris = 34m,
                             Typ = "Tyg"
@@ -283,6 +315,7 @@ namespace DAL.Migrations
                             MaterialID = 100003,
                             Beskrivning = "1.2 mm svar syträd av silikon och polyester",
                             Lagerantal = 2,
+                            Mått = "meter",
                             Namn = "Svart tråd",
                             Pris = 28m,
                             Typ = "Tråd"
@@ -296,6 +329,10 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
+
+                    b.Property<string>("Leverantör")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
@@ -313,18 +350,21 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
+                            Leverantör = "Kung AB",
                             StartadAvID = 1,
                             TotalPris = 1890m
                         },
                         new
                         {
                             MaterialBeställningID = 1000002,
+                            Leverantör = "Kung AB",
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
+                            Leverantör = "Kung AB",
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
@@ -343,6 +383,9 @@ namespace DAL.Migrations
 
                     b.Property<bool>("Färdig")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("FörväntadTillverkningsTid")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsPrio")
                         .HasColumnType("bit");
@@ -363,6 +406,10 @@ namespace DAL.Migrations
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderID");
 
                     b.HasIndex("KundID");
@@ -377,252 +424,294 @@ namespace DAL.Migrations
                             OrderID = 100000001,
                             Datum = new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1001,
                             Pris = 1299m,
                             Rabatt = 0m,
-                            StartadAvID = 1
+                            StartadAvID = 1,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000002,
                             Datum = new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1099m,
                             Rabatt = 0m,
-                            StartadAvID = 1
+                            StartadAvID = 1,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000003,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 299m,
                             Rabatt = 0m,
-                            StartadAvID = 1
+                            StartadAvID = 1,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000004,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1004,
                             Pris = 2399m,
                             Rabatt = 0m,
-                            StartadAvID = 1
+                            StartadAvID = 1,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000005,
                             Datum = new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 779m,
                             Rabatt = 0m,
-                            StartadAvID = 1
+                            StartadAvID = 1,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000006,
                             Datum = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1001,
                             Pris = 949m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000007,
                             Datum = new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1049m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000008,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 749m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000009,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 999m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000010,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 899m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000011,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 1099m,
                             Rabatt = 0m,
-                            StartadAvID = 2
+                            StartadAvID = 2,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000012,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1001,
                             Pris = 2019m,
                             Rabatt = 0m,
-                            StartadAvID = 3
+                            StartadAvID = 3,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000013,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1002,
                             Pris = 1829m,
                             Rabatt = 0m,
-                            StartadAvID = 3
+                            StartadAvID = 3,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000014,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 599m,
                             Rabatt = 0m,
-                            StartadAvID = 3
+                            StartadAvID = 3,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000015,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 899m,
                             Rabatt = 0m,
-                            StartadAvID = 3
+                            StartadAvID = 3,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000016,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = true,
                             KundID = 1005,
                             Pris = 1299m,
                             Rabatt = 0m,
-                            StartadAvID = 3
+                            StartadAvID = 3,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000017,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1001,
                             Pris = 499m,
                             Rabatt = 0m,
-                            StartadAvID = 4
+                            StartadAvID = 4,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000018,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1002,
                             Pris = 499m,
                             Rabatt = 0m,
-                            StartadAvID = 4
+                            StartadAvID = 4,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000019,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1003,
                             Pris = 499m,
                             Rabatt = 0m,
-                            StartadAvID = 4
+                            StartadAvID = 4,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000020,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1004,
                             Pris = 499m,
                             Rabatt = 0m,
-                            StartadAvID = 4
+                            StartadAvID = 4,
+                            Status = "Ej påbörjat"
                         },
                         new
                         {
                             OrderID = 100000021,
                             Datum = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Färdig = false,
+                            FörväntadTillverkningsTid = new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPrio = false,
                             IsSpecialbeställning = false,
                             KundID = 1005,
                             Pris = 499m,
                             Rabatt = 0m,
-                            StartadAvID = 4
+                            StartadAvID = 4,
+                            Status = "Ej påbörjat"
                         });
                 });
 
@@ -636,6 +725,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("AnvändarID")
                         .HasColumnType("int");
+
+                    b.Property<string>("PlaneringsNamn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProduktID")
                         .HasColumnType("int");
@@ -678,12 +771,19 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Lagerantal")
+                        .HasColumnType("int");
+
                     b.Property<string>("Modell")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderID")
-                        .HasColumnType("int");
+                    b.Property<string>("Namn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Pris")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProduktTyp")
                         .IsRequired()
@@ -697,16 +797,7 @@ namespace DAL.Migrations
                     b.Property<int>("TillverkadAVID")
                         .HasColumnType("int");
 
-                    b.Property<string>("namn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("pris")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("ProduktID");
-
-                    b.HasIndex("OrderID");
 
                     b.HasIndex("TillverkadAVID");
 
@@ -715,36 +806,21 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            ProduktID = 10000001,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Modell = "",
-                            OrderID = 100000001,
-                            Storlek = "M",
-                            TillverkadAVID = 1,
-                            namn = "Filt hatt",
-                            pris = 1099m
-                        },
-                        new
-                        {
-                            ProduktID = 10000002,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Modell = "",
-                            OrderID = 100000002,
-                            Storlek = "M",
-                            TillverkadAVID = 2,
-                            namn = "Siden hatt",
-                            pris = 949m
-                        });
+            modelBuilder.Entity("OrderProdukt", b =>
+                {
+                    b.Property<int>("OrdrarOrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProdukterProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdrarOrderID", "ProdukterProduktID");
+
+                    b.HasIndex("ProdukterProduktID");
+
+                    b.ToTable("OrderProdukter", (string)null);
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -759,10 +835,41 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Lagerantal")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("Lagerförd");
+
+                    b.HasData(
+                        new
+                        {
+                            ProduktID = 10000001,
+                            Decoration = "",
+                            Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Lagerantal = 0,
+                            Modell = "",
+                            Namn = "Filt hatt",
+                            Pris = 1099m,
+                            Storlek = "M",
+                            TillverkadAVID = 1,
+                            ArtikelID = "LP0001",
+                            Kategori = "Hatt"
+                        },
+                        new
+                        {
+                            ProduktID = 10000002,
+                            Decoration = "",
+                            Färdig = false,
+                            Färg = "",
+                            HattTyp = "",
+                            Lagerantal = 0,
+                            Modell = "",
+                            Namn = "Siden keps",
+                            Pris = 949m,
+                            Storlek = "M",
+                            TillverkadAVID = 2,
+                            ArtikelID = "LP0002",
+                            Kategori = "Keps"
+                        });
                 });
 
             modelBuilder.Entity("Models.SpecialBeställning", b =>
@@ -880,20 +987,28 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Produkt", b =>
                 {
-                    b.HasOne("Models.Order", "Order")
-                        .WithMany("Produkter")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Models.Användare", "TillverkadAv")
                         .WithMany("produktLista")
                         .HasForeignKey("TillverkadAVID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Order");
-
                     b.Navigation("TillverkadAv");
+                });
+
+            modelBuilder.Entity("OrderProdukt", b =>
+                {
+                    b.HasOne("Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdrarOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", null)
+                        .WithMany()
+                        .HasForeignKey("ProdukterProduktID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Användare", b =>
@@ -915,11 +1030,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.MaterialBeställning", b =>
                 {
                     b.Navigation("Rader");
-                });
-
-            modelBuilder.Entity("Models.Order", b =>
-                {
-                    b.Navigation("Produkter");
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>

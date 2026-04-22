@@ -43,7 +43,8 @@ namespace DAL.Repositorys
         public async Task<List<Produkt>> GetAllaProdukter()
         {
             return await _context.Produkter
-                .Include(p => p.Order)
+                
+                .Include(p => p.Ordrar)
                 .Include(p => p.MaterialLista)
                 .Include(p => p.TillverkadAv)
                 .ToListAsync();

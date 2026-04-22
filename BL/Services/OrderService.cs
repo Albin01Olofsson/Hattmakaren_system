@@ -77,7 +77,7 @@ namespace BL.Services
                         produkt.Färdig = false;
                     }
 
-                    totalPris += produkt.pris;
+                    totalPris += produkt.Pris;
                 }
 
                 totalPris -= nyOrder.Rabatt;

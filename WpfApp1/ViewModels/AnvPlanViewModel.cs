@@ -96,9 +96,9 @@ namespace WpfApp1.ViewModels
                     {
                         PlaneringsId = current.PlaneringsID,
                         AnvändarNamn = current.Användare.Namn,
-                        OrderId = current.Produkt.OrderID ?? 0,
+                        //OrderId = current.Produkt.OrderID ?? 0,
                         ProduktId = current.ProduktID,
-                        ProduktNamn = current.Produkt.namn,
+                        ProduktNamn = current.Produkt.Namn,
                         StartTid = current.StartTid,
                         LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
                         Index = index,

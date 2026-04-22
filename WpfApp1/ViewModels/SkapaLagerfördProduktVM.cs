@@ -178,8 +178,8 @@ namespace WpfApp1.ViewModels
 
             Produkt nyProd = new Produkt
             {
-                namn = NyttProduktNamn,
-                pris = NyttPris,
+                Namn = NyttProduktNamn,
+                Pris = NyttPris,
                 Storlek = NyStorlek,
                 HattTyp = NyTyp,
                 Modell = NyModell,

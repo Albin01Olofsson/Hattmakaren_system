@@ -83,7 +83,7 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Datum: {order.Datum}"));
             foreach (Produkt p in order.Produkter)
             {
-                dokument.Add(new iText.Layout.Element.Paragraph($" - {p.namn} - {p.pris}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($" - {p.Namn} - {p.Pris}"));
             }
             dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Klar: {order.Färdig}"));

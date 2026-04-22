@@ -13,6 +13,7 @@ namespace DAL
         public DbSet<Material> Material { get; set; }
         public DbSet<MaterialBeställning> MaterialBeställningar { get; set; }
         public DbSet<Planering> Planeringar { get; set; }
+        public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,12 +44,28 @@ namespace DAL
 
             // 3. RELATION: Order -> Produkt (1:N)
             // Här använder vi den nya gemensamma listan i Order
+            //modelBuilder.Entity<Order>()
+            //    .HasMany(o => o.Produkter)
+            //    .WithOne(p => p.Order)
+            //    .HasForeignKey(p => p.OrderID)
+            //    .OnDelete(DeleteBehavior.Cascade); // Om ordern tas bort, försvinner produkterna i den
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Produkter)
-                .WithOne(p => p.Order)
-                .HasForeignKey(p => p.OrderID)
-                .OnDelete(DeleteBehavior.Cascade); // Om ordern tas bort, försvinner produkterna i den
+                .WithMany(p => p.Ordrar)
+                .UsingEntity(j => j.ToTable("OrderProdukter"));
 
+            // 1. Konfigurera En-till-många (Skaparen)
+            modelBuilder.Entity<Aktivitet>()
+                .HasOne(ak => ak.SkapadAv)
+                .WithMany(u => u.SkapadeAktiviteter)
+                .HasForeignKey(ak => ak.SkapadAvID)
+                .OnDelete(DeleteBehavior.Restrict); // Viktigt: Vi vill inte radera användaren om aktiviteten tas bort
+
+            // 2. Konfigurera Många-till-många (Deltagarna)
+            modelBuilder.Entity<Aktivitet>()
+                .HasMany(ak => ak.Deltagare)
+                .WithMany(u => u.DeltarIAktiviteter)
+                .UsingEntity(j => j.ToTable("AnvändarAktiviteter"));
             // 4. RELATIONER TILL ANVÄNDARE (Era nya ändringar)
 
             // Användare -> Order (Vem som startade ordern)
@@ -87,6 +104,7 @@ namespace DAL
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
 
+           
             modelBuilder.Entity<Planering>(entity =>
             {
                 // Primärnyckel
@@ -107,7 +125,7 @@ namespace DAL
 
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
-            modelBuilder.Entity<Produkt>().Property(p => p.pris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Produkt>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
@@ -163,7 +181,10 @@ namespace DAL
                         Namn = "Per Larsson",
                         Adress = "Kullstigen 78",
                         Telefon = "076312129",
-                        Email = "Per.Larsson@hotmail.com"
+                        Email = "Per.Larsson@hotmail.com",
+                        FöretagsKund = true,
+                        Land = "Sverige",
+                        Stad = "Stockholm"
                     },
                     new Kund
                     {
@@ -171,7 +192,10 @@ namespace DAL
                         Namn = "Eva Von Milen",
                         Adress = "Milvägen 1",
                         Telefon = "0727728432",
-                        Email = "Eva.Milen@hotmail.com"
+                        Email = "Eva.Milen@hotmail.com",
+                        FöretagsKund = true,
+                        Land = "Sverige",
+                        Stad = "Stockholm"
                     },
                     new Kund
                     {
@@ -179,7 +203,10 @@ namespace DAL
                         Namn = "Yvonne Fjord",
                         Adress = "Fjordaberg 51",
                         Telefon = "0702127345",
-                        Email = "yvonne.fjord@hotmail.com"
+                        Email = "yvonne.fjord@hotmail.com",
+                        FöretagsKund = false,
+                        Land = "Finland",
+                        Stad = "Helsingfors"
                     },
                     new Kund
                     {
@@ -187,7 +214,10 @@ namespace DAL
                         Namn = "Ahmed Khan",
                         Adress = "Javatorget 23",
                         Telefon = "070123382",
-                        Email = "ahmed.khan@hotmail.com"
+                        Email = "ahmed.khan@hotmail.com",
+                        FöretagsKund = false,
+                        Land = "Sverige",
+                        Stad = "Örebro"
                     },
                     new Kund
                     {
@@ -195,7 +225,10 @@ namespace DAL
                         Namn = "Jasmin Barsk",
                         Adress = "Tetornet 3",
                         Telefon = "0702427373",
-                        Email = "jasmin.barsk@hotmail.com"
+                        Email = "jasmin.barsk@hotmail.com",
+                        FöretagsKund = false,
+                        Land = "Sverige",
+                        Stad = "Stockholm"
                     }
                 );
             //MATERIAL
@@ -207,7 +240,8 @@ namespace DAL
                         Pris = 54,
                         Beskrivning = "Inte filt man sover med",
                         Typ = "Tyg",
-                        Lagerantal = 23
+                        Lagerantal = 23,
+                        Mått = "meter"
                     },
                     new Material
                     {
@@ -216,7 +250,8 @@ namespace DAL
                         Pris = 34,
                         Beskrivning = "100% obesprutat bomull",
                         Typ = "Tyg",
-                        Lagerantal = 52
+                        Lagerantal = 52,
+                        Mått = "milimeter"
                     },
                     new Material
                     {
@@ -225,7 +260,8 @@ namespace DAL
                         Pris = 28,
                         Beskrivning = "1.2 mm svar syträd av silikon och polyester",
                         Typ = "Tråd",
-                        Lagerantal = 2
+                        Lagerantal = 2,
+                        Mått = "meter"
                     }
                 );
             //MATERIALBESTÄLLNINGAR
@@ -234,19 +270,22 @@ namespace DAL
                     {
                         MaterialBeställningID = 1000001,
                         TotalPris = 1890,
-                        StartadAvID = 1
+                        StartadAvID = 1,
+                        Leverantör = "Kung AB"
                     },
                     new MaterialBeställning
                     {
                         MaterialBeställningID = 1000002,
                         TotalPris = 769,
-                        StartadAvID = 2
+                        StartadAvID = 2,
+                        Leverantör = "Kung AB"
                     },
                     new MaterialBeställning
                     {
                         MaterialBeställningID = 1000003,
                         TotalPris = 3419,
-                        StartadAvID = 1
+                        StartadAvID = 1,
+                        Leverantör = "Kung AB"
                     }
                 );
             //MATERIALMATERIALPRODUKT
@@ -265,7 +304,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
-                        KundID = 1001
+                        KundID = 1001,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04,28)
                     },
                     new Order
                     {
@@ -276,7 +317,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
-                        KundID = 1002
+                        KundID = 1002,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -287,7 +330,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 1,
-                        KundID = 1003
+                        KundID = 1003,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -298,7 +343,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 1,
-                        KundID = 1004
+                        KundID = 1004,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -309,7 +356,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 1,
-                        KundID = 1005
+                        KundID = 1005,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -320,7 +369,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
-                        KundID = 1001
+                        KundID = 1001,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -331,7 +382,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 2,
-                        KundID = 1002
+                        KundID = 1002,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -342,7 +395,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
-                        KundID = 1003
+                        KundID = 1003,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -353,7 +408,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
-                        KundID = 1004
+                        KundID = 1004,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -364,7 +421,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
-                        KundID = 1004
+                        KundID = 1004,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -375,7 +434,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 2,
-                        KundID = 1005
+                        KundID = 1005,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -386,7 +447,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 3,
-                        KundID = 1001
+                        KundID = 1001,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -397,7 +460,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 3,
-                        KundID = 1002
+                        KundID = 1002,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -408,7 +473,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 3,
-                        KundID = 1003
+                        KundID = 1003,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -419,7 +486,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 3,
-                        KundID = 1004
+                        KundID = 1004,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -430,7 +499,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = true,
                         StartadAvID = 3,
-                        KundID = 1005
+                        KundID = 1005,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -441,7 +512,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
-                        KundID = 1001
+                        KundID = 1001,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -452,7 +525,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
-                        KundID = 1002
+                        KundID = 1002,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -463,7 +538,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
-                        KundID = 1003
+                        KundID = 1003,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -474,7 +551,9 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
-                        KundID = 1004
+                        KundID = 1004,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {
@@ -485,28 +564,32 @@ namespace DAL
                         Färdig = false,
                         IsSpecialbeställning = false,
                         StartadAvID = 4,
-                        KundID = 1005
+                        KundID = 1005,
+                        Status = "Ej påbörjat",
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     }
                 );
             //PRODUKTER
-            modelBuilder.Entity<Produkt>().HasData(
-                    new Produkt
+            modelBuilder.Entity<LagerfördProdukt>().HasData(
+                    new LagerfördProdukt
                     {
                         ProduktID = 10000001,
-                        namn = "Filt hatt",
-                        pris = 1099,
+                        Namn = "Filt hatt",
+                        Pris = 1099,
                         Storlek = "M",
-                        OrderID = 100000001,
-                        TillverkadAVID = 1
+                        TillverkadAVID = 1,
+                        ArtikelID = "LP0001",
+                        Kategori = "Hatt"
                     },
-                    new Produkt
+                    new LagerfördProdukt
                     {
                         ProduktID = 10000002,
-                        namn = "Siden hatt",
-                        pris = 949,
+                        Namn = "Siden keps",
+                        Pris = 949,
                         Storlek = "M",
-                        OrderID = 100000002,
-                        TillverkadAVID = 2
+                        TillverkadAVID = 2,
+                        ArtikelID = "LP0002",
+                        Kategori = "Keps"
                     }
                 );
         }

@@ -7,8 +7,8 @@ namespace Models
     {
         [Key]
         public int ProduktID { get; set; }
-        public string namn { get; set; }
-        public decimal pris { get; set; }
+        public string Namn { get; set; }
+        public decimal Pris { get; set; }
         public bool Färdig { get; set; } = false;
         public string Storlek { get; set; }
         public List<Material> MaterialLista { get; set; } = new List<Material>();
@@ -22,9 +22,11 @@ namespace Models
 
         public string Decoration { get; set; } = string.Empty; //typ rosett, tygblomma
 
-        [ForeignKey("Order")]
-        public int? OrderID { get; set; }
-        public Order? Order { get; set; }
+        //[ForeignKey("Order")]
+        //public int? OrderID { get; set; }
+        //public Order? Order { get; set; }
+
+        public List<Order> Ordrar { get; set; } = new();
 
         [ForeignKey("TillverkadAv")]
         public int TillverkadAVID { get; set; }

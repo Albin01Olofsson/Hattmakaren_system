@@ -12,6 +12,8 @@ namespace Models
 
         public List<BestallningsRad> Rader { get; set; } = new();
 
+        public string Leverantör {  get; set; }
+
         //public int Antal { get; set; }
 
         public decimal TotalPris { get; set; }

@@ -132,7 +132,7 @@ namespace WpfApp1.ViewModels
         private void UppdateraOversikt()
         {
             // 1. Grundsumma för alla produkter
-            decimal totalt = TillagdaProdukter.Sum(p => p.pris);
+            decimal totalt = TillagdaProdukter.Sum(p => p.Pris);
             // 2. Dra av rabatten och se till att det inte blir negativt
             decimal efterRabatt = Math.Max(0, totalt - Rabatt);
             decimal slutpris = efterRabatt;

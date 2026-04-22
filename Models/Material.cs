@@ -15,9 +15,9 @@ namespace Models
 
         public string Typ { get; set; }
 
+        public string Mått { get; set; }
+
         public int Lagerantal { get; set; }
-
-
 
     }
 }

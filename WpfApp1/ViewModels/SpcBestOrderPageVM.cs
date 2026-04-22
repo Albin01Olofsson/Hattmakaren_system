@@ -222,8 +222,8 @@ namespace WpfApp1.ViewModels
 
             var nySpecBes = new SpecialBeställning
             {
-                namn = NyttProduktNamn,
-                pris = NyttPris,
+                Namn = NyttProduktNamn,
+                Pris = NyttPris,
                 Storlek = NyStorlek,
                 HattTyp = NyTyp,
                 Modell = NyModell,
@@ -239,7 +239,7 @@ namespace WpfApp1.ViewModels
             if (!string.IsNullOrWhiteSpace(BildUrl))
             {
                 string extension = Path.GetExtension(BildUrl);
-                string bildNamn = $"SpecialBest-{nySpecBes.namn}-{Guid.NewGuid()}{extension}";
+                string bildNamn = $"SpecialBest-{nySpecBes.Namn}-{Guid.NewGuid()}{extension}";
 
                 string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName; //Sökväg för lägsta nivån i projektet, stega bakåt till projektets lägsta nivå
                 string bildMapp = System.IO.Path.Combine(baseDirectory, "DAL", "Bilder"); //Från projektets basmapp, gå in i DAL, från DAL gå in I Bilder

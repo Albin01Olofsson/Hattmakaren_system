@@ -185,9 +185,9 @@ namespace WpfApp1.ViewModels
             IsMaterialEditorVisible = false;
             IsProduktEditorVisible = true;
 
-            ProduktNamn = SelectedProdukt.namn;
+            ProduktNamn = SelectedProdukt.Namn;
             ProduktStorlek = SelectedProdukt.Storlek;
-            ProduktPris = SelectedProdukt.pris.ToString();
+            ProduktPris = SelectedProdukt.Pris.ToString();
             ProduktSaldo = SelectedProdukt.Lagerantal.ToString();
 
             IsEditorVisible = true;
@@ -350,9 +350,9 @@ namespace WpfApp1.ViewModels
                     return;
                 }
 
-                dbProdukt.namn = ProduktNamn;
+                dbProdukt.Namn = ProduktNamn;
                 dbProdukt.Storlek = ProduktStorlek;
-                dbProdukt.pris = pris;
+                dbProdukt.Pris = pris;
                 dbProdukt.Lagerantal = saldo;
 
                 await _produktRepo.Update(dbProdukt);
@@ -362,9 +362,9 @@ namespace WpfApp1.ViewModels
             {
                 var nyProdukt = new Produkt
                 {
-                    namn = ProduktNamn,
+                    Namn = ProduktNamn,
                     Storlek = ProduktStorlek,
-                    pris = pris,
+                    Pris = pris,
                     Lagerantal = saldo,
                     Färdig = true,
                     HattTyp = "",

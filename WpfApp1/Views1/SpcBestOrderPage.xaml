@@ -34,7 +34,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Name="ProduktNamnFält" Grid.Column="0" Text="Välj Produkt: " Foreground = "#FFC5A059"></TextBlock>
-                    <ComboBox x:Name="ProduktComboBox" Grid.Column="1" ItemsSource="{Binding ProduktLista}" SelectedItem="{Binding ValdProdukt}" DisplayMemberPath="namn"></ComboBox>
+                    <ComboBox x:Name="ProduktComboBox" Grid.Column="1" ItemsSource="{Binding ProduktLista}" SelectedItem="{Binding ValdProdukt ,UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Namn"></ComboBox>
                     <TextBlock Grid.Column="2" HorizontalAlignment="Center" Text="Eller vid ny produkt, Ange Namn:" Foreground = "#FFC5A059"></TextBlock>
                     <TextBox Grid.Column="3" Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left"></TextBox>
                 </Grid>

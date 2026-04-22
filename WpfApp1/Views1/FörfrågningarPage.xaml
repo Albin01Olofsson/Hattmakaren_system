@@ -57,7 +57,7 @@
             <ScrollViewer>
                 
                 <ListBox Background="Transparent"
-                         ItemsSource="{Binding}"
+                         ItemsSource="{Binding Mails, UpdateSourceTrigger=PropertyChanged}"
                          SelectionChanged="SökResultat_SelectionChanged"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"

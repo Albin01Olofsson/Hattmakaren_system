@@ -67,7 +67,14 @@ namespace WpfApp1.Views1
 
         private void BtnFörfrågningar_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new FörfrågningarPage());
+            var mailRepo = new MailRepository(//Loggas in på mailen
+                "imap.gmail.com",
+                993,
+                "ojhattar@hotmail.com",
+                "Hattkungen1",
+                true
+             );
+            MainFrame.Navigate(new FörfrågningarPage(new FörfrågningVM(new MailService(mailRepo))));
         }
 
         public Frame GetFrame()

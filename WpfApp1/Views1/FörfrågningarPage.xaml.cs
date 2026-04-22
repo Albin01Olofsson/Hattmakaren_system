@@ -24,5 +24,10 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
         }
+
+        private void SökResultat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

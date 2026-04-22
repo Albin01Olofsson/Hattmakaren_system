@@ -32,7 +32,12 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private int? valdStartTimme;
-       
+
+        [ObservableProperty]
+        private string planeringsNamn;
+
+        [ObservableProperty]
+        private string valdTyp = "Order";
 
         [ObservableProperty]
         private string ordrarFel;
@@ -78,7 +83,6 @@ namespace WpfApp1.ViewModels
                 AllaProdukter.Add(produkt);
             }
         }
-
         [RelayCommand]
         private async Task SparaAktivitet()
         {
@@ -86,43 +90,97 @@ namespace WpfApp1.ViewModels
             ProdukterFel = "";
             StartTidFel = "";
             TimmarFel = "";
-            bool HasErrors = false;
+
+            bool hasError = false;
 
             if (ValdOrder == null)
             {
-                OrdrarFel = "Vänligen välj en order!";
-                HasErrors = true;
+                OrdrarFel = "Välj order";
+                hasError = true;
             }
-            if(ValdProdukt == null)
-            {
-                ProdukterFel = "Vänligen välj en produkt!";
-                HasErrors = true;
-            }
-            if(ValdStartTid == null)
-            {
-                StartTidFel = "Vänligen välj vilken dag bokningen startar!";
-                HasErrors = true;
-            }
-            if(ValdStartTimme == null)
-            {
-                TimmarFel = "Vänligen välj vilken tid bokningen börjar!";
-                HasErrors = true;
-            }
-            
-            if (ValdOrder == null || ValdProdukt == null || User == null || !ValdStartTid.HasValue || HasErrors)
-                return;
-            
-            var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
 
-            var planering = await _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
+            if (ValdProdukt == null)
+            {
+                ProdukterFel = "Välj produkt";
+                hasError = true;
+            }
+
+            if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue)
+            {
+                StartTidFel = "Välj tid";
+                hasError = true;
+            }
+
+            if (User == null || hasError)
+                return;
+
+            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+
+            var planering = new Planering
+            {
+                AnvändarID = User.AnvändarID,
+                ProduktID = ValdProdukt.ProduktID,
+                StartTid = startTid,
+                SlutTid = startTid.AddHours(2),
+
+                PlaneringsNamn = string.IsNullOrWhiteSpace(PlaneringsNamn)
+                    ? ValdProdukt.Namn
+                    : PlaneringsNamn,
+
+                Status = "Ej påbörjat"
+            };
+
+            await _service.Add(planering); // 👈 använd repo/service direkt om du har Add
 
             PlaneringAdded?.Invoke(planering);
 
             ValdProdukt = null;
-            OrdrarFel = "";
-            ProdukterFel = "";
-            StartTidFel = "";
-            TimmarFel = "";
+            ValdOrder = null;
         }
+        //[RelayCommand]
+        //private async Task SparaAktivitet()
+        //{
+        //    OrdrarFel = "";
+        //    ProdukterFel = "";
+        //    StartTidFel = "";
+        //    TimmarFel = "";
+        //    bool HasErrors = false;
+
+        //    if (ValdOrder == null)
+        //    {
+        //        OrdrarFel = "Vänligen välj en order!";
+        //        HasErrors = true;
+        //    }
+        //    if(ValdProdukt == null)
+        //    {
+        //        ProdukterFel = "Vänligen välj en produkt!";
+        //        HasErrors = true;
+        //    }
+        //    if(ValdStartTid == null)
+        //    {
+        //        StartTidFel = "Vänligen välj vilken dag bokningen startar!";
+        //        HasErrors = true;
+        //    }
+        //    if(ValdStartTimme == null)
+        //    {
+        //        TimmarFel = "Vänligen välj vilken tid bokningen börjar!";
+        //        HasErrors = true;
+        //    }
+
+        //    if (ValdOrder == null || ValdProdukt == null || User == null || !ValdStartTid.HasValue || HasErrors)
+        //        return;
+
+        //    var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+
+        //    var planering = await _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
+
+        //    PlaneringAdded?.Invoke(planering);
+
+        //    ValdProdukt = null;
+        //    OrdrarFel = "";
+        //    ProdukterFel = "";
+        //    StartTidFel = "";
+        //    TimmarFel = "";
+        //}
     }
 }

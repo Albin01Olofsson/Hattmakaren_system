@@ -41,7 +41,7 @@ namespace Models
 
         public string Status { get; set; } = "Ej påbörjat";
 
-        public List<Produkt> Produkter { get; set; } = new List<Produkt>();
+        public List<OrderRad> OrderRader { get; set; } = new();
 
         public DateTime FörväntadTillverkningsTid { get; set; }
 

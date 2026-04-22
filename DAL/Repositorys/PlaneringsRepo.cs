@@ -21,10 +21,11 @@ namespace DAL.Repositorys
 
         public IQueryable<Planering> HämtaAllaPlaneringarMedDetaljer()
         {
-
             return _dbSet
                 .Include(p => p.Användare)
-                .Include(p => p.Produkt);
+                .Include(p => p.Produkt)
+                    .ThenInclude(pr => pr.Ordrar)
+                ;
         }
 
     }

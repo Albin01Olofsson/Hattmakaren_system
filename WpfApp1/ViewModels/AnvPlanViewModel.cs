@@ -12,6 +12,7 @@ namespace WpfApp1.ViewModels
     public partial class AnvPlanViewModel : ObservableObject
     {
         private readonly IPlaneringsYtaService _service;
+        private readonly IAktivitetService _aktivitetService;
         private Användare user => Session.CurrentUser;//När vm skapas, spara in den inloggade användaren från session i lokal variabel
 
         [ObservableProperty]
@@ -36,17 +37,22 @@ namespace WpfApp1.ViewModels
         private DateTime? valtDatum;
 
         [ObservableProperty]
-        private ObservableCollection<Bokning> bokningar;
+        private ObservableCollection<SchemaBlock> schema = new();
+        //private ObservableCollection<Bokning> bokningar;
 
-        public AnvPlanViewModel(IPlaneringsYtaService service)
+        public AnvPlanViewModel(IPlaneringsYtaService service, IAktivitetService aktivitetService)
         {
             _service = service;
+            _aktivitetService = aktivitetService;
+
             DateTime idag = DateTime.Today;
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
             LaddaTider();
-            Bokningar = new ObservableCollection<Bokning>();
-            _ = LaddaBokningar(); // _ = beyder kör async men vänta inte, exceptions kan försvinna
+            //Bokningar = new ObservableCollection<Bokning>();
+            //Schema = new ObservableCollection<SchemaBlock>();
+            /*_ = LaddaBokningar();*/ // _ = beyder kör async men vänta inte, exceptions kan försvinna
+            _ = LaddaSchema();
         }
 
         public void LaddaTider()
@@ -60,53 +66,106 @@ namespace WpfApp1.ViewModels
 
         partial void OnValtSchemaLägeChanged(string value)
         {
-            _ = LaddaBokningar();
+            _ = LaddaSchema();
+            //_ = LaddaBokningar();
         }
-
-        public async Task LaddaBokningar()
+        public async Task LaddaSchema()
         {
-            Bokningar.Clear();
+            Schema.Clear();
 
-            var veckaStart = NuvarandeMåndag.Date;
+            var veckaStart = NuvarandeMåndag;
             var veckaSlut = veckaStart.AddDays(7);
 
-            var alla = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
+            var planeringar = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
+            var aktiviteter = await _aktivitetService.HämtaAllaAktiviteter();
 
-            if(ValtSchemaLäge == "Mitt schema")
+            foreach (var p in planeringar)
             {
-                alla = alla.Where(p => p.AnvändarID == user.AnvändarID).ToList();
-            }
-
-            var grupper = alla.GroupBy(p => p.StartTid.Date);
-
-            foreach(var dag in grupper)
-            {
-                var lista = dag.OrderBy(p => p.StartTid).ToList();
-                foreach(var current in lista)
+                System.Diagnostics.Debug.WriteLine(
+        $"PLANERING: {p.PlaneringsID} {p.StartTid} - {p.SlutTid}"
+    );
+                Schema.Add(new SchemaBlock
                 {
-                    var krockar = lista.Where(p => 
-                        p.StartTid < current.SlutTid && 
-                        current.StartTid < p.SlutTid)
-                        .ToList();
-
-                    int index = krockar.IndexOf(current);
-                    int count = krockar.Count;
-
-                    Bokningar.Add(new Bokning
-                    {
-                        PlaneringsId = current.PlaneringsID,
-                        AnvändarNamn = current.Användare.Namn,
-                        //OrderId = current.Produkt.OrderID ?? 0,
-                        ProduktId = current.ProduktID,
-                        ProduktNamn = current.Produkt.Namn,
-                        StartTid = current.StartTid,
-                        LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
-                        Index = index,
-                        AntalIKrock = count
-                    });
-                }
+                    Id = p.PlaneringsID,
+                    Typ = "Planering",
+                    Titel = p.PlaneringsNamn,
+                    StartTid = p.StartTid,
+                    SlutTid = p.SlutTid,
+                    Kolumn = (int)p.StartTid.DayOfWeek,
+                    Färg = GetFärg(p.Status),
+                    OrderId = p.Produkt?.Ordrar.Select(op => op.OrderID).FirstOrDefault(),
+                    ProduktId = p.ProduktID
+                });
+            }
+            foreach (var a in aktiviteter)
+            {
+                Schema.Add(new SchemaBlock
+                {
+                    Id = a.AktivitetID,
+                    Typ = "Aktivitet",
+                    Titel = a.Namn,
+                    StartTid = a.StartTid,
+                    SlutTid = a.SlutTid,
+                    Kolumn = (int)a.StartTid.DayOfWeek,
+                    Färg = "#8A2BE2"
+                });
             }
         }
+        private string GetFärg(string status)
+        {
+            return status switch
+            {
+                "Ej påbörjat" => "#777777",
+                "Påbörjat" => "#FFA500",
+                "Tillverkas" => "#1E90FF",
+                "Klar för leverans" => "#00C853",
+                _ => "#CCCCCC"
+            };
+        }
+        //public async Task LaddaBokningar()
+        //{
+        //    Bokningar.Clear();
+
+        //    var veckaStart = NuvarandeMåndag.Date;
+        //    var veckaSlut = veckaStart.AddDays(7);
+
+        //    var alla = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
+
+        //    if(ValtSchemaLäge == "Mitt schema")
+        //    {
+        //        alla = alla.Where(p => p.AnvändarID == user.AnvändarID).ToList();
+        //    }
+
+        //    var grupper = alla.GroupBy(p => p.StartTid.Date);
+
+        //    foreach(var dag in grupper)
+        //    {
+        //        var lista = dag.OrderBy(p => p.StartTid).ToList();
+        //        foreach(var current in lista)
+        //        {
+        //            var krockar = lista.Where(p => 
+        //                p.StartTid < current.SlutTid && 
+        //                current.StartTid < p.SlutTid)
+        //                .ToList();
+
+        //            int index = krockar.IndexOf(current);
+        //            int count = krockar.Count;
+
+        //            Bokningar.Add(new Bokning
+        //            {
+        //                PlaneringsId = current.PlaneringsID,
+        //                AnvändarNamn = current.Användare.Namn,
+        //                //OrderId = current.Produkt.OrderID ?? 0,
+        //                ProduktId = current.ProduktID,
+        //                ProduktNamn = current.Produkt.Namn,
+        //                StartTid = current.StartTid,
+        //                LangdITimmar = (current.SlutTid - current.StartTid).TotalHours,
+        //                Index = index,
+        //                AntalIKrock = count
+        //            });
+        //        }
+        //    }
+        //}
 
         public string DennaVeckaTxt => $"Vecka {ISOWeek.GetWeekOfYear(NuvarandeMåndag)}, {NuvarandeMåndag:MMMM yyyy}";
 
@@ -120,14 +179,16 @@ namespace WpfApp1.ViewModels
         private async Task NästaVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(7);
-            await LaddaBokningar();
+            await LaddaSchema();
+            //await LaddaBokningar();
         }
 
         [RelayCommand]
         private async Task TidigareVecka()
         {
             NuvarandeMåndag = NuvarandeMåndag.AddDays(-7);
-            await LaddaBokningar();
+            //await LaddaBokningar();
+            await LaddaSchema();
         }
 
         [RelayCommand]
@@ -158,7 +219,8 @@ namespace WpfApp1.ViewModels
         private async Task DeleteBokning(int planeringsId)
         {
             await _service.TaBortPlanering(planeringsId);
-            await LaddaBokningar();
+            //await LaddaBokningar();
+            await LaddaSchema();
         }
     }
 }

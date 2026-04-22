@@ -115,7 +115,7 @@
                             <TextBlock Text="{Binding FredagDatum}" Foreground="#88FFFFFF" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         </StackPanel>
 
-                        <ItemsControl ItemsSource="{Binding Bokningar}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5">
+                        <ItemsControl ItemsSource="{Binding Schema}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Grid IsItemsHost="True">
@@ -142,9 +142,10 @@
                                 <DataTemplate>
                                     <Grid>
                                         <!-- Bokningen -->
-                                        <Border x:Name="BookingBorder" Background="#CCB08D46" CornerRadius="4" BorderBrush="#FFC5A059" BorderThickness="1" Height="{Binding Height}" Margin="2,0" Width="{Binding Width}">
+                                        <Border x:Name="BookingBorder" Background="{Binding Färg}" CornerRadius="4" BorderBrush="#FFC5A059" BorderThickness="1" Height="{Binding Height}" Margin="2,0" Width="{Binding Width}">
                                             <StackPanel Margin="5">
-                                                <TextBlock Text="{Binding ProduktNamn}" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                                <TextBlock Text="{Binding Titel}" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                                <TextBlock Text="{Binding ProduktNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
                                                 <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
                                             </StackPanel>
                                         </Border>

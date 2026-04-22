@@ -11,6 +11,8 @@ namespace BL.Interfaces
         Task<List<Planering>> HämtaMinPlanering(int id);
         Task<List<Planering>> HämtaPlaneringar(bool alla, int userId);
         Task TaBortPlanering(int planeringId);
+        Task Add(Planering planering);
         Task<List<Produkt>> HämtaLedigaProdukter(int orderId);
+        //Task<List<SchemaBlock>> HämtaSchema(DateTime start, DateTime slut, int userId, bool alla);
     }
 }

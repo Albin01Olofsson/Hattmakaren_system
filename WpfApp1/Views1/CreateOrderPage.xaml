@@ -41,7 +41,7 @@
                     <ComboBox Width="250" 
                               ItemsSource="{Binding AllaProdukter}" 
                               SelectedItem="{Binding ValdProdukt}" 
-                              DisplayMemberPath="namn"/>
+                              DisplayMemberPath="Namn"/>
                     <Button Content="Lägg Till" Margin="20,0,0,0" Width="100" Background="#FFB08D46" Command="{Binding LaggTillProduktCommand}"/>
                 </StackPanel>
             </Border>

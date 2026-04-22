@@ -14,7 +14,8 @@
                CornerRadius="15"
                Margin="20">
 
-            <StackPanel Margin="20">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="20">
 
                 <!-- Titel -->
                 <TextBlock Text="Ny Kund"
@@ -48,6 +49,17 @@
                 <TextBox Text="{Binding Adress, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,5,0,20"/>
 
+                <TextBlock Text="Land"
+           Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding Land, UpdateSourceTrigger=PropertyChanged}"
+         Margin="0,5,0,20"/>
+
+
+                <TextBlock Text="Stad"
+           Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding Stad, UpdateSourceTrigger=PropertyChanged}"
+         Margin="0,5,0,20"/>
+
                 <!-- Knapp -->
                 <Button Content="Spara"
                        Height="40"
@@ -57,6 +69,7 @@
                        Command="{Binding AddKundCommand}"/>
 
             </StackPanel>
+                </ScrollViewer>
         </Border>
     </Grid>
 </Window>

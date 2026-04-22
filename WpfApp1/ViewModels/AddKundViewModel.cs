@@ -1,11 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModels
 {
@@ -24,6 +19,12 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private string adress;
+        [ObservableProperty]
+        private string land;
+        [ObservableProperty]
+        private string stad;
+
+
 
         [RelayCommand]
         private void AddKund()
@@ -33,7 +34,9 @@ namespace WpfApp1.ViewModels
                 Namn = Namn,
                 Email = Email,
                 Telefon = Telefon,
-                Adress = Adress
+                Adress = Adress,
+                Land = Land,
+                Stad = Stad
             };
             KundAdded?.Invoke(nyKund);
         }

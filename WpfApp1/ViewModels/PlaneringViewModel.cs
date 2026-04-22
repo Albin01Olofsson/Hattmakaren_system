@@ -27,6 +27,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private Produkt valdProdukt;
 
+        //[ObservableProperty]
+        //private OrderRad valdOrderRad;
+
         [ObservableProperty]
         private DateTime? valdStartTid;
 
@@ -116,10 +119,18 @@ namespace WpfApp1.ViewModels
 
             var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
 
+            var orderRad = HämtaOrderRad();
+
+            if (orderRad == null)
+            {
+                ProdukterFel = "Kunde inte hitta orderrad för vald produkt";
+                return;
+            }
+
             var planering = new Planering
             {
                 AnvändarID = User.AnvändarID,
-                ProduktID = ValdProdukt.ProduktID,
+                OrderRadID = orderRad.OrderRadID,
                 StartTid = startTid,
                 SlutTid = startTid.AddHours(2),
 
@@ -136,6 +147,12 @@ namespace WpfApp1.ViewModels
 
             ValdProdukt = null;
             ValdOrder = null;
+        }
+        private OrderRad HämtaOrderRad()
+        {
+            return ValdOrder?
+                .OrderRader?
+                .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
         }
         //[RelayCommand]
         //private async Task SparaAktivitet()

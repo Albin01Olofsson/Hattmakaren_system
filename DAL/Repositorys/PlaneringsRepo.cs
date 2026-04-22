@@ -15,7 +15,10 @@ namespace DAL.Repositorys
         {
             return await _dbSet
                 .Include(p => p.Användare)
-                .Include(p => p.Produkt)
+                .Include(p => p.OrderRad)
+                    .ThenInclude(or => or.Produkt)
+                .Include(p => p.OrderRad)
+                    .ThenInclude(or => or.Order)
                 .FirstOrDefaultAsync(p => p.PlaneringsID == id);
         }
 
@@ -23,9 +26,10 @@ namespace DAL.Repositorys
         {
             return _dbSet
                 .Include(p => p.Användare)
-                .Include(p => p.Produkt)
-                    .ThenInclude(pr => pr.Ordrar)
-                ;
+                .Include(p => p.OrderRad)
+                    .ThenInclude(or => or.Produkt)
+                .Include(p => p.OrderRad)
+                    .ThenInclude(or => or.Order);
         }
 
     }

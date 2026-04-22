@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using WpfApp1.Views1.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using WpfApp1.Views1;
 
 namespace WpfApp1.ViewModels
 {
@@ -79,23 +80,46 @@ namespace WpfApp1.ViewModels
             var planeringar = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
             var aktiviteter = await _aktivitetService.HämtaAllaAktiviteter();
 
-            foreach (var p in planeringar)
+            var dagGrupper = planeringar
+    .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut)
+    .GroupBy(p => p.StartTid.Date);
+
+            foreach (var dag in dagGrupper)
             {
-                System.Diagnostics.Debug.WriteLine(
-        $"PLANERING: {p.PlaneringsID} {p.StartTid} - {p.SlutTid}"
-    );
-                Schema.Add(new SchemaBlock
+                var lista = dag.OrderBy(p => p.StartTid).ToList();
+
+                foreach (var current in lista)
                 {
-                    Id = p.PlaneringsID,
-                    Typ = "Planering",
-                    Titel = p.PlaneringsNamn,
-                    StartTid = p.StartTid,
-                    SlutTid = p.SlutTid,
-                    Kolumn = (int)p.StartTid.DayOfWeek,
-                    Färg = GetFärg(p.Status),
-                    OrderId = p.Produkt?.Ordrar.Select(op => op.OrderID).FirstOrDefault(),
-                    ProduktId = p.ProduktID
-                });
+                    var krockar = lista
+                        .Where(p =>
+                            p.StartTid < current.SlutTid &&
+                            current.StartTid < p.SlutTid)
+                        .ToList();
+
+                    int index = krockar.IndexOf(current);
+                    int count = krockar.Count;
+
+                    Schema.Add(new SchemaBlock
+                    {
+                        Id = current.PlaneringsID,
+                        Typ = "Planering",
+                        Titel = current.PlaneringsNamn,
+                        StartTid = current.StartTid,
+                        SlutTid = current.SlutTid,
+                        Kolumn = ((int)current.StartTid.DayOfWeek + 6) % 7,
+                        Färg = GetFärg(current.Status),
+
+                        OrderId = current.OrderRad?.OrderID,
+                        ProduktId = current.OrderRad?.ProduktID,
+
+                        //VIKTIGT FÖR UI-KROCK
+                        Index = index,
+                        AntalIKrock = count,
+
+                        TopPos = (current.StartTid.Hour - 8) * 60 + current.StartTid.Minute,
+                        Height = (current.SlutTid - current.StartTid).TotalMinutes
+                    });
+                }
             }
             foreach (var a in aktiviteter)
             {
@@ -106,8 +130,11 @@ namespace WpfApp1.ViewModels
                     Titel = a.Namn,
                     StartTid = a.StartTid,
                     SlutTid = a.SlutTid,
-                    Kolumn = (int)a.StartTid.DayOfWeek,
-                    Färg = "#8A2BE2"
+                    Kolumn = ((int)a.StartTid.DayOfWeek + 6) % 7,
+                    Färg = "#8A2BE2",
+
+                    TopPos = (a.StartTid.Hour - 8) * 60 + a.StartTid.Minute,
+                    Height = (a.SlutTid - a.StartTid).TotalMinutes
                 });
             }
         }
@@ -221,6 +248,18 @@ namespace WpfApp1.ViewModels
             await _service.TaBortPlanering(planeringsId);
             //await LaddaBokningar();
             await LaddaSchema();
+        }
+        [RelayCommand]
+        private void ÖppnaLäggTillAktivitet()
+        {
+            var window = new LäggTillAktivitetWindow();
+
+            var vm = new LäggTillAktivitetViewModel(_aktivitetService, user);
+            window.DataContext = vm;
+
+            window.ShowDialog();
+
+            _ = LaddaSchema(); // uppdatera efter
         }
     }
 }

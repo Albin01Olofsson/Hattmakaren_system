@@ -24,7 +24,8 @@ namespace WpfApp1.ViewModels
 
         public int Index { get; set; }
         public int AntalIKrock { get; set; }
-
+        public double LeftOffset => Index * (120.0 / AntalIKrock);
+        public double Width => 120.0 / AntalIKrock;
         public string Färg { get; set; }
 
         public int? OrderId { get; set; }

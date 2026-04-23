@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using WpfApp1.ViewModels;
 using WpfApp1.Views1.Planneringsviews;
 
+
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
@@ -78,7 +79,7 @@ namespace WpfApp1.Views1
 
         private void BtnLeveranser_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new spårningPage());
+            MainFrame.Navigate(new SpårningPage());
         }
 
 

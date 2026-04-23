@@ -13,6 +13,8 @@ namespace Models
         public string Ämne { get; set; } = string.Empty;
         public string Innehåll { get; set; } = string.Empty;
         public DateTime Datum { get; set; }
+        public string BildSökVäg { get; set; } = string.Empty;
+
 
     }
 }

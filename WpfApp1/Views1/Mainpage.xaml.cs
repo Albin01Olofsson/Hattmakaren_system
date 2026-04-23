@@ -77,6 +77,12 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new AnvPage());
         }
 
+        private void BtnFörfrågningar_Click(object sender, RoutedEventArgs e)
+        {
+            var mailRepo = new MailRepository();
+            MainFrame.Navigate(new FörfrågningarPage(new FörfrågningVM(new MailService(mailRepo))));
+        }
+
         private void BtnLeveranser_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new SpårningPage());

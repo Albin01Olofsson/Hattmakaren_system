@@ -46,6 +46,14 @@ namespace DAL.Repositorys
                 string bildMapp = Path.Combine(baseDirectory, "DAL", "FörfråganBilder");
                 Directory.CreateDirectory(bildMapp);
 
+                //Radera det som tidigare fanns i mappen
+                if (Directory.Exists(bildMapp))
+                {
+                    foreach (var fil in Directory.GetFiles(bildMapp))
+                    {
+                        File.Delete(fil);
+                    }
+                }
 
                 //Loop för inläsning av mail
                 for (int i = inkorg.Count - 1; i >= startIndex; i--)
@@ -86,7 +94,7 @@ namespace DAL.Repositorys
                             break;
                         }
                     }
-                    //För BILD}
+                   
 
                     //{För hela mailet
                     var mail = new Mail

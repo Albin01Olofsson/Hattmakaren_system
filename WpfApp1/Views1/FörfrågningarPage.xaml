@@ -7,7 +7,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FörfrågningarPage"
-      Background="#FF1A1A1D">
+      Background="#FF1A1A1D"
+      Loaded="Page_Loaded">
 
     <StackPanel Orientation="Vertical" Margin="20">
         <TextBlock x:Name="Rubrik"
@@ -29,6 +30,7 @@
 
             <Button x:Name="BtnSök"
                     Content="Sök"
+                    Click="BtnSök_Click"
                     Padding="10,0"
                     Background="#FFC5A059"
                     Foreground="#F4F1EA"

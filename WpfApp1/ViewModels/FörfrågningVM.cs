@@ -24,7 +24,7 @@ namespace WpfApp1.ViewModels
         {
             _MailService = mailService;
             Mails = new ObservableCollection<Mail>();
-            LoadMails();
+            //LoadMails();
         }
 
         public async Task LoadMails()

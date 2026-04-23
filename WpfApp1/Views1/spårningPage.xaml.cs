@@ -53,9 +53,9 @@ namespace WpfApp1.Views1
 
             MainMap.UpdateLayout();
 
-            AdderaLeveransMarkör(59.3293, 18.0686, "Hatt-leverans #1: Slottet");
-            AdderaLeveransMarkör(59.3326, 18.0645, "Hatt-leverans #2: Centralen");
-            AdderaLeveransMarkör(59.3385, 18.0335, "Hatt-leverans #3: S:t Eriksplan");
+            AdderaLeveransMarkör(59.3293, 18.0686, "Hatt-leverans #1: Slottet", true);
+            AdderaLeveransMarkör(59.3326, 18.0645, "Hatt-leverans #2: Centralen", false);
+            AdderaLeveransMarkör(59.3385, 18.0335, "Hatt-leverans #3: S:t Eriksplan", false);
         }
 
         private void AdderaLeveransMarkör(double lat, double lng, string info, bool ärLevererad)
@@ -71,7 +71,7 @@ namespace WpfApp1.Views1
             {
                 Width = 40,
                 Height = 40,
-                Background = new SolidColorBrush(Color.FromRgb(197, 160, 89)),
+                Background = new SolidColorBrush(statusF),
                 CornerRadius = new CornerRadius(20),
                 Effect = new System.Windows.Media.Effects.DropShadowEffect { BlurRadius = 5, Opacity = 0.5 },
                 Child = new TextBlock
@@ -86,14 +86,12 @@ namespace WpfApp1.Views1
 
             transportHalo.MouseEnter += (s, e) =>
             {
-                transportHalo.Background = Brushes.Orange;
                 transportHalo.Width = 50;
                 transportHalo.Height = 50;
             };
 
             transportHalo.MouseLeave += (s, e) =>
             {
-                transportHalo.Background = new SolidColorBrush(Color.FromRgb(197, 160, 89));
                 transportHalo.Height = 40;
                 transportHalo.Width = 40;
             };

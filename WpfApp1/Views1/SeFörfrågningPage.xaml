@@ -65,13 +65,19 @@
                     Background="#FFB08D46"
                     CornerRadius="15"
                     Padding="10">
-                <Image Source="{Binding BildSökVäg}"
-                           
+                <!--<Image Source="{Binding BildSökVäg}"
+                           MaxWidth="312"
+                           MaxHeight="172"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                </Image>-->
+                <Image x:Name="MailBild"
                            MaxWidth="312"
                            MaxHeight="172"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center">
                 </Image>
+                
             </Border>
         </Grid>
     </StackPanel>

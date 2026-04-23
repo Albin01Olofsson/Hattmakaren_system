@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL.Interfaces;
+using System.Windows;
+using System.Diagnostics;
 
 namespace WpfApp1.ViewModels
 {
@@ -22,16 +24,23 @@ namespace WpfApp1.ViewModels
         {
             _MailService = mailService;
             Mails = new ObservableCollection<Mail>();
-            LoadMails();
+            //LoadMails();
         }
 
         public async Task LoadMails()
         {
             Mails.Clear();
 
-            foreach(Mail mail in await _MailService.GetMailListAsync())
+            try
             {
-                Mails.Add(mail);
+                foreach (Mail mail in await _MailService.GetMailListAsync())
+                {
+                    Mails.Add(mail);
+                }
+            }catch(Exception e)
+            {
+                MessageBox.Show("Ett fel inträffade vid inläsningen av förfrågningar!", $"Vi ber om ursäkt {Session.CurrentUser.Namn}", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             }
         }
     }

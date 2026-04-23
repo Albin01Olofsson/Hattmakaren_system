@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,21 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
             DataContext = valdMail;
+
+            if(!string.IsNullOrWhiteSpace(valdMail.BildSökVäg) && File.Exists(valdMail.BildSökVäg))
+            {
+                var bitMap = new BitmapImage();
+
+                using (var stream = new FileStream(valdMail.BildSökVäg, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    bitMap.BeginInit();
+                    bitMap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitMap.StreamSource = stream;
+                    bitMap.EndInit();
+                    bitMap.Freeze();
+                }
+                MailBild.Source = bitMap;
+            }
         }
     }
 }

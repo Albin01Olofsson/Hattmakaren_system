@@ -81,10 +81,19 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} kr"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Rabatt: {order.Rabatt} %"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Datum: {order.Datum}"));
-            foreach (Produkt p in order.Produkter)
+            //foreach (Produkt p in order.Produkter)
+            //{
+            //    dokument.Add(new iText.Layout.Element.Paragraph($" - {p.Namn} - {p.Pris}"));
+            //}
+            foreach (var rad in order.OrderRader)
             {
-                dokument.Add(new iText.Layout.Element.Paragraph($" - {p.Namn} - {p.Pris}"));
+                dokument.Add(
+                    new iText.Layout.Element.Paragraph(
+                        $" - {rad.Produkt.Namn} - {rad.Produkt.Pris}"
+                    )
+                );
             }
+
             dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Klar: {order.Färdig}"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));

@@ -60,7 +60,7 @@ namespace WpfApp1.ViewModels
             Pris = ValdOrder.Pris;
             Rabatt = ValdOrder.Rabatt;
             Datum = ValdOrder.Datum;
-            ProdukLista = new ObservableCollection<Produkt>(ValdOrder.Produkter);
+            ProdukLista = new ObservableCollection<Produkt>(ValdOrder.OrderRader.Select(or => or.Produkt));
             OrderStartareNamn = ValdOrder.StartadAv.Namn;
             Färdig = ValdOrder.Färdig;
             IsSpecialbeställning = ValdOrder.IsSpecialbeställning;

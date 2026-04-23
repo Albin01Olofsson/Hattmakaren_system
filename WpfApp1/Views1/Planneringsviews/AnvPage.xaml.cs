@@ -26,7 +26,7 @@ namespace WpfApp1.Views1.Planneringsviews
             if(skapaFönster.ShowDialog() == true)
             {
                 var vm = (AnvPlanViewModel)DataContext;
-                vm.LaddaBokningar();
+                vm.LaddaSchema();
             }
             // ShowDialog() gör att man måste stänga fönstret innan man kan trycka på schemat igen
             // Show() låter båda fönstren vara öppna samtidigt

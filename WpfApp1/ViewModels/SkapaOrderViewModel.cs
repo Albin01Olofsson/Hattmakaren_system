@@ -109,12 +109,18 @@ namespace WpfApp1.ViewModels
                 {
                     KundID = ValdKund.KundID,
                     StartadAvID = InloggadAnvändare.AnvändarID,
-                    Produkter = TillagdaProdukter.ToList(),
+                    //Produkter = TillagdaProdukter.ToList(),
+                    OrderRader = TillagdaProdukter.Select(p => new OrderRad
+                    {
+                        ProduktID = p.ProduktID,
+                        Produkt = p,
+                        Antal = 1
+                    }).ToList(),
                     Rabatt = this.Rabatt,
                     IsPrio = this.IsPrioVald
                 };
 
-                await _orderService.skapaOrder(nyOrder);
+                await _orderService.skapaOrder(nyOrder, TillagdaProdukter.Select(p => p.ProduktID).ToList());
                 OrderOversiktText = "KLART! Ordern har sparats.";
 
                 // Nollställ formuläret

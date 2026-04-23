@@ -22,7 +22,8 @@ namespace BL.Interfaces
 
         Task SaveOrder();
 
-        Task skapaOrder(Order nyOrder);
+        //Task skapaOrder(Order nyOrder);
+        Task skapaOrder(Order nyOrder, List<int> produktIds);
 
         Task MarkeraSomPrio(int OrderID);
 

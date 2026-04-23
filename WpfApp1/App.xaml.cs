@@ -5,6 +5,7 @@ using DAL.Intefaces;
 using DAL.Repositorys;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views1;
 
@@ -42,6 +43,7 @@ namespace WpfApp1
             services.AddScoped<IOrderService, OrderService>();      // SAKNADES
             services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
             services.AddScoped<IAktivitetService, AktivitetService>();
+            services.AddSingleton<ITullService, TullService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();

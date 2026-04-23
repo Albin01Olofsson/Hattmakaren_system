@@ -17,15 +17,17 @@ namespace DAL.Repositorys
             return _context.Ordrar
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
-                .Include(o => o.Produkter);
+                .Include(o => o.OrderRader)
+                    .ThenInclude(or => or.Produkt);
         }
 
         public async Task<Order> GetMedDetaljer(int oid)
         {
             return await _context.Ordrar
                 .Include(o => o.Kund)
-                .Include(o => o.Produkter)
                 .Include(o => o.StartadAv)
+                .Include(o => o.OrderRader)
+                    .ThenInclude(or => or.Produkt)
                 .FirstOrDefaultAsync(o => o.OrderID == oid);
         }
 
@@ -35,7 +37,10 @@ namespace DAL.Repositorys
             return await _dbSet
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
-                .Include(o => o.Produkter)
+                .Include(o => o.OrderRader)
+                    .ThenInclude(or => or.Produkt)
+                .Include(o => o.OrderRader)
+                    .ThenInclude(or => or.Planeringar)
                 .FirstOrDefaultAsync(o => o.OrderID == id);
         }
 

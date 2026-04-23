@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$QwJoMS2lWx8Fd7hor/EO9eCeEyBQ3Os6QxLxM2Vbt.DBAzug5lLvG",
+                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$QwJoMS2lWx8Fd7hor/EO9eCeEyBQ3Os6QxLxM2Vbt.DBAzug5lLvG",
+                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$QwJoMS2lWx8Fd7hor/EO9eCeEyBQ3Os6QxLxM2Vbt.DBAzug5lLvG",
+                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$QwJoMS2lWx8Fd7hor/EO9eCeEyBQ3Os6QxLxM2Vbt.DBAzug5lLvG",
+                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -758,6 +758,32 @@ namespace DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.OrderRad", b =>
+                {
+                    b.Property<int>("OrderRadID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderRadID"));
+
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderRadID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.ToTable("OrderRader");
+                });
+
             modelBuilder.Entity("Models.Planering", b =>
                 {
                     b.Property<int>("PlaneringsID")
@@ -769,12 +795,12 @@ namespace DAL.Migrations
                     b.Property<int>("AnvändarID")
                         .HasColumnType("int");
 
+                    b.Property<int>("OrderRadID")
+                        .HasColumnType("int");
+
                     b.Property<string>("PlaneringsNamn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProduktID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("SlutTid")
                         .HasColumnType("datetime2");
@@ -782,11 +808,15 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartTid")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PlaneringsID");
 
                     b.HasIndex("AnvändarID");
 
-                    b.HasIndex("ProduktID");
+                    b.HasIndex("OrderRadID");
 
                     b.ToTable("Planeringar");
                 });
@@ -849,21 +879,6 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("OrderProdukt", b =>
-                {
-                    b.Property<int>("OrdrarOrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProdukterProduktID")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdrarOrderID", "ProdukterProduktID");
-
-                    b.HasIndex("ProdukterProduktID");
-
-                    b.ToTable("OrderProdukter", (string)null);
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -1035,6 +1050,25 @@ namespace DAL.Migrations
                     b.Navigation("StartadAv");
                 });
 
+            modelBuilder.Entity("Models.OrderRad", b =>
+                {
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany("OrderRader")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany("OrderRader")
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Produkt");
+                });
+
             modelBuilder.Entity("Models.Planering", b =>
                 {
                     b.HasOne("Models.Användare", "Användare")
@@ -1043,15 +1077,15 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Models.Produkt", "Produkt")
+                    b.HasOne("Models.OrderRad", "OrderRad")
                         .WithMany("Planeringar")
-                        .HasForeignKey("ProduktID")
+                        .HasForeignKey("OrderRadID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Användare");
 
-                    b.Navigation("Produkt");
+                    b.Navigation("OrderRad");
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -1063,21 +1097,6 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("TillverkadAv");
-                });
-
-            modelBuilder.Entity("OrderProdukt", b =>
-                {
-                    b.HasOne("Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdrarOrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Produkt", null)
-                        .WithMany()
-                        .HasForeignKey("ProdukterProduktID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Användare", b =>
@@ -1103,9 +1122,19 @@ namespace DAL.Migrations
                     b.Navigation("Rader");
                 });
 
-            modelBuilder.Entity("Models.Produkt", b =>
+            modelBuilder.Entity("Models.Order", b =>
+                {
+                    b.Navigation("OrderRader");
+                });
+
+            modelBuilder.Entity("Models.OrderRad", b =>
                 {
                     b.Navigation("Planeringar");
+                });
+
+            modelBuilder.Entity("Models.Produkt", b =>
+                {
+                    b.Navigation("OrderRader");
                 });
 #pragma warning restore 612, 618
         }

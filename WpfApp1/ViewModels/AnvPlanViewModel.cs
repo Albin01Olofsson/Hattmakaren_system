@@ -145,7 +145,7 @@ namespace WpfApp1.ViewModels
                         Kolumn = ((int)start.DayOfWeek + 6) % 7,
 
                         
-                        Top = startFrom8 * pixelsPerHour,
+                        Top = (startFrom8 * pixelsPerHour)+45,
                         Height = duration * pixelsPerHour,
 
                         Färg = baseBlock.Färg,

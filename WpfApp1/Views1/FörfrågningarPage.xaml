@@ -59,7 +59,7 @@
                 CornerRadius="0,0,15,15"
                 Padding="10">
 
-            <ListBox Background="Transparent"
+            <ListBox x:Name="FörfrågningarResultat" Background="Transparent"
                      BorderThickness="0"
                      ItemsSource="{Binding Mails}"
                      SelectionChanged="SökResultat_SelectionChanged"

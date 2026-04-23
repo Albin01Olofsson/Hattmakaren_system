@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,7 +34,10 @@ namespace WpfApp1.Views1
 
         private void SökResultat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if(FörfrågningarResultat.SelectedItem is Mail valdMail)
+            {
+                NavigationService.Navigate(new SeFörfrågningPage(valdMail));
+            }
         }
 
         private void Sortering_SelectionChanged(object sender, SelectionChangedEventArgs e)

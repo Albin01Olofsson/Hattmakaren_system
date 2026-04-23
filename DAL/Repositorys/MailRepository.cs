@@ -121,6 +121,7 @@ namespace DAL.Repositorys
                         mailId = meddelande.MessageId ?? "",
                         Avsändare = meddelande.From.ToString(),
                         Ämne = meddelande.Subject ?? "",
+                        Datum = meddelande.Date.DateTime,
                         Innehåll = meddelande.TextBody ?? meddelande.HtmlBody ?? "",
                         BildSökVäg = bildSökväg
                     };

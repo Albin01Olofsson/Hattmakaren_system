@@ -114,28 +114,47 @@ namespace BL.Services
 
             try
             {
+                // 1. Gruppera ID:n för att räkna antalet av varje unik produkt
+                // Om produktIds är [5, 5, 2] blir detta: { ProduktID = 5, Antal = 2 }, { ProduktID = 2, Antal = 1 }
+                var grupperadeProdukter = produktIds
+                    .GroupBy(id => id)
+                    .Select(g => new { ProduktID = g.Key, Antal = g.Count() })
+                    .ToList();
+
+                // 2. Plocka ut en lista med BARA de unika ID-numren (t.ex. [5, 2])
+                var unikaIds = grupperadeProdukter.Select(g => g.ProduktID).ToList();
+
+                // 3. Fråga databasen efter de unika produkterna
                 var produkterFrånDb = await _context.Produkter
-                    .Where(p => produktIds.Contains(p.ProduktID))
+                    .Where(p => unikaIds.Contains(p.ProduktID))
                     .ToListAsync();
 
-                if (produkterFrånDb.Count != produktIds.Count)
+                // Nu jämför vi antalet unika från DB med antalet unika vi frågade efter
+                if (produkterFrånDb.Count != unikaIds.Count)
                 {
                     throw new Exception("En eller flera produkter kunde inte hittas i databasen.");
                 }
 
-                // skapa OrderRader istället för Produkter
-                nyOrder.OrderRader = produkterFrånDb.Select(p => new OrderRad
-                {
-                    ProduktID = p.ProduktID,
-                    Produkt = p,
-                    Antal = 1
-                }).ToList();
+                // 4. Bygg upp OrderRader med rätt antal
+                nyOrder.OrderRader = new List<OrderRad>();
 
-                foreach (var rad in nyOrder.OrderRader)
+                foreach (var grupp in grupperadeProdukter)
                 {
-                    totalPris += rad.Produkt.Pris;
+                    var produktDb = produkterFrånDb.First(p => p.ProduktID == grupp.ProduktID);
+
+                    nyOrder.OrderRader.Add(new OrderRad
+                    {
+                        ProduktID = produktDb.ProduktID,
+                        Antal = grupp.Antal
+                        // VIKTIGT: Vi skickar INTE in hela 'Produkt = produktDb' här, 
+                        // vi låter Entity Framework knyta ihop relationen via ProduktID!
+                    });
+
+                    // Räkna ut priset: Produktens pris * Antalet vi vill köpa
+                    totalPris += (produktDb.Pris * grupp.Antal);
                 }
 
+                // 5. Hantera Rabatt och Prio
                 totalPris -= nyOrder.Rabatt;
 
                 if (totalPris < 0)
@@ -147,12 +166,15 @@ namespace BL.Services
                 nyOrder.Pris = totalPris;
                 nyOrder.Datum = DateTime.Now;
 
+                // 6. Spara ordern
                 await _orderRepo.Add(nyOrder);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                throw new Exception($"Något gick fel när ordern skulle skapas: {ex.Message}", ex);
+                // Plockar ut InnerException om det finns, för att få den riktiga SQL-felkoden om det smäller
+                string felorsak = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                throw new Exception(felorsak, ex);
             }
         }
         public async Task MarkeraFärdig(int OrderID)
@@ -184,7 +206,7 @@ namespace BL.Services
             }
         }
 
-        public async Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string klarFilter, string specialFilter)
+        public async Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string orderStatus, string specialFilter)
         {
             var query = _orderRepo.GetOrdersAndNavPropertiesList();
 
@@ -210,13 +232,21 @@ namespace BL.Services
                 query = query.Where(o => o.StartadAv.Namn == orderStartare);
             }
 
-            if (klarFilter == "Klar")
+            if (orderStatus != "Alla" && orderStatus != "Ospecificerat" && !string.IsNullOrEmpty(orderStatus))
             {
-                query = query.Where(o => o.Färdig);
-            }
-            else if (klarFilter == "Ej Klar")
-            {
-                query = query.Where(o => !o.Färdig);
+                if (orderStatus == "Ej Påbörjad")
+                {
+                    // Fångar upp BÅDE den nya korrekta stavningen (d) och den gamla felstavningen (t) i databasen
+                    // Jag lämnade kvar null-kollen också, den är alltid bra att ha som krockkudde!
+                    query = query.Where(o => o.Status == "Ej Påbörjad" ||
+                                             o.Status == "Ej påbörjat" ||
+                                             o.Status == null ||
+                                             o.Status == "");
+                }
+                else
+                {
+                    query = query.Where(o => o.Status == orderStatus);
+                }
             }
 
             if (specialFilter == "Ja")
@@ -230,5 +260,37 @@ namespace BL.Services
 
             return await query.ToListAsync();
         }
+
+
+
+        public async Task UppdateraOrderStatus(int orderId, string nyStatus)
+        {
+            try
+            {
+                // 1. Hämta den aktuella ordern från databasen via ditt Repository
+                var order = await _orderRepo.GetById(orderId);
+
+                if (order != null)
+                {
+
+                    order.Status = nyStatus;
+
+
+                    await _orderRepo.Update(order);
+                    await _orderRepo.Save();
+                }
+                else
+                {
+
+                    throw new Exception($"Kunde inte hitta order med ID {orderId}.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Ett fel uppstod när statusen skulle sparas: {ex.Message}", ex);
+            }
+        }
     }
+
 }

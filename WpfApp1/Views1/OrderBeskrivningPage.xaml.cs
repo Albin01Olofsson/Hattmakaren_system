@@ -3,28 +3,12 @@ using BL.Services;
 using DAL;
 using DAL.Repositorys;
 using iText.Kernel.Pdf;
+using iText.Layout;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using System.IO;
-using iText.IO.Image;
-using iText.Layout.Element;
 
 namespace WpfApp1.Views1
 {
@@ -99,6 +83,19 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));
             dokument.Close();
             MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");
+        }
+
+        private async void OrderStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Detta anropas när användaren byter status i rullistan!
+            // Se till att hämta din ViewModel
+            if (this.DataContext is OrderBeskrivningVM vm)
+            {
+                // Här kan du anropa en metod i din Service för att spara den nya statusen!
+                // t.ex: await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
+
+                await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
+            }
         }
     }
 }

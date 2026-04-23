@@ -93,7 +93,7 @@ namespace DAL
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
 
-           
+
             modelBuilder.Entity<Planering>(entity =>
             {
                 // Primärnyckel
@@ -133,6 +133,8 @@ namespace DAL
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
+
 
             //Exempeldata ----------------
 
@@ -310,7 +312,7 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1001,
                         Status = "Ej påbörjat",
-                        FörväntadTillverkningsTid = new DateTime(2026, 04,28)
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {

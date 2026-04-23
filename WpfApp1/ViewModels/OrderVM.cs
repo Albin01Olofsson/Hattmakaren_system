@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using BL.Interfaces;
-using BL.Services;
+﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
+using System.Collections.ObjectModel;
 
 
 namespace WpfApp1.ViewModels
@@ -35,8 +28,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         public string orderStartareFilter = "Alla";
 
+
         [ObservableProperty]
-        public string klarFilter = "Ospecificerat";
+        public string orderStatusFilter = "Alla";
 
         [ObservableProperty]
         public string specialBeställningFilter = "Ospecificerat";
@@ -61,7 +55,7 @@ namespace WpfApp1.ViewModels
             OrderList.Clear();
             var ordrar = await _service.GetOrdersWithNavProps();
             foreach (Order order in ordrar)
-            { 
+            {
                 OrderList.Add(order);
             }
         }
@@ -145,7 +139,7 @@ namespace WpfApp1.ViewModels
                 DatumFrånFilter,
                 DatumTillFilter,
                 OrderStartareFilter,
-                KlarFilter,
+                OrderStatusFilter,
                 SpecialBeställningFilter);
 
             OrderList.Clear();

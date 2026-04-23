@@ -110,14 +110,6 @@ namespace WpfApp1.ViewModels
         {
             //Validering - Start
 
-            //Produkt namn
-            if (ValdProdukt != null && !string.IsNullOrWhiteSpace(NyttProduktNamn)) //Om Man valt ett produktnamn och skrivit in ett produktnamn
-            {
-                MessageBox.Show("Du har valt ett produkt namn och angett ett eget produktnamn, du kan bara göra en av dem.", "Krock Produkt nammn!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                NyttProduktNamn = string.Empty;
-                ValdProdukt = null;
-                return;
-            }
 
 
             if (NyttProduktNamn.Length < 3 && ValdProdukt == null)

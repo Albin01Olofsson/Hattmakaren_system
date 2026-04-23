@@ -5,142 +5,167 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="800"
+      d:DesignHeight="900" d:DesignWidth="800"
       Title="SkapaLagerfördProdukt" Background="#FF1A1A1D">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#FFC5A059"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,0"/>
+        </Style>
+    </Page.Resources>
 
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"  Margin = "0, 15, 0, 15" HorizontalAlignment = "Center" VerticalAlignment = "Center" FontSize = "28" FontWeight = "Bold" Text = "Skapa Lagerförd Produkt" Foreground = "White" ></TextBlock >
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30,20" MaxWidth="800">
 
-            <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Produkt namn" Foreground="#FFB08D46" Margin="0,0,10,0">
-                        
-                    </TextBlock>
-                    <TextBox Width="245" Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}">
-                        
-                    </TextBox>
-                </StackPanel>
-            </Border>
-            
-            <Border Grid.Row = "1" Grid.Column="1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Pris" Foreground="#FFB08D46" Margin="0,0,10,0">
+            <TextBlock Text="SKAPA LAGERFÖRD PRODUKT" 
+                       FontSize="28" 
+                       FontWeight="Black" 
+                       Foreground="#F4F1EA" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,30"/>
 
-                    </TextBlock>
-                    <TextBox Width="280" Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}">
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="GRUNDINFORMATION" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    </TextBox>
-                </StackPanel>
-            </Border>
-            
-            <Border Grid.Row = "2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Storlek" Foreground="#FFB08D46" Margin="0,0,10,0">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Produktnamn" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
 
-                    </TextBlock>
-                    <TextBox Width="280" Text="{Binding NyStorlek, UpdateSourceTrigger=PropertyChanged}">
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Pris (kr)" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
 
-                    </TextBox>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Row = "2" Grid.Column="1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Typ" Foreground="#FFB08D46" Margin="0,0,10,0">
-
-                    </TextBlock>
-                    <TextBox Width="280" Text="{Binding NyTyp, UpdateSourceTrigger=PropertyChanged}">
-
-                    </TextBox>
-                </StackPanel>
-            </Border>
-            
-            <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Modell" Foreground="#FFB08D46" Margin="0,0,10,0">
-
-                    </TextBlock>
-                    <TextBox Width="280" Text="{Binding NyModell, UpdateSourceTrigger=PropertyChanged}">
-
-                    </TextBox>
-                </StackPanel>
-            </Border>
-            
-            <Border Grid.Row = "3" Grid.Column="1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Färg" Foreground="#FFB08D46" Margin="0,0,10,0">
-
-                    </TextBlock>
-                    <TextBox Width="280" Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}">
-
-                    </TextBox>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Lagersaldo (st)" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyttLagerantal, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row = "4" Grid.Column="0" Grid.ColumnSpan="2"  Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Dekoration" Foreground="#FFB08D46" Margin="0,0,10,0">
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="SPECIFIKATIONER" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    </TextBlock>
-                    <TextBox Width="650" Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}">
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
+                            <TextBlock Text="Storlek" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyStorlek, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
+                            <TextBlock Text="Typ" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyTyp, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
 
-                    </TextBox>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
+                            <TextBlock Text="Modell" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyModell, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
+                            <TextBlock Text="Färg" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                            <TextBlock Text="Dekoration" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row = "5" Grid.ColumnSpan="2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,25">
+                <StackPanel>
+                    <TextBlock Text="MATERIAL" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text = "Material" Foreground = "#FFC5A059" ></TextBlock>
-                    <ComboBox x:Name="MaterialComboBox" Grid.Column="1" Width = "200"  HorizontalAlignment = "Left" ItemsSource = "{Binding MaterialLista}" SelectedItem = "{Binding ValdMaterial}" DisplayMemberPath="Namn" Text = "Välj Material"></ComboBox>
-                    <Button Grid.Column="2" Command="{Binding LäggTillMaterialCommand}" Content="Lägg till material" Margin="10,0,10,0" Background="#FFC5A059"></Button>
-                    <ListBox Grid.Column="3"
-                         ItemsSource="{Binding NyMaterialLista}"
-                         DisplayMemberPath="Namn"
-                         Background="#FF1A1A1D"
-                         Foreground="White"
-                         HorizontalContentAlignment="Left"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                         MaxHeight="290" >
-                    </ListBox>
-                </Grid>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                            <TextBlock Text="Välj Material" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox ItemsSource="{Binding MaterialLista}" 
+                                      SelectedItem="{Binding ValdMaterial}" 
+                                      DisplayMemberPath="Namn" 
+                                      Height="32"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="1" 
+                                Command="{Binding LäggTillMaterialCommand}" 
+                                Content="Lägg till &#x2794;" 
+                                Margin="15,22,15,0" 
+                                Padding="15,0"
+                                Height="32" 
+                                Background="#FFC5A059" 
+                                FontWeight="Bold" 
+                                VerticalAlignment="Top"/>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Valda material:" Style="{StaticResource LabelStyle}"/>
+                            <ListBox ItemsSource="{Binding NyMaterialLista}"
+                                     DisplayMemberPath="Namn"
+                                     Background="#FF1A1A1D"
+                                     Foreground="White"
+                                     BorderThickness="0"
+                                     Height="100"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="5"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </Border>
 
             <Button Command="{Binding LaggTillLagerfordProduktCommand}" 
-                    Grid.Row="7" 
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Content="LÄGG TILL PRODUKT I DATABAS" 
-                    Height="45" 
+                    Content="SPARA PRODUKT I DATABAS" 
+                    Height="50" 
                     FontSize="18"
-                    FontWeight="Bold"
-                    Background="#FFB08D46">
+                    FontWeight="Black"
+                    Background="#FFB08D46"
+                    Foreground="Black"
+                    Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
             </Button>
-        </Grid>
+
+        </StackPanel>
     </ScrollViewer>
-    
 </Page>

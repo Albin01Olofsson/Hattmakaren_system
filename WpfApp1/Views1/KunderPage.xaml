@@ -71,12 +71,10 @@
                 CornerRadius="15" 
                 Padding="15" 
                 Margin="0,10,0,0">
-
+            
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
                            Text="Registrerade Kunder"
@@ -98,11 +96,7 @@
                             <Border Background="#11FFFFFF" Margin="0,5,0,5" Padding="15,12" CornerRadius="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1.2*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.5*"/> <ColumnDefinition Width="2*"/>   <ColumnDefinition Width="1.2*"/> <ColumnDefinition Width="Auto"/> </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Namn}" FontSize="15" FontWeight="Bold" Foreground="#F4F1EA"/>

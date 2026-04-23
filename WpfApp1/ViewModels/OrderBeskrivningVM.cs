@@ -1,15 +1,7 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DAL.Intefaces;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModels
 {
@@ -32,6 +24,9 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private DateTime? datum;
+
+        [ObservableProperty]
+        private string orderStatus;
 
         [ObservableProperty]
         private ObservableCollection<Produkt> produkLista;

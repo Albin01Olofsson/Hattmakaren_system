@@ -38,10 +38,29 @@
                 <TextBlock Text="{Binding StartTidFel}" Foreground="Red" FontSize="10"/>
                 <DatePicker SelectedDate="{Binding ValdStartTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
 
+                <TextBlock Text="SlutDatum" Foreground="#FFC5A059"/>
+                <DatePicker SelectedDate="{Binding ValdSlutDatum}" Margin="0,5,0,10"/>
+
                 <!--völj tid-->
                 <TextBlock Text="Starttid (timme)" Foreground="#FFC5A059"/>
                 <TextBlock Text="{Binding TimmarFel}" Foreground="Red" FontSize="10"/>
                 <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" SelectedIndex="-1" IsSynchronizedWithCurrentItem="False" Margin="0,5,0,10">
+                    <ComboBox.Items>
+                        <sys:Int32>8</sys:Int32>
+                        <sys:Int32>9</sys:Int32>
+                        <sys:Int32>10</sys:Int32>
+                        <sys:Int32>11</sys:Int32>
+                        <sys:Int32>12</sys:Int32>
+                        <sys:Int32>13</sys:Int32>
+                        <sys:Int32>14</sys:Int32>
+                        <sys:Int32>15</sys:Int32>
+                        <sys:Int32>16</sys:Int32>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <TextBlock Text="Sluttid (timme)" Foreground="#FFC5A059"/>
+                <!--<TextBlock Text="{Binding TimmarFel}" Foreground="Red" FontSize="10"/>-->
+                <ComboBox SelectedItem="{Binding ValdSlutTimme, Mode=TwoWay}" SelectedIndex="-1" IsSynchronizedWithCurrentItem="False" Margin="0,5,0,10">
                     <ComboBox.Items>
                         <sys:Int32>8</sys:Int32>
                         <sys:Int32>9</sys:Int32>

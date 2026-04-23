@@ -17,8 +17,11 @@
         <TextBlock Text="Namn" Foreground="#FFC5A059"/>
         <TextBox Text="{Binding Titel}" Margin="0,5,0,10"/>
 
-        <TextBlock Text="Datum" Foreground="#FFC5A059"/>
+        <TextBlock Text="StartDatum" Foreground="#FFC5A059"/>
         <DatePicker SelectedDate="{Binding StartDatum}" Margin="0,5,0,10"/>
+
+        <TextBlock Text="SlutDatum" Foreground="#FFC5A059"/>
+        <DatePicker SelectedDate="{Binding SlutDatum}" Margin="0,5,0,10"/>
 
         <TextBlock Text="Starttid" Foreground="#FFC5A059"/>
         <ComboBox SelectedItem="{Binding StartTid}">

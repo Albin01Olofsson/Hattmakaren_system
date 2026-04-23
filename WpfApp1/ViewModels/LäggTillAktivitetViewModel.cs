@@ -53,6 +53,9 @@ namespace WpfApp1.ViewModels
         private DateTime startDatum = DateTime.Now;
 
         [ObservableProperty]
+        private DateTime slutDatum = DateTime.Now;
+
+        [ObservableProperty]
         private int? startTid;
 
         [ObservableProperty]
@@ -61,10 +64,14 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private async Task SparaAktivitet()
         {
-            //var start = StartDatum.Date.AddHours(StartTid.Value);
-            //var slut = StartDatum.Date.AddHours(SlutTid.Value);
-            var start = new DateTime(StartDatum.Year, StartDatum.Month, StartDatum.Day, StartTid.Value, 0, 0);
-            var slut = new DateTime(StartDatum.Year, StartDatum.Month, StartDatum.Day, SlutTid.Value, 0, 0 );
+            var start = StartDatum.Date.AddHours(StartTid ?? 8);
+            var slut = SlutDatum.Date.AddHours(SlutTid ?? 17);
+
+            // fallback om användaren inte valt slutdatum
+            if (SlutDatum == default)
+                slut = start.AddHours(2);
+
+
             var deltagare = ValdaDeltagare.Any()
                 ? ValdaDeltagare.ToList()
                 : new List<Användare> { _user };

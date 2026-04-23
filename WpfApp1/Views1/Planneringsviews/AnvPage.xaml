@@ -135,7 +135,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid VerticalAlignment="Top">
-                                        <Canvas>
+                                        <Canvas ClipToBounds="True">
                                             <Border
                                                 Canvas.Top="{Binding Top}"
                                                 Background="{Binding Färg}"
@@ -143,6 +143,7 @@
                                                 BorderBrush="#FFC5A059"
                                                 BorderThickness="1"
                                                 Margin="2"
+                                                Width="{Binding ActualColumnWidth}"
                                                 Height="{Binding Height}">  
 
                                                 <StackPanel Margin="5">

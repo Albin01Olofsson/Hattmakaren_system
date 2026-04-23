@@ -101,7 +101,11 @@ namespace WpfApp1.ViewModels
 
                 await Task.Delay(1);
 
-                var allaAktiviteter = await _aktivitetService.HämtaAllaAktiviteter();
+                var allaAktiviteter = (await _aktivitetService.HämtaAllaAktiviteter())
+                    .Where(a =>
+                        a.StartTid < veckaSlut &&
+                        a.SlutTid > veckaStart)
+                    .ToList();
 
                 var aktiviteter = ValtSchemaLäge switch
                 {
@@ -123,41 +127,140 @@ namespace WpfApp1.ViewModels
 
                 var alla = new List<(DateTime start, DateTime slut, SchemaBlock block)>();
 
+                //void AddItem(DateTime start, DateTime slut, SchemaBlock baseBlock)
+                //{
+                //    double pixelsPerHour = 60; 
+
+                //    double startHour = start.Hour + start.Minute / 60.0;
+                //    double endHour = slut.Hour + slut.Minute / 60.0;
+
+                //    double startFrom8 = startHour - 8; // eftersom din grid börjar 08:00
+                //    double duration = endHour - startHour;
+
+                //    Schema.Add(new SchemaBlock
+                //    {
+                //        Id = baseBlock.Id,
+                //        Typ = baseBlock.Typ,
+                //        Titel = baseBlock.Titel,
+
+                //        StartTid = start,
+                //        SlutTid = slut,
+
+                //        Kolumn = ((int)start.DayOfWeek + 6) % 7,
+
+
+                //        Top = (startFrom8 * pixelsPerHour)+45,
+                //        Height = duration * pixelsPerHour,
+
+                //        Färg = baseBlock.Färg,
+                //        ZIndex = baseBlock.ZIndex,
+                //        OrderId = baseBlock.OrderId,
+                //        ProduktId = baseBlock.ProduktId,
+                //        AnvändarNamn = baseBlock.AnvändarNamn,
+                //        ProduktNamn = baseBlock.ProduktNamn
+                //    });
+                //}
                 void AddItem(DateTime start, DateTime slut, SchemaBlock baseBlock)
                 {
-                    double pixelsPerHour = 60; 
+                    bool isMultiDay = start.Date != slut.Date;
 
-                    double startHour = start.Hour + start.Minute / 60.0;
-                    double endHour = slut.Hour + slut.Minute / 60.0;
+                    int pixelsPerHour = 60;
 
-                    double startFrom8 = startHour - 8; // eftersom din grid börjar 08:00
-                    double duration = endHour - startHour;
+                    //vilken kolumn (dag i veckan)
+                    int startColumn = ((int)start.DayOfWeek + 6) % 7;
+                    int endColumn = ((int)slut.DayOfWeek + 6) % 7;
 
-                    Schema.Add(new SchemaBlock
+                    //EN DAG (VERTIKAL)
+
+                    if (!isMultiDay)
                     {
-                        Id = baseBlock.Id,
-                        Typ = baseBlock.Typ,
-                        Titel = baseBlock.Titel,
+                        double startHour = start.Hour + start.Minute / 60.0;
+                        double endHour = slut.Hour + slut.Minute / 60.0;
 
-                        StartTid = start,
-                        SlutTid = slut,
+                        double startFrom8 = startHour - 8;
+                        double duration = endHour - startHour;
 
-                        Kolumn = ((int)start.DayOfWeek + 6) % 7,
+                        Schema.Add(new SchemaBlock
+                        {
+                            Id = baseBlock.Id,
+                            Typ = baseBlock.Typ,
+                            Titel = baseBlock.Titel,
 
-                        
-                        Top = (startFrom8 * pixelsPerHour)+45,
-                        Height = duration * pixelsPerHour,
+                            StartTid = start,
+                            SlutTid = slut,
 
-                        Färg = baseBlock.Färg,
-                        ZIndex = baseBlock.ZIndex,
-                        OrderId = baseBlock.OrderId,
-                        ProduktId = baseBlock.ProduktId,
-                        AnvändarNamn = baseBlock.AnvändarNamn,
-                        ProduktNamn = baseBlock.ProduktNamn
-                    });
+                            Kolumn = startColumn,
+
+                            Top = startFrom8 * pixelsPerHour,
+                            Height = duration * pixelsPerHour,
+
+                            Färg = baseBlock.Färg,
+                            ZIndex = baseBlock.ZIndex,
+                            OrderId = baseBlock.OrderId,
+                            ProduktId = baseBlock.ProduktId,
+                            AnvändarNamn = baseBlock.AnvändarNamn,
+                            ProduktNamn = baseBlock.ProduktNamn,
+                            AnvändarId = baseBlock.AnvändarId,
+                            InfoText = baseBlock.InfoText
+                        });
+
+                        return;
+                    }
+
+                    //FLERA DAGAR (HORISONTELL)
+
+                    DateTime veckaSlut = NuvarandeMåndag.AddDays(7);
+                    DateTime cursor = start;
+
+                    while (cursor.Date <= slut.Date && cursor < veckaSlut)
+                    {
+                        bool isFirstDay = cursor.Date == start.Date;
+                        bool isLastDay = cursor.Date == slut.Date;
+
+                        DateTime dayStart = cursor.Date.AddHours(8);
+                        DateTime dayEnd = cursor.Date.AddHours(17);
+
+                        DateTime segmentStart =
+                            isFirstDay ? start : dayStart;
+
+                        DateTime segmentEnd =
+                            isLastDay ? slut : dayEnd;
+
+                        // clamp mot veckan, stoppar rendering utanför vecka
+                        if (segmentStart > veckaSlut)
+                            break;
+
+                        if (segmentEnd > veckaSlut)
+                            segmentEnd = veckaSlut;
+
+                        Schema.Add(new SchemaBlock
+                        {
+                            Id = baseBlock.Id,
+                            Typ = baseBlock.Typ,
+                            Titel = baseBlock.Titel,
+
+                            StartTid = segmentStart,
+                            SlutTid = segmentEnd,
+
+                            Kolumn = ((int)cursor.DayOfWeek + 6) % 7,
+
+                            Top = isFirstDay ? (segmentStart.Hour - 8) * pixelsPerHour : 0,
+                            Height = (segmentEnd - segmentStart).TotalHours * pixelsPerHour,
+
+                            Färg = baseBlock.Färg,
+                            ZIndex = baseBlock.ZIndex,
+                            OrderId = baseBlock.OrderId,
+                            ProduktId = baseBlock.ProduktId,
+                            AnvändarNamn = baseBlock.AnvändarNamn,
+                            ProduktNamn = baseBlock.ProduktNamn,
+                            AnvändarId = baseBlock.AnvändarId,
+                            InfoText = baseBlock.InfoText
+                        });
+
+                        cursor = cursor.AddDays(1);
+                    }
                 }
 
-                
                 foreach (var p in planeringar)
                 {
                     System.Diagnostics.Debug.WriteLine(

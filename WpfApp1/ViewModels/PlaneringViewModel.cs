@@ -31,10 +31,14 @@ namespace WpfApp1.ViewModels
         //private OrderRad valdOrderRad;
 
         [ObservableProperty]
-        private DateTime? valdStartTid;
+        private DateTime? valdStartTid = DateTime.Now;
+        [ObservableProperty]
+        private DateTime? valdSlutDatum = DateTime.Now;
 
         [ObservableProperty]
         private int? valdStartTimme;
+        [ObservableProperty]
+        private int? valdSlutTimme;
 
         [ObservableProperty]
         private string planeringsNamn;
@@ -123,9 +127,13 @@ namespace WpfApp1.ViewModels
             if (_user == null || hasError)
                 return;
 
-            //var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
-            var startTid = new DateTime(ValdStartTid.Value.Year, ValdStartTid.Value.Month, ValdStartTid.Value.Day, ValdStartTimme.Value, 0, 0);
+            //var startTid = new DateTime(ValdStartTid.Value.Year, ValdStartTid.Value.Month, ValdStartTid.Value.Day, ValdStartTimme.Value, 0, 0);
+            var start = new DateTime(ValdStartTid.Value.Year, ValdStartTid.Value.Month, ValdStartTid.Value.Day, ValdStartTimme.Value, 0, 0);
 
+            // om inget slut valt → default 2 timmar
+            var slut = ValdSlutDatum.HasValue
+                ? ValdSlutDatum.Value.Date.AddHours(ValdSlutTimme ?? 17)
+                : start.AddHours(2);
 
             var orderRad = ValdOrder.OrderRader
                 .FirstOrDefault(r => r.ProduktID == ValdProdukt.ProduktID);
@@ -140,8 +148,8 @@ namespace WpfApp1.ViewModels
             {
                 AnvändarID = _user.AnvändarID,
                 OrderRadID = orderRad.OrderRadID,
-                StartTid = startTid,
-                SlutTid = startTid.AddHours(2),
+                StartTid = start,
+                SlutTid = start,
 
                 PlaneringsNamn = string.IsNullOrWhiteSpace(PlaneringsNamn)
                     ? ValdProdukt.Namn
@@ -150,7 +158,7 @@ namespace WpfApp1.ViewModels
                 Status = "Ej påbörjat"
             };
 
-            await _service.Add(planering); // 👈 använd repo/service direkt om du har Add
+            await _service.PlaneraArbete(_user.AnvändarID, orderRad.OrderRadID, start); 
 
             PlaneringAdded?.Invoke(planering);
 

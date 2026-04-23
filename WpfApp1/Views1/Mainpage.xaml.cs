@@ -76,6 +76,11 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new AnvPage());
         }
 
+        private void BtnLeveranser_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new spårningPage());
+        }
+
 
         public Frame GetFrame()
         {

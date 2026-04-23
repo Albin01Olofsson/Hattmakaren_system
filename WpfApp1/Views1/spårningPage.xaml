@@ -4,25 +4,27 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
+      xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="spårningPage" Background="#FF1A1A1D">
 
     <Grid>
         <Grid>
-            <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        ¨
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
-        <TextBlock Text="Leveransspårning" Background="#FF2C3E50"/>
+            <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+            <Border Background="#FF2C3E50" CornerRadius="10" Margin="10">
+                <TextBlock Text="Leveransspårning" Foreground="#FFC5A059" Margin="25" FontWeight="Bold" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+
+            <Border Grid.Row="1" Grid.RowSpan="3" Background="#FF2C3E50" CornerRadius="10" Margin="10" Padding="15">
+                <gmap:GMapControl x:Name="MainMap"/>
+            </Border>
         </Grid>
     </Grid>
 </Page>

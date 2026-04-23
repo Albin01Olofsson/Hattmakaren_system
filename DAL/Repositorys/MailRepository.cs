@@ -9,6 +9,7 @@ using Models;
 using MailKit;
 using MailKit.Net.Imap;
 using MimeKit;
+using System.Diagnostics;
 
 namespace DAL.Repositorys
 {
@@ -16,6 +17,24 @@ namespace DAL.Repositorys
     {
         public MailRepository()
         {
+        }
+
+        private void RensaGamlaBildMappar(string rotmapp)
+        {
+            if (!Directory.Exists(rotmapp))
+                return;
+
+            foreach(var mapp in Directory.GetDirectories(rotmapp))
+            {
+                try
+                {
+                    Directory.Delete(mapp, true);
+                }catch(Exception e)
+                {
+                    //Detta block finns bara för att hoppa över filer/mappar som är låsta av WPF
+                    Debug.WriteLine($"En fil som skulle raderas var låst! " +  e.Message);
+                }
+            }
         }
 
         public async Task<List<Mail>> GetMailsAsync()
@@ -40,20 +59,20 @@ namespace DAL.Repositorys
                 int läsInAntal = 100;
                 int startIndex = Math.Max(0, inkorg.Count - läsInAntal);
 
-                //Sätt en plats att skapa en mapp som bilderna från mailen kommer att sparas i,
-                //Görs automatiskt vid inläsning så att användaren kan välja bilden från mappen i specialbeställning och lägga till den där
-                string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
-                string bildMapp = Path.Combine(baseDirectory, "DAL", "FörfråganBilder");
-                Directory.CreateDirectory(bildMapp);
+                ////Sätt en plats att skapa en mapp som bilderna från mailen kommer att sparas i,
+                ////Görs automatiskt vid inläsning så att användaren kan välja bilden från mappen i specialbeställning och lägga till den där
+                //string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+                //string bildMapp = Path.Combine(baseDirectory, "DAL", "FörfråganBilder");
+                //Directory.CreateDirectory(bildMapp);
 
-                //Radera det som tidigare fanns i mappen
-                if (Directory.Exists(bildMapp))
-                {
-                    foreach (var fil in Directory.GetFiles(bildMapp))
-                    {
-                        File.Delete(fil);
-                    }
-                }
+                string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+                string rotMapp = Path.Combine(baseDirectory, "DAL", "FörfråganBilder");
+                Directory.CreateDirectory(rotMapp);
+
+                RensaGamlaBildMappar(rotMapp);
+
+                string bildmapp = Path.Combine(rotMapp, Guid.NewGuid().ToString());
+                Directory.CreateDirectory(bildmapp);
 
                 //Loop för inläsning av mail
                 for (int i = inkorg.Count - 1; i >= startIndex; i--)
@@ -82,7 +101,7 @@ namespace DAL.Repositorys
                             string filnamn = $"{Guid.NewGuid()}{extension}";
 
                             //Skapa den fulla sökvägen som sträng
-                            string fullPath = Path.Combine(bildMapp, filnamn);
+                            string fullPath = Path.Combine(bildmapp, filnamn);
 
                             //Skapa hela sökvägen till bilden och öppna en ström dit
                             using (var stream = File.Create(fullPath))
@@ -144,7 +163,7 @@ namespace DAL.Repositorys
                 Console.WriteLine(e.Message);
             }
 
-            return null;
+            return new List<Mail>();
         }
     }
 }

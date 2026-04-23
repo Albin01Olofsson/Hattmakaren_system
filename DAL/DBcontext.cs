@@ -15,6 +15,7 @@ namespace DAL
         public DbSet<Planering> Planeringar { get; set; }
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
+        public DbSet<OrderRad> OrderRader { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,18 +42,6 @@ namespace DAL
                 .WithMany(k => k.Orders)
                 .HasForeignKey(o => o.KundID)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // 3. RELATION: Order -> Produkt (1:N)
-            // Här använder vi den nya gemensamma listan i Order
-            //modelBuilder.Entity<Order>()
-            //    .HasMany(o => o.Produkter)
-            //    .WithOne(p => p.Order)
-            //    .HasForeignKey(p => p.OrderID)
-            //    .OnDelete(DeleteBehavior.Cascade); // Om ordern tas bort, försvinner produkterna i den
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Produkter)
-                .WithMany(p => p.Ordrar)
-                .UsingEntity(j => j.ToTable("OrderProdukter"));
 
             // 1. Konfigurera En-till-många (Skaparen)
             modelBuilder.Entity<Aktivitet>()
@@ -104,7 +93,7 @@ namespace DAL
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
 
-           
+
             modelBuilder.Entity<Planering>(entity =>
             {
                 // Primärnyckel
@@ -115,12 +104,27 @@ namespace DAL
                       .WithMany(a => a.Planeringar)
                       .HasForeignKey(p => p.AnvändarID)
                       .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(p => p.OrderRad)
+                    .WithMany(or => or.Planeringar)
+                    .HasForeignKey(p => p.OrderRadID)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderRader)
+                .WithOne(or => or.Order)
+                .HasForeignKey(or => or.OrderID)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Produkt>()
+                   .HasMany(p => p.OrderRader)
+                   .WithOne(or => or.Produkt)
+                   .HasForeignKey(or => or.ProduktID)
+                   .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<OrderRad>(entity =>
+            {
+                entity.HasKey(or => or.OrderRadID);
 
-                // 1 -> 1 (Produkt -> Planering)
-                entity.HasOne(p => p.Produkt)
-                      .WithMany(pr => pr.Planeringar)
-                      .HasForeignKey(p => p.ProduktID)
-                      .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(or => or.Antal)
+                      .IsRequired();
             });
 
             // 6. DATATYPSPRECISION (Ekonomi)
@@ -129,6 +133,8 @@ namespace DAL
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
+
 
             //Exempeldata ----------------
 
@@ -306,7 +312,7 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1001,
                         Status = "Ej påbörjat",
-                        FörväntadTillverkningsTid = new DateTime(2026, 04,28)
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {

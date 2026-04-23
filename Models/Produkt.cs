@@ -22,11 +22,7 @@ namespace Models
 
         public string Decoration { get; set; } = string.Empty; //typ rosett, tygblomma
 
-        //[ForeignKey("Order")]
-        //public int? OrderID { get; set; }
-        //public Order? Order { get; set; }
-
-        public List<Order> Ordrar { get; set; } = new();
+        public ICollection<OrderRad> OrderRader { get; set; } = new List<OrderRad>();
 
         [ForeignKey("TillverkadAv")]
         public int TillverkadAVID { get; set; }
@@ -34,6 +30,5 @@ namespace Models
 
         public int Lagerantal { get; set; }
 
-        public ICollection<Planering> Planeringar { get; set; } = new List<Planering>();
     }
 }

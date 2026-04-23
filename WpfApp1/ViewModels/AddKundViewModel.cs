@@ -24,6 +24,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string stad;
 
+        [ObservableProperty]
+        private bool företagsKund;
+
 
 
         [RelayCommand]
@@ -36,7 +39,8 @@ namespace WpfApp1.ViewModels
                 Telefon = Telefon,
                 Adress = Adress,
                 Land = Land,
-                Stad = Stad
+                Stad = Stad,
+                FöretagsKund = FöretagsKund
             };
             KundAdded?.Invoke(nyKund);
         }

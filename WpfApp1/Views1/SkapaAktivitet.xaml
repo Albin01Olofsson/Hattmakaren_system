@@ -19,6 +19,13 @@
                 <TextBlock Text="Ny aktivitet" FontSize="22" FontWeight="Bold" Foreground="White" 
                            HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
+                <TextBlock Text="Typ av planering" Foreground="#FFC5A059"/>
+                <ComboBox SelectedItem="{Binding ValdTyp}" Margin="0,5,0,10">
+                    <ComboBoxItem Content="Order"/>
+                    <ComboBoxItem Content="Aktivitet"/>
+                </ComboBox>
+                <TextBlock Text="Namn" Foreground="#FFC5A059"/>
+                <TextBox Text="{Binding PlaneringsNamn}" Margin="0,5,0,10"/>
                 <!-- Välj en order -->
                 <TextBlock Text="Välj en order" Foreground="#FFC5A059"/>
                 <TextBlock Text="{Binding OrdrarFel}" Foreground="Red" FontSize="10"/>
@@ -29,7 +36,7 @@
                 <TextBlock Text="Välj en produkt" Foreground="#FFC5A059"/>
                 <TextBlock Text="{Binding ProdukterFel}" Foreground="Red" FontSize="10"/>
                 <ComboBox  ItemsSource="{Binding AllaProdukter}" SelectedItem="{Binding ValdProdukt, Mode=TwoWay}" 
-                           DisplayMemberPath="namn" Margin="0,5,0,10"/>
+                           DisplayMemberPath="Namn" Margin="0,5,0,10"/>
                 
                 <!--välj datum-->
                 <TextBlock Text="Datum" Foreground="#FFC5A059"/>

@@ -1,15 +1,7 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DAL.Intefaces;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModels
 {
@@ -32,6 +24,9 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private DateTime? datum;
+
+        [ObservableProperty]
+        private string orderStatus;
 
         [ObservableProperty]
         private ObservableCollection<Produkt> produkLista;
@@ -60,7 +55,7 @@ namespace WpfApp1.ViewModels
             Pris = ValdOrder.Pris;
             Rabatt = ValdOrder.Rabatt;
             Datum = ValdOrder.Datum;
-            ProdukLista = new ObservableCollection<Produkt>(ValdOrder.Produkter);
+            ProdukLista = new ObservableCollection<Produkt>(ValdOrder.OrderRader.Select(or => or.Produkt));
             OrderStartareNamn = ValdOrder.StartadAv.Namn;
             Färdig = ValdOrder.Färdig;
             IsSpecialbeställning = ValdOrder.IsSpecialbeställning;

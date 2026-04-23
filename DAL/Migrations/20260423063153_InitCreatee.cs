@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class neww : Migration
+    public partial class InitCreatee : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,6 +66,28 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Material", x => x.MaterialID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Aktiviteter",
+                columns: table => new
+                {
+                    AktivitetID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Namn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartTid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SlutTid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SkapadAvID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Aktiviteter", x => x.AktivitetID);
+                    table.ForeignKey(
+                        name: "FK_Aktiviteter_Användare_SkapadAvID",
+                        column: x => x.SkapadAvID,
+                        principalTable: "Användare",
+                        principalColumn: "AnvändarID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,6 +151,7 @@ namespace DAL.Migrations
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Moms = table.Column<double>(type: "float", nullable: true),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
                     Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
@@ -154,6 +177,30 @@ namespace DAL.Migrations
                         principalTable: "Kunder",
                         principalColumn: "KundID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnvändarAktiviteter",
+                columns: table => new
+                {
+                    DeltagareAnvändarID = table.Column<int>(type: "int", nullable: false),
+                    DeltarIAktiviteterAktivitetID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnvändarAktiviteter", x => new { x.DeltagareAnvändarID, x.DeltarIAktiviteterAktivitetID });
+                    table.ForeignKey(
+                        name: "FK_AnvändarAktiviteter_Aktiviteter_DeltarIAktiviteterAktivitetID",
+                        column: x => x.DeltarIAktiviteterAktivitetID,
+                        principalTable: "Aktiviteter",
+                        principalColumn: "AktivitetID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnvändarAktiviteter_Användare_DeltagareAnvändarID",
+                        column: x => x.DeltagareAnvändarID,
+                        principalTable: "Användare",
+                        principalColumn: "AnvändarID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,6 +279,33 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderRader",
+                columns: table => new
+                {
+                    OrderRadID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    ProduktID = table.Column<int>(type: "int", nullable: false),
+                    Antal = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderRader", x => x.OrderRadID);
+                    table.ForeignKey(
+                        name: "FK_OrderRader_Ordrar_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Ordrar",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderRader_Produkter_ProduktID",
+                        column: x => x.ProduktID,
+                        principalTable: "Produkter",
+                        principalColumn: "ProduktID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Planeringar",
                 columns: table => new
                 {
@@ -239,9 +313,10 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartTid = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SlutTid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PlaneringsNamn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AnvändarID = table.Column<int>(type: "int", nullable: false),
-                    ProduktID = table.Column<int>(type: "int", nullable: false)
+                    OrderRadID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,35 +328,11 @@ namespace DAL.Migrations
                         principalColumn: "AnvändarID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Planeringar_Produkter_ProduktID",
-                        column: x => x.ProduktID,
-                        principalTable: "Produkter",
-                        principalColumn: "ProduktID",
+                        name: "FK_Planeringar_OrderRader_OrderRadID",
+                        column: x => x.OrderRadID,
+                        principalTable: "OrderRader",
+                        principalColumn: "OrderRadID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderProdukter",
-                columns: table => new
-                {
-                    OrdrarOrderID = table.Column<int>(type: "int", nullable: false),
-                    ProdukterProduktID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderProdukter", x => new { x.OrdrarOrderID, x.ProdukterProduktID });
-                    table.ForeignKey(
-                        name: "FK_OrderProdukter_Ordrar_OrdrarOrderID",
-                        column: x => x.OrdrarOrderID,
-                        principalTable: "Ordrar",
-                        principalColumn: "OrderID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderProdukter_Produkter_ProdukterProduktID",
-                        column: x => x.ProdukterProduktID,
-                        principalTable: "Produkter",
-                        principalColumn: "ProduktID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -289,10 +340,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -329,30 +380,30 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Ordrar",
-                columns: new[] { "OrderID", "Datum", "Färdig", "FörväntadTillverkningsTid", "IsPrio", "IsSpecialbeställning", "KundID", "Pris", "Rabatt", "StartadAvID", "Status" },
+                columns: new[] { "OrderID", "Datum", "Färdig", "FörväntadTillverkningsTid", "IsPrio", "IsSpecialbeställning", "KundID", "Moms", "Pris", "Rabatt", "StartadAvID", "Status" },
                 values: new object[,]
                 {
-                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, 1299m, 0m, 1, "Ej påbörjat" },
-                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, 1099m, 0m, 1, "Ej påbörjat" },
-                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, 299m, 0m, 1, "Ej påbörjat" },
-                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1004, 2399m, 0m, 1, "Ej påbörjat" },
-                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, 779m, 0m, 1, "Ej påbörjat" },
-                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, 949m, 0m, 2, "Ej påbörjat" },
-                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, 1049m, 0m, 2, "Ej påbörjat" },
-                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, 749m, 0m, 2, "Ej påbörjat" },
-                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 999m, 0m, 2, "Ej påbörjat" },
-                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 899m, 0m, 2, "Ej påbörjat" },
-                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, 1099m, 0m, 2, "Ej påbörjat" },
-                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, 2019m, 0m, 3, "Ej påbörjat" },
-                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, 1829m, 0m, 3, "Ej påbörjat" },
-                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, 599m, 0m, 3, "Ej påbörjat" },
-                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 899m, 0m, 3, "Ej påbörjat" },
-                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1005, 1299m, 0m, 3, "Ej påbörjat" },
-                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1002, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, 499m, 0m, 4, "Ej påbörjat" }
+                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 1299m, 0m, 1, "Ej påbörjat" },
+                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1099m, 0m, 1, "Ej påbörjat" },
+                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 299m, 0m, 1, "Ej påbörjat" },
+                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1004, null, 2399m, 0m, 1, "Ej påbörjat" },
+                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 779m, 0m, 1, "Ej påbörjat" },
+                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 949m, 0m, 2, "Ej påbörjat" },
+                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1049m, 0m, 2, "Ej påbörjat" },
+                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 749m, 0m, 2, "Ej påbörjat" },
+                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 999m, 0m, 2, "Ej påbörjat" },
+                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 2, "Ej påbörjat" },
+                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 1099m, 0m, 2, "Ej påbörjat" },
+                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 2019m, 0m, 3, "Ej påbörjat" },
+                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1829m, 0m, 3, "Ej påbörjat" },
+                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 599m, 0m, 3, "Ej påbörjat" },
+                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 3, "Ej påbörjat" },
+                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1005, null, 1299m, 0m, 3, "Ej påbörjat" },
+                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 499m, 0m, 4, "Ej påbörjat" },
+                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1002, null, 499m, 0m, 4, "Ej påbörjat" },
+                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 499m, 0m, 4, "Ej påbörjat" },
+                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 499m, 0m, 4, "Ej påbörjat" },
+                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 499m, 0m, 4, "Ej påbörjat" }
                 });
 
             migrationBuilder.InsertData(
@@ -363,6 +414,16 @@ namespace DAL.Migrations
                     { 10000001, "LP0001", "", false, "", "", "Hatt", 0, "", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
                     { 10000002, "LP0002", "", false, "", "", "Keps", 0, "", "Siden keps", 949m, "Lagerförd", "M", 2 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Aktiviteter_SkapadAvID",
+                table: "Aktiviteter",
+                column: "SkapadAvID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnvändarAktiviteter_DeltarIAktiviteterAktivitetID",
+                table: "AnvändarAktiviteter",
+                column: "DeltarIAktiviteterAktivitetID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BestallningsRader_MaterialBeställningID",
@@ -390,9 +451,14 @@ namespace DAL.Migrations
                 column: "ProduktID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProdukter_ProdukterProduktID",
-                table: "OrderProdukter",
-                column: "ProdukterProduktID");
+                name: "IX_OrderRader_OrderID",
+                table: "OrderRader",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderRader_ProduktID",
+                table: "OrderRader",
+                column: "ProduktID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ordrar_KundID",
@@ -410,9 +476,9 @@ namespace DAL.Migrations
                 column: "AnvändarID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Planeringar_ProduktID",
+                name: "IX_Planeringar_OrderRadID",
                 table: "Planeringar",
-                column: "ProduktID");
+                column: "OrderRadID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Produkter_TillverkadAVID",
@@ -424,6 +490,9 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AnvändarAktiviteter");
+
+            migrationBuilder.DropTable(
                 name: "BestallningsRader");
 
             migrationBuilder.DropTable(
@@ -433,16 +502,19 @@ namespace DAL.Migrations
                 name: "MaterialProdukt");
 
             migrationBuilder.DropTable(
-                name: "OrderProdukter");
+                name: "Planeringar");
 
             migrationBuilder.DropTable(
-                name: "Planeringar");
+                name: "Aktiviteter");
 
             migrationBuilder.DropTable(
                 name: "MaterialBeställningar");
 
             migrationBuilder.DropTable(
                 name: "Material");
+
+            migrationBuilder.DropTable(
+                name: "OrderRader");
 
             migrationBuilder.DropTable(
                 name: "Ordrar");

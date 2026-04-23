@@ -6,220 +6,232 @@
       xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels"
       d:DataContext="{d:DesignInstance Type=viewmodels:OrderVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="700" d:DesignWidth="1000"
       Background="#FF1A1A1D"
       Title="OrderPage">
 
-    <StackPanel Orientation="Vertical"
-                Margin="20">
-        
-        <TextBlock x:Name="Rubrik"
-                   Text="ORDER"
-                   Margin="0,0,0,10"
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Background" Value="#FFB08D46"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFC5A059"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="FilterLabelStyle">
+            <Setter Property="Foreground" Value="#FFC5A059"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style TargetType="FrameworkElement" x:Key="FilterControlStyle">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" x:Name="Rubrik"
+                   Text="ORDERHANTERING"
+                   Margin="0,0,0,20"
                    FontSize="28"
                    FontWeight="Black"
                    Foreground="#F4F1EA"
-                   HorizontalAlignment="Center">
-        </TextBlock>
-       
+                   HorizontalAlignment="Center"/>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-            
-            <TextBox x:Name="SökFält"
-                     Text="{Binding SökString, UpdateSourceTrigger=PropertyChanged}"
-                     Width="290"
-                     Height="33"
-                     FontSize="16"
-                     VerticalContentAlignment="Center">
-                
-            </TextBox>
-
-            <Button x:Name="BtnSök"
-                    Content="Sök"
-                    Command="{Binding SökCommand}"
-                    Padding="10,0"
-                    Background="#FFC5A059"
-                    Foreground="#F4F1EA"
-                    FontWeight="Bold">
-            </Button>
-            <Button Content="Gå till Skapa Order" Click="BtnSkapaOrder_Click" Width="200" Height="40" Background="#FFB08D46" Foreground="White" FontSize="16" Cursor="Hand" Margin="25,0,0,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </StackPanel>
-        
-        
-        <Grid Margin="0,10,0,0">
+        <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!--SÖKRESULTAT-->
-                <Border Grid.Column="0" Margin="0,0,20,0" Background="#FF2C3E50" CornerRadius="15" Padding="10">
-                    
-                    <StackPanel>
-                        <TextBlock Text="{Binding AntalOrders, StringFormat=Sökresultat: {0}}"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   Foreground="#F4F1EA"
-                                   Margin="0,0,0,10"
-                                   HorizontalAlignment="Center">
-                            
-                        </TextBlock>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <TextBox x:Name="SökFält"
+                         Text="{Binding SökString, UpdateSourceTrigger=PropertyChanged}"
+                         Width="300"
+                         Height="38"
+                         FontSize="15"
+                         Padding="10,0"
+                         VerticalContentAlignment="Center">
+                    <TextBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="6,0,0,6"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
 
-                        <ListBox x:Name="SökResultat"
-                                 ItemsSource="{Binding OrderList}"
-                                 SelectionChanged="SökResultat_SelectionChanged"
-                                 Background="Transparent"
-                                 HorizontalContentAlignment="Stretch"
-                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                 MaxHeight="290">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid x:Name="EttSökresultat"
-                                          Background="#11FFFFFF">
+                <Button x:Name="BtnSök"
+                        Content="Sök"
+                        Command="{Binding SökCommand}"
+                        Width="80"
+                        Height="38"
+                        Style="{StaticResource ActionButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="0,6,6,0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+
+            <Button Grid.Column="1" 
+                    Content="+ Gå till Skapa Order" 
+                    Click="BtnSkapaOrder_Click" 
+                    Height="38" 
+                    Style="{StaticResource ActionButtonStyle}"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3.5*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#FF2C3E50" CornerRadius="10" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" 
+                               Text="{Binding AntalOrders, StringFormat='Sökresultat: {0} träffar'}"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="#FFC5A059"
+                               Margin="0,0,0,15"
+                               HorizontalAlignment="Left"/>
+
+                    <ListBox Grid.Row="1" x:Name="SökResultat"
+                             ItemsSource="{Binding OrderList}"
+                             SelectionChanged="SökResultat_SelectionChanged"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Margin" Value="0,0,10,10"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FF1A1A1D" 
+                                        BorderBrush="#FFB08D46" 
+                                        BorderThickness="1" 
+                                        CornerRadius="8" 
+                                        Padding="15">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="1.5*"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock x:Name="KundNamn" 
-                                                   Grid.Column="0" 
-                                                   Grid.Row="0" 
-                                                   Text="{Binding Kund.Namn}"
-                                                   FontSize="14" 
-                                                   FontWeight="Bold" 
-                                                   Foreground="#F4F1EA" 
-                                                   HorizontalAlignment="Center">
-                                        </TextBlock>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Kund.Namn}" FontSize="16" FontWeight="Black" Foreground="#F4F1EA"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Datum, StringFormat='Datum: {0:yyyy-MM-dd}'}" FontSize="13" Foreground="#FFC5A059" HorizontalAlignment="Left"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding StartadAv.Namn, StringFormat='Säljare: {0}'}" FontSize="13" Foreground="#FFC5A059" HorizontalAlignment="Right"/>
 
-                                        <TextBlock x:Name="OrderNummer" 
-                                                   Grid.Column="0" 
-                                                   Grid.Row="1" 
-                                                   Text="{Binding OrderID, StringFormat=Order: {0}}"
-                                                   FontSize="12" 
-                                                   Foreground="#F4F1EA" 
-                                                   HorizontalAlignment="Center">
-                                        </TextBlock>
+                                        <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding OrderID, StringFormat='Ordernr: #{0}'}" FontSize="13" Foreground="LightGray"/>
+                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding IsSpecialbeställning, StringFormat='Special: {0}'}" FontSize="13" Foreground="LightGray" HorizontalAlignment="Left"/>
 
-                                        
-                                        <TextBlock x:Name="Datum"
-                                                   Grid.Column="1"
-                                                   Grid.Row="0"
-                                                   Text="{Binding Datum, StringFormat=Datum: {0}}" 
-                                                   FontSize="12" 
-                                                   Foreground="#F4F1EA" 
-                                                   HorizontalAlignment="Center">
-                                            
-                                        </TextBlock>
-
-                                        <TextBlock x:Name="ÄrSpecialBeställning"
-                                                   Grid.Column="1"
-                                                   Grid.Row="1"
-                                                   Text="{Binding IsSpecialbeställning, StringFormat=Specialbeställning: {0}}"
-                                                   FontSize="12"
-                                                   Foreground="#F4F1EA"
-                                                   HorizontalAlignment="Center">
-                                            
-                                        </TextBlock>
-
-                                        <TextBlock x:Name="ÄrMarkeradSomKlar"
-                                                   Grid.Column="2"
-                                                   Grid.Row="0"
-                                                   Text="{Binding Färdig, StringFormat=Klar: {0}}" 
-                                                   FontSize="12"
-                                                   Foreground="#F4F1EA"
-                                                   HorizontalAlignment="Center">
-                                            
-                                        </TextBlock>
-                                        <TextBlock x:Name="OrderStartare" 
-                                                   Grid.Column="2"
-                                                   Grid.Row="1" 
-                                                   Text="{Binding StartadAv.Namn, StringFormat=Startare: {0}}" 
-                                                   FontSize="12" 
-                                                   Foreground="#F4F1EA"
-                                                   HorizontalAlignment="Center">
-                                            
-                                        </TextBlock>
-
+                                        <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding OrderStatus, StringFormat='Status: {0}'}" FontSize="13" FontWeight="Bold" Foreground="#FFC5A059" HorizontalAlignment="Right"/>
                                     </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </Border>
-            
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
 
-            <!--FILTER-->
-            <Border x:Name="FilterBar"
-                    Grid.Column="1"
-                    Background="#FFC5A059"
-                    CornerRadius="15"
-                    Padding="10">
+            <Border Grid.Column="2" x:Name="FilterBar" Background="#FF1A1A1D" BorderBrush="#FF2C3E50" BorderThickness="2" CornerRadius="10" Padding="20">
                 <StackPanel Orientation="Vertical">
-                    <!--RUBRIK-->
-                    <TextBlock Text="Filter" 
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="#F4F1EA"
-                               Margin="0,0,0,10"
-                               HorizontalAlignment="Center">
-                    </TextBlock>
-                    
-                    <!--DATUM-->
-                    <TextBlock Text="Datum Från" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <DatePicker SelectedDate="{Binding DatumFrånFilter}" Margin="0,0,0,10"></DatePicker>
-                    
-                    <TextBlock Text="Datum till" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <DatePicker SelectedDate="{Binding DatumTillFilter}" Margin="0,0,0,10"></DatePicker>
-                    
-                    <!--ORDER STARTARE-->
-                    <TextBlock Text="Order Startare" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
 
+                    <TextBlock Text="FILTRERING" 
+                               FontSize="18"
+                               FontWeight="Black"
+                               Foreground="#F4F1EA"
+                               Margin="0,0,0,20"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Text="Datum Från" Style="{StaticResource FilterLabelStyle}"/>
+                    <DatePicker SelectedDate="{Binding DatumFrånFilter}" Style="{StaticResource FilterControlStyle}"/>
+
+                    <TextBlock Text="Datum Till" Style="{StaticResource FilterLabelStyle}"/>
+                    <DatePicker SelectedDate="{Binding DatumTillFilter}" Style="{StaticResource FilterControlStyle}"/>
+
+                    <TextBlock Text="Säljare / Startare" Style="{StaticResource FilterLabelStyle}"/>
                     <ComboBox x:Name="OrderStartareComboBox"
                               ItemsSource="{Binding OrderStartareNamnList}"
                               SelectedItem="{Binding OrderStartareFilter}"
-                              Margin="0,0,0,10">
-                    </ComboBox>
-                    
-                    <!--MARKERAD SOM KLAR-->
-                    <TextBlock Text="Markerad som klar" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <ComboBox x:Name="MarkeradSomKlarComboBox"
-                              SelectedValue="{Binding KlarFilter}"
-                              Margin="0,0,0,10"
+                              Style="{StaticResource FilterControlStyle}"/>
+
+                    <TextBlock Text="Orderstatus" Style="{StaticResource FilterLabelStyle}"/>
+                    <ComboBox x:Name="OrderStatusComboBox"
+                              SelectedValue="{Binding OrderStatusFilter}"
                               SelectedValuePath="Content"
-                              SelectedIndex="0">
-                        <ComboBoxItem Content="Ospecificerat"></ComboBoxItem>
-                        <ComboBoxItem Content="Klar"></ComboBoxItem>
-                        <ComboBoxItem Content="Ej Klar"></ComboBoxItem>
+                              SelectedIndex="0"
+                              Style="{StaticResource FilterControlStyle}">
+                        <ComboBoxItem Content="Alla"/>
+                        <ComboBoxItem Content="Ej Påbörjad"/>
+                        <ComboBoxItem Content="Påbörjad"/>
+                        <ComboBoxItem Content="Levererad"/>
                     </ComboBox>
-                    
-                    <!--Specialbeställning-->
-                    <TextBlock Text="Specialbeställning" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
+
+                    <TextBlock Text="Specialbeställning" Style="{StaticResource FilterLabelStyle}"/>
                     <ComboBox x:Name="SpecialbeställningComboBox"
                               SelectedValue="{Binding SpecialBeställningFilter}"
-                              Margin="0,0,0,10"
                               SelectedValuePath="Content"
-                              SelectedIndex="0">
-                        <ComboBoxItem Content="Ospecificerat"></ComboBoxItem>
-                        <ComboBoxItem Content="Ja"></ComboBoxItem>
-                        <ComboBoxItem Content="Nej"></ComboBoxItem>
+                              SelectedIndex="0"
+                              Style="{StaticResource FilterControlStyle}">
+                        <ComboBoxItem Content="Ospecificerat"/>
+                        <ComboBoxItem Content="Ja"/>
+                        <ComboBoxItem Content="Nej"/>
                     </ComboBox>
+
                 </StackPanel>
             </Border>
         </Grid>
-    
-    </StackPanel>
+    </Grid>
 </Page>

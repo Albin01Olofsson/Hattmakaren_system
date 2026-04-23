@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260422153428_neww")]
-    partial class neww
+    [Migration("20260423103816_decimaltillrabatt")]
+    partial class decimaltillrabatt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AktivitetAnvändare", b =>
+                {
+                    b.Property<int>("DeltagareAnvändarID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeltarIAktiviteterAktivitetID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DeltagareAnvändarID", "DeltarIAktiviteterAktivitetID");
+
+                    b.HasIndex("DeltarIAktiviteterAktivitetID");
+
+                    b.ToTable("AnvändarAktiviteter", (string)null);
+                });
 
             modelBuilder.Entity("MaterialMaterialBeställning", b =>
                 {
@@ -53,6 +68,34 @@ namespace DAL.Migrations
                     b.HasIndex("ProduktID");
 
                     b.ToTable("MaterialProdukt");
+                });
+
+            modelBuilder.Entity("Models.Aktivitet", b =>
+                {
+                    b.Property<int>("AktivitetID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AktivitetID"));
+
+                    b.Property<string>("Namn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SkapadAvID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SlutTid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTid")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AktivitetID");
+
+                    b.HasIndex("SkapadAvID");
+
+                    b.ToTable("Aktiviteter");
                 });
 
             modelBuilder.Entity("Models.Användare", b =>
@@ -96,7 +139,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
+                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -106,7 +149,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
+                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -116,7 +159,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
+                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -126,7 +169,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$5OdQw6Y5Dc4is4BunF4H4uZ.gf/SBYP3FjFrgGBO.DD1xkaIfbXDC",
+                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -396,12 +439,15 @@ namespace DAL.Migrations
                     b.Property<int>("KundID")
                         .HasColumnType("int");
 
+                    b.Property<double?>("Moms")
+                        .HasColumnType("float");
+
                     b.Property<decimal>("Pris")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Rabatt")
                         .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
@@ -715,6 +761,32 @@ namespace DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.OrderRad", b =>
+                {
+                    b.Property<int>("OrderRadID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderRadID"));
+
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderRadID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.ToTable("OrderRader");
+                });
+
             modelBuilder.Entity("Models.Planering", b =>
                 {
                     b.Property<int>("PlaneringsID")
@@ -726,12 +798,12 @@ namespace DAL.Migrations
                     b.Property<int>("AnvändarID")
                         .HasColumnType("int");
 
+                    b.Property<int>("OrderRadID")
+                        .HasColumnType("int");
+
                     b.Property<string>("PlaneringsNamn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProduktID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("SlutTid")
                         .HasColumnType("datetime2");
@@ -739,11 +811,15 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartTid")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PlaneringsID");
 
                     b.HasIndex("AnvändarID");
 
-                    b.HasIndex("ProduktID");
+                    b.HasIndex("OrderRadID");
 
                     b.ToTable("Planeringar");
                 });
@@ -806,21 +882,6 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("OrderProdukt", b =>
-                {
-                    b.Property<int>("OrdrarOrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProdukterProduktID")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdrarOrderID", "ProdukterProduktID");
-
-                    b.HasIndex("ProdukterProduktID");
-
-                    b.ToTable("OrderProdukter", (string)null);
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -887,6 +948,21 @@ namespace DAL.Migrations
                     b.HasDiscriminator().HasValue("Special");
                 });
 
+            modelBuilder.Entity("AktivitetAnvändare", b =>
+                {
+                    b.HasOne("Models.Användare", null)
+                        .WithMany()
+                        .HasForeignKey("DeltagareAnvändarID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Aktivitet", null)
+                        .WithMany()
+                        .HasForeignKey("DeltarIAktiviteterAktivitetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MaterialMaterialBeställning", b =>
                 {
                     b.HasOne("Models.MaterialBeställning", null)
@@ -915,6 +991,17 @@ namespace DAL.Migrations
                         .HasForeignKey("ProduktID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Models.Aktivitet", b =>
+                {
+                    b.HasOne("Models.Användare", "SkapadAv")
+                        .WithMany("SkapadeAktiviteter")
+                        .HasForeignKey("SkapadAvID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SkapadAv");
                 });
 
             modelBuilder.Entity("Models.BestallningsRad", b =>
@@ -966,6 +1053,25 @@ namespace DAL.Migrations
                     b.Navigation("StartadAv");
                 });
 
+            modelBuilder.Entity("Models.OrderRad", b =>
+                {
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany("OrderRader")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany("OrderRader")
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Produkt");
+                });
+
             modelBuilder.Entity("Models.Planering", b =>
                 {
                     b.HasOne("Models.Användare", "Användare")
@@ -974,15 +1080,15 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Models.Produkt", "Produkt")
+                    b.HasOne("Models.OrderRad", "OrderRad")
                         .WithMany("Planeringar")
-                        .HasForeignKey("ProduktID")
+                        .HasForeignKey("OrderRadID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Användare");
 
-                    b.Navigation("Produkt");
+                    b.Navigation("OrderRad");
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -996,24 +1102,11 @@ namespace DAL.Migrations
                     b.Navigation("TillverkadAv");
                 });
 
-            modelBuilder.Entity("OrderProdukt", b =>
-                {
-                    b.HasOne("Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdrarOrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Produkt", null)
-                        .WithMany()
-                        .HasForeignKey("ProdukterProduktID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Models.Användare", b =>
                 {
                     b.Navigation("Planeringar");
+
+                    b.Navigation("SkapadeAktiviteter");
 
                     b.Navigation("materialBeställningsLista");
 
@@ -1032,9 +1125,19 @@ namespace DAL.Migrations
                     b.Navigation("Rader");
                 });
 
-            modelBuilder.Entity("Models.Produkt", b =>
+            modelBuilder.Entity("Models.Order", b =>
+                {
+                    b.Navigation("OrderRader");
+                });
+
+            modelBuilder.Entity("Models.OrderRad", b =>
                 {
                     b.Navigation("Planeringar");
+                });
+
+            modelBuilder.Entity("Models.Produkt", b =>
+                {
+                    b.Navigation("OrderRader");
                 });
 #pragma warning restore 612, 618
         }

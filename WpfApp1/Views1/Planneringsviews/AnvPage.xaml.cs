@@ -16,7 +16,13 @@ namespace WpfApp1.Views1.Planneringsviews
             //this.DataContext = new WpfApp1.ViewModels.AnvPlanViewModel();
             var serviceProvider = ((App)Application.Current).ServiceProvider;
             this.DataContext = serviceProvider.GetRequiredService<AnvPlanViewModel>();
-
+            this.Loaded += async (s, e) =>
+            {
+                if (DataContext is AnvPlanViewModel vm)
+                {
+                    await vm.LaddaSchema();
+                }//börjar ladda data här istället för i konstruktor
+            };
         }
         private void Ordrar_Click(object sender, RoutedEventArgs e)
         {

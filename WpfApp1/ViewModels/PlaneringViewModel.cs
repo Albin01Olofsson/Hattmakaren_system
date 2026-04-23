@@ -80,7 +80,13 @@ namespace WpfApp1.ViewModels
             if (value == null)
                 return;
 
-            var produkter = await _service.HämtaLedigaProdukter(value.OrderID);
+            var produkter = value.OrderRader?
+                .Select(r => r.Produkt)
+                .ToList();
+
+            if (produkter == null)
+                return;
+
             foreach (var produkt in produkter)
             {
                 AllaProdukter.Add(produkt);
@@ -114,22 +120,23 @@ namespace WpfApp1.ViewModels
                 hasError = true;
             }
 
-            if (User == null || hasError)
+            if (_user == null || hasError)
                 return;
 
             var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
 
-            var orderRad = HämtaOrderRad();
+            var orderRad = ValdOrder.OrderRader
+                .FirstOrDefault(r => r.ProduktID == ValdProdukt.ProduktID);
 
             if (orderRad == null)
             {
-                ProdukterFel = "Kunde inte hitta orderrad för vald produkt";
+                ProdukterFel = "Ogiltig produkt i vald order";
                 return;
             }
 
             var planering = new Planering
             {
-                AnvändarID = User.AnvändarID,
+                AnvändarID = _user.AnvändarID,
                 OrderRadID = orderRad.OrderRadID,
                 StartTid = startTid,
                 SlutTid = startTid.AddHours(2),
@@ -148,12 +155,12 @@ namespace WpfApp1.ViewModels
             ValdProdukt = null;
             ValdOrder = null;
         }
-        private OrderRad HämtaOrderRad()
-        {
-            return ValdOrder?
-                .OrderRader?
-                .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
-        }
+        //private OrderRad HämtaOrderRad()
+        //{
+        //    return ValdOrder?
+        //        .OrderRader?
+        //        .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
+        //}
         //[RelayCommand]
         //private async Task SparaAktivitet()
         //{

@@ -1,17 +1,8 @@
 ﻿using BL.Interfaces;
-using BL.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Input;
 using Models;
-using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using WpfApp1.Views1;
 
@@ -21,16 +12,40 @@ namespace WpfApp1.ViewModels
     {
         private readonly IAktivitetService _service;
         private readonly Användare _user;
+        private readonly IAnvändarService _användarService;
         public ObservableCollection<Användare> AllaAnvändare { get; } = new();
 
         public ObservableCollection<Användare> ValdaDeltagare { get; } = new();
+        public void UppdateraValdaDeltagare(System.Collections.IList selectedItems)
+        {
+            ValdaDeltagare.Clear();
 
-        public LäggTillAktivitetViewModel(IAktivitetService service, Användare user)
+            foreach (Användare u in selectedItems)
+            {
+                ValdaDeltagare.Add(u);
+            }
+        }
+
+        public ObservableCollection<int> ValdaDeltagareIds { get; } = new();
+
+        public bool ÄrAdmin => _user.IsAdmin;
+
+        public LäggTillAktivitetViewModel(IAktivitetService service, IAnvändarService användarService, Användare user)
         {
             _service = service;
             _user = user;
+            _användarService = användarService;
+            _ = LaddaAnvändare();
         }
+        private async Task LaddaAnvändare()
+        {
+            var users = await _användarService.HämtaAllaAnvändare();
 
+            AllaAnvändare.Clear();
+
+            foreach (var u in users)
+                AllaAnvändare.Add(u);
+        }
         [ObservableProperty]
         private string titel;
 
@@ -38,32 +53,36 @@ namespace WpfApp1.ViewModels
         private DateTime startDatum = DateTime.Now;
 
         [ObservableProperty]
-        private TimeSpan startTid;
+        private int? startTid;
 
         [ObservableProperty]
-        private TimeSpan slutTid;
+        private int? slutTid;
 
         [RelayCommand]
         private async Task SparaAktivitet()
         {
-            var start = startDatum.Date + startTid;
-            var slut = startDatum.Date + slutTid;
+            var start = StartDatum.Date.AddHours(StartTid.Value);
+            var slut = StartDatum.Date.AddHours(SlutTid.Value);
+
+            var deltagare = ValdaDeltagare.Any()
+                ? ValdaDeltagare.ToList()
+                : new List<Användare> { _user };
 
             var aktivitet = new Aktivitet
             {
                 Namn = Titel,
                 StartTid = start,
                 SlutTid = slut,
-                SkapadAvID = _user.AnvändarID
+                SkapadAvID = _user.AnvändarID,
+                Deltagare = deltagare
             };
-            aktivitet.Deltagare = ValdaDeltagare.ToList();
 
             await _service.LäggTillAktivitet(aktivitet);
 
             Application.Current.Windows
-        .OfType<Window>()
-        .FirstOrDefault(w => w is LäggTillAktivitetWindow)?
-        .Close();
+                .OfType<Window>()
+                .FirstOrDefault(w => w is LäggTillAktivitetWindow)?
+                .Close();
         }
 
     }

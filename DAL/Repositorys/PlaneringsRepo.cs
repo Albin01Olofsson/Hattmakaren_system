@@ -29,7 +29,8 @@ namespace DAL.Repositorys
                 .Include(p => p.OrderRad)
                     .ThenInclude(or => or.Produkt)
                 .Include(p => p.OrderRad)
-                    .ThenInclude(or => or.Order);
+                    .ThenInclude(or => or.Order)
+                .AsNoTracking();
         }
 
     }

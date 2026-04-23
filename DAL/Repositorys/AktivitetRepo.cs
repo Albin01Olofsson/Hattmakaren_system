@@ -17,5 +17,11 @@ namespace DAL.Repositorys
                 .Include(a => a.Deltagare)
                 .ToListAsync();
         }
+        public async Task<List<Användare>> GetUsersByIds(List<int> ids)
+        {
+            return await _context.Användare
+                .Where(u => ids.Contains(u.AnvändarID))
+                .ToListAsync();
+        }
     }
 }

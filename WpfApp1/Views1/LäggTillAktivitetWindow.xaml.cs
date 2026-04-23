@@ -1,18 +1,5 @@
-﻿using BL.Interfaces;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views1
@@ -25,6 +12,13 @@ namespace WpfApp1.Views1
         public LäggTillAktivitetWindow()
         {
             InitializeComponent();
+            DeltagarListBox.SelectionChanged += (s, e) =>
+            {
+                if (DataContext is LäggTillAktivitetViewModel vm)
+                {
+                    vm.UppdateraValdaDeltagare(DeltagarListBox.SelectedItems);
+                }
+            };
         }
     }
 }

@@ -35,7 +35,7 @@
                     </MenuItem>
                     <Button Content="+ Aktivitet" Command="{Binding ÖppnaLäggTillAktivitetCommand}" Background="#FF8A2BE2" Margin="10,0"/>
                      <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}">
-                        <sys:String>Alla scheman</sys:String>
+                        <sys:String>Allas schema</sys:String>
                         <sys:String>Mitt schema</sys:String>
                     </ComboBox>
                 </Menu>

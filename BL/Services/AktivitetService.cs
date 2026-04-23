@@ -16,6 +16,14 @@ namespace BL.Services
 
         public async Task LäggTillAktivitet(Aktivitet aktivitet)
         {
+            var deltagareIds = aktivitet.Deltagare
+                .Select(d => d.AnvändarID)
+                .ToList();
+
+            var users = await _aktivitetsRepo.GetUsersByIds(deltagareIds);
+
+            aktivitet.Deltagare = users;
+
             await _aktivitetsRepo.Add(aktivitet);
             await _aktivitetsRepo.Save();
         }

@@ -8,6 +8,7 @@ using Models;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace WpfApp1.ViewModels
     {
         private readonly IAktivitetService _service;
         private readonly Användare _user;
+        public ObservableCollection<Användare> AllaAnvändare { get; } = new();
+
+        public ObservableCollection<Användare> ValdaDeltagare { get; } = new();
 
         public LäggTillAktivitetViewModel(IAktivitetService service, Användare user)
         {
@@ -52,6 +56,7 @@ namespace WpfApp1.ViewModels
                 SlutTid = slut,
                 SkapadAvID = _user.AnvändarID
             };
+            aktivitet.Deltagare = ValdaDeltagare.ToList();
 
             await _service.LäggTillAktivitet(aktivitet);
 

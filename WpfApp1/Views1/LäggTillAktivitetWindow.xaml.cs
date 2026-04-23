@@ -25,7 +25,6 @@ namespace WpfApp1.Views1
         public LäggTillAktivitetWindow()
         {
             InitializeComponent();
-            
         }
     }
 }

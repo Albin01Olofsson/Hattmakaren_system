@@ -46,7 +46,8 @@
                            FontWeight="Bold"
                            Foreground="#F4F1EA" />
                 <ComboBox Width="100"
-                          HorizontalAlignment="Right">
+                          HorizontalAlignment="Right"
+                          SelectionChanged="Sortering_SelectionChanged">
                     <ComboBoxItem Content="Nyast" />
                     <ComboBoxItem Content="Äldst" />
                 </ComboBox>

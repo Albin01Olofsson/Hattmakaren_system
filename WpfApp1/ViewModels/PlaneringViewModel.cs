@@ -123,7 +123,9 @@ namespace WpfApp1.ViewModels
             if (_user == null || hasError)
                 return;
 
-            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+            //var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+            var startTid = new DateTime(ValdStartTid.Value.Year, ValdStartTid.Value.Month, ValdStartTid.Value.Day, ValdStartTimme.Value, 0, 0);
+
 
             var orderRad = ValdOrder.OrderRader
                 .FirstOrDefault(r => r.ProduktID == ValdProdukt.ProduktID);

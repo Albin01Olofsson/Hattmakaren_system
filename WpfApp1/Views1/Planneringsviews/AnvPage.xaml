@@ -49,14 +49,12 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 10">
                     <Button Content="&lt; Föregående" Command="{Binding TidigareVeckaCommand}" Background="#FFB08D46" Margin="20,0"/>
                     <TextBlock Text="{Binding DennaVeckaTxt}" VerticalAlignment="Center" Foreground="White" FontSize="18" Margin="20, 0"/>
                     <Button Content="Nästa &gt;" Command="{Binding NästaVeckaCommand}" Background="#FFB08D46" Margin="5"/>
                     <Button Content=" Månadsvy" Command="{Binding VisaMånadsVyCommand}" Margin=" 20, 5, 5, 5"/>
                 </StackPanel>
-
                 <Grid Grid.Row="1" Margin="60, 0, 0, 5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -71,7 +69,6 @@
                     <TextBlock Grid.Column="3" Text="Torsdag" Foreground="#FFC5A059" HorizontalAlignment="Center" FontWeight="Bold"/>
                     <TextBlock Grid.Column="4" Text="Fredag" Foreground="#FFC5A059" HorizontalAlignment="Center" FontWeight="Bold"/>
                 </Grid>
-
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -82,13 +79,11 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
                         <Border Grid.Column="1" BorderBrush="#22FFFFFF" BorderThickness="1,0,0,0" Panel.ZIndex="1"/>
                         <Border Grid.Column="2" BorderBrush="#22FFFFFF" BorderThickness="1,0,0,0" Panel.ZIndex="1"/>
                         <Border Grid.Column="3" BorderBrush="#22FFFFFF" BorderThickness="1,0,0,0" Panel.ZIndex="1"/>
                         <Border Grid.Column="4" BorderBrush="#22FFFFFF" BorderThickness="1,0,0,0" Panel.ZIndex="1"/>
                         <Border Grid.Column="5" BorderBrush="#22FFFFFF" BorderThickness="1,0,1,0" Panel.ZIndex="1"/>
-
                         <ItemsControl ItemsSource="{Binding TidsIntervaller}" Grid.Column="0" Grid.ColumnSpan="6">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -99,7 +94,6 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-
                         <StackPanel Grid.Column="1" Panel.ZIndex="2">
                             <TextBlock Text="{Binding MåndagDatum}" Foreground="#88FFFFFF" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         </StackPanel>
@@ -115,7 +109,6 @@
                         <StackPanel Grid.Column="5" Panel.ZIndex="2">
                             <TextBlock Text="{Binding FredagDatum}" Foreground="#88FFFFFF" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         </StackPanel>
-
                         <ItemsControl ItemsSource="{Binding Schema}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -130,61 +123,59 @@
                                     </Grid>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
-
                             <ItemsControl.ItemContainerStyle>
                                 <Style TargetType="ContentPresenter">
                                     <Setter Property="Grid.Column" Value="{Binding Kolumn}"/>
-                                    <Setter Property="Margin" Value="0"/><!--Value="{Binding Margin}"-->
+                                    <Setter Property="Margin" Value="0"/>
+                                    <!--Value="{Binding Margin}"-->
                                     <Setter Property="VerticalAlignment" Value="Top"/>
-                                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}"/>
+                                    <!--<Setter Property="Panel.ZIndex" Value="{Binding ZIndex}"/>-->
                                 </Style>
                             </ItemsControl.ItemContainerStyle>
-
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid VerticalAlignment="Top">
-                                        <!-- Bokningen -->
-                                        <Border x:Name="BookingBorder" Background="{Binding Färg}" VerticalAlignment="Top" CornerRadius="4" BorderBrush="#FFC5A059" BorderThickness="1" Height="{Binding Height}" Margin="2,0" Width="{Binding Width}">
-                                            <StackPanel Margin="5">
-                                                <TextBlock Text="{Binding Titel}" Foreground="White" FontWeight="Bold" FontSize="12"/>
-                                                <TextBlock Text="{Binding ProduktNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
-                                                <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
-                                            </StackPanel>
-                                        </Border>
+                                        <Canvas>
+                                            <Border
+                                                Canvas.Top="{Binding Top}"
+                                                Background="{Binding Färg}"
+                                                CornerRadius="4"
+                                                BorderBrush="#FFC5A059"
+                                                BorderThickness="1"
+                                                Margin="2"
+                                                Height="{Binding Height}">  
 
-                                        <!-- Popup -->
+                                                <StackPanel Margin="5">
+                                                    <TextBlock Text="{Binding Titel}" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                                    <TextBlock Text="{Binding ProduktNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
+                                                    <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF" FontSize="11"/>
+                                                </StackPanel>
+
+                                            </Border>
+                                        </Canvas>
+                                        
                                         <Popup x:Name="PopupInfo" Placement="Right" PlacementTarget="{Binding ElementName=BookingBorder}" StaysOpen="True">
                                             <Border Background="#222" Padding="10" CornerRadius="6" BorderBrush="#FFC5A059" BorderThickness="1">
                                                 <StackPanel Width="180">
                                                     <TextBlock Text="{Binding ProduktNamn}" Foreground="White" FontWeight="Bold" FontSize="14"/>
                                                     <TextBlock Text="{Binding AnvändarNamn}" Foreground="#DDFFFFFF"/>
-                                                    <TextBlock Foreground="#AAFFFFFF">
-                                                        <Run Text="Order: "/>
-                                                        <Run Text="{Binding OrderId}"/>
-                                                    </TextBlock>
-                                                    <TextBlock Foreground="#AAFFFFFF">
-                                                        <Run Text="ProduktID: "/>
-                                                        <Run Text="{Binding ProduktId}"/>
-                                                    </TextBlock>
+                                                    <TextBlock Foreground="#AAFFFFFF"> <Run Text="Order: "/> <Run Text="{Binding OrderId}"/></TextBlock>
+                                                    <TextBlock Foreground="#AAFFFFFF"> <Run Text="ProduktID: "/> <Run Text="{Binding ProduktId}"/></TextBlock>
                                                     <TextBlock Foreground="#AAFFFFFF" Text="{Binding StartTid, StringFormat=Start: {0:HH:mm}}"/>
-
                                                     <!-- Delete knapp -->
                                                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                                        <Button Content="Delete" 
-                                                                Command="{Binding DataContext.DeleteBokningCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
-                                                                CommandParameter="{Binding PlaneringsId}"/>
+                                                        <Button Content="Delete" Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Border>
                                         </Popup>
-
                                         <!-- Hover logik -->
                                         <Grid.Triggers>
                                             <!-- När mus går in -->
                                             <EventTrigger RoutedEvent="MouseEnter">
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <BooleanAnimationUsingKeyFrames  Storyboard.TargetName="PopupInfo" Storyboard.TargetProperty="IsOpen">
+                                                        <BooleanAnimationUsingKeyFrames Storyboard.TargetName="PopupInfo" Storyboard.TargetProperty="IsOpen">
                                                             <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
                                                         </BooleanAnimationUsingKeyFrames>
                                                     </Storyboard>

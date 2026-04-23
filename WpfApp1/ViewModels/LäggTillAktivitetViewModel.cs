@@ -61,9 +61,10 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private async Task SparaAktivitet()
         {
-            var start = StartDatum.Date.AddHours(StartTid.Value);
-            var slut = StartDatum.Date.AddHours(SlutTid.Value);
-
+            //var start = StartDatum.Date.AddHours(StartTid.Value);
+            //var slut = StartDatum.Date.AddHours(SlutTid.Value);
+            var start = new DateTime(StartDatum.Year, StartDatum.Month, StartDatum.Day, StartTid.Value, 0, 0);
+            var slut = new DateTime(StartDatum.Year, StartDatum.Month, StartDatum.Day, SlutTid.Value, 0, 0 );
             var deltagare = ValdaDeltagare.Any()
                 ? ValdaDeltagare.ToList()
                 : new List<Användare> { _user };

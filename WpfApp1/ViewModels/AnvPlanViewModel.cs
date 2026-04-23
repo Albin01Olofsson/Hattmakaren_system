@@ -57,10 +57,6 @@ namespace WpfApp1.ViewModels
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
             LaddaTider();
-            //Bokningar = new ObservableCollection<Bokning>();
-            //Schema = new ObservableCollection<SchemaBlock>();
-            /*_ = LaddaBokningar();*/ // _ = beyder kör async men vänta inte, exceptions kan försvinna
-            //_ = LaddaSchema();
         }
 
         public void LaddaTider()
@@ -77,63 +73,7 @@ namespace WpfApp1.ViewModels
             _ = LaddaSchema();
             //_ = LaddaBokningar();
         }
-        //public async Task LaddaSchema()
-        //{
-        //    Schema.Clear();
-
-
-        //    var veckaStart = NuvarandeMåndag;
-        //    var veckaSlut = veckaStart.AddDays(7);
-
-        //    var planeringar = (await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut))
-        //        .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut)
-        //        .ToList();
-
-        //    var aktiviteter = (await _aktivitetService.HämtaAllaAktiviteter())
-        //        .Where(a => a.StartTid >= veckaStart && a.StartTid < veckaSlut)
-        //        .ToList();
-
-        //    //var alla = new List<SchemaBlock>();
-        //    //alla.Clear();
-
-        //    foreach (var p in planeringar)
-        //    {
-        //        Schema.Add(new SchemaBlock
-        //        {
-        //            Id = p.PlaneringsID,
-        //            Typ = "Planering",
-        //            Titel = p.PlaneringsNamn,
-        //            StartTid = p.StartTid,
-        //            SlutTid = p.SlutTid,
-        //            Kolumn = ((int)p.StartTid.DayOfWeek + 6) % 7,
-        //            Färg = GetFärg(p.Status),
-        //            ZIndex = 1,
-
-        //            TopPos = (p.StartTid.Hour - 8) * 60 + p.StartTid.Minute,
-        //            Height = (p.SlutTid - p.StartTid).TotalMinutes
-        //        });
-        //    }
-
-        //    foreach (var a in aktiviteter)
-        //    {
-        //        Schema.Add(new SchemaBlock
-        //        {
-        //            Id = a.AktivitetID,
-        //            Typ = "Aktivitet",
-        //            Titel = a.Namn,
-        //            StartTid = a.StartTid,
-        //            SlutTid = a.SlutTid,
-        //            Kolumn = ((int)a.StartTid.DayOfWeek + 6) % 7,
-        //            Färg = "#8A2BE2",
-        //            ZIndex = 2,
-
-        //            TopPos = (a.StartTid.Hour - 8) * 60 + a.StartTid.Minute,
-        //            Height = (a.SlutTid - a.StartTid).TotalMinutes
-        //        });
-        //    }
-
-
-        //}
+        
         public async Task LaddaSchema()
         {
             if (_isLoading)
@@ -154,9 +94,7 @@ namespace WpfApp1.ViewModels
                         .Where(p => p.AnvändarID == user.AnvändarID)
                         .ToList(),
 
-                    "Allas schema" => user.IsAdmin
-                        ? allaPlaneringar
-                        : allaPlaneringar.Where(p => p.AnvändarID == user.AnvändarID).ToList(),
+                    "Allas schema" => allaPlaneringar,
 
                     _ => allaPlaneringar
                 };
@@ -187,38 +125,45 @@ namespace WpfApp1.ViewModels
 
                 void AddItem(DateTime start, DateTime slut, SchemaBlock baseBlock)
                 {
-                    DateTime cursor = start;
+                    double pixelsPerHour = 60; 
 
-                    while (cursor < slut)
+                    double startHour = start.Hour + start.Minute / 60.0;
+                    double endHour = slut.Hour + slut.Minute / 60.0;
+
+                    double startFrom8 = startHour - 8; // eftersom din grid börjar 08:00
+                    double duration = endHour - startHour;
+
+                    Schema.Add(new SchemaBlock
                     {
-                        var dayEnd = cursor.Date.AddHours(23).AddMinutes(59);
-                        var segmentEnd = slut < dayEnd ? slut : dayEnd;
+                        Id = baseBlock.Id,
+                        Typ = baseBlock.Typ,
+                        Titel = baseBlock.Titel,
 
-                        if (cursor >= veckaStart && cursor < veckaSlut)
-                        {
-                            Schema.Add(new SchemaBlock
-                            {
-                                Id = baseBlock.Id,
-                                Typ = baseBlock.Typ,
-                                Titel = baseBlock.Titel,
-                                StartTid = cursor,
-                                SlutTid = segmentEnd,
-                                Kolumn = ((int)cursor.DayOfWeek + 6) % 7,
-                                TopPos = Math.Max(0, (cursor.Hour - 8) * 60 + cursor.Minute),
-                                Height = (segmentEnd - cursor).TotalMinutes,
-                                Färg = baseBlock.Färg,
-                                ZIndex = baseBlock.ZIndex,
-                                OrderId = baseBlock.OrderId,
-                                ProduktId = baseBlock.ProduktId,
-                                AnvändarNamn = baseBlock.AnvändarNamn,
-                                ProduktNamn = baseBlock.ProduktNamn
-                            });
-                        }
+                        StartTid = start,
+                        SlutTid = slut,
 
-                        cursor = segmentEnd.AddMinutes(1);
-                    }
+                        Kolumn = ((int)start.DayOfWeek + 6) % 7,
+
+                        
+                        Top = startFrom8 * pixelsPerHour,
+                        Height = duration * pixelsPerHour,
+
+                        Färg = baseBlock.Färg,
+                        ZIndex = baseBlock.ZIndex,
+                        OrderId = baseBlock.OrderId,
+                        ProduktId = baseBlock.ProduktId,
+                        AnvändarNamn = baseBlock.AnvändarNamn,
+                        ProduktNamn = baseBlock.ProduktNamn
+                    });
                 }
 
+                
+                foreach (var p in planeringar)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"PlaneringID: {p.PlaneringsID}, AnvändarID: {p.AnvändarID}, SkapadAv: {p.Användare?.AnvändarID}"
+                    );
+                }
                 foreach (var p in planeringar)
                 {
                     AddItem(p.StartTid, p.SlutTid, new SchemaBlock
@@ -230,7 +175,15 @@ namespace WpfApp1.ViewModels
                         ZIndex = 1,
                         OrderId = p.OrderRad?.OrderID,
                         ProduktId = p.OrderRad?.ProduktID,
-                        AnvändarNamn = p.Användare?.Namn
+                        AnvändarNamn = p.Användare?.Namn,
+                        AnvändarId = p.AnvändarID,
+
+                        InfoText =
+                            $"Planering\n" +
+                            $"Produkt: {p.OrderRad?.Produkt?.Namn}\n" +
+                            $"Order: {p.OrderRad?.OrderID}\n" +
+                            $"Användare: {p.Användare?.Namn}\n" +
+                            $"Status: {p.Status}"
                     });
                 }
 
@@ -243,7 +196,13 @@ namespace WpfApp1.ViewModels
                         Titel = a.Namn,
                         Färg = "#8A2BE2",
                         ZIndex = 2,
-                        AnvändarNamn = a.SkapadAv?.Namn
+                        AnvändarNamn = a.SkapadAv?.Namn,
+                        AnvändarId = a.SkapadAvID,
+
+                        InfoText =
+                            $"Aktivitet\n" +
+                            $"Namn: {a.Namn}\n" +
+                            $"Skapad av: {a.SkapadAv?.Namn}"
                     });
                 }
             }
@@ -264,6 +223,7 @@ namespace WpfApp1.ViewModels
                 _ => "#CCCCCC"
             };
         }
+        #region
         //public async Task LaddaBokningar()
         //{
         //    Bokningar.Clear();
@@ -308,7 +268,7 @@ namespace WpfApp1.ViewModels
         //        }
         //    }
         //}
-
+        #endregion
         public string DennaVeckaTxt => $"Vecka {ISOWeek.GetWeekOfYear(NuvarandeMåndag)}, {NuvarandeMåndag:MMMM yyyy}";
 
         public string MåndagDatum => NuvarandeMåndag.ToString("dd/MM");
@@ -357,13 +317,32 @@ namespace WpfApp1.ViewModels
             }
         }
 
+        //[RelayCommand]
+        //private async Task DeleteBokning(int planeringsId)
+        //{
+        //    await _service.TaBortPlanering(planeringsId);
+        //    //await LaddaBokningar();
+        //    await LaddaSchema();
+        //}
         [RelayCommand]
-        private async Task DeleteBokning(int planeringsId)
+        private async Task DeleteItem(SchemaBlock block)
         {
-            await _service.TaBortPlanering(planeringsId);
-            //await LaddaBokningar();
+            if (block == null)
+                return;
+
+            
+            if (block.Typ == "Planering")
+            {
+                await _service.TaBortPlanering(block.Id);
+            }
+            else if (block.Typ == "Aktivitet")
+            {
+                await _aktivitetService.TaBortAktivitet(block.Id);
+            }
+
             await LaddaSchema();
         }
+        
         [RelayCommand]
         private void ÖppnaLäggTillAktivitet()
         {
@@ -374,7 +353,7 @@ namespace WpfApp1.ViewModels
 
             window.ShowDialog();
 
-            _ = LaddaSchema(); // uppdatera efter
+            _ = LaddaSchema(); 
         }
     }
 }

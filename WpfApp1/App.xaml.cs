@@ -19,6 +19,14 @@ namespace WpfApp1
 
         public IServiceProvider ServiceProvider { get; private set; }
 
+        public App()
+        {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JHaF1cXmhMYVJpR2NbeU54flVHal1YVAciSV9jS3hTckdnWXdecXVcT2ddU091XA==");
+
+            // Din krasch-fångare som vi lade in tidigare
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -72,6 +80,15 @@ namespace WpfApp1
             };
 
             mainWindow.MainFrame.Navigate(loginPage);
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"SYSTEMKRASCH FÖRHINDRAD!\n\nFel: {e.Exception.Message}",
+                            "Globalt Fel",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+            e.Handled = true;
         }
     }
 }

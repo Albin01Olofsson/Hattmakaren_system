@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20260424142054_updateart")]
+    partial class updateart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +139,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$78j489XKK6ej01zdhAWI6ud3x5znwDMiZfD7ZWOcqgiT3XamfM44.",
+                            Lösenord = "$2a$11$19TGd8/Yzw4S2/eERGJW/..QYk9C40DpybwUIJMilpvApykS.SkKW",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +149,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$78j489XKK6ej01zdhAWI6ud3x5znwDMiZfD7ZWOcqgiT3XamfM44.",
+                            Lösenord = "$2a$11$19TGd8/Yzw4S2/eERGJW/..QYk9C40DpybwUIJMilpvApykS.SkKW",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +159,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$78j489XKK6ej01zdhAWI6ud3x5znwDMiZfD7ZWOcqgiT3XamfM44.",
+                            Lösenord = "$2a$11$19TGd8/Yzw4S2/eERGJW/..QYk9C40DpybwUIJMilpvApykS.SkKW",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +169,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$78j489XKK6ej01zdhAWI6ud3x5znwDMiZfD7ZWOcqgiT3XamfM44.",
+                            Lösenord = "$2a$11$19TGd8/Yzw4S2/eERGJW/..QYk9C40DpybwUIJMilpvApykS.SkKW",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });

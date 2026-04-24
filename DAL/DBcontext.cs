@@ -143,6 +143,7 @@ namespace DAL
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
             modelBuilder.Entity<Produkt>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Artikel>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");

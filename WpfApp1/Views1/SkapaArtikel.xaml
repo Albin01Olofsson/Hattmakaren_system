@@ -9,54 +9,51 @@
       Title="SkapaArtikel">
 
     <ScrollViewer>
-            <StackPanel Margin="30" MaxWidth="700">
+        <StackPanel Margin="30" MaxWidth="700">
 
-                <TextBlock Text="SKAPA ARTIKEL"
+            <TextBlock Text="SKAPA ARTIKEL"
                        FontSize="28"
                        FontWeight="Black"
                        Foreground="#F4F1EA"
                        Margin="0,0,0,25"
                        HorizontalAlignment="Center"/>
 
-                <Border Background="#FF2C3E50" Padding="20" CornerRadius="10">
+            <Border Background="#FF2C3E50" Padding="20" CornerRadius="10">
 
-                    <StackPanel>
+                <StackPanel>
 
-                        <TextBlock Text="Namn" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Namn}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Namn" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding Namn}" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Pris" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Pris}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Pris" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding Pris}" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Storlek" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Storlek}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Färg" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding Färg}" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Färg" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Färg}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Modell" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding Modell}" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Modell" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Modell}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Dekoration" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding Decoration}" Margin="0,0,0,10"/>
 
-                        <TextBlock Text="Dekoration" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding Decoration}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Antal i lager" Foreground="#FFC5A059"/>
+                    <TextBox Text="{Binding AntalProdukter}" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Antal i lager" Foreground="#FFC5A059"/>
-                        <TextBox Text="{Binding AntalProdukter}" Margin="0,0,0,20"/>
-
-                        <Button Content="SKAPA ARTIKEL"
+                    <Button Content="SKAPA ARTIKEL"
                             Command="{Binding SkapaArtikelCommand}"
                             Height="40"
                             Background="#FFB08D46"
                             FontWeight="Bold"/>
 
-                        <TextBlock Text="{Binding StatusText}"
+                    <TextBlock Text="{Binding StatusText}"
                                Foreground="White"
                                Margin="0,15,0,0"
                                TextWrapping="Wrap"/>
 
-                    </StackPanel>
+                </StackPanel>
 
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
     </Page>

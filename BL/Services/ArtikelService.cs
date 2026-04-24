@@ -41,7 +41,6 @@ namespace BL.Services
                     ArtikelID = artikel.ArtikelId,
                     Namn = artikel.Namn,
                     Pris = artikel.Pris,
-                    Storlek = artikel.Storlek,
                     Färg = artikel.Färg,
                     Modell = artikel.Modell,
                     Decoration = artikel.Decoration,

@@ -45,5 +45,20 @@ namespace DAL.Repositorys
                 .FirstOrDefaultAsync(o => o.OrderID == id);
         }
 
+        public async Task<Order?> GetOrderWithRader(int orderId)
+        {
+            return await _context.Ordrar
+                .Include(o => o.OrderRader)
+                    .ThenInclude(or => or.Produkt) // viktigt!
+                .Include(o => o.Kund)
+                .Include(o => o.StartadAv)
+                .FirstOrDefaultAsync(o => o.OrderID == orderId);
+        }
+
+        public async Task Update(Order order)
+        {
+            _context.Ordrar.Update(order);
+            await _context.SaveChangesAsync();
+        }
     }
 }

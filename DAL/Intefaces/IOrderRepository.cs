@@ -9,5 +9,7 @@ namespace DAL.Intefaces
         public Task<Order> HämtaMedDetaljer(int id);
 
         Task<Order> GetMedDetaljer(int oid);
+        Task<Order?> GetOrderWithRader(int orderId);
+        Task Update(Order order);
     }
 }

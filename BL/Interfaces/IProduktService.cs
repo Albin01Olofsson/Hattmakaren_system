@@ -12,5 +12,6 @@ namespace BL.Interfaces
         Task UpdateProdukt(Produkt p);
         Task DeleteProdukt(int id);
         Task SaveProdukt();
+        Task<Produkt> HämtaFörstaLedigaProdukt(int artikelId);
     }
 }

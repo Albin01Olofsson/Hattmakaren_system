@@ -15,21 +15,13 @@ namespace WpfApp1.ViewModels
 {
     public partial class SkapaArtikelVM : ObservableObject
     {
-        private IOrderService _orderService; //För skapa order
-        private IProduktService _produktService; //För att hämta produkt och lägga till specialbeställning
-        private IMaterialService _materialService; //Hantera material
-        private IKundService _kundService; //För att veta vilken kund som ska ha ordern
-        private IAnvändarService _användarService; //(Ej säker på om den behövs)För att veta vem som ska ha hand om att skapa produkten, ev vem som startade ordern
-        private IArtikelService _artikelService;
-        public SkapaArtikelVM(IArtikelService artikelService, IOrderService orderService, IProduktService produktService, IMaterialService materialService, IKundService kundService, IAnvändarService användarService)
+        private readonly IArtikelService _artikelService;
+
+        public SkapaArtikelVM(IArtikelService artikelService)
         {
-            _orderService = orderService;
-            _produktService = produktService;
-            _materialService = materialService;
-            _kundService = kundService;
-            _användarService = användarService;
             _artikelService = artikelService;
         }
+
         [ObservableProperty]
         private string namn;
 
@@ -81,7 +73,6 @@ namespace WpfApp1.ViewModels
                 {
                     Namn = Namn,
                     Pris = Pris,
-                    Storlek = Storlek,
                     Färg = Färg,
                     Modell = Modell,
                     Decoration = Decoration
@@ -89,9 +80,8 @@ namespace WpfApp1.ViewModels
 
                 await _artikelService.SkapaArtikelMedProdukter(artikel, AntalProdukter);
 
-                StatusText = "✅ Artikel skapad!";
+                StatusText = "Artikel skapad!";
 
-                // reset
                 Namn = "";
                 Pris = 0;
                 Storlek = "";
@@ -102,13 +92,8 @@ namespace WpfApp1.ViewModels
             }
             catch (Exception ex)
             {
-                StatusText = "❌ Fel: " + ex.Message;
+                StatusText = "Fel: " + ex.Message;
             }
         }
-
-
-
-
-
     }
 }

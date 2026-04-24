@@ -20,7 +20,8 @@ namespace WpfApp1.Views1
             InitializeComponent();
             LoadUser();
             OrderRepo repo = new OrderRepo(new DBcontext());
-            _orderService = new OrderService(repo, new DBcontext());
+            ProduktRepo prodrepo = new ProduktRepo(new DBcontext());
+            _orderService = new OrderService(repo, new DBcontext(), prodrepo);
             vm = new OrderVM(_orderService);
         }
 

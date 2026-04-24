@@ -60,6 +60,7 @@ namespace WpfApp1
             services.AddTransient<SkapaOrderViewModel>(); // DETTA VAR FELET PÅ BILDEN!
             services.AddTransient<PlaneringViewModel>();
             services.AddTransient<AnvPlanViewModel>();
+            services.AddTransient<SkapaArtikelVM>();
 
             // 5. BYGG PROVIDER
             ServiceProvider = services.BuildServiceProvider();

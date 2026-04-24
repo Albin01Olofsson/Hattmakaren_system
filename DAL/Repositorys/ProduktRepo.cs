@@ -52,5 +52,13 @@ namespace DAL.Repositorys
             _context.Produkter.AddRange(produkter);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Produkt> HämtaFörstaLedigaProdukt(int artikelId)
+        {
+            return await _context.Produkter
+                .Where(p => p.ArtikelID == artikelId && !p.Färdig)
+                .OrderBy(p => p.ProduktID)
+                .FirstOrDefaultAsync();
+        }
     }
 }

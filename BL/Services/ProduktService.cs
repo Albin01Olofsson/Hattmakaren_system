@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
+using DAL.Repositorys;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ namespace BL.Services
         public async Task DeleteProdukt(int id) => await prodRepo.Delete(id);
         public async Task SaveProdukt() => await prodRepo.Save();
 
-
+        public async Task<Produkt> HämtaFörstaLedigaProdukt(int artikelId)
+        {
+            return await prodRepo.HämtaFörstaLedigaProdukt(artikelId);
+        }
     }
 }

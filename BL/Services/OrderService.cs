@@ -10,11 +10,13 @@ namespace BL.Services
     {
         private readonly IOrderRepository _orderRepo;
         private readonly DBcontext _context;
+        private readonly IProduktRepo _produktRepo;
 
-        public OrderService(IOrderRepository orderRepo, DBcontext context)
+        public OrderService(IOrderRepository orderRepo, DBcontext context, IProduktRepo produktRepo)
         {
             _orderRepo = orderRepo;
             _context = context;
+            _produktRepo = produktRepo;
         }
 
         public async Task<List<Order>> GetOrderList() => await _orderRepo.GetAll();
@@ -291,6 +293,29 @@ namespace BL.Services
                 throw new Exception($"Ett fel uppstod när statusen skulle sparas: {ex.Message}", ex);
             }
         }
+
+        //public async Task LäggTillArtikelIOrder(int orderId, int artikelId)
+        //{
+        //    var order = await _orderRepo.GetOrderWithRader(orderId);
+
+        //    if (order == null)
+        //        throw new Exception("Order hittades inte");
+
+        //    var produkt = await _produktRepo.GetFörstaLedigaProdukt(artikelId);
+
+        //    if (produkt == null)
+        //        throw new Exception("Ingen produkt i lager!");
+
+        //    var orderRad = new OrderRad
+        //    {
+        //        ProduktID = produkt.ProduktID,
+        //        Antal = 1
+        //    };
+
+        //    order.OrderRader.Add(orderRad);
+
+        //    await _orderRepo.Update(order);
+        //}
     }
 
 }

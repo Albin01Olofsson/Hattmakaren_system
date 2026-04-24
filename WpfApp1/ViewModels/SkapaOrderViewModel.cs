@@ -179,11 +179,17 @@ namespace WpfApp1.ViewModels
             decimal totalt = TillagdaProdukter.Sum(p => p.Pris);
             // 2. Dra av rabatten och se till att det inte blir negativt
             decimal efterRabatt = Math.Max(0, totalt - Rabatt);
+            bool momsTillägg = ValdKund != null && ValdKund.FöretagsKund;
+            decimal moms = Math.Max(0, totalt * 0.25m);
             decimal slutpris = efterRabatt + TullKostnad;
 
             if (IsPrioVald)
             {
                 slutpris *= 1.20m;
+            }
+            if (momsTillägg)
+            {
+                slutpris += moms;
             }
 
 
@@ -194,6 +200,7 @@ namespace WpfApp1.ViewModels
                         $"Avdragen rabatt: {Rabatt:C}\n" +
                         $"Tullavgift (via API): {TullKostnad:C}\n" + // Visa tullen här!
                         $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
+                        $"Moms (25%): {(momsTillägg ? "JA" : "NEJ")}\n" +
                         $"Slutpris: {slutpris:C}";
         }
 

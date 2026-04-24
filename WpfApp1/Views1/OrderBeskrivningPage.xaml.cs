@@ -97,5 +97,10 @@ namespace WpfApp1.Views1
                 await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
             }
         }
+
+        private void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

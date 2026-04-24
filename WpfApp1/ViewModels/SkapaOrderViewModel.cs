@@ -17,7 +17,7 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         public ObservableCollection<Kund> allaKunder = new();
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
-        public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
+        public ObservableCollection<OrderCartItem> TillagdaProdukter { get; set; }
 
         // VALDA OBJEKT (SelectedItem i rullistorna)
         [ObservableProperty] private Kund valdKund;
@@ -39,7 +39,7 @@ namespace WpfApp1.ViewModels
 
             AllaKunder = new ObservableCollection<Kund>();
             AllaProdukter = new ObservableCollection<Produkt>();
-            TillagdaProdukter = new ObservableCollection<Produkt>();
+            TillagdaProdukter = new ObservableCollection<OrderCartItem>();
 
             InloggadAnvändare = Session.CurrentUser ?? new Användare { AnvändarID = 1, Namn = "Test" };
 
@@ -79,14 +79,36 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LaggTillProdukt()
         {
-            if (ValdProdukt != null)
-            {
-                TillagdaProdukter.Add(ValdProdukt);
+            //if (ValdProdukt != null)
+            //{
+            //    TillagdaProdukter.Add(ValdProdukt);
 
-                // HÄR ÄR ÄNDRINGEN: Räkna om tullen nu när totalpriset har ökat!
-                _ = RaknaUtTullAsync();
-                UppdateraOversikt();
+            //    // HÄR ÄR ÄNDRINGEN: Räkna om tullen nu när totalpriset har ökat!
+            //    _ = RaknaUtTullAsync();
+            //    UppdateraOversikt();
+            //}
+            if (ValdProdukt == null)
+                return;
+
+            var existing = TillagdaProdukter.FirstOrDefault(x => x.ProduktID == ValdProdukt.ProduktID);
+
+            if (existing != null)
+            {
+                existing.Antal++;
             }
+            else
+            {
+                TillagdaProdukter.Add(new OrderCartItem
+                {
+                    ProduktID = ValdProdukt.ProduktID,
+                    Namn = ValdProdukt.Namn,
+                    Pris = ValdProdukt.Pris,
+                    Antal = 1
+                });
+            }
+
+            _ = RaknaUtTullAsync();
+            UppdateraOversikt();
         }
 
         [RelayCommand]
@@ -124,11 +146,16 @@ namespace WpfApp1.ViewModels
                     KundID = ValdKund.KundID,
                     StartadAvID = InloggadAnvändare.AnvändarID,
                     //Produkter = TillagdaProdukter.ToList(),
+                    //OrderRader = TillagdaProdukter.Select(p => new OrderRad
+                    //{
+                    //    ProduktID = p.ProduktID,
+                    //    Produkt = p,
+                    //    Antal = 1
+                    //}).ToList(),
                     OrderRader = TillagdaProdukter.Select(p => new OrderRad
                     {
                         ProduktID = p.ProduktID,
-                        Produkt = p,
-                        Antal = 1
+                        Antal = p.Antal
                     }).ToList(),
                     Rabatt = this.Rabatt,
                     IsPrio = this.IsPrioVald

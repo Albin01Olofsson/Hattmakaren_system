@@ -16,6 +16,7 @@ namespace DAL
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
         public DbSet<OrderRad> OrderRader { get; set; }
+        public DbSet<Artikel> Artiklar { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -109,16 +110,30 @@ namespace DAL
                     .HasForeignKey(p => p.OrderRadID)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<Produkt>()
+                .HasOne(p => p.Artikel)
+                .WithMany(a => a.Produkter)
+                .HasForeignKey(p => p.ArtikelID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderRader)
                 .WithOne(or => or.Order)
                 .HasForeignKey(or => or.OrderID)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Produkt>()
-                   .HasMany(p => p.OrderRader)
-                   .WithOne(or => or.Produkt)
-                   .HasForeignKey(or => or.ProduktID)
-                   .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<OrderRad>()
+                .HasOne(or => or.Artikel)
+                .WithMany()
+                .HasForeignKey(or => or.ArtikelID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderRad>()
+                .HasOne(or => or.Produkt)
+                .WithMany()
+                .HasForeignKey(or => or.ProduktID)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<OrderRad>(entity =>
             {
                 entity.HasKey(or => or.OrderRadID);
@@ -126,10 +141,17 @@ namespace DAL
                 entity.Property(or => or.Antal)
                       .IsRequired();
             });
+            //modelBuilder.Entity<Produkt>()
+            //       .HasMany(p => p.OrderRader)
+            //       .WithOne(or => or.Produkt)
+            //       .HasForeignKey(or => or.ProduktID)
+            //       .OnDelete(DeleteBehavior.Restrict);
+
+            
 
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
-            modelBuilder.Entity<Produkt>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Artikel>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");

@@ -14,9 +14,10 @@ namespace Models
 
         public int OrderID { get; set; }
         public Order Order { get; set; }
-
-        public int ProduktID { get; set; }
-        public Produkt Produkt { get; set; }
+        public int ArtikelID { get; set; }
+        public Artikel Artikel { get; set; }
+        public int? ProduktID { get; set; }
+        public Produkt? Produkt { get; set; }
 
         public ICollection<Planering> Planeringar { get; set; } = new List<Planering>();
 

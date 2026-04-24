@@ -5,7 +5,6 @@ using DAL.Intefaces;
 using DAL.Repositorys;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
-using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views1;
 
@@ -18,14 +17,6 @@ namespace WpfApp1
     {
 
         public IServiceProvider ServiceProvider { get; private set; }
-
-        public App()
-        {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JHaF1cXmhMYVJpR2NbeU54flVHal1YVAciSV9jS3hTckdnWXdecXVcT2ddU091XA==");
-
-            // Din krasch-fångare som vi lade in tidigare
-            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
-        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -51,7 +42,6 @@ namespace WpfApp1
             services.AddScoped<IOrderService, OrderService>();      // SAKNADES
             services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
             services.AddScoped<IAktivitetService, AktivitetService>();
-            services.AddSingleton<ITullService, TullService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();
@@ -80,15 +70,6 @@ namespace WpfApp1
             };
 
             mainWindow.MainFrame.Navigate(loginPage);
-        }
-
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            MessageBox.Show($"SYSTEMKRASCH FÖRHINDRAD!\n\nFel: {e.Exception.Message}",
-                            "Globalt Fel",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-            e.Handled = true;
         }
     }
 }

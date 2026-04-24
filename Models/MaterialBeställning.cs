@@ -8,8 +8,6 @@ namespace Models
         [Key]
         public int MaterialBeställningID { get; set; }
 
-        public DateTime? Datum { get; set; }
-
         public List<Material> MaterialLista { get; set; } = null!;
 
         public List<BestallningsRad> Rader { get; set; } = new();

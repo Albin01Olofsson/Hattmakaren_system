@@ -49,16 +49,13 @@ namespace WpfApp1.ViewModels
         private string materialNamn;
 
         [ObservableProperty]
+        private string materialTyp;
+
+        [ObservableProperty]
         private string materialPris;
 
         [ObservableProperty]
         private string materialSaldo;
-
-        // 🔥 ENUM istället för string
-        public Array MåttTyper => Enum.GetValues(typeof(MåttTyp));
-
-        [ObservableProperty]
-        private MåttTyp selectedMåttTyp;
 
         [ObservableProperty]
         private string produktNamn;
@@ -90,7 +87,11 @@ namespace WpfApp1.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Fel i LagerViewModel");
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Fel i LagerViewModel",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
@@ -104,10 +105,6 @@ namespace WpfApp1.ViewModels
             ProduktLista = new ObservableCollection<Produkt>(produkter);
         }
 
-        // =========================
-        // 🔹 MATERIAL
-        // =========================
-
         [RelayCommand]
         private void OppnaNyttMaterial()
         {
@@ -118,93 +115,12 @@ namespace WpfApp1.ViewModels
             IsProduktEditorVisible = false;
 
             MaterialNamn = "";
+            MaterialTyp = "";
             MaterialPris = "";
             MaterialSaldo = "";
-            SelectedMåttTyp = default;
 
             IsEditorVisible = true;
         }
-
-        [RelayCommand]
-        private void OppnaRedigeraMaterial()
-        {
-            if (SelectedMaterial == null)
-            {
-                MessageBox.Show("Välj ett material först.");
-                return;
-            }
-
-            IsEditMode = true;
-            EditorTitel = "Redigera material";
-
-            IsMaterialEditorVisible = true;
-            IsProduktEditorVisible = false;
-
-            MaterialNamn = SelectedMaterial.Namn;
-            MaterialPris = SelectedMaterial.Pris.ToString();
-            MaterialSaldo = SelectedMaterial.Lagerantal.ToString();
-            SelectedMåttTyp = SelectedMaterial.MåttTyp;
-
-            IsEditorVisible = true;
-        }
-
-        [RelayCommand]
-        private async Task SparaMaterial()
-        {
-            if (string.IsNullOrWhiteSpace(MaterialNamn) ||
-                string.IsNullOrWhiteSpace(MaterialPris) ||
-                string.IsNullOrWhiteSpace(MaterialSaldo))
-            {
-                MessageBox.Show("Fyll i alla fält.");
-                return;
-            }
-
-            if (!decimal.TryParse(MaterialPris, out decimal pris))
-            {
-                MessageBox.Show("Pris måste vara ett nummer.");
-                return;
-            }
-
-            if (!int.TryParse(MaterialSaldo, out int saldo))
-            {
-                MessageBox.Show("Saldo måste vara ett heltal.");
-                return;
-            }
-
-            if (IsEditMode)
-            {
-                var dbMaterial = await _materialRepo.GetById(SelectedMaterial.MaterialID);
-
-                dbMaterial.Namn = MaterialNamn;
-                dbMaterial.MåttTyp = SelectedMåttTyp;
-                dbMaterial.Pris = pris;
-                dbMaterial.Lagerantal = saldo;
-
-                await _materialRepo.Update(dbMaterial);
-                await _materialRepo.Save();
-            }
-            else
-            {
-                var nyttMaterial = new Material
-                {
-                    Namn = MaterialNamn,
-                    MåttTyp = SelectedMåttTyp,
-                    Pris = pris,
-                    Lagerantal = saldo,
-                    Beskrivning = ""
-                };
-
-                await _materialRepo.Add(nyttMaterial);
-                await _materialRepo.Save();
-            }
-
-            IsEditorVisible = false;
-            await LoadData();
-        }
-
-        // =========================
-        // 🔹 PRODUKT
-        // =========================
 
         [RelayCommand]
         private void OppnaNyProdukt()
@@ -224,11 +140,42 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
+        private void OppnaRedigeraMaterial()
+        {
+            if (SelectedMaterial == null)
+            {
+                MessageBox.Show(
+                    "Välj ett material i listan först.",
+                    "Ingen rad markerad",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            IsEditMode = true;
+            EditorTitel = "Redigera material";
+
+            IsMaterialEditorVisible = true;
+            IsProduktEditorVisible = false;
+
+            MaterialNamn = SelectedMaterial.Namn;
+            MaterialTyp = SelectedMaterial.Typ;
+            MaterialPris = SelectedMaterial.Pris.ToString();
+            MaterialSaldo = SelectedMaterial.Lagerantal.ToString();
+
+            IsEditorVisible = true;
+        }
+
+        [RelayCommand]
         private void OppnaRedigeraProdukt()
         {
             if (SelectedProdukt == null)
             {
-                MessageBox.Show("Välj en produkt först.");
+                MessageBox.Show(
+                    "Välj en hatt i listan först.",
+                    "Ingen rad markerad",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -247,6 +194,103 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
+        private void StangEditor()
+        {
+            IsEditorVisible = false;
+            IsMaterialEditorVisible = false;
+            IsProduktEditorVisible = false;
+        }
+
+        [RelayCommand]
+        private async Task SparaMaterial()
+        {
+            if (string.IsNullOrWhiteSpace(MaterialNamn) ||
+                string.IsNullOrWhiteSpace(MaterialTyp) ||
+                string.IsNullOrWhiteSpace(MaterialPris) ||
+                string.IsNullOrWhiteSpace(MaterialSaldo))
+            {
+                MessageBox.Show(
+                    "Fyll i alla fält.",
+                    "Ofullständig information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(MaterialPris, out decimal pris))
+            {
+                MessageBox.Show(
+                    "Pris måste vara ett nummer.",
+                    "Felaktigt pris",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(MaterialSaldo, out int saldo))
+            {
+                MessageBox.Show(
+                    "Saldo måste vara ett heltal.",
+                    "Felaktigt saldo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (IsEditMode)
+            {
+                if (SelectedMaterial == null)
+                {
+                    MessageBox.Show(
+                        "Inget material valt.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                var dbMaterial = await _materialRepo.GetById(SelectedMaterial.MaterialID);
+
+                if (dbMaterial == null)
+                {
+                    MessageBox.Show(
+                        "Materialet hittades inte.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+
+
+                dbMaterial.Namn = MaterialNamn;
+                dbMaterial.Typ = MaterialTyp;
+                dbMaterial.Pris = pris;
+                dbMaterial.Lagerantal = saldo;
+
+                await _materialRepo.Update(dbMaterial);
+                await _materialRepo.Save();
+            }
+            else
+            {
+                var nyttMaterial = new Material
+                {
+                    Namn = MaterialNamn,
+                    Typ = MaterialTyp,
+                    Pris = pris,
+                    Lagerantal = saldo,
+                    Beskrivning = ""
+                };
+
+                await _materialRepo.Add(nyttMaterial);
+                await _materialRepo.Save();
+            }
+
+            IsEditorVisible = false;
+            IsMaterialEditorVisible = false;
+            await LoadData();
+        }
+        [RelayCommand]
         private async Task SparaProdukt()
         {
             if (string.IsNullOrWhiteSpace(ProduktNamn) ||
@@ -254,25 +298,57 @@ namespace WpfApp1.ViewModels
                 string.IsNullOrWhiteSpace(ProduktPris) ||
                 string.IsNullOrWhiteSpace(ProduktSaldo))
             {
-                MessageBox.Show("Fyll i alla fält.");
+                MessageBox.Show(
+                    "Fyll i alla hattfält.",
+                    "Ofullständig information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
             if (!decimal.TryParse(ProduktPris, out decimal pris))
             {
-                MessageBox.Show("Pris måste vara ett nummer.");
+                MessageBox.Show(
+                    "Pris måste vara ett nummer.",
+                    "Felaktigt pris",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
             if (!int.TryParse(ProduktSaldo, out int saldo))
             {
-                MessageBox.Show("Saldo måste vara ett heltal.");
+                MessageBox.Show(
+                    "Saldo måste vara ett heltal.",
+                    "Felaktigt saldo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
             if (IsEditMode)
             {
+                if (SelectedProdukt == null)
+                {
+                    MessageBox.Show(
+                        "Ingen hatt vald.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
                 var dbProdukt = await _produktRepo.GetById(SelectedProdukt.ProduktID);
+
+                if (dbProdukt == null)
+                {
+                    MessageBox.Show(
+                        "Hatten hittades inte.",
+                        "Fel",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
 
                 dbProdukt.Namn = ProduktNamn;
                 dbProdukt.Storlek = ProduktStorlek;
@@ -291,6 +367,10 @@ namespace WpfApp1.ViewModels
                     Pris = pris,
                     Lagerantal = saldo,
                     Färdig = true,
+                    HattTyp = "",
+                    Modell = "",
+                    Färg = "",
+                    Decoration = "",
                     TillverkadAVID = Session.CurrentUser?.AnvändarID ?? 0
                 };
 
@@ -299,13 +379,14 @@ namespace WpfApp1.ViewModels
             }
 
             IsEditorVisible = false;
-            await LoadData();
-        }
+            IsProduktEditorVisible = false;
 
-        [RelayCommand]
-        private void StangEditor()
-        {
-            IsEditorVisible = false;
+            ProduktNamn = "";
+            ProduktStorlek = "";
+            ProduktPris = "";
+            ProduktSaldo = "";
+
+            await LoadData();
         }
     }
 }

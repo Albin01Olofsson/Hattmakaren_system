@@ -5,7 +5,7 @@
 
     <Grid>
 
-        <!-- TOP BAR -->
+        <!-- 🔝 TOP BAR -->
         <Grid Margin="40,20,40,0">
             <Button Content="⬅ Tillbaka"
                     HorizontalAlignment="Right"
@@ -18,136 +18,103 @@
                     Command="{Binding GoBackCommand}"/>
         </Grid>
 
-        <!-- CONTENT -->
+        <!-- 🔽 CONTENT -->
         <ScrollViewer Margin="0,60,0,0">
             <StackPanel Margin="40">
 
-                <!-- TITLE -->
+                <!-- Titel -->
                 <TextBlock Text="📦 Alla beställningar"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="White"
                            Margin="0,0,0,25"/>
 
-                <!-- LIST -->
+                <!-- Lista -->
                 <ItemsControl ItemsSource="{Binding Bestallningar}">
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
 
+                            <!-- CARD -->
                             <Border Background="#FF2C3E50"
                                     CornerRadius="12"
-                                    Padding="20"
-                                    Margin="0,0,0,20">
+                                    Padding="15"
+                                    Margin="0,0,0,15">
 
                                 <StackPanel>
 
-                                    <!-- LEVERANTÖR -->
-                                    <TextBlock Text="{Binding Leverantör}"
-                                               Foreground="#FFC5A059"
-                                               FontSize="18"
-                                               FontWeight="Bold"/>
-
-                                    <!-- DATUM -->
-                                    <TextBlock Text="{Binding Datum, StringFormat='Datum: {0:yyyy-MM-dd HH:mm}'}"
-                                               Foreground="LightGray"
-                                               FontSize="12"
-                                               Margin="0,0,0,10"/>
-
-                                    <!-- ID -->
-                                    <TextBlock Text="Beställning ID:"
-                                               Foreground="Gray"/>
-                                    <TextBlock Text="{Binding MaterialBeställningID}"
-                                               Foreground="White"
-                                               Margin="0,0,0,15"/>
-
-                                    <!-- HEADER -->
-                                    <Grid Margin="0,0,0,5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock Grid.Column="0"
-                                                   Text="Material"
-                                                   Foreground="Gray"
-                                                   FontWeight="Bold"/>
-
-                                        <TextBlock Grid.Column="1"
-                                                   Text="Antal"
-                                                   Foreground="Gray"
-                                                   FontWeight="Bold"/>
-
-                                        <TextBlock Grid.Column="2"
-                                                   Text="Pris"
-                                                   Foreground="Gray"
+                                    <!-- Header -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="Beställning"
                                                    FontWeight="Bold"
-                                                   HorizontalAlignment="Right"/>
-                                    </Grid>
+                                                   Foreground="White"
+                                                   FontSize="16"/>
 
-                                    <!-- RADER -->
+                                        <TextBlock Text="  |  "
+                                                   Foreground="Gray"/>
+
+                                        <TextBlock Text="{Binding MaterialBeställningID}"
+                                                   Foreground="#FFC5A059"
+                                                   FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <!-- Kolumnrubriker -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                        <TextBlock Text="Material"
+                                                   Width="140"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="Antal"
+                                                   Width="60"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                        <TextBlock Text="Pris"
+                                                   Width="80"
+                                                   Foreground="Gray"
+                                                   FontWeight="Bold"/>
+                                    </StackPanel>
+
+                                    <!-- Rader -->
                                     <ItemsControl ItemsSource="{Binding Rader}">
-
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,2">
 
-                                                <Grid Margin="0,3">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <!-- Material -->
-                                                    <TextBlock Grid.Column="0"
-                                                               Text="{Binding Material.Namn}"
+                                                    <TextBlock Text="{Binding Material.Namn}"
+                                                               Width="140"
                                                                Foreground="White"/>
 
-                                                    <!-- Antal + Mått -->
-                                                    <StackPanel Grid.Column="1"
-                                                                Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding Antal}"
-                                                                   Foreground="White"/>
-                                                        <TextBlock Text=" "
-                                                                   Foreground="White"/>
-                                                        <TextBlock Text="{Binding Material.MåttText, Mode=OneWay}"
-                                                                   Foreground="White"/>
-                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding Antal}"
+                                                               Width="60"
+                                                               Foreground="White"/>
 
-                                                    <!-- Pris -->
-                                                    <TextBlock Grid.Column="2"
-                                                               Text="{Binding RadPris, StringFormat='{}{0} kr'}"
-                                                               Foreground="#FFC5A059"
-                                                               HorizontalAlignment="Right"/>
+                                                    <TextBlock Text="{Binding RadPris}"
+                                                               Width="80"
+                                                               Foreground="#FFC5A059"/>
 
-                                                </Grid>
-
+                                                </StackPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
-
                                     </ItemsControl>
 
                                     <!-- Divider -->
                                     <Border Height="1"
                                             Background="#FF1A1A1D"
-                                            Margin="0,12,0,12"/>
+                                            Margin="0,10,0,10"/>
 
-                                    <!-- TOTAL -->
-                                    <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Right">
+                                    <!-- Total -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <TextBlock Text="Total: "
-                                                   Foreground="Gray"
-                                                   FontSize="14"/>
+                                                   Foreground="White"
+                                                   FontWeight="Bold"/>
 
-                                        <TextBlock Text="{Binding TotalPris, StringFormat='{}{0} kr'}"
+                                        <TextBlock Text="{Binding TotalPris}"
                                                    Foreground="LightGreen"
                                                    FontWeight="Bold"
-                                                   FontSize="16"/>
+                                                   FontSize="14"/>
                                     </StackPanel>
 
                                 </StackPanel>
-
                             </Border>
 
                         </DataTemplate>

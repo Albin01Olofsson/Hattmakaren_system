@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         Title="SkapaAktivitet" Height="550" Width="778">
-    <ScrollViewer>
-        <Grid>
+    <Grid>
         <Border Background="#FF2C3E50"
        Padding="20"
        CornerRadius="15"
@@ -68,5 +67,4 @@
             </StackPanel>
         </Border>
     </Grid>
-    </ScrollViewer>
 </Window>

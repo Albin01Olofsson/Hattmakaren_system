@@ -74,19 +74,21 @@ namespace BL.Services
         //    await _planeringsRepo.Save();
         //    return nyBokning;
         //}
-        public async Task<Planering> PlaneraArbete(int användarId, int orderRadId, DateTime startTid)
+        public async Task<Planering> PlaneraArbete(int användarId, int orderRadId, DateTime startTid, DateTime slutTid)
         {
-            var slutTid = startTid.AddHours(2);
+            if (slutTid <= startTid)
+                throw new Exception("Sluttid måste vara efter starttid");
 
-            var allaPlaneringar = await _planeringsRepo.GetAll();
-
-            var finnsKrock = allaPlaneringar.Any(p =>
-                p.OrderRadID == orderRadId &&
-                p.StartTid < slutTid &&
-                p.SlutTid > startTid);
-
+            var finnsKrock = await _planeringsRepo
+                        .HämtaAllaPlaneringarMedDetaljer()
+                        .AnyAsync(p =>
+                            p.OrderRadID == orderRadId &&
+                            p.StartTid < slutTid &&
+                            startTid < p.SlutTid
+                        );
             if (finnsKrock)
-                throw new Exception("Orderraden är redan bokad denna tid!");
+                throw new Exception("Produkten är redan bokad denna tid!");
+
 
             var nyBokning = new Planering
             {
@@ -114,9 +116,9 @@ namespace BL.Services
         public async Task<List<Planering>> HämtaAllaPlaneringar(DateTime veckaStart, DateTime veckaSlut)
         {
             var query = _planeringsRepo.HämtaAllaPlaneringarMedDetaljer()
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut);
+                .Where(p => p.StartTid < veckaSlut && p.SlutTid > veckaStart);
 
-            return await query.ToListAsync();
+            return await query.ToListAsync();/*p => p.StartTid >= veckaStart && p.StartTid < veckaSlut*/
         }
 
         // 5. Hämta planeringar för en specifik användare

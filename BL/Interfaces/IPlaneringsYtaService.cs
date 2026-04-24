@@ -5,7 +5,7 @@ namespace BL.Interfaces
     public interface IPlaneringsYtaService
     {
         Task<List<Produkt>> HämtaHattarFrånOrder(int orderId);
-        Task<Planering> PlaneraArbete(int användarId, int produktId, DateTime startTid);
+        Task<Planering> PlaneraArbete(int användarId, int produktId, DateTime startTid, DateTime slutTid);
         Task<Planering> HämtaPlaneringMedDetaljer(int planeringsID);
         Task<List<Planering>> HämtaAllaPlaneringar(DateTime veckaStart, DateTime veckaSlut);
         Task<List<Planering>> HämtaMinPlanering(int id);

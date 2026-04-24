@@ -121,7 +121,7 @@ namespace WpfApp1.Views1
                 foreach (var pRad in order.OrderRader)
                 {
                     var produkt = await _produktService.GetProduktId(pRad.ProduktID);
-                    string prodString = $"{produkt.Namn} - {(pRad.Antal * produkt.Pris)} - {pRad.Antal} st";
+                    string prodString = $" - {produkt.Namn} - {(pRad.Antal * produkt.Pris)} - {pRad.Antal} st";
                     dokument.Add(new iText.Layout.Element.Paragraph(prodString));
                 }
 

@@ -15,9 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using WpfApp1.Views1;
-using System.Windows;
 
 namespace WpfApp1.ViewModels
 {
@@ -67,6 +68,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string antal;
 
+        [ObservableProperty]
+        private string leverantörNamn;
+
         // 🔹 Nytt material
         [ObservableProperty]
         private string namn;
@@ -74,8 +78,10 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string pris;
 
+        public Array MåttTyper => Enum.GetValues(typeof(MåttTyp));
+
         [ObservableProperty]
-        private string typ;
+        private MåttTyp selectedMåttTyp;
 
         [ObservableProperty]
         private string statusMessage;
@@ -103,6 +109,12 @@ namespace WpfApp1.ViewModels
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(LeverantörNamn))
+            {
+                StatusMessage = "Ange leverantör!";
+                return;
+            }
+
             foreach (var rad in BestallningsRader)
             {
                 rad.MaterialId = rad.Material.MaterialID;
@@ -110,9 +122,12 @@ namespace WpfApp1.ViewModels
 
             var bestallning = new MaterialBeställning
             {
+                Datum = DateTime.Now,
                 StartadAvID = Session.CurrentUser.AnvändarID,
                 Rader = BestallningsRader.ToList(),
+                Leverantör = LeverantörNamn,
                 TotalPris = BestallningsRader.Sum(r => r.RadPris)
+                
             };
 
             // 🔥 Sätt innan await
@@ -187,8 +202,8 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private async Task AddMaterial()
         {
-            if (string.IsNullOrWhiteSpace(Namn) || string.IsNullOrWhiteSpace(Typ))
-                throw new Exception("Fyll i alla fält!");
+            if (string.IsNullOrWhiteSpace(Namn))
+                throw new Exception("Fyll i namn!");
 
             if (!decimal.TryParse(Pris, out decimal pris))
                 throw new Exception("Pris måste vara ett nummer!");
@@ -197,20 +212,19 @@ namespace WpfApp1.ViewModels
             {
                 Namn = Namn,
                 Pris = pris,
-                Typ = Typ,
+                MåttTyp = SelectedMåttTyp,
                 Beskrivning = ""
             };
 
             await _materialRepo.Add(material);
             await _materialRepo.Save();
 
-            // 🔄 Uppdatera listan direkt
             MaterialLista.Add(material);
 
             // 🔄 Rensa UI
             Namn = "";
             Pris = "";
-            Typ = "";
+            SelectedMåttTyp = default;
         }
         private void SparaTillPdf(MaterialBeställning bestallning, string ansvarigNamn)
         {
@@ -230,12 +244,13 @@ namespace WpfApp1.ViewModels
                     document.Add(new Paragraph("----------------------"));
                     document.Add(new Paragraph($"Datum: {DateTime.Now}"));
                     document.Add(new Paragraph($"Ansvarig: {ansvarigNamn}"));
+                    document.Add(new Paragraph($"Leverantör: {bestallning.Leverantör}"));
                     document.Add(new Paragraph(" "));
 
                     foreach (var rad in bestallning.Rader)
                     {
                         document.Add(new Paragraph($"Material: {rad.Material.Namn}"));
-                        document.Add(new Paragraph($"Antal: {rad.Antal}"));
+                        document.Add(new Paragraph($"Antal: {rad.Antal} {rad.Material.MåttText}"));
                         document.Add(new Paragraph($"Pris: {rad.RadPris}"));
                         document.Add(new Paragraph(" "));
                     }

@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.ViewModels;
+using System.IO;
 
 namespace WpfApp1.Views1
 {
@@ -34,6 +35,10 @@ namespace WpfApp1.Views1
             OpenFileDialog fileDialog = new OpenFileDialog();
 
             fileDialog.Filter = "Tillåtna filnamn.Extensions (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+
+            //Öppna FörfråganBilder mapp när man ska ladda upp en bild
+            string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+            fileDialog.InitialDirectory = System.IO.Path.Combine(baseDirectory, "DAL", "FörfråganBilder"); 
 
             if (fileDialog.ShowDialog() == true)
             {

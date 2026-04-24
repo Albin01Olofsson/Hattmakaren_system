@@ -90,6 +90,11 @@ namespace WpfApp1.ViewModels
             UppdateraOversikt();
         }
 
+        partial void OnValdKundChanged(Kund value)
+        {
+            UppdateraOversikt();
+        }
+
         [RelayCommand]
         private async Task LaggOrder()
         {
@@ -146,6 +151,10 @@ namespace WpfApp1.ViewModels
             {
                 slutpris *= 1.20m;
             }
+            if (ValdKund != null && ValdKund.FöretagsKund)
+            {
+                slutpris *= 1.25m;
+            }
 
 
             OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen vald")}\n" +
@@ -153,6 +162,7 @@ namespace WpfApp1.ViewModels
                                 $"Summa: {totalt:C}\n" +
                                 $"Avdragen rabatt: {Rabatt:C}\n" +
                                 $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
+                                //$"Moms(25%) : {}\n" + 
                                 $"Slutpris: {slutpris:C}";
         }
 

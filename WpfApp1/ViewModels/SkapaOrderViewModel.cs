@@ -125,53 +125,81 @@ namespace WpfApp1.ViewModels
                     StartadAvID = InloggadAnvändare.AnvändarID,
                     
                     Rabatt = this.Rabatt,
-                    IsPrio = this.IsPrioVald
+                    IsPrio = this.IsPrioVald,
+                    OrderRader = new List<OrderRad>() //ny
                 };
-                List<Produkt> produkterr = new();
+                List<Produkt> sparadeProdukter = new();
+
                 foreach(var p in TillagdaProdukter)
                 {
-                    bool result = false;
-                    Produkt prod;
+                    //bool result = false;
+                    //Produkt prod;
                     if( p is LagerfördProdukt pr)
                     {
-                        prod = new LagerfördProdukt
+                        var nyProdukt = new LagerfördProdukt
                         {
                             Namn = p.Namn,
                             Pris = p.Pris,
                             Färdig = p.Färdig,
                             Storlek = p.Storlek,
-                            MaterialLista = p.MaterialLista,
                             HattTyp = p.HattTyp,
                             Modell = p.Modell,
                             Färg = p.Färg,
                             ArtikelID = pr.ArtikelID,
                             Kategori = pr.Kategori,
                             Decoration = p.Decoration,
-                            TillverkadAv = p.TillverkadAv,
-                            Lagerantal = p.Lagerantal
+                            TillverkadAVID = p.TillverkadAVID,
+                            Lagerantal = p.Lagerantal,
+                            MaterialLista = new List<Material>() //ny bty från MaterialLista = p.MaterialLista,
                         };
-                        produkterr.Add(prod);
-                        List<int> matLista = new();
-                        foreach (var mid in prod.MaterialLista)
-                        {
-                            matLista.Add(mid.MaterialID);
-                        }
-                        result = await _produktService.LäggtillProdukt(prod, matLista);
-                        matLista.Clear();
-                    }
-                    if (result)
-                    {
-                        nyOrder.OrderRader = produkterr.Select(pro => new OrderRad
-                        {
-                            ProduktID = pro.ProduktID,
-                            Produkt = pro,
-                            Antal = 1
-                        }).ToList();
-                    }
-                }
-                
+                        //produkterr.Add(prod);
+                        //foreach (var mid in prod.MaterialLista)
+                        //{
+                        //    matLista.Add(mid.MaterialID);
+                        //}
+                        var matListaIds = p.MaterialLista?
+                            .Select(m => m.MaterialID)
+                            .ToList() ?? new List<int>();
 
-                await _orderService.skapaOrder(nyOrder, TillagdaProdukter.Select(p => p.ProduktID).ToList());
+                        var result = await _produktService.LäggtillProdukt(nyProdukt, matListaIds);
+                        if (!result || nyProdukt.ProduktID == 0)
+                            throw new Exception("Kunde inte spara lagerförd produkt.");
+
+                        sparadeProdukter.Add(nyProdukt);
+                    }
+                    else if(p is SpecialBeställning)
+                    {
+                        if (p.ProduktID == 0)
+                            throw new Exception("Specialbeställning saknar ID.");
+
+                        sparadeProdukter.Add(p);
+                    }
+                    else
+                    {
+                        throw new Exception("Okänd produkttyp.");
+                    }
+                    //if (result)
+                    //{
+                    //    nyOrder.OrderRader = produkterr.Select(pro => new OrderRad
+                    //    {
+                    //        ProduktID = pro.ProduktID,
+                    //        Produkt = pro,
+                    //        Antal = 1
+                    //    }).ToList();
+                    //}
+                }
+                nyOrder.OrderRader = sparadeProdukter
+                    .GroupBy(p => p.ProduktID)
+                    .Select(g => new OrderRad
+                    {
+                        ProduktID = g.Key,
+                        Antal = g.Count()
+                    })
+                    .ToList();
+
+
+                await _orderService.skapaOrder(nyOrder);
+                //await _orderService.skapaOrder(nyOrder, sparadeProdukter.Select(p => p.ProduktID).ToList());
 
 
                 // Nollställ formuläret
@@ -184,7 +212,8 @@ namespace WpfApp1.ViewModels
             }
             catch (Exception ex)
             {
-                OrderOversiktText = "Ett fel uppstod: " + ex.Message;
+                var msg = ex.InnerException?.Message ?? ex.Message;
+                OrderOversiktText = "Ett fel uppstod: " + msg;
             }
         }
 

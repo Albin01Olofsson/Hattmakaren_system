@@ -21,6 +21,7 @@ namespace BL.Interfaces
         Task DeleteOrder(int id);
 
         Task SaveOrder();
+        Task skapaOrder(Order nyOrder);//kan tas bort om inte funkar
 
         //Task skapaOrder(Order nyOrder);
         Task skapaOrder(Order nyOrder, List<int> produktIds);

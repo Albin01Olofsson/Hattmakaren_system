@@ -215,6 +215,75 @@ namespace BL.Services
                 throw new Exception(felorsak, ex);
             }
         }
+        public async Task skapaOrder(Order nyOrder)//kan tas bort, om inte funkar
+        {
+            if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 ||
+                nyOrder.OrderRader == null || !nyOrder.OrderRader.Any())
+            {
+                throw new ArgumentException("Ordern saknar data.");
+            }
+
+            decimal totalPris = 0;
+
+            foreach (var rad in nyOrder.OrderRader)
+            {
+                var produkt = await _context.Produkter
+                    .FirstOrDefaultAsync(p => p.ProduktID == rad.ProduktID);
+
+                if (produkt == null)
+                    throw new Exception("Produkt saknas i databasen.");
+
+                totalPris += produkt.Pris * rad.Antal;
+            }
+
+            totalPris -= nyOrder.Rabatt;
+
+            if (totalPris < 0)
+                totalPris = 0;
+
+            if (nyOrder.IsPrio)
+                totalPris *= 1.20m;
+
+            var kund = await _context.Kunder.FirstOrDefaultAsync(k => k.KundID == nyOrder.KundID);
+            if (kund?.FöretagsKund == true)
+                totalPris *= 1.25m;
+
+            nyOrder.Pris = totalPris;
+            nyOrder.Datum = DateTime.Now;
+
+            await _orderRepo.Add(nyOrder);
+            await _context.SaveChangesAsync();
+
+            // varukod (kan återanvändas som du har)
+            // 7. Hämta tillbaks ordern så navigation properties är satta och kan användas till att sätta varukod
+            Order senasteOrder = await _context.Ordrar.OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
+
+            //Varukodform:
+            //1. Första bokstaven på land
+            //2. Första bokstaven på stad
+            //3. F om det är företagkund, P om det är privat person
+            //4. Kundens första bokstav
+            //5. 4 random genererde nummer
+
+            //1. 
+            string landBokstav = senasteOrder.Kund.Land.Substring(0, 1);
+            //2. 
+            string stadBokstav = senasteOrder.Kund.Stad.Substring(0, 1);
+            //3. 
+            string företagskundBokstav = "P";
+            if (senasteOrder.Kund.FöretagsKund)
+                företagskundBokstav = "F";
+            //4. 
+            string kundNamnBokstav = senasteOrder.Kund.Namn.Substring(0, 1);
+            //5.
+            Random random = new Random();
+            int random4siffror = random.Next(1000, 10000);
+
+            nyOrder.Varukod = $"{landBokstav}{stadBokstav}{företagskundBokstav}{kundNamnBokstav}{random4siffror}";
+
+            await _orderRepo.Update(senasteOrder);
+            await _context.SaveChangesAsync();
+        }
         public async Task MarkeraFärdig(int OrderID)
         {
             var order = await _orderRepo.GetById(OrderID);

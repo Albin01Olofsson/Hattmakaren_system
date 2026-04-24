@@ -245,9 +245,8 @@ namespace DAL
                         Namn = "Filt",
                         Pris = 54,
                         Beskrivning = "Inte filt man sover med",
-                        Typ = "Tyg",
-                        Lagerantal = 23,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 23
                     },
                     new Material
                     {
@@ -255,9 +254,8 @@ namespace DAL
                         Namn = "Bomull",
                         Pris = 34,
                         Beskrivning = "100% obesprutat bomull",
-                        Typ = "Tyg",
-                        Lagerantal = 52,
-                        Mått = "milimeter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 52
                     },
                     new Material
                     {
@@ -265,9 +263,8 @@ namespace DAL
                         Namn = "Svart tråd",
                         Pris = 28,
                         Beskrivning = "1.2 mm svar syträd av silikon och polyester",
-                        Typ = "Tråd",
-                        Lagerantal = 2,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 2
                     }
                 );
             //MATERIALBESTÄLLNINGAR

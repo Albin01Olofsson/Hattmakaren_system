@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20260424100112_FixMaterialModel")]
+    partial class FixMaterialModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +139,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MGXaTYjArDBnqETXHfuPoe5MWZ6wsi9F3.J9So01VHik/kdRzQYrK",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +149,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MGXaTYjArDBnqETXHfuPoe5MWZ6wsi9F3.J9So01VHik/kdRzQYrK",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +159,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MGXaTYjArDBnqETXHfuPoe5MWZ6wsi9F3.J9So01VHik/kdRzQYrK",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +169,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MGXaTYjArDBnqETXHfuPoe5MWZ6wsi9F3.J9So01VHik/kdRzQYrK",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -361,9 +364,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
-
-                    b.Property<DateTime?>("Datum")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Leverantör")
                         .IsRequired()

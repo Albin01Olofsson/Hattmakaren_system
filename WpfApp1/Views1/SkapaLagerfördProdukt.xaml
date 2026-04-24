@@ -70,6 +70,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -94,8 +95,16 @@
                             <TextBlock Text="Färg" Style="{StaticResource LabelStyle}"/>
                             <TextBox Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,15">
+                            <TextBlock Text="ArtikelID" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding ArtikelId, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,15">
+                            <TextBlock Text="Kategori" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding Kategori, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
                             <TextBlock Text="Dekoration" Style="{StaticResource LabelStyle}"/>
                             <TextBox Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>

@@ -28,6 +28,10 @@ namespace BL.Services
             await prodRepo.AddProd(p, materialIdn);
             await prodRepo.Save();
         }
+        public async Task<bool> LäggtillProdukt(Produkt p, List<int> materialIdn)
+        {
+            return await prodRepo.LäggtillProdukt(p, materialIdn);
+        }
 
         public async Task AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn)
         {

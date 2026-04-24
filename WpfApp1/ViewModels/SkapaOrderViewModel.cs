@@ -123,16 +123,53 @@ namespace WpfApp1.ViewModels
                 {
                     KundID = ValdKund.KundID,
                     StartadAvID = InloggadAnvändare.AnvändarID,
-                    //Produkter = TillagdaProdukter.ToList(),
-                    OrderRader = TillagdaProdukter.Select(p => new OrderRad
-                    {
-                        ProduktID = p.ProduktID,
-                        Produkt = p,
-                        Antal = 1
-                    }).ToList(),
+                    
                     Rabatt = this.Rabatt,
                     IsPrio = this.IsPrioVald
                 };
+                List<Produkt> produkterr = new();
+                foreach(var p in TillagdaProdukter)
+                {
+                    bool result = false;
+                    Produkt prod;
+                    if( p is LagerfördProdukt pr)
+                    {
+                        prod = new LagerfördProdukt
+                        {
+                            Namn = p.Namn,
+                            Pris = p.Pris,
+                            Färdig = p.Färdig,
+                            Storlek = p.Storlek,
+                            MaterialLista = p.MaterialLista,
+                            HattTyp = p.HattTyp,
+                            Modell = p.Modell,
+                            Färg = p.Färg,
+                            ArtikelID = pr.ArtikelID,
+                            Kategori = pr.Kategori,
+                            Decoration = p.Decoration,
+                            TillverkadAv = p.TillverkadAv,
+                            Lagerantal = p.Lagerantal
+                        };
+                        produkterr.Add(prod);
+                        List<int> matLista = new();
+                        foreach (var mid in prod.MaterialLista)
+                        {
+                            matLista.Add(mid.MaterialID);
+                        }
+                        result = await _produktService.LäggtillProdukt(prod, matLista);
+                        matLista.Clear();
+                    }
+                    if (result)
+                    {
+                        nyOrder.OrderRader = produkterr.Select(pro => new OrderRad
+                        {
+                            ProduktID = pro.ProduktID,
+                            Produkt = pro,
+                            Antal = 1
+                        }).ToList();
+                    }
+                }
+                
 
                 await _orderService.skapaOrder(nyOrder, TillagdaProdukter.Select(p => p.ProduktID).ToList());
 

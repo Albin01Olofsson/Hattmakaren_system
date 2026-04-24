@@ -38,6 +38,18 @@ namespace DAL.Repositorys
             await _context.Produkter.AddAsync(sb);
             await Save();
         }
+        public async Task<bool> LäggtillProdukt(Produkt sb, List<int> materialIdn)
+        {
+            foreach(int materialId in materialIdn)
+            {
+                var materialIdDb = await _context.Material.FirstOrDefaultAsync(m => m.MaterialID == materialId);
+                sb.MaterialLista.Add(materialIdDb);
+            }
+
+            await _context.Produkter.AddAsync(sb);
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+        }
 
 
         public async Task<List<Produkt>> GetAllaProdukter()

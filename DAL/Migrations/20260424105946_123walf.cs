@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class _123w : Migration
+    public partial class _123walf : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -150,6 +150,7 @@ namespace DAL.Migrations
                 {
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Varukod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Moms = table.Column<double>(type: "float", nullable: true),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -340,10 +341,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -380,30 +381,30 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Ordrar",
-                columns: new[] { "OrderID", "Datum", "Färdig", "FörväntadTillverkningsTid", "IsPrio", "IsSpecialbeställning", "KundID", "Moms", "Pris", "Rabatt", "StartadAvID", "Status" },
+                columns: new[] { "OrderID", "Datum", "Färdig", "FörväntadTillverkningsTid", "IsPrio", "IsSpecialbeställning", "KundID", "Moms", "Pris", "Rabatt", "StartadAvID", "Status", "Varukod" },
                 values: new object[,]
                 {
-                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 1299m, 0m, 1, "Ej påbörjat" },
-                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1099m, 0m, 1, "Ej påbörjat" },
-                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 299m, 0m, 1, "Ej påbörjat" },
-                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1004, null, 2399m, 0m, 1, "Ej påbörjat" },
-                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 779m, 0m, 1, "Ej påbörjat" },
-                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 949m, 0m, 2, "Ej påbörjat" },
-                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1049m, 0m, 2, "Ej påbörjat" },
-                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 749m, 0m, 2, "Ej påbörjat" },
-                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 999m, 0m, 2, "Ej påbörjat" },
-                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 2, "Ej påbörjat" },
-                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 1099m, 0m, 2, "Ej påbörjat" },
-                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 2019m, 0m, 3, "Ej påbörjat" },
-                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1829m, 0m, 3, "Ej påbörjat" },
-                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 599m, 0m, 3, "Ej påbörjat" },
-                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 3, "Ej påbörjat" },
-                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1005, null, 1299m, 0m, 3, "Ej påbörjat" },
-                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1002, null, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 499m, 0m, 4, "Ej påbörjat" },
-                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 499m, 0m, 4, "Ej påbörjat" }
+                    { 100000001, new DateTime(2024, 6, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 1299m, 0m, 1, "Ej påbörjat", "" },
+                    { 100000002, new DateTime(2024, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1099m, 0m, 1, "Ej påbörjat", "" },
+                    { 100000003, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 299m, 0m, 1, "Ej påbörjat", "" },
+                    { 100000004, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1004, null, 2399m, 0m, 1, "Ej påbörjat", "" },
+                    { 100000005, new DateTime(2024, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 779m, 0m, 1, "Ej påbörjat", "" },
+                    { 100000006, new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 949m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000007, new DateTime(2025, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1049m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000008, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 749m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000009, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 999m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000010, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000011, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 1099m, 0m, 2, "Ej påbörjat", "" },
+                    { 100000012, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1001, null, 2019m, 0m, 3, "Ej påbörjat", "" },
+                    { 100000013, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1002, null, 1829m, 0m, 3, "Ej påbörjat", "" },
+                    { 100000014, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 599m, 0m, 3, "Ej påbörjat", "" },
+                    { 100000015, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 899m, 0m, 3, "Ej påbörjat", "" },
+                    { 100000016, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, true, 1005, null, 1299m, 0m, 3, "Ej påbörjat", "" },
+                    { 100000017, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1001, null, 499m, 0m, 4, "Ej påbörjat", "" },
+                    { 100000018, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1002, null, 499m, 0m, 4, "Ej påbörjat", "" },
+                    { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 499m, 0m, 4, "Ej påbörjat", "" },
+                    { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 499m, 0m, 4, "Ej påbörjat", "" },
+                    { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 499m, 0m, 4, "Ej påbörjat", "" }
                 });
 
             migrationBuilder.InsertData(

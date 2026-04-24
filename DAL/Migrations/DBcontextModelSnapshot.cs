@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq",
+                            Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq",
+                            Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq",
+                            Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$maO7SidQpNfm.MbhwfpobO6hRxcmK1xM94D0F81SDu.NWAZ4j16Nq",
+                            Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -453,6 +453,10 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Varukod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderID");
 
                     b.HasIndex("KundID");
@@ -474,7 +478,8 @@ namespace DAL.Migrations
                             Pris = 1299m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -488,7 +493,8 @@ namespace DAL.Migrations
                             Pris = 1099m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -502,7 +508,8 @@ namespace DAL.Migrations
                             Pris = 299m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -516,7 +523,8 @@ namespace DAL.Migrations
                             Pris = 2399m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -530,7 +538,8 @@ namespace DAL.Migrations
                             Pris = 779m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -544,7 +553,8 @@ namespace DAL.Migrations
                             Pris = 949m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -558,7 +568,8 @@ namespace DAL.Migrations
                             Pris = 1049m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -572,7 +583,8 @@ namespace DAL.Migrations
                             Pris = 749m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -586,7 +598,8 @@ namespace DAL.Migrations
                             Pris = 999m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -600,7 +613,8 @@ namespace DAL.Migrations
                             Pris = 899m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -614,7 +628,8 @@ namespace DAL.Migrations
                             Pris = 1099m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -628,7 +643,8 @@ namespace DAL.Migrations
                             Pris = 2019m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -642,7 +658,8 @@ namespace DAL.Migrations
                             Pris = 1829m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -656,7 +673,8 @@ namespace DAL.Migrations
                             Pris = 599m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -670,7 +688,8 @@ namespace DAL.Migrations
                             Pris = 899m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -684,7 +703,8 @@ namespace DAL.Migrations
                             Pris = 1299m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -698,7 +718,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -712,7 +733,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -726,7 +748,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -740,7 +763,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -754,7 +778,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         });
                 });
 

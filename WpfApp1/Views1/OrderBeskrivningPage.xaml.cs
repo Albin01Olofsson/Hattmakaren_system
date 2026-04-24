@@ -119,7 +119,7 @@ namespace WpfApp1.Views1
                 Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
 
                 dokument.Add(new iText.Layout.Element.Paragraph($"Varukod: "));
-                dokument.Add(new iText.Layout.Element.Paragraph($"Pris:"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris}"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Mottagare: {order.Kund.Namn}"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Adress: {order.Kund.Land}, {order.Kund.Stad}, {order.Kund.Adress}"));
                 dokument.Add(new iText.Layout.Element.Paragraph($""));

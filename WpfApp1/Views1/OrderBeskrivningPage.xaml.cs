@@ -103,7 +103,7 @@ namespace WpfApp1.Views1
             }
         }
 
-        private void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
+        private async void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
         {
 
             try
@@ -118,11 +118,18 @@ namespace WpfApp1.Views1
 
                 Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
 
-                dokument.Add(new iText.Layout.Element.Paragraph($"Varukod: "));
-                dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Varukod: {order.Varukod}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} {(order.Kund.FöretagsKund ? "(25% Moms)" : "")}"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Mottagare: {order.Kund.Namn}"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Adress: {order.Kund.Land}, {order.Kund.Stad}, {order.Kund.Adress}"));
-                dokument.Add(new iText.Layout.Element.Paragraph($""));
+                
+                foreach(var pRad in order.OrderRader)
+                {
+                    var produkt = await _produktService.GetProduktId(pRad.ProduktID);
+                    string prodString = $"{produkt.Namn} - {(pRad.Antal * produkt.Pris)} - {pRad.Antal} st";
+                    dokument.Add(new iText.Layout.Element.Paragraph(prodString));
+                }
+
                 dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Otto & Judith AB"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Sweden, Örebro, Fabriksvägen 11B"));
                 dokument.Close();

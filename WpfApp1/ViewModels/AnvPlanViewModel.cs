@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Models;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using WpfApp1.Views1.ViewModels;
+using WpfApp1.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using WpfApp1.Views1;
 using Microsoft.Extensions.DependencyInjection;

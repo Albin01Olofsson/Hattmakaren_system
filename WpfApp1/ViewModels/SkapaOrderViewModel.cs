@@ -104,12 +104,6 @@ namespace WpfApp1.ViewModels
             UppdateraOversikt();
         }
 
-        partial void OnValdKundChanged(Kund value)
-        {
-            //Lägg till 25% moms om det är en företagskund, priset måste ju ändras om man grån från företags kund till privat person och vice versa
-            UppdateraOversikt();
-        }
-
         [RelayCommand]
         private async Task LaggOrder()
         {
@@ -185,13 +179,10 @@ namespace WpfApp1.ViewModels
             decimal totalt = TillagdaProdukter.Sum(p => p.Pris);
             // 2. Dra av rabatten och se till att det inte blir negativt
             decimal efterRabatt = Math.Max(0, totalt - Rabatt);
-<<<<<<< HEAD
-            decimal slutpris = efterRabatt;
-            bool momsTillägg = ValdKund != null && ValdKund.FöretagsKund;
-=======
-            decimal slutpris = efterRabatt + TullKostnad;
 
->>>>>>> master
+            decimal slutpris = efterRabatt + TullKostnad;
+            bool momsTillägg = ValdKund != null && ValdKund.FöretagsKund;
+
             if (IsPrioVald)
             {
                 slutpris *= 1.20m;
@@ -202,23 +193,14 @@ namespace WpfApp1.ViewModels
             }
 
 
-            OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen vald")}\n" +
-<<<<<<< HEAD
+            OrderOversiktText = $"Land: {(ValdKund != null ? ValdKund.Land : "-")}\n" + // Visa landet också!
                                 $"Antal produkter: {TillagdaProdukter.Count} st\n" +
                                 $"Summa: {totalt:C}\n" +
                                 $"Avdragen rabatt: {Rabatt:C}\n" +
+                                $"Tullavgift (via API): {TullKostnad:C}\n" + // Visa tullen här!
                                 $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
-                                $"Moms(25%) : {(momsTillägg ? "JA" : "Nej")}\n" + 
+                                $"Moms(25%) : {(momsTillägg ? "JA" : "Nej")}\n" +
                                 $"Slutpris: {slutpris:C}";
-=======
-                        $"Land: {(ValdKund != null ? ValdKund.Land : "-")}\n" + // Visa landet också!
-                        $"Antal produkter: {TillagdaProdukter.Count} st\n" +
-                        $"Summa: {totalt:C}\n" +
-                        $"Avdragen rabatt: {Rabatt:C}\n" +
-                        $"Tullavgift (via API): {TullKostnad:C}\n" + // Visa tullen här!
-                        $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
-                        $"Slutpris: {slutpris:C}";
->>>>>>> master
         }
 
 

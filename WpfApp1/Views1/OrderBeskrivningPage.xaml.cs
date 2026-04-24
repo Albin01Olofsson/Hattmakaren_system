@@ -65,10 +65,7 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} kr"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Rabatt: {order.Rabatt} %"));
             dokument.Add(new iText.Layout.Element.Paragraph($"Datum: {order.Datum}"));
-            //foreach (Produkt p in order.Produkter)
-            //{
-            //    dokument.Add(new iText.Layout.Element.Paragraph($" - {p.Namn} - {p.Pris}"));
-            //}
+
             foreach (var rad in order.OrderRader)
             {
                 dokument.Add(
@@ -96,6 +93,30 @@ namespace WpfApp1.Views1
 
                 await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
             }
+        }
+
+        private void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
+        {
+            string fileName = $"Order_{order.OrderID}.pdf";
+
+            string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+            string pdfMapp = System.IO.Path.Combine(baseDirectory, "DAL", "Fraktsedlar");
+            string orderPdfFullPath = System.IO.Path.Combine(pdfMapp, fileName);
+
+            Directory.CreateDirectory(pdfMapp);
+
+            Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
+
+            dokument.Add(new iText.Layout.Element.Paragraph($"Varukod: "));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Pris:"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Mottagare: {order.Kund.Namn}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Adress: {order.Kund.Land}, {order.Kund.Stad}, {order.Kund.Adress}"));
+            dokument.Add(new iText.Layout.Element.Paragraph($""));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Otto & Judith AB"));
+            dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Sweden, Örebro, Fabriksvägen 11B"));
+
+
+
         }
     }
 }

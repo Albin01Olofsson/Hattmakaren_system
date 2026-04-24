@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
+                            Lösenord = "$2a$11$GyBBBTUIxrfzOMREvHL7jOIkSfq9FmjuLW2E/D5VP0620ULLzBLfC",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
+                            Lösenord = "$2a$11$GyBBBTUIxrfzOMREvHL7jOIkSfq9FmjuLW2E/D5VP0620ULLzBLfC",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
+                            Lösenord = "$2a$11$GyBBBTUIxrfzOMREvHL7jOIkSfq9FmjuLW2E/D5VP0620ULLzBLfC",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$nO1O37wAkAFVhfmFadMYsuSr5psQT8v4X6uro1EYeiI17AZt1bSxO",
+                            Lösenord = "$2a$11$GyBBBTUIxrfzOMREvHL7jOIkSfq9FmjuLW2E/D5VP0620ULLzBLfC",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });

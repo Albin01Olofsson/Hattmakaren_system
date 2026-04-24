@@ -9,6 +9,7 @@ namespace Models
         [Key]
         public int OrderID { get; set; }
 
+        public string Varukod { get; set; }
         public decimal Pris { get; set; }
 
         public double? Moms { get; set; }

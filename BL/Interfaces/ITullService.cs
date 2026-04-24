@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BL.Interfaces
 {
-    public  interface ITullService
+    public interface ITullService
     {
-        Task<decimal> BeraknaTullViaAPI(decimal a, string land);
+        Task<decimal> BeraknaTullViaAPI(decimal orderSumma, string valtLand);
     }
 }
+

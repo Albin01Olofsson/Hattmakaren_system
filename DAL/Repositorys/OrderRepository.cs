@@ -15,6 +15,7 @@ namespace DAL.Repositorys
         public IQueryable<Order> GetOrdersAndNavPropertiesList()
         {
             return _context.Ordrar
+                .AsNoTracking()
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
                 .Include(o => o.OrderRader)

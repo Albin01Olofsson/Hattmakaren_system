@@ -15,7 +15,7 @@ namespace Models
 
         [ForeignKey("Material")]
         public int MaterialId { get; set; }
-        public Material? Material { get; set; }
+        public Material Material { get; set; } = null!;
 
         public int Antal { get; set; }
 
@@ -23,6 +23,6 @@ namespace Models
         public int MaterialBeställningID { get; set; }
         public MaterialBeställning? Bestallning { get; set; }
 
-        public decimal RadPris => (Material?.Pris ?? 0) * Antal;
+        public decimal RadPris => Antal * Material.Pris;
     }
 }

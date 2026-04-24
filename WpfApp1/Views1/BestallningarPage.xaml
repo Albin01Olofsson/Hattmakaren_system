@@ -9,7 +9,7 @@
 
     <Grid>
 
-        <!-- 🔝 TOP BAR -->
+        <!-- TOP BAR -->
         <Grid Margin="40,20,40,0">
             <Button Content="📦 Visa beställningar"
                     HorizontalAlignment="Right"
@@ -22,18 +22,18 @@
                     Command="{Binding NavigateToBestallningarListaCommand}"/>
         </Grid>
 
-        <!-- 🔽 HUVUDINNEHÅLL -->
+        <!-- MAIN CONTENT -->
         <ScrollViewer Margin="0,60,0,0">
             <StackPanel Margin="40" Width="400">
 
-                <!-- Titel -->
+                <!-- TITLE -->
                 <TextBlock Text="Skapa beställning"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="White"
                            Margin="0,0,0,25"/>
 
-                <!-- Material -->
+                <!-- MATERIAL -->
                 <TextBlock Text="Material"
                            Foreground="#FFC5A059"
                            FontWeight="SemiBold"/>
@@ -48,8 +48,8 @@
                           SelectedItem="{Binding SelectedMaterial}"
                           DisplayMemberPath="Namn"/>
 
-                <!-- Mängd -->
-                <TextBlock Text="Mängd (meter)"
+                <!-- ANTAL -->
+                <TextBlock Text="Mängd"
                            Foreground="#FFC5A059"
                            FontWeight="SemiBold"/>
 
@@ -61,7 +61,20 @@
                          Padding="5"
                          Text="{Binding Antal, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- Lägg till -->
+                <!-- LEVERANTÖR -->
+                <TextBlock Text="Leverantör"
+                           Foreground="#FFC5A059"
+                           FontWeight="SemiBold"/>
+
+                <TextBox Height="40"
+                         Margin="0,5,0,20"
+                         Background="#FF2C3E50"
+                         Foreground="White"
+                         BorderThickness="0"
+                         Padding="5"
+                         Text="{Binding LeverantörNamn, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- ADD ROW -->
                 <Button Content="➕ Lägg till i beställning"
                         Height="40"
                         Background="#FF3A7CA5"
@@ -69,20 +82,23 @@
                         Margin="0,0,0,15"
                         Command="{Binding AddToBestallningCommand}"/>
 
-                <!-- Lista -->
+                <!-- LIST -->
                 <ListBox ItemsSource="{Binding BestallningsRader}" Margin="0,10,0,20">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
+
                                 <TextBlock Text="{Binding Material.Namn}" Width="120"/>
-                                <TextBlock Text="{Binding Antal}" Width="50"/>
+                                <TextBlock Text="{Binding Antal}" Width="40"/>
+                                <TextBlock Text="{Binding Material.MåttText, Mode=OneWay}" Width="40"/>
                                 <TextBlock Text="{Binding RadPris}" Width="80"/>
+
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <!-- Skapa -->
+                <!-- CREATE -->
                 <Button Content="Skapa beställning"
                         Height="45"
                         Background="#FFC5A059"
@@ -92,15 +108,25 @@
                         Margin="0,0,0,25"
                         Command="{Binding SkapaBestallningCommand}"/>
 
-                <!-- Status -->
+                <!-- STATUS -->
                 <TextBlock Text="{Binding StatusMessage}"
-           Foreground="{Binding StatusColor}"
-           FontWeight="Bold"
-           FontSize="14"
-           Background="#FF2C3E50"
-           Padding="10"
-           Margin="0,10,0,0"
-           Visibility="{Binding IsStatusVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                           Foreground="{Binding StatusColor}"
+                           FontWeight="Bold"
+                           FontSize="14"
+                           Background="#FF2C3E50"
+                           Padding="10"
+                           Margin="0,10,0,0"
+                           Visibility="{Binding IsStatusVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <!-- 🔥 KNAPP FLYTTAD HIT (fixar ditt problem) -->
+                <Button Content="➕ Lägg till nytt material"
+                        Height="40"
+                        Margin="0,20,0,10"
+                        Background="Transparent"
+                        Foreground="#FFC5A059"
+                        BorderBrush="#FFC5A059"
+                        BorderThickness="1"
+                        Command="{Binding ToggleMaterialFormCommand}"/>
 
                 <!-- PDF -->
                 <Button Content="Ladda ner som PDF"
@@ -110,16 +136,7 @@
                         Command="{Binding ExportPdfCommand}"
                         Margin="0,10,0,0"/>
 
-                <!-- Lägg till material -->
-                <Button Content="➕ Lägg till nytt material"
-                        Height="40"
-                        Background="Transparent"
-                        Foreground="#FFC5A059"
-                        BorderBrush="#FFC5A059"
-                        BorderThickness="1"
-                        Command="{Binding ToggleMaterialFormCommand}"/>
-
-                <!-- Form -->
+                <!-- FORM -->
                 <Border Background="#FF2C3E50"
                         Padding="20"
                         CornerRadius="12"
@@ -152,14 +169,14 @@
                                  Padding="5"
                                  Text="{Binding Pris}"/>
 
-                        <TextBlock Text="Typ (meter/st)" Foreground="#FFC5A059"/>
-                        <TextBox Height="35"
-                                 Margin="0,5,0,15"
-                                 Background="#FF1A1A1D"
-                                 Foreground="White"
-                                 BorderThickness="0"
-                                 Padding="5"
-                                 Text="{Binding Typ}"/>
+                        <TextBlock Text="Mått" Foreground="#FFC5A059"/>
+
+                        <ComboBox Height="35"
+                                  Margin="0,5,0,15"
+                                  ItemsSource="{Binding MåttTyper}"
+                                  SelectedItem="{Binding SelectedMåttTyp}"
+                                  Background="White"
+                                  Foreground="Black"/>
 
                         <Button Content="Spara material"
                                 Height="40"

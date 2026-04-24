@@ -92,6 +92,7 @@ namespace WpfApp1.ViewModels
 
         partial void OnValdKundChanged(Kund value)
         {
+            //Lägg till 25% moms om det är en företagskund, priset måste ju ändras om man grån från företags kund till privat person och vice versa
             UppdateraOversikt();
         }
 
@@ -147,11 +148,12 @@ namespace WpfApp1.ViewModels
             // 2. Dra av rabatten och se till att det inte blir negativt
             decimal efterRabatt = Math.Max(0, totalt - Rabatt);
             decimal slutpris = efterRabatt;
+            bool momsTillägg = ValdKund != null && ValdKund.FöretagsKund;
             if (IsPrioVald)
             {
                 slutpris *= 1.20m;
             }
-            if (ValdKund != null && ValdKund.FöretagsKund)
+            if (momsTillägg)
             {
                 slutpris *= 1.25m;
             }
@@ -162,7 +164,7 @@ namespace WpfApp1.ViewModels
                                 $"Summa: {totalt:C}\n" +
                                 $"Avdragen rabatt: {Rabatt:C}\n" +
                                 $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
-                                //$"Moms(25%) : {}\n" + 
+                                $"Moms(25%) : {(momsTillägg ? "JA" : "Nej")}\n" + 
                                 $"Slutpris: {slutpris:C}";
         }
 

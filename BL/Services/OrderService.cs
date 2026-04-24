@@ -163,12 +163,23 @@ namespace BL.Services
                 if (nyOrder.IsPrio)
                     totalPris *= 1.20m;
 
+                //Hitta om det är en företagskund, lägg till 25 % om det är det
+                try
+                {
+                    Kund kund = await _context.Kunder.FirstOrDefaultAsync((k => k.KundID == nyOrder.KundID));
+                    if (kund.FöretagsKund)
+                        totalPris *= 1.25m;
+                }catch(Exception e) { }
+                
+
                 nyOrder.Pris = totalPris;
                 nyOrder.Datum = DateTime.Now;
 
                 // 6. Spara ordern
                 await _orderRepo.Add(nyOrder);
                 await _context.SaveChangesAsync();
+
+
             }
             catch (Exception ex)
             {

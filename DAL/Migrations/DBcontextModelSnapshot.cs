@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,10 +166,46 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+                            Lösenord = "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
+                });
+
+            modelBuilder.Entity("Models.Artikel", b =>
+                {
+                    b.Property<int>("ArtikelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtikelId"));
+
+                    b.Property<int>("Antal")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ArtikelNr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Decoration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Färg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HattTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Modell")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArtikelId");
+
+                    b.ToTable("Artiklar");
                 });
 
             modelBuilder.Entity("Models.BestallningsRad", b =>
@@ -824,6 +860,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktID"));
 
+                    b.Property<int>("ArtikelID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Decoration")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -867,6 +906,8 @@ namespace DAL.Migrations
 
                     b.HasKey("ProduktID");
 
+                    b.HasIndex("ArtikelID");
+
                     b.HasIndex("TillverkadAVID");
 
                     b.ToTable("Produkter");
@@ -880,49 +921,11 @@ namespace DAL.Migrations
                 {
                     b.HasBaseType("Models.Produkt");
 
-                    b.Property<string>("ArtikelID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Kategori")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Lagerförd");
-
-                    b.HasData(
-                        new
-                        {
-                            ProduktID = 10000001,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Lagerantal = 0,
-                            Modell = "",
-                            Namn = "Filt hatt",
-                            Pris = 1099m,
-                            Storlek = "M",
-                            TillverkadAVID = 1,
-                            ArtikelID = "LP0001",
-                            Kategori = "Hatt"
-                        },
-                        new
-                        {
-                            ProduktID = 10000002,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Lagerantal = 0,
-                            Modell = "",
-                            Namn = "Siden keps",
-                            Pris = 949m,
-                            Storlek = "M",
-                            TillverkadAVID = 2,
-                            ArtikelID = "LP0002",
-                            Kategori = "Keps"
-                        });
                 });
 
             modelBuilder.Entity("Models.SpecialBeställning", b =>
@@ -1054,7 +1057,7 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Models.Produkt", "Produkt")
-                        .WithMany("OrderRader")
+                        .WithMany()
                         .HasForeignKey("ProduktID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1085,11 +1088,19 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Produkt", b =>
                 {
+                    b.HasOne("Models.Artikel", "Artikel")
+                        .WithMany("Produkter")
+                        .HasForeignKey("ArtikelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Models.Användare", "TillverkadAv")
                         .WithMany("produktLista")
                         .HasForeignKey("TillverkadAVID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Artikel");
 
                     b.Navigation("TillverkadAv");
                 });
@@ -1105,6 +1116,11 @@ namespace DAL.Migrations
                     b.Navigation("orderLista");
 
                     b.Navigation("produktLista");
+                });
+
+            modelBuilder.Entity("Models.Artikel", b =>
+                {
+                    b.Navigation("Produkter");
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -1125,11 +1141,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.OrderRad", b =>
                 {
                     b.Navigation("Planeringar");
-                });
-
-            modelBuilder.Entity("Models.Produkt", b =>
-                {
-                    b.Navigation("OrderRader");
                 });
 #pragma warning restore 612, 618
         }

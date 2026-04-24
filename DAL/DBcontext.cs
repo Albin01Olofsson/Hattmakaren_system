@@ -16,6 +16,7 @@ namespace DAL
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
         public DbSet<OrderRad> OrderRader { get; set; }
+        public DbSet<Artikel> Artiklar { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -109,16 +110,28 @@ namespace DAL
                     .HasForeignKey(p => p.OrderRadID)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // ARTIKEL -> PRODUKTER (1 till många)
+            modelBuilder.Entity<Artikel>()
+                .HasMany(a => a.Produkter)
+                .WithOne(p => p.Artikel)
+                .HasForeignKey(p => p.ArtikelID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ORDERRAD -> PRODUKT (1 till 1 produkt per rad)
+            modelBuilder.Entity<OrderRad>()
+                .HasOne(or => or.Produkt)
+                .WithMany() // ingen back-collection behövs
+                .HasForeignKey(or => or.ProduktID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ORDER -> ORDERRAD
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderRader)
                 .WithOne(or => or.Order)
                 .HasForeignKey(or => or.OrderID)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Produkt>()
-                   .HasMany(p => p.OrderRader)
-                   .WithOne(or => or.Produkt)
-                   .HasForeignKey(or => or.ProduktID)
-                   .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<OrderRad>(entity =>
             {
                 entity.HasKey(or => or.OrderRadID);
@@ -573,28 +586,28 @@ namespace DAL
                     }
                 );
             //PRODUKTER
-            modelBuilder.Entity<LagerfördProdukt>().HasData(
-                    new LagerfördProdukt
-                    {
-                        ProduktID = 10000001,
-                        Namn = "Filt hatt",
-                        Pris = 1099,
-                        Storlek = "M",
-                        TillverkadAVID = 1,
-                        ArtikelID = "LP0001",
-                        Kategori = "Hatt"
-                    },
-                    new LagerfördProdukt
-                    {
-                        ProduktID = 10000002,
-                        Namn = "Siden keps",
-                        Pris = 949,
-                        Storlek = "M",
-                        TillverkadAVID = 2,
-                        ArtikelID = "LP0002",
-                        Kategori = "Keps"
-                    }
-                );
+            //modelBuilder.Entity<LagerfördProdukt>().HasData(
+            //        new LagerfördProdukt
+            //        {
+            //            ProduktID = 10000001,
+            //            Namn = "Filt hatt",
+            //            Pris = 1099,
+            //            Storlek = "M",
+            //            TillverkadAVID = 1,
+            //            ArtikelID = "LP0001",
+            //            Kategori = "Hatt"
+            //        },
+            //        new LagerfördProdukt
+            //        {
+            //            ProduktID = 10000002,
+            //            Namn = "Siden keps",
+            //            Pris = 949,
+            //            Storlek = "M",
+            //            TillverkadAVID = 2,
+            //            ArtikelID = "LP0002",
+            //            Kategori = "Keps"
+            //        }
+            //    );
         }
 
     }

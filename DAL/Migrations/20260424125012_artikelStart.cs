@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCreatee : Migration
+    public partial class artikelStart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,24 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Användare", x => x.AnvändarID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Artiklar",
+                columns: table => new
+                {
+                    ArtikelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArtikelNr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HattTyp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Modell = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Färg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Decoration = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Antal = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Artiklar", x => x.ArtikelId);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,8 +77,7 @@ namespace DAL.Migrations
                     Namn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Beskrivning = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Typ = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mått = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MåttTyp = table.Column<int>(type: "int", nullable: false),
                     Lagerantal = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -96,6 +113,7 @@ namespace DAL.Migrations
                 {
                     MaterialBeställningID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Datum = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Leverantör = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false)
@@ -125,10 +143,10 @@ namespace DAL.Migrations
                     Modell = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Färg = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Decoration = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ArtikelID = table.Column<int>(type: "int", nullable: false),
                     TillverkadAVID = table.Column<int>(type: "int", nullable: false),
                     Lagerantal = table.Column<int>(type: "int", nullable: false),
                     ProduktTyp = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    ArtikelID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Kategori = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BildURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Beskrivning = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -142,6 +160,12 @@ namespace DAL.Migrations
                         principalTable: "Användare",
                         principalColumn: "AnvändarID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Produkter_Artiklar_ArtikelID",
+                        column: x => x.ArtikelID,
+                        principalTable: "Artiklar",
+                        principalColumn: "ArtikelId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,7 +178,7 @@ namespace DAL.Migrations
                     Moms = table.Column<double>(type: "float", nullable: true),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
-                    Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", precision: 5, scale: 2, nullable: false),
                     IsSpecialbeställning = table.Column<bool>(type: "bit", nullable: false),
                     IsPrio = table.Column<bool>(type: "bit", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
@@ -340,10 +364,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$MHM.jmQDr7Ax1swxRkTpo.FHToMj5Ua7Dg83kuacO66GNXIqv5xqi", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -360,22 +384,22 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "Material",
-                columns: new[] { "MaterialID", "Beskrivning", "Lagerantal", "Mått", "Namn", "Pris", "Typ" },
+                columns: new[] { "MaterialID", "Beskrivning", "Lagerantal", "MåttTyp", "Namn", "Pris" },
                 values: new object[,]
                 {
-                    { 100001, "Inte filt man sover med", 23, "meter", "Filt", 54m, "Tyg" },
-                    { 100002, "100% obesprutat bomull", 52, "milimeter", "Bomull", 34m, "Tyg" },
-                    { 100003, "1.2 mm svar syträd av silikon och polyester", 2, "meter", "Svart tråd", 28m, "Tråd" }
+                    { 100001, "Inte filt man sover med", 23, 0, "Filt", 54m },
+                    { 100002, "100% obesprutat bomull", 52, 0, "Bomull", 34m },
+                    { 100003, "1.2 mm svar syträd av silikon och polyester", 2, 0, "Svart tråd", 28m }
                 });
 
             migrationBuilder.InsertData(
                 table: "MaterialBeställningar",
-                columns: new[] { "MaterialBeställningID", "Leverantör", "StartadAvID", "TotalPris" },
+                columns: new[] { "MaterialBeställningID", "Datum", "Leverantör", "StartadAvID", "TotalPris" },
                 values: new object[,]
                 {
-                    { 1000001, "Kung AB", 1, 1890m },
-                    { 1000002, "Kung AB", 2, 769m },
-                    { 1000003, "Kung AB", 1, 3419m }
+                    { 1000001, null, "Kung AB", 1, 1890m },
+                    { 1000002, null, "Kung AB", 2, 769m },
+                    { 1000003, null, "Kung AB", 1, 3419m }
                 });
 
             migrationBuilder.InsertData(
@@ -404,15 +428,6 @@ namespace DAL.Migrations
                     { 100000019, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1003, null, 499m, 0m, 4, "Ej påbörjat" },
                     { 100000020, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1004, null, 499m, 0m, 4, "Ej påbörjat" },
                     { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 499m, 0m, 4, "Ej påbörjat" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Produkter",
-                columns: new[] { "ProduktID", "ArtikelID", "Decoration", "Färdig", "Färg", "HattTyp", "Kategori", "Lagerantal", "Modell", "Namn", "Pris", "ProduktTyp", "Storlek", "TillverkadAVID" },
-                values: new object[,]
-                {
-                    { 10000001, "LP0001", "", false, "", "", "Hatt", 0, "", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
-                    { 10000002, "LP0002", "", false, "", "", "Keps", 0, "", "Siden keps", 949m, "Lagerförd", "M", 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -481,6 +496,11 @@ namespace DAL.Migrations
                 column: "OrderRadID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Produkter_ArtikelID",
+                table: "Produkter",
+                column: "ArtikelID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Produkter_TillverkadAVID",
                 table: "Produkter",
                 column: "TillverkadAVID");
@@ -527,6 +547,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Användare");
+
+            migrationBuilder.DropTable(
+                name: "Artiklar");
         }
     }
 }

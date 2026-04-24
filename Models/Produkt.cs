@@ -13,7 +13,6 @@ namespace Models
         public string Storlek { get; set; }
         public List<Material> MaterialLista { get; set; } = new List<Material>();
 
-        //Tillagda properties för att följa kraven i "KM_Scrum_vt26.pptx"
         public string HattTyp { get; set; } = string.Empty; //Ex: Fedora, keps, basker, typ som skor har sneakers
 
         public string Modell { get; set; } = string.Empty; //Typ ett namn otto har gett en generell design, typ som skor har Airmax
@@ -22,7 +21,10 @@ namespace Models
 
         public string Decoration { get; set; } = string.Empty; //typ rosett, tygblomma
 
-        public ICollection<OrderRad> OrderRader { get; set; } = new List<OrderRad>();
+        [ForeignKey("Artikel")]
+        public int ArtikelID { get; set; }
+        public Artikel Artikel { get; set; }
+        //public ICollection<OrderRad> OrderRader { get; set; } = new List<OrderRad>();
 
         [ForeignKey("TillverkadAv")]
         public int TillverkadAVID { get; set; }

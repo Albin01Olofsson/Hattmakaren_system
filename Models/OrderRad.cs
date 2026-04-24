@@ -20,6 +20,6 @@ namespace Models
 
         public ICollection<Planering> Planeringar { get; set; } = new List<Planering>();
 
-        public int Antal { get; set; }
+        public int Antal { get; set; } = 1;
     }
 }

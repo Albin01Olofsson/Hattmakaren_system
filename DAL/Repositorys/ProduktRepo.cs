@@ -45,10 +45,6 @@ namespace DAL.Repositorys
             return await _context.Produkter
                 .Include(p => p.MaterialLista)
                 .Include(p => p.TillverkadAv)
-                .Include(p => p.OrderRader)
-                    .ThenInclude(or => or.Order)
-                .Include(p => p.OrderRader)
-                    .ThenInclude(or => or.Planeringar)
                 .ToListAsync();
         }
     }

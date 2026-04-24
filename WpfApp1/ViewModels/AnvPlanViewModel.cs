@@ -184,7 +184,8 @@ namespace WpfApp1.ViewModels
                     Färg = GetFärg(p.Status),
                     ZIndex = 1,
                     OrderId = p.OrderRad?.OrderID,
-                    ProduktId = p.OrderRad?.ProduktID,
+                    ProduktNamn = p.OrderRad?.Artikel?.Produkter?.FirstOrDefault()?.Namn,
+                    //ProduktId = p.OrderRad?.ProduktID,
                     AnvändarNamn = p.Användare?.Namn
                 });
             }

@@ -71,11 +71,14 @@ namespace WpfApp1.Views1
             //}
             foreach (var rad in order.OrderRader)
             {
-                dokument.Add(
-                    new iText.Layout.Element.Paragraph(
-                        $" - {rad.Produkt.Namn} - {rad.Produkt.Pris}"
-                    )
-                );
+                foreach (var produkt in rad.Artikel.Produkter)
+                {
+                    dokument.Add(
+                        new iText.Layout.Element.Paragraph(
+                            $" - {produkt.Namn} - {produkt.Pris}"
+                        )
+                    );
+                }
             }
 
             dokument.Add(new iText.Layout.Element.Paragraph($"Startare: {order.StartadAv.Namn}"));

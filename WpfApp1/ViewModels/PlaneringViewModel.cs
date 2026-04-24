@@ -150,9 +150,14 @@ namespace WpfApp1.ViewModels
         }
         private OrderRad HämtaOrderRad()
         {
+            //return ValdOrder?
+            //    .OrderRader?
+            //    .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
             return ValdOrder?
-                .OrderRader?
-                .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
+        .OrderRader?
+        .FirstOrDefault(or =>
+            or.Artikel?.Produkter?
+                .Any(p => p.ProduktID == ValdProdukt?.ProduktID) == true);
         }
         //[RelayCommand]
         //private async Task SparaAktivitet()

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCreatee : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,18 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Användare", x => x.AnvändarID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Artiklar",
+                columns: table => new
+                {
+                    ArtikelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Artiklar", x => x.ArtikelId);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,10 +137,11 @@ namespace DAL.Migrations
                     Modell = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Färg = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Decoration = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ArtikelID = table.Column<int>(type: "int", nullable: false),
                     TillverkadAVID = table.Column<int>(type: "int", nullable: false),
+                    ÄrReserverad = table.Column<bool>(type: "bit", nullable: false),
                     Lagerantal = table.Column<int>(type: "int", nullable: false),
                     ProduktTyp = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    ArtikelID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Kategori = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BildURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Beskrivning = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -142,6 +155,12 @@ namespace DAL.Migrations
                         principalTable: "Användare",
                         principalColumn: "AnvändarID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Produkter_Artiklar_ArtikelID",
+                        column: x => x.ArtikelID,
+                        principalTable: "Artiklar",
+                        principalColumn: "ArtikelId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,7 +173,7 @@ namespace DAL.Migrations
                     Moms = table.Column<double>(type: "float", nullable: true),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
-                    Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", precision: 5, scale: 2, nullable: false),
                     IsSpecialbeställning = table.Column<bool>(type: "bit", nullable: false),
                     IsPrio = table.Column<bool>(type: "bit", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
@@ -285,24 +304,24 @@ namespace DAL.Migrations
                     OrderRadID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderID = table.Column<int>(type: "int", nullable: false),
-                    ProduktID = table.Column<int>(type: "int", nullable: false),
+                    ArtikelID = table.Column<int>(type: "int", nullable: false),
                     Antal = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderRader", x => x.OrderRadID);
                     table.ForeignKey(
+                        name: "FK_OrderRader_Artiklar_ArtikelID",
+                        column: x => x.ArtikelID,
+                        principalTable: "Artiklar",
+                        principalColumn: "ArtikelId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_OrderRader_Ordrar_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Ordrar",
                         principalColumn: "OrderID",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderRader_Produkter_ProduktID",
-                        column: x => x.ProduktID,
-                        principalTable: "Produkter",
-                        principalColumn: "ProduktID",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -340,10 +359,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$9m2U4.E4Yw2ysaNMqOPLYOoLTF5EEuXEb0aqinxZ/gcddKcYQDdXS", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$9m2U4.E4Yw2ysaNMqOPLYOoLTF5EEuXEb0aqinxZ/gcddKcYQDdXS", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$9m2U4.E4Yw2ysaNMqOPLYOoLTF5EEuXEb0aqinxZ/gcddKcYQDdXS", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$9m2U4.E4Yw2ysaNMqOPLYOoLTF5EEuXEb0aqinxZ/gcddKcYQDdXS", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -406,15 +425,6 @@ namespace DAL.Migrations
                     { 100000021, new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(2026, 4, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, 1005, null, 499m, 0m, 4, "Ej påbörjat" }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Produkter",
-                columns: new[] { "ProduktID", "ArtikelID", "Decoration", "Färdig", "Färg", "HattTyp", "Kategori", "Lagerantal", "Modell", "Namn", "Pris", "ProduktTyp", "Storlek", "TillverkadAVID" },
-                values: new object[,]
-                {
-                    { 10000001, "LP0001", "", false, "", "", "Hatt", 0, "", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
-                    { 10000002, "LP0002", "", false, "", "", "Keps", 0, "", "Siden keps", 949m, "Lagerförd", "M", 2 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Aktiviteter_SkapadAvID",
                 table: "Aktiviteter",
@@ -451,14 +461,14 @@ namespace DAL.Migrations
                 column: "ProduktID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderRader_ArtikelID",
+                table: "OrderRader",
+                column: "ArtikelID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderRader_OrderID",
                 table: "OrderRader",
                 column: "OrderID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderRader_ProduktID",
-                table: "OrderRader",
-                column: "ProduktID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ordrar_KundID",
@@ -479,6 +489,11 @@ namespace DAL.Migrations
                 name: "IX_Planeringar_OrderRadID",
                 table: "Planeringar",
                 column: "OrderRadID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produkter_ArtikelID",
+                table: "Produkter",
+                column: "ArtikelID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Produkter_TillverkadAVID",
@@ -514,19 +529,22 @@ namespace DAL.Migrations
                 name: "Material");
 
             migrationBuilder.DropTable(
+                name: "Produkter");
+
+            migrationBuilder.DropTable(
                 name: "OrderRader");
+
+            migrationBuilder.DropTable(
+                name: "Artiklar");
 
             migrationBuilder.DropTable(
                 name: "Ordrar");
 
             migrationBuilder.DropTable(
-                name: "Produkter");
+                name: "Användare");
 
             migrationBuilder.DropTable(
                 name: "Kunder");
-
-            migrationBuilder.DropTable(
-                name: "Användare");
         }
     }
 }

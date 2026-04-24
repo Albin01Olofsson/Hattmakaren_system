@@ -182,6 +182,7 @@ namespace BL.Services
 
             return order.OrderRader
                 .Where(or => !upptagnaOrderRadIds.Contains(or.OrderRadID))
+                .Where(or => or.Produkt != null)
                 .Select(or => or.Produkt)
                 .ToList();
         }

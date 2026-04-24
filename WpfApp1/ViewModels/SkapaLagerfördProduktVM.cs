@@ -51,6 +51,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string nyBeskrivning = String.Empty;
 
+        [ObservableProperty]
+        private int artikelId;
+
         public SkapaLagerfördProduktVM(IOrderService orderService, IProduktService produktService, IMaterialService materialService, IKundService kundService, IAnvändarService användarService)
         {
             _orderService = orderService;
@@ -183,7 +186,7 @@ namespace WpfApp1.ViewModels
 
             Användare startadAvAnvändare = Session.CurrentUser;
 
-
+            
             LagerfördProdukt nyProd = new LagerfördProdukt
             {
                 Namn = NyttProduktNamn,
@@ -196,7 +199,20 @@ namespace WpfApp1.ViewModels
                 Lagerantal = NyttLagerantal,
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
-
+            var artikelLista = new List<Produkt>();
+            artikelLista.Add(nyProd);
+            Artikel artikel = new Artikel
+            {
+                ArtikelId = artikelId,
+                Namn = NyttProduktNamn,
+                Pris = NyttPris,
+                HattTyp = NyTyp,
+                Modell = NyModell,
+                Färg = NyFärg,
+                Decoration = NyDecoration,
+                Antal = NyttLagerantal,
+                Produkter =artikelLista
+            };
 
             List<int> materialIds = NyMaterialLista.Select(m => m.MaterialID).ToList();
 

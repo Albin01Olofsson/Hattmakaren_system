@@ -177,6 +177,7 @@ namespace BL.Services
                 throw new Exception(felorsak, ex);
             }
         }
+        
         public async Task MarkeraFärdig(int OrderID)
         {
             var order = await _orderRepo.GetById(OrderID);

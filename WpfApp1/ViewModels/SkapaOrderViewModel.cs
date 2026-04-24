@@ -17,11 +17,12 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         public ObservableCollection<Kund> allaKunder = new();
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
-        public ObservableCollection<OrderCartItem> TillagdaProdukter { get; set; }
+        public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
 
         // VALDA OBJEKT (SelectedItem i rullistorna)
         [ObservableProperty] private Kund valdKund;
         [ObservableProperty] private Produkt valdProdukt;
+        [ObservableProperty] private Artikel valdArtikel;
 
         // ÖVRIGT
         [ObservableProperty] private decimal rabatt;
@@ -39,12 +40,21 @@ namespace WpfApp1.ViewModels
 
             AllaKunder = new ObservableCollection<Kund>();
             AllaProdukter = new ObservableCollection<Produkt>();
-            TillagdaProdukter = new ObservableCollection<OrderCartItem>();
+            TillagdaProdukter = new ObservableCollection<Produkt>();
 
             InloggadAnvändare = Session.CurrentUser ?? new Användare { AnvändarID = 1, Namn = "Test" };
 
             _ = LaddaData();
         }
+
+        //private Artikel FyllArtikel(int produktid)
+        //{
+        //    var produkt = 
+        //    var artikel = new Artikel
+        //    {
+
+        //    }
+        //}
 
         [RelayCommand]
         private async Task LaddaData()
@@ -94,16 +104,16 @@ namespace WpfApp1.ViewModels
 
             if (existing != null)
             {
-                existing.Antal++;
+                existing.Lagerantal++;
             }
             else
             {
-                TillagdaProdukter.Add(new OrderCartItem
+                TillagdaProdukter.Add(new Produkt
                 {
                     ProduktID = ValdProdukt.ProduktID,
                     Namn = ValdProdukt.Namn,
                     Pris = ValdProdukt.Pris,
-                    Antal = 1
+                    Lagerantal = 1
                 });
             }
 
@@ -146,17 +156,13 @@ namespace WpfApp1.ViewModels
                     KundID = ValdKund.KundID,
                     StartadAvID = InloggadAnvändare.AnvändarID,
                     //Produkter = TillagdaProdukter.ToList(),
-                    //OrderRader = TillagdaProdukter.Select(p => new OrderRad
-                    //{
-                    //    ProduktID = p.ProduktID,
-                    //    Produkt = p,
-                    //    Antal = 1
-                    //}).ToList(),
                     OrderRader = TillagdaProdukter.Select(p => new OrderRad
                     {
                         ProduktID = p.ProduktID,
-                        Antal = p.Antal
+                        Produkt = p,
+                        Antal = 1
                     }).ToList(),
+
                     Rabatt = this.Rabatt,
                     IsPrio = this.IsPrioVald
                 };

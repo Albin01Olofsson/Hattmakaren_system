@@ -1,0 +1,62 @@
+﻿<Page x:Class="WpfApp1.Views1.SkapaArtikel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1.Views1"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SkapaArtikel">
+
+    <ScrollViewer>
+            <StackPanel Margin="30" MaxWidth="700">
+
+                <TextBlock Text="SKAPA ARTIKEL"
+                       FontSize="28"
+                       FontWeight="Black"
+                       Foreground="#F4F1EA"
+                       Margin="0,0,0,25"
+                       HorizontalAlignment="Center"/>
+
+                <Border Background="#FF2C3E50" Padding="20" CornerRadius="10">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Namn" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Namn}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Pris" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Pris}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Storlek" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Storlek}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Färg" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Färg}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Modell" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Modell}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Dekoration" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding Decoration}" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Antal i lager" Foreground="#FFC5A059"/>
+                        <TextBox Text="{Binding AntalProdukter}" Margin="0,0,0,20"/>
+
+                        <Button Content="SKAPA ARTIKEL"
+                            Command="{Binding SkapaArtikelCommand}"
+                            Height="40"
+                            Background="#FFB08D46"
+                            FontWeight="Bold"/>
+
+                        <TextBlock Text="{Binding StatusText}"
+                               Foreground="White"
+                               Margin="0,15,0,0"
+                               TextWrapping="Wrap"/>
+
+                    </StackPanel>
+
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Page>

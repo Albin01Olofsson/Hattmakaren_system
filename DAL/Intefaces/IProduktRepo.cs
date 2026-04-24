@@ -14,5 +14,6 @@ namespace DAL.Intefaces
 
         Task AddSpecBes(SpecialBeställning sb, List<int> materialIdn);
         Task AddProd(Produkt sb, List<int> materialIdn);
+        Task AddRange(List<Produkt> produkter);
     }
 }

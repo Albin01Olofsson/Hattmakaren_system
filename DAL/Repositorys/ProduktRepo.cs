@@ -47,5 +47,10 @@ namespace DAL.Repositorys
                 .Include(p => p.TillverkadAv)
                 .ToListAsync();
         }
+        public async Task AddRange(List<Produkt> produkter)
+        {
+            _context.Produkter.AddRange(produkter);
+            await _context.SaveChangesAsync();
+        }
     }
 }

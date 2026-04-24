@@ -11,7 +11,9 @@ namespace Models
     {
         [Key]
         public int ArtikelId { get; set; }
-        public string ArtikelNr { get; set; }
+        public string Namn { get; set; }
+        public decimal Pris { get; set; }
+        public string Storlek { get; set; }
         public string HattTyp { get; set; } = string.Empty; 
         public string Modell { get; set; } = string.Empty;
         public string Färg { get; set; } = string.Empty;

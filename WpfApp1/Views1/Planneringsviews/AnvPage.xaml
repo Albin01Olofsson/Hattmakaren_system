@@ -4,57 +4,97 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfApp1.Views1.Planneringsviews" 
-      xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels"
-      xmlns:syncfusion="clr-namespace:Syncfusion.UI.Xaml.Scheduler;assembly=Syncfusion.SfScheduler.WPF"
-      mc:Ignorable="d"
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+      xmlns:scheduler="clr-namespace:Syncfusion.UI.Xaml.Scheduler;assembly=Syncfusion.SfScheduler.WPF"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="AnvPage" Background="#FF1A1A1D">
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="AnvPage" Background="#FF121212">
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <Style x:Key="ModernActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#FF6200EE"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20,5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="75"/>
+            <RowDefinition Height="95"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#FFC5A059" CornerRadius="0, 0, 15, 15" Panel.ZIndex="10">
-            <StackPanel>
-                <TextBlock Text="Ditt Schema" FontSize="28" FontWeight="Bold" Margin="30, 0"/>
-                <Menu Margin="50,0" Background="#FFC5A059" FontWeight="Bold">
-                    <MenuItem Header="Ordrar" Click="Ordrar_Click"/>
-                    <MenuItem Header="Plannering"/>
-                    <MenuItem Header="Material"/>
-                    <Button Content="+ Aktivitet" Command="{Binding ÖppnaLäggTillAktivitetCommand}" Background="#FF8A2BE2" Margin="10,0"/>
-                    <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}">
+        <Border Background="#FFC5A059" CornerRadius="0, 0, 20, 20" Panel.ZIndex="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="270" Opacity="0.2" ShadowDepth="2"/>
+            </Border.Effect>
+
+            <Grid Margin="30,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Ditt Schema" Grid.Column="0" 
+                           VerticalAlignment="Center" 
+                           FontSize="26" FontWeight="Bold" Foreground="#FF1A1A1D"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Menu Background="Transparent" VerticalAlignment="Center" Margin= "0,0">
+                        <MenuItem Header="Ordrar" Click="Ordrar_Click" Foreground="#FF1A1A1D" FontSize="15" FontWeight="SemiBold"/>
+                    </Menu>
+
+                    <Button Content="+ Ny Aktivitet" 
+                            Command="{Binding ÖppnaLäggTillAktivitetCommand}" 
+                            Style="{StaticResource ModernActionButton}" 
+                            Margin="20,0" Height="36"/>
+
+                    <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}" 
+                              Width="140" Height="30" VerticalContentAlignment="Center">
                         <sys:String>Alla scheman</sys:String>
                         <sys:String>Mitt schema</sys:String>
                     </ComboBox>
-                </Menu>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <Border Grid.Row="1">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-               
-
-                <syncfusion:SfScheduler Grid.Row="1" 
+        <Border Grid.Row="1" Margin="15,10,15,15" Background="#FF1E1E1E" CornerRadius="15">
+            <Grid Margin="5">
+                <syncfusion:SfScheduler x:Name="Kalender"
                                         ViewType="Week" 
-                                        EnableToolTip="True"
+                                        EnableToolTip="False"
+                                        BorderThickness="0"
+                                        AppointmentTapped="Kalender_AppointmentTapped"
                                         AppointmentDropping="Kalender_AppointmentDropping"
                                         ItemsSource="{Binding Schema}">
 
+                    <syncfusion:SfScheduler.Resources>
+                        <Style TargetType="syncfusion:AllDayAppointmentPanel">
+                            <Setter Property="Height" Value="60"/>
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Background" Value="White"/>
+                            
+                        </Style>
+                    </syncfusion:SfScheduler.Resources>
+
                     <syncfusion:SfScheduler.DaysViewSettings>
-                        <syncfusion:DaysViewSettings StartHour="7" EndHour="16"/>
+                        <syncfusion:DaysViewSettings StartHour="7" EndHour="17" />
                     </syncfusion:SfScheduler.DaysViewSettings>
 
                     <syncfusion:SfScheduler.AppointmentMapping>
@@ -62,52 +102,66 @@
                             Subject="Titel"          
                             StartTime="StartTid"     
                             EndTime="SlutTid"        
-                            AppointmentBackground="Färg" />
+                            AppointmentBackground="Färg"
+                            IsAllDay="ÄrHeldag" />
                     </syncfusion:SfScheduler.AppointmentMapping>
 
-                    <syncfusion:SfScheduler.ToolTipTemplate>
-                        <DataTemplate>
-                            <Border Background="#222" Padding="10" CornerRadius="6" BorderBrush="#FFC5A059" BorderThickness="1">
-                                <StackPanel Width="180">
-
-                                    <TextBlock Text="{Binding Data.ProduktNamn}" Foreground="White" FontWeight="Bold" FontSize="14"/>
-                                    <TextBlock Text="{Binding Data.AnvändarNamn}" Foreground="#DDFFFFFF"/>
-
-                                    <TextBlock Foreground="#AAFFFFFF">
-                    <Run Text="Order: "/>
-                    <Run Text="{Binding Data.OrderId}"/>
-                                    </TextBlock>
-
-                                    <TextBlock Foreground="#AAFFFFFF">
-                    <Run Text="ProduktID: "/>
-                    <Run Text="{Binding Data.ProduktId}"/>
-                                    </TextBlock>
-
-                                    <TextBlock Foreground="#AAFFFFFF" Text="{Binding Data.StartTid, StringFormat='Start: {0:HH:mm}'}"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-
-                                        <Button Content="Delete" 
-                            Command="{Binding DataContext.DeleteBokningCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
-                            CommandParameter="{Binding Data.Id}"/>
-
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </syncfusion:SfScheduler.ToolTipTemplate>
-
+                   
                 </syncfusion:SfScheduler>
-
             </Grid>
         </Border>
 
-        <Border Grid.RowSpan="2" Background="#CC000000" Visibility="{Binding MånadsvySynlig, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Panel.ZIndex="100">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Calendar SelectedDate="{Binding ValtDatum, Mode=TwoWay}" DisplayDate="{Binding NuvarandeMåndag}"/>
-                <Button Content="Stäng" Width="100" Margin="10" Command="{Binding StängMånadsvyCommand}"/>
+        <Border Grid.RowSpan="2" Background="#AA000000" 
+                Visibility="{Binding MånadsvySynlig, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" 
+                Panel.ZIndex="100">
+            <Border Background="#FF2D2D30" Padding="25" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel>
+                    <Calendar SelectedDate="{Binding ValtDatum, Mode=TwoWay}" DisplayDate="{Binding NuvarandeMåndag}"/>
+                    <Button Content="Stäng" Style="{StaticResource ModernActionButton}" 
+                            Width="120" Margin="0,20,0,0" Background="#FF3700B3"
+                            Command="{Binding StängMånadsvyCommand}"/>
+                </StackPanel>
+            </Border>
+        </Border>
+        <Border x:Name="InfoPopup" 
+        Visibility="Collapsed" 
+        Background="#FF2D2D30" 
+        CornerRadius="15" 
+        BorderBrush="#FFC5A059" 
+        BorderThickness="1.5"
+        Width="240" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Center" 
+        Panel.ZIndex="1000"
+        Padding="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Opacity="0.4"/>
+            </Border.Effect>
+            <StackPanel>
+                <Grid Margin="0,0,0,12">
+                    <TextBlock x:Name="PopupTitel" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    <Button Content="✕" HorizontalAlignment="Right" Background="Transparent" Foreground="#88FFFFFF" BorderThickness="0" Cursor="Hand" Click="StängPopup_Click"/>
+                </Grid>
+
+                <TextBlock x:Name="PopupAnvändare" Foreground="#B0FFFFFF" FontSize="14" Margin="0,0,0,5"/>
+
+                <TextBlock x:Name="PopupTid" Foreground="#88FFFFFF" FontSize="12" Margin="0,0,0,15"/>
+
+                <Rectangle Height="1" Fill="#33FFFFFF" Margin="0,0,0,15"/>
+
+                <Button Content="Ta bort bokning" 
+                Background="#FFCF6679" 
+                Foreground="White" 
+                FontWeight="Bold"
+                Padding="10,8"
+                Click="TaBortFrånPopup_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>
-
 </Page>

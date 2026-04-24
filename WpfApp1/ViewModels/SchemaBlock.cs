@@ -12,6 +12,7 @@ namespace WpfApp1.ViewModels
         public DateTime StartTid { get; set; }
         public DateTime SlutTid { get; set; }
         public Brush Färg { get; set; }
+        public bool ÄrHeldag { get; set; }
 
         // 3. Affärsdata (Det vi visar i ToolTip-rutan)
         public int? OrderId { get; set; }

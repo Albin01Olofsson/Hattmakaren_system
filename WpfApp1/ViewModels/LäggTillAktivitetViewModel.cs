@@ -34,6 +34,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private TimeSpan slutTid;
 
+        [ObservableProperty]
+        private DateTime slutDatum = DateTime.Now;
+
         [RelayCommand]
 
         private async Task SparaAktivitet()
@@ -53,7 +56,7 @@ namespace WpfApp1.ViewModels
                 }
 
                 var start = startDatum.Date + startTid;
-                var slut = startDatum.Date + slutTid;
+                var slut = slutDatum.Date + slutTid;
 
                 if (slut <= start)
                 {
@@ -66,11 +69,10 @@ namespace WpfApp1.ViewModels
                     Namn = Titel,
                     StartTid = start,
                     SlutTid = slut,
-                    SkapadAvID = _user.AnvändarID,
-                    // Vi testar att lägga in deltagare här. Om det kraschar, fångar vår Catch det!
-                    Deltagare = ValdaDeltagare.ToList()
+                    SkapadAvID = _user.AnvändarID
                 };
 
+                aktivitet.Deltagare = ValdaDeltagare.ToList();
                 await _service.LäggTillAktivitet(aktivitet);
 
                 // Stäng fönstret
@@ -81,7 +83,7 @@ namespace WpfApp1.ViewModels
             }
             catch (Exception ex)
             {
-                // HÄR FÅNGAR VI KRASCHEN!
+
                 MessageBox.Show($"Ett fel uppstod: {ex.Message}\n\nInre fel: {ex.InnerException?.Message}");
             }
         }

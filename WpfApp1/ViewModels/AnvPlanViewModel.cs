@@ -80,7 +80,8 @@ namespace WpfApp1.ViewModels
                     OrderId = p.OrderRad?.OrderID,
                     ProduktId = p.OrderRad?.ProduktID,
                     AnvändarNamn = p.Användare?.Namn,
-                    ProduktNamn = p.OrderRad?.Produkt?.Namn
+                    ProduktNamn = p.OrderRad?.Produkt?.Namn,
+                    ÄrHeldag = p.StartTid.Date != p.SlutTid.Date,
                 });
             }
 
@@ -94,7 +95,8 @@ namespace WpfApp1.ViewModels
                     StartTid = a.StartTid,
                     SlutTid = a.SlutTid,
                     Färg = (Brush)new BrushConverter().ConvertFrom("#8A2BE2"),
-                    AnvändarNamn = a.SkapadAv?.Namn
+                    AnvändarNamn = a.SkapadAv?.Namn,
+                    ÄrHeldag = a.StartTid.Date != a.SlutTid.Date,
                 });
             }
 

@@ -4,69 +4,116 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1.Views1"
-        mc:Ignorable="d"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-        Title="SkapaAktivitet" Height="550" Width="778">
-    <ScrollViewer>
+        mc:Ignorable="d"
+        Title="Skapa Planering" Height="650" Width="500"
+        WindowStartupLocation="CenterScreen"
+        Background="#FF1A1A1D">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
-        <Border Background="#FF2C3E50"
-       Padding="20"
-       CornerRadius="15"
-       Margin="20">
+            <Border Background="#FF2C3E50"
+                    Padding="25"
+                    CornerRadius="10"
+                    Margin="20">
 
-            <StackPanel Margin="20">
+                <StackPanel>
 
-                <!-- Titel -->
-                <TextBlock Text="Ny aktivitet" FontSize="22" FontWeight="Bold" Foreground="White" 
-                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="Planera Arbete" FontSize="24" FontWeight="Bold" Foreground="White" 
+                               HorizontalAlignment="Center" Margin="0,0,0,25"/>
 
-                <TextBlock Text="Typ av planering" Foreground="#FFC5A059"/>
-                <ComboBox SelectedItem="{Binding ValdTyp}" Margin="0,5,0,10">
-                    <ComboBoxItem Content="Order"/>
-                    <ComboBoxItem Content="Aktivitet"/>
-                </ComboBox>
-                <TextBlock Text="Namn" Foreground="#FFC5A059"/>
-                <TextBox Text="{Binding PlaneringsNamn}" Margin="0,5,0,10"/>
-                <!-- Välj en order -->
-                <TextBlock Text="Välj en order" Foreground="#FFC5A059"/>
-                <TextBlock Text="{Binding OrdrarFel}" Foreground="Red" FontSize="10"/>
-                <ComboBox  ItemsSource="{Binding AllaOrdrar}" SelectedItem="{Binding ValdOrder, Mode=TwoWay}" 
-                           DisplayMemberPath="OrderID" Margin="0,5,0,10"/>
-                
-                <!-- Välj en produkt-->
-                <TextBlock Text="Välj en produkt" Foreground="#FFC5A059"/>
-                <TextBlock Text="{Binding ProdukterFel}" Foreground="Red" FontSize="10"/>
-                <ComboBox  ItemsSource="{Binding AllaProdukter}" SelectedItem="{Binding ValdProdukt, Mode=TwoWay}" 
-                           DisplayMemberPath="Namn" Margin="0,5,0,10"/>
-                
-                <!--välj datum-->
-                <TextBlock Text="Datum" Foreground="#FFC5A059"/>
-                <TextBlock Text="{Binding StartTidFel}" Foreground="Red" FontSize="10"/>
-                <DatePicker SelectedDate="{Binding ValdStartTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
+                    
 
-                <!--völj tid-->
-                <TextBlock Text="Starttid (timme)" Foreground="#FFC5A059"/>
-                <TextBlock Text="{Binding TimmarFel}" Foreground="Red" FontSize="10"/>
-                <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" SelectedIndex="-1" IsSynchronizedWithCurrentItem="False" Margin="0,5,0,10">
-                    <ComboBox.Items>
-                        <sys:Int32>8</sys:Int32>
-                        <sys:Int32>9</sys:Int32>
-                        <sys:Int32>10</sys:Int32>
-                        <sys:Int32>11</sys:Int32>
-                        <sys:Int32>12</sys:Int32>
-                        <sys:Int32>13</sys:Int32>
-                        <sys:Int32>14</sys:Int32>
-                        <sys:Int32>15</sys:Int32>
-                        <sys:Int32>16</sys:Int32>
-                    </ComboBox.Items>
-                </ComboBox>
+                    <TextBlock Text="Namn (Frivilligt)" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding PlaneringsNamn}" Margin="0,0,0,20" Padding="5" 
+                             ToolTip="Lämnas tomt så används produktens namn automatiskt."/>
 
-                <!-- Knapp -->
-                <Button Content="Spara aktivitet" Height="40" Background="#FFB08D46" Foreground="Black" 
-                        FontWeight="Bold" Command="{Binding SparaAktivitetCommand}"/>
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            </StackPanel>
-        </Border>
-    </Grid>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Välj order" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox ItemsSource="{Binding AllaOrdrar}" SelectedItem="{Binding ValdOrder, Mode=TwoWay}" 
+                                      DisplayMemberPath="OrderID" Padding="5"/>
+                            <TextBlock Text="{Binding OrdrarFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Välj produkt" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox ItemsSource="{Binding AllaProdukter}" SelectedItem="{Binding ValdProdukt, Mode=TwoWay}" 
+                                      DisplayMemberPath="Namn" Padding="5"/>
+                            <TextBlock Text="{Binding ProdukterFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border BorderBrush="#FF455A64" BorderThickness="0,1,0,0" Margin="0,5,0,20"/>
+                    <TextBlock Text="När ska arbetet påbörjas?" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DatePicker SelectedDate="{Binding ValdStartTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Height="30"/>
+
+                        <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" Grid.Column="2" Height="30" Padding="5" IsSynchronizedWithCurrentItem="False">
+                            <ComboBox.Items>
+                                <sys:Int32>7</sys:Int32>
+                                <sys:Int32>8</sys:Int32>
+                                <sys:Int32>9</sys:Int32>
+                                <sys:Int32>10</sys:Int32>
+                                <sys:Int32>11</sys:Int32>
+                                <sys:Int32>12</sys:Int32>
+                                <sys:Int32>13</sys:Int32>
+                                <sys:Int32>14</sys:Int32>
+                                <sys:Int32>15</sys:Int32>
+                                <sys:Int32>16</sys:Int32>
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock Text="{Binding StartTidFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-10,0,15"/>
+
+                    <TextBlock Text="När beräknas det vara klart?" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Grid Margin="0,0,0,25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DatePicker SelectedDate="{Binding ValdSlutTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Height="30"/>
+
+                        <ComboBox SelectedItem="{Binding ValdSlutTimme, Mode=TwoWay}" Grid.Column="2" Height="30" Padding="5" IsSynchronizedWithCurrentItem="False">
+                            <ComboBox.Items>
+                                <sys:Int32>7</sys:Int32>
+                                <sys:Int32>8</sys:Int32>
+                                <sys:Int32>9</sys:Int32>
+                                <sys:Int32>10</sys:Int32>
+                                <sys:Int32>11</sys:Int32>
+                                <sys:Int32>12</sys:Int32>
+                                <sys:Int32>13</sys:Int32>
+                                <sys:Int32>14</sys:Int32>
+                                <sys:Int32>15</sys:Int32>
+                                <sys:Int32>16</sys:Int32>
+                                <sys:Int32>17</sys:Int32>
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock Text="{Binding TimmarFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-20,0,25"/>
+
+                    <Button Content="Spara Till Kalendern" Height="45" 
+                            Background="#FFB08D46" Foreground="Black" 
+                            FontSize="14" FontWeight="Bold" Cursor="Hand"
+                            BorderThickness="0"
+                            Command="{Binding SparaAktivitetCommand}"/>
+
+                </StackPanel>
+            </Border>
+        </Grid>
     </ScrollViewer>
 </Window>

@@ -37,6 +37,12 @@ namespace WpfApp1.ViewModels
         private int? valdStartTimme;
 
         [ObservableProperty]
+        private DateTime? valdSlutTid;
+
+        [ObservableProperty]
+        private int? valdSlutTimme;
+
+        [ObservableProperty]
         private string planeringsNamn;
 
         [ObservableProperty]
@@ -64,7 +70,7 @@ namespace WpfApp1.ViewModels
             AllaOrdrar.Clear();
 
             var ordrarFrånDB = await _orderService.GetOrdersWithNavProps();
-            
+
             foreach (var order in ordrarFrånDB)
             {
                 AllaOrdrar.Add(order);
@@ -108,16 +114,25 @@ namespace WpfApp1.ViewModels
                 hasError = true;
             }
 
-            if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue)
+            if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue ||
+                !ValdSlutTid.HasValue || !ValdSlutTimme.HasValue)
             {
                 StartTidFel = "Välj tid";
                 hasError = true;
+            }
+            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+            var slutTid = ValdSlutTid.Value.Date.AddHours(ValdSlutTimme.Value);
+
+            if (slutTid <= startTid)
+            {
+                TimmarFel = "Arbetet måste sluta efter att det har börjat";
+                return;
             }
 
             if (User == null || hasError)
                 return;
 
-            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
+
 
             var orderRad = HämtaOrderRad();
 
@@ -132,7 +147,7 @@ namespace WpfApp1.ViewModels
                 AnvändarID = User.AnvändarID,
                 OrderRadID = orderRad.OrderRadID,
                 StartTid = startTid,
-                SlutTid = startTid.AddHours(2),
+                SlutTid = slutTid,
 
                 PlaneringsNamn = string.IsNullOrWhiteSpace(PlaneringsNamn)
                     ? ValdProdukt.Namn
@@ -141,7 +156,7 @@ namespace WpfApp1.ViewModels
                 Status = "Ej påbörjat"
             };
 
-            await _service.Add(planering); // 👈 använd repo/service direkt om du har Add
+            await _service.Add(planering);
 
             PlaneringAdded?.Invoke(planering);
 
@@ -154,50 +169,6 @@ namespace WpfApp1.ViewModels
                 .OrderRader?
                 .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
         }
-        //[RelayCommand]
-        //private async Task SparaAktivitet()
-        //{
-        //    OrdrarFel = "";
-        //    ProdukterFel = "";
-        //    StartTidFel = "";
-        //    TimmarFel = "";
-        //    bool HasErrors = false;
 
-        //    if (ValdOrder == null)
-        //    {
-        //        OrdrarFel = "Vänligen välj en order!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdProdukt == null)
-        //    {
-        //        ProdukterFel = "Vänligen välj en produkt!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdStartTid == null)
-        //    {
-        //        StartTidFel = "Vänligen välj vilken dag bokningen startar!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdStartTimme == null)
-        //    {
-        //        TimmarFel = "Vänligen välj vilken tid bokningen börjar!";
-        //        HasErrors = true;
-        //    }
-
-        //    if (ValdOrder == null || ValdProdukt == null || User == null || !ValdStartTid.HasValue || HasErrors)
-        //        return;
-
-        //    var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
-
-        //    var planering = await _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
-
-        //    PlaneringAdded?.Invoke(planering);
-
-        //    ValdProdukt = null;
-        //    OrdrarFel = "";
-        //    ProdukterFel = "";
-        //    StartTidFel = "";
-        //    TimmarFel = "";
-        //}
     }
 }

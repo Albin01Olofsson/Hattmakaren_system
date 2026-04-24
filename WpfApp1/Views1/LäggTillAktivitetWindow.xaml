@@ -1,22 +1,60 @@
 ﻿<Window x:Class="WpfApp1.Views1.LäggTillAktivitetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Lägg till aktivitet"
-        Height="300" Width="400"
+        Title="Ny Aktivitet"
+        Height="400" Width="400"
+        WindowStartupLocation="CenterScreen"
         Background="#FF1A1A1D">
 
-    <StackPanel Margin="20">
+    <Border Padding="25">
+        <StackPanel>
 
-        <TextBox Text="{Binding Titel}" Margin="0,0,0,10"/>
+            <TextBlock Text="Skapa ny aktivitet" 
+                       Foreground="White" FontSize="20" FontWeight="Bold" 
+                       Margin="0,0,0,20" HorizontalAlignment="Center"/>
 
-        <DatePicker SelectedDate="{Binding StartDatum}" />
+            <TextBlock Text="Aktivitetens namn:" Foreground="#DDFFFFFF" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Titel}" 
+                     Padding="5" Background="#FF2D2D30" Foreground="White" 
+                     BorderBrush="#FF3E3E42" Margin="0,0,0,15"
+                     ToolTip="T.ex. Personalmöte eller Inventering"/>
 
-        <TextBox Text="{Binding StartTid}" Margin="0,10,0,0"/>
-        <TextBox Text="{Binding SlutTid}" Margin="0,10,0,0"/>
+            <TextBlock Text="Start:" Foreground="#DDFFFFFF" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Grid Margin="0,0,0,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Button Content="Spara"
-                Command="{Binding SparaAktivitetCommand}"
-                Margin="0,20,0,0"/>
+                <DatePicker SelectedDate="{Binding StartDatum}" Grid.Column="0"/>
 
-    </StackPanel>
+                <TextBox Text="{Binding StartTid}" Grid.Column="2" 
+                         Padding="5" Background="#FF2D2D30" Foreground="White" 
+                         BorderBrush="#FF3E3E42" ToolTip="Ange tid (t.ex. 08:00)"/>
+            </Grid>
+
+            <TextBlock Text="Slut:" Foreground="#DDFFFFFF" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Grid Margin="0,0,0,25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <DatePicker SelectedDate="{Binding SlutDatum}" Grid.Column="0"/>
+
+                <TextBox Text="{Binding SlutTid}" Grid.Column="2" 
+                         Padding="5" Background="#FF2D2D30" Foreground="White" 
+                         BorderBrush="#FF3E3E42" ToolTip="Ange tid (t.ex. 10:00)"/>
+            </Grid>
+
+            <Button Content="Spara Aktivitet"
+                    Command="{Binding SparaAktivitetCommand}"
+                    Background="#1E90FF" Foreground="White" FontWeight="Bold"
+                    Padding="10" BorderThickness="0" Cursor="Hand"
+                    HorizontalAlignment="Stretch"/>
+
+        </StackPanel>
+    </Border>
 </Window>

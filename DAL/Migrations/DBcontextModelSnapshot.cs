@@ -136,7 +136,11 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
+=======
+                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+>>>>>>> master
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +150,11 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
+=======
+                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+>>>>>>> master
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +164,11 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
+=======
+                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+>>>>>>> master
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +178,11 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$bjmVL08RyzrYNT2jh9R48.v3TIYzXtMtVNGiYnkoURn2NoKAKosaa",
+=======
+                            Lösenord = "$2a$11$HJitNuMptB/jSQwTLNh9Muup2lcw7qseJrjTn8OWSi6X5HSkHP0yC",
+>>>>>>> master
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -310,9 +326,8 @@ namespace DAL.Migrations
                     b.Property<int>("Lagerantal")
                         .HasColumnType("int");
 
-                    b.Property<string>("Mått")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MåttTyp")
+                        .HasColumnType("int");
 
                     b.Property<string>("Namn")
                         .IsRequired()
@@ -320,10 +335,6 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Pris")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Typ")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MaterialID");
 
@@ -335,30 +346,27 @@ namespace DAL.Migrations
                             MaterialID = 100001,
                             Beskrivning = "Inte filt man sover med",
                             Lagerantal = 23,
-                            Mått = "meter",
+                            MåttTyp = 0,
                             Namn = "Filt",
-                            Pris = 54m,
-                            Typ = "Tyg"
+                            Pris = 54m
                         },
                         new
                         {
                             MaterialID = 100002,
                             Beskrivning = "100% obesprutat bomull",
                             Lagerantal = 52,
-                            Mått = "milimeter",
+                            MåttTyp = 0,
                             Namn = "Bomull",
-                            Pris = 34m,
-                            Typ = "Tyg"
+                            Pris = 34m
                         },
                         new
                         {
                             MaterialID = 100003,
                             Beskrivning = "1.2 mm svar syträd av silikon och polyester",
                             Lagerantal = 2,
-                            Mått = "meter",
+                            MåttTyp = 0,
                             Namn = "Svart tråd",
-                            Pris = 28m,
-                            Typ = "Tråd"
+                            Pris = 28m
                         });
                 });
 
@@ -369,6 +377,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
+
+                    b.Property<DateTime?>("Datum")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Leverantör")
                         .IsRequired()

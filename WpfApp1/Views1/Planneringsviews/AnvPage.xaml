@@ -141,23 +141,23 @@
                     <!-- PLANERINGSECTION -->
                     <StackPanel Visibility="{Binding ValdAktivitet.ÄrPlanering, Converter={StaticResource BoolToVis}}" >
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                            <TextBlock Text="Order: " Foreground="#FFC5A059"/>
+                            <TextBlock Text="Order:  " Foreground="#FFC5A059"/>
                             <TextBlock Text="{Binding ValdAktivitet.OrderId}" Foreground="#B0FFFFFF"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                            <TextBlock Text="Produkt: " Foreground="#FFC5A059"/>
+                            <TextBlock Text="Produkt:  " Foreground="#FFC5A059"/>
                             <TextBlock Text="{Binding ValdAktivitet.ProduktNamn}" Foreground="#B0FFFFFF"/>
                         </StackPanel>
                     </StackPanel>
 
                     <!-- Tid -->
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Start tid  :  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="Start tid:  " Foreground="#FFC5A059"/>
                         <TextBlock Text="{Binding ValdAktivitet.StartTid, StringFormat=HH:mm}" Foreground="#B0FFFFFF"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Slut tid  :  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="Slut tid:  " Foreground="#FFC5A059"/>
                         <TextBlock Text="{Binding ValdAktivitet.SlutTid, StringFormat=HH:mm}"  Foreground="#B0FFFFFF"/>
                     </StackPanel>
 

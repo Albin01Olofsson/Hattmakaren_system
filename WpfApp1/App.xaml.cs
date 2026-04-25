@@ -21,7 +21,7 @@ namespace WpfApp1
 
         public App()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JHaF1cXmhMYVJpR2NbeU54flVHal1YVAciSV9jS3hTckdnWXdecXVcT2ddU091XA==");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8 / V1JHaF1cXmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdENjXX1acXVXR2BbVUxxX0leYA ==");
 
             // Din krasch-fångare som vi lade in tidigare
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;

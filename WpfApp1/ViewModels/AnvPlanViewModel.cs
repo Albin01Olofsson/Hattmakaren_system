@@ -1,6 +1,7 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Models;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -14,7 +15,10 @@ namespace WpfApp1.ViewModels
     {
         private readonly IPlaneringsYtaService _service;
         private readonly IAktivitetService _aktivitetService;
+        private readonly IAnvändarService _användarService;
         private Användare user => Session.CurrentUser; // När vm skapas, spara in den inloggade användaren från session i lokal variabel
+
+        public event Action? RequestClosePopup;
 
         [ObservableProperty]
         private string valtSchemaLäge;
@@ -41,10 +45,11 @@ namespace WpfApp1.ViewModels
 
         public string DennaVeckaTxt => $"Vecka {ISOWeek.GetWeekOfYear(NuvarandeMåndag)}, {NuvarandeMåndag:MMMM yyyy}";
 
-        public AnvPlanViewModel(IPlaneringsYtaService service, IAktivitetService aktivitetService)
+        public AnvPlanViewModel(IPlaneringsYtaService service, IAktivitetService aktivitetService, IAnvändarService användarService)
         {
             _service = service;
             _aktivitetService = aktivitetService;
+            _användarService = användarService;
 
             DateTime idag = DateTime.Today;
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
@@ -72,9 +77,10 @@ namespace WpfApp1.ViewModels
             {
                 planeringar = planeringar.Where(p => p.AnvändarID == Session.CurrentUser.AnvändarID)
                     .ToList();
-                aktiviteter = aktiviteter.Where(p => p.SkapadAvID == Session.CurrentUser.AnvändarID)
-                    .ToList();//här kan man sen lägga till filtrering så att om mitt id är i deltagarlistan
-                              // då ska det visas på mitt schema
+                aktiviteter = aktiviteter.Where(a => 
+                    a.SkapadAvID == Session.CurrentUser.AnvändarID ||
+                    a.Deltagare.Any(d => d.AnvändarID == Session.CurrentUser.AnvändarID)
+                    ).ToList();
             }
 
             // Skapa en helt NY, temporär lista i minnet för att inte bråka med UI-tråden
@@ -101,6 +107,9 @@ namespace WpfApp1.ViewModels
 
             foreach (var a in aktiviteter)
             {
+                bool ärDeltagare = a.Deltagare.Any(u => u.AnvändarID == Session.CurrentUser.AnvändarID);
+                bool ärSkapare = a.SkapadAvID == Session.CurrentUser.AnvändarID;
+
                 nyLista.Add(new SchemaBlock
                 {
                     Id = a.AktivitetID,
@@ -108,13 +117,19 @@ namespace WpfApp1.ViewModels
                     Titel = a.Namn,
                     StartTid = a.StartTid,
                     SlutTid = a.SlutTid,
-                    Färg = (Brush)new BrushConverter().ConvertFrom("#8A2BE2"),
                     AnvändarNamn = a.SkapadAv?.Namn,
                     AnvändarId = a.SkapadAvID,
+                    Färg = ärSkapare
+                        ? (Brush)new BrushConverter().ConvertFrom("#8A2BE2") // din aktivitet
+                        : ärDeltagare
+                            ?(Brush)new BrushConverter().ConvertFrom("#FFD700") // du är deltagare
+                            : (Brush)new BrushConverter().ConvertFrom("#87CEFA"),
                     ÄrHeldag = a.StartTid.Date != a.SlutTid.Date,
+                    DeltagareNamn = a.Deltagare?
+                        .Select(d => d.Namn)
+                        .ToList() ?? new List<string>()
                 });
             }
-
             // NÄR DEN ÄR HELT KLAR: Tilldela den till UI-variabeln i ett enda svep.
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -132,7 +147,6 @@ namespace WpfApp1.ViewModels
                 "Klar för leverans" => "#00C853",
                 _ => "#CCCCCC"
             };
-
             // Konverterar textsträngen till en riktig WPF-målarpensel
             return (Brush)new BrushConverter().ConvertFrom(färgKod);
         }
@@ -196,17 +210,25 @@ namespace WpfApp1.ViewModels
             {
                 await _aktivitetService.TaBortAktivitet(ValdAktivitet.Id);
             }
-
+            ValdAktivitet = null;
             await LaddaSchema();
+            RequestClosePopup?.Invoke();
         }
 
         [RelayCommand]
         private void ÖppnaLäggTillAktivitet()
         {
-            var window = new LäggTillAktivitetWindow();
+            var serviceProvider = ((App)Application.Current).ServiceProvider;
 
-            var vm = new LäggTillAktivitetViewModel(_aktivitetService, user);
-            window.DataContext = vm;
+            var vm = serviceProvider.GetRequiredService<LäggTillAktivitetViewModel>();
+
+            // sätt user manuellt
+            vm.SetUser(user);
+
+            var window = new LäggTillAktivitetWindow
+            {
+                DataContext = vm
+            };
 
             window.ShowDialog();
 

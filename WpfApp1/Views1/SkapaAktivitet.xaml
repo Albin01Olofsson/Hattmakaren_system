@@ -12,22 +12,13 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
-            <Border Background="#FF2C3E50"
-                    Padding="25"
-                    CornerRadius="10"
-                    Margin="20">
-
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="20">
                 <StackPanel>
-
                     <TextBlock Text="Planera Arbete" FontSize="24" FontWeight="Bold" Foreground="White" 
                                HorizontalAlignment="Center" Margin="0,0,0,25"/>
-
-                    
-
                     <TextBlock Text="Namn (Frivilligt)" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
                     <TextBox Text="{Binding PlaneringsNamn}" Margin="0,0,0,20" Padding="5" 
                              ToolTip="Lämnas tomt så används produktens namn automatiskt."/>
-
                     <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -51,67 +42,96 @@
                     </Grid>
 
                     <Border BorderBrush="#FF455A64" BorderThickness="0,1,0,0" Margin="0,5,0,20"/>
+                   
+                    <!--Start-->
                     <TextBlock Text="När ska arbetet påbörjas?" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid Margin="0,0,0,15">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <DatePicker SelectedDate="{Binding ValdStartTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Height="30"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <ComboBox SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" Grid.Column="2" Height="30" Padding="5" IsSynchronizedWithCurrentItem="False">
-                            <ComboBox.Items>
-                                <sys:Int32>7</sys:Int32>
-                                <sys:Int32>8</sys:Int32>
-                                <sys:Int32>9</sys:Int32>
-                                <sys:Int32>10</sys:Int32>
-                                <sys:Int32>11</sys:Int32>
-                                <sys:Int32>12</sys:Int32>
-                                <sys:Int32>13</sys:Int32>
-                                <sys:Int32>14</sys:Int32>
-                                <sys:Int32>15</sys:Int32>
-                                <sys:Int32>16</sys:Int32>
-                            </ComboBox.Items>
+                        <!-- StartTid/Datum Text -->
+                        <TextBlock Text="Datum" Grid.Row="0" Grid.Column="0" Foreground="#FFC5A059" FontWeight="Bold"/>
+                        <TextBlock Text="Timme" Grid.Row="0" Grid.Column="1" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Minut" Grid.Row="0" Grid.Column="2" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                        <!-- StartTid/Datum INPUTS -->
+                        <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding ValdStartTid}" Height="30"/>
+
+                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ValdStartTimme, Mode=TwoWay}" Background="#FF1A1A1D" Foreground="Black" Margin="5">
+                            <sys:Int32>7</sys:Int32>
+                            <sys:Int32>8</sys:Int32>
+                            <sys:Int32>9</sys:Int32>
+                            <sys:Int32>10</sys:Int32>
+                            <sys:Int32>11</sys:Int32>
+                            <sys:Int32>12</sys:Int32>
+                            <sys:Int32>13</sys:Int32>
+                            <sys:Int32>14</sys:Int32>
+                            <sys:Int32>15</sys:Int32>
+                            <sys:Int32>16</sys:Int32>
+                        </ComboBox>
+
+                        <ComboBox Grid.Row="1" Grid.Column="2" SelectedItem="{Binding ValdStartMinut, Mode=TwoWay}" Background="#FF1A1A1D" Foreground="Black" Margin="5">
+                            <sys:Int32>0</sys:Int32>
+                            <sys:Int32>15</sys:Int32>
+                            <sys:Int32>30</sys:Int32>
+                            <sys:Int32>45</sys:Int32>
                         </ComboBox>
                     </Grid>
                     <TextBlock Text="{Binding StartTidFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-10,0,15"/>
 
+                    <!--Slut-->
                     <TextBlock Text="När beräknas det vara klart?" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid Margin="0,0,0,25">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <DatePicker SelectedDate="{Binding ValdSlutTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Height="30"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <ComboBox SelectedItem="{Binding ValdSlutTimme, Mode=TwoWay}" Grid.Column="2" Height="30" Padding="5" IsSynchronizedWithCurrentItem="False">
-                            <ComboBox.Items>
-                                <sys:Int32>7</sys:Int32>
-                                <sys:Int32>8</sys:Int32>
-                                <sys:Int32>9</sys:Int32>
-                                <sys:Int32>10</sys:Int32>
-                                <sys:Int32>11</sys:Int32>
-                                <sys:Int32>12</sys:Int32>
-                                <sys:Int32>13</sys:Int32>
-                                <sys:Int32>14</sys:Int32>
-                                <sys:Int32>15</sys:Int32>
-                                <sys:Int32>16</sys:Int32>
-                                <sys:Int32>17</sys:Int32>
-                            </ComboBox.Items>
+                        <!-- SlutTid/Datum Text -->
+                        <TextBlock Text="Datum" Grid.Row="0" Grid.Column="0" Foreground="#FFC5A059" FontWeight="Bold"/>
+                        <TextBlock Text="Timme" Grid.Row="0" Grid.Column="1" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Minut" Grid.Row="0" Grid.Column="2" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                        <!-- SlutTid/Datum INPUTS -->
+                        <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding ValdSlutTid}" Height="30"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ValdSlutTimme, Mode=TwoWay}" Background="#FF1A1A1D" Foreground="Black" Margin="5">
+                            <sys:Int32>7</sys:Int32>
+                            <sys:Int32>8</sys:Int32>
+                            <sys:Int32>9</sys:Int32>
+                            <sys:Int32>10</sys:Int32>
+                            <sys:Int32>11</sys:Int32>
+                            <sys:Int32>12</sys:Int32>
+                            <sys:Int32>13</sys:Int32>
+                            <sys:Int32>14</sys:Int32>
+                            <sys:Int32>15</sys:Int32>
+                            <sys:Int32>16</sys:Int32>
+                        </ComboBox>
+
+                        <ComboBox Grid.Row="1" Grid.Column="2" SelectedItem="{Binding ValdSlutMinut, Mode=TwoWay}" Background="#FF1A1A1D" Foreground="Black" Margin="5">
+                            <sys:Int32>0</sys:Int32>
+                            <sys:Int32>15</sys:Int32>
+                            <sys:Int32>30</sys:Int32>
+                            <sys:Int32>45</sys:Int32>
                         </ComboBox>
                     </Grid>
                     <TextBlock Text="{Binding TimmarFel}" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-20,0,25"/>
 
-                    <Button Content="Spara Till Kalendern" Height="45" 
-                            Background="#FFB08D46" Foreground="Black" 
-                            FontSize="14" FontWeight="Bold" Cursor="Hand"
-                            BorderThickness="0"
-                            Command="{Binding SparaAktivitetCommand}"/>
-
+                    <Button Content="Spara Till Kalendern" Height="45" Background="#FFB08D46" Foreground="Black" FontSize="14" FontWeight="Bold" Cursor="Hand"
+                            BorderThickness="0" Command="{Binding SparaAktivitetCommand}"/>
                 </StackPanel>
             </Border>
         </Grid>

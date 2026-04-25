@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using Models;
+using System.Windows.Media;
 namespace WpfApp1.ViewModels
 {
     public class SchemaBlock
@@ -17,8 +18,14 @@ namespace WpfApp1.ViewModels
         // 3. Affärsdata (Det vi visar i ToolTip-rutan)
         public int? OrderId { get; set; }
         public int? ProduktId { get; set; }
-        public string AnvändarNamn { get; set; }
-        public int AnvändarId { get; set; }
         public string ProduktNamn { get; set; }
+        public int AnvändarId { get; set; }
+        public string AnvändarNamn { get; set; }
+        //för popup fönstret, visa deltagarlista
+        public List<string> DeltagareNamn { get; set; } = new();
+        public bool HarDeltagare =>
+            DeltagareNamn != null && DeltagareNamn.Any();
+        public bool ÄrAktivitet => Typ == "Aktivitet";
+        public bool ÄrPlanering => Typ == "Planering";
     }
 }

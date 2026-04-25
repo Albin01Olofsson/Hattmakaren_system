@@ -51,20 +51,18 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Ditt Schema" Grid.Column="0" 
-                           VerticalAlignment="Center" 
-                           FontSize="26" FontWeight="Bold" Foreground="#FF1A1A1D"/>
+                <TextBlock Text="Ditt Schema" Grid.Column="0" VerticalAlignment="Center" FontSize="26" FontWeight="Bold" Foreground="#FF1A1A1D"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Menu Background="Transparent" VerticalAlignment="Center" Margin= "0,0">
-                        <MenuItem Header="Ordrar" Click="Ordrar_Click" Foreground="#FF1A1A1D" FontSize="15" FontWeight="SemiBold"/>
-                    </Menu>
-
-                    <Button Content="+ Ny Aktivitet" 
-                            Command="{Binding ÖppnaLäggTillAktivitetCommand}" 
-                            Style="{StaticResource ModernActionButton}" 
-                            Margin="20,0" Height="36"/>
-
+                    <!--OrderKnapp-->
+                    <Button Content="+ Ordrar" Click="Ordrar_Click" Background="#FF2C3E50" 
+                            Foreground="White" FontWeight="Bold" Padding="12,6" 
+                            Margin="10,0,0,0" Height="36"/>
+                    <!--AktivitetKnapp-->
+                    <Button Content="+ Ny Aktivitet" Command="{Binding ÖppnaLäggTillAktivitetCommand}" 
+                            Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Padding="12,6" 
+                            Margin="20,0"  Height="36"/>
+                    <!--SchemaLäge-->
                     <ComboBox SelectedItem="{Binding ValtSchemaLäge, Mode=TwoWay}" 
                               Width="140" Height="30" VerticalContentAlignment="Center">
                         <sys:String>Alla scheman</sys:String>
@@ -74,14 +72,10 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Margin="15,10,15,15" Background="#FF1E1E1E" CornerRadius="15">
+        <Border Grid.Row="1" Margin="15,10,15,15" Background="#FF2C3E50" CornerRadius="15">
             <Grid Margin="5">
-                <syncfusion:SfScheduler x:Name="Kalender"
-                                        ViewType="Week" 
-                                        EnableToolTip="False"
-                                        BorderThickness="0"
-                                        AppointmentTapped="Kalender_AppointmentTapped"
-                                        AppointmentDropping="Kalender_AppointmentDropping"
+                <syncfusion:SfScheduler x:Name="Kalender" ViewType="Week" EnableToolTip="False" BorderThickness="0"
+                                        AppointmentTapped="Kalender_AppointmentTapped" AppointmentDropping="Kalender_AppointmentDropping"
                                         ItemsSource="{Binding Schema}">
 
                     <syncfusion:SfScheduler.Resources>
@@ -98,22 +92,15 @@
                     </syncfusion:SfScheduler.DaysViewSettings>
 
                     <syncfusion:SfScheduler.AppointmentMapping>
-                        <syncfusion:AppointmentMapping 
-                            Subject="Titel"          
-                            StartTime="StartTid"     
-                            EndTime="SlutTid"        
-                            AppointmentBackground="Färg"
-                            IsAllDay="ÄrHeldag" />
+                        <syncfusion:AppointmentMapping Subject="Titel" StartTime="StartTid" EndTime="SlutTid"        
+                                                       AppointmentBackground="Färg" IsAllDay="ÄrHeldag" />
                     </syncfusion:SfScheduler.AppointmentMapping>
-
-                   
                 </syncfusion:SfScheduler>
             </Grid>
         </Border>
 
-        <Border Grid.RowSpan="2" Background="#AA000000" 
-                Visibility="{Binding MånadsvySynlig, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" 
-                Panel.ZIndex="100">
+        <Border Grid.RowSpan="2" Background="#AA000000" Panel.ZIndex="100"
+                Visibility="{Binding MånadsvySynlig, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
             <Border Background="#FF2D2D30" Padding="25" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel>
                     <Calendar SelectedDate="{Binding ValtDatum, Mode=TwoWay}" DisplayDate="{Binding NuvarandeMåndag}"/>
@@ -123,88 +110,61 @@
                 </StackPanel>
             </Border>
         </Border>
-        <Popup x:Name="AppointmentPopup"
-           Placement="MousePoint"
-           StaysOpen="False"
-           AllowsTransparency="True"
-           PopupAnimation="Fade">
-
-            <Border Background="#FF2D2D30"
-                CornerRadius="12"
-                BorderBrush="#FFC5A059"
-                BorderThickness="1"
-                Padding="15"
-                Width="220">
-
+        <Popup x:Name="AppointmentPopup" Placement="MousePoint" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+            <Border Background="#FF2D2D30" CornerRadius="12" BorderBrush="#FFC5A059" BorderThickness="1" Padding="15" Width="220">
                 <StackPanel>
                     <!-- Titel -->
-                    <TextBlock Text="{Binding ValdAktivitet.Titel}" 
-                       Foreground="White" 
-                       FontWeight="Bold" 
-                       FontSize="14"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="{Binding ValdAktivitet.Typ}" Foreground="#FFC5A059"/>
+                        <TextBlock Text=":  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="{Binding ValdAktivitet.Titel}" Foreground="White"/>
+                    </StackPanel>
 
-                    <!-- Användare -->
-                    <TextBlock Text="{Binding ValdAktivitet.AnvändarNamn}" 
-                       Foreground="#B0FFFFFF"
-                       Margin="0,5,0,5"/>
+                    <!-- Skapare -->
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Skapad av:  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="{Binding ValdAktivitet.AnvändarNamn}" Foreground="#B0FFFFFF"/>
+                    </StackPanel>
+
+                    <!-- DELTAGARE LISTA -->
+                    <StackPanel Visibility="{Binding ValdAktivitet.HarDeltagare, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Deltagare:  " Foreground="#FFC5A059"/>
+                        <ItemsControl ItemsSource="{Binding ValdAktivitet.DeltagareNamn}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" Foreground="#B0FFFFFF" Margin="0,0,0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <!-- PLANERINGSECTION -->
+                    <StackPanel Visibility="{Binding ValdAktivitet.ÄrPlanering, Converter={StaticResource BoolToVis}}" >
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Order: " Foreground="#FFC5A059"/>
+                            <TextBlock Text="{Binding ValdAktivitet.OrderId}" Foreground="#B0FFFFFF"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Text="Produkt: " Foreground="#FFC5A059"/>
+                            <TextBlock Text="{Binding ValdAktivitet.ProduktNamn}" Foreground="#B0FFFFFF"/>
+                        </StackPanel>
+                    </StackPanel>
 
                     <!-- Tid -->
-                    <TextBlock Text="{Binding ValdAktivitet.StartTid, StringFormat=HH:mm}" 
-                       Foreground="#88FFFFFF"/>
-                    <TextBlock Text="{Binding ValdAktivitet.SlutTid, StringFormat=HH:mm}" 
-                       Foreground="#88FFFFFF"
-                       Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Start tid  :  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="{Binding ValdAktivitet.StartTid, StringFormat=HH:mm}" Foreground="#B0FFFFFF"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Slut tid  :  " Foreground="#FFC5A059"/>
+                        <TextBlock Text="{Binding ValdAktivitet.SlutTid, StringFormat=HH:mm}"  Foreground="#B0FFFFFF"/>
+                    </StackPanel>
 
                     <!-- Ta bort -->
-                    <Button Content="Ta bort"
-                    Command="{Binding TaBortValdCommand}"
-                    IsEnabled="{Binding KanTaBortVald}"
-                    Background="#FFCF6679"
-                    Foreground="White"
-                    Padding="8"/>
+                    <Button Content="Ta bort" Command="{Binding TaBortValdCommand}" IsEnabled="{Binding KanTaBortVald}" Background="#FFCF6679" Foreground="White" Padding="8" Margin="0,5,0,0"/>
                 </StackPanel>
-
             </Border>
         </Popup>
-        <!--<Border x:Name="InfoPopup" 
-        Visibility="Collapsed" 
-        Background="#FF2D2D30" 
-        CornerRadius="15" 
-        BorderBrush="#FFC5A059" 
-        BorderThickness="1.5"
-        Width="240" 
-        HorizontalAlignment="Center" 
-        VerticalAlignment="Center" 
-        Panel.ZIndex="1000"
-        Padding="20">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="15" Opacity="0.4"/>
-            </Border.Effect>
-            <StackPanel>
-                <Grid Margin="0,0,0,12">
-                    <TextBlock x:Name="PopupTitel" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                    <Button Content="✕" HorizontalAlignment="Right" Background="Transparent" Foreground="#88FFFFFF" BorderThickness="0" Cursor="Hand" Click="StängPopup_Click"/>
-                </Grid>
-
-                <TextBlock x:Name="PopupAnvändare" Foreground="#B0FFFFFF" FontSize="14" Margin="0,0,0,5"/>
-
-                <TextBlock x:Name="PopupTid" Foreground="#88FFFFFF" FontSize="12" Margin="0,0,0,15"/>
-
-                <Rectangle Height="1" Fill="#33FFFFFF" Margin="0,0,0,15"/>
-
-                <Button Content="Ta bort bokning" 
-                Background="#FFCF6679" 
-                Foreground="White" 
-                FontWeight="Bold"
-                Padding="10,8"
-                Click="TaBortFrånPopup_Click">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="8"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </StackPanel>
-        </Border>-->
     </Grid>
 </Page>

@@ -11,34 +11,37 @@ namespace WpfApp1.ViewModels
     public partial class LäggTillAktivitetViewModel : ObservableObject
     {
         private readonly IAktivitetService _service;
-        private readonly Användare _user;
-        public ObservableCollection<Användare> AllaAnvändare { get; } = new();
+        private readonly IAnvändarService _användarService;
+        private Användare _user;
+        public void SetUser(Användare user)
+        {
+            _user = user;
+        }
+        public bool ÄrAdmin => _user?.IsAdmin == true;
+        public ObservableCollection<SelectableAnvändare> AllaAnvändare { get; } = new();
 
         public ObservableCollection<Användare> ValdaDeltagare { get; } = new();
 
-        public LäggTillAktivitetViewModel(IAktivitetService service, Användare user)
+        [ObservableProperty] private string titel;
+
+        [ObservableProperty] private DateTime startDatum = DateTime.Now;
+
+        [ObservableProperty] private int startTid;
+        [ObservableProperty] private int startMinut;
+
+        [ObservableProperty] private int slutTid;
+        [ObservableProperty] private int slutMinut;
+
+        [ObservableProperty] private DateTime slutDatum = DateTime.Now;
+
+        public LäggTillAktivitetViewModel(IAktivitetService service, IAnvändarService användarService)
         {
             _service = service;
-            _user = user;
+            _användarService = användarService;
+            _ = LaddaAnvändare();
         }
 
-        [ObservableProperty]
-        private string titel;
-
-        [ObservableProperty]
-        private DateTime startDatum = DateTime.Now;
-
-        [ObservableProperty]
-        private TimeSpan startTid;
-
-        [ObservableProperty]
-        private TimeSpan slutTid;
-
-        [ObservableProperty]
-        private DateTime slutDatum = DateTime.Now;
-
         [RelayCommand]
-
         private async Task SparaAktivitet()
         {
             try
@@ -55,26 +58,40 @@ namespace WpfApp1.ViewModels
                     return;
                 }
 
-                var start = startDatum.Date + startTid;
-                var slut = slutDatum.Date + slutTid;
+                var start = StartDatum.Date + new TimeSpan(StartTid, StartMinut, 0);
+                var slut = SlutDatum.Date + new TimeSpan(SlutTid, SlutMinut, 0);
 
                 if (slut <= start)
                 {
                     MessageBox.Show("Sluttiden måste vara senare än starttiden!");
                     return;
                 }
-
+                
                 var aktivitet = new Aktivitet
                 {
                     Namn = Titel,
                     StartTid = start,
                     SlutTid = slut,
-                    SkapadAvID = _user.AnvändarID
+                    SkapadAvID = _user.AnvändarID,
+                    Deltagare = new List<Användare>()
                 };
+                var deltagareIds = AllaAnvändare
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.User.AnvändarID)
+                    .ToList();
 
-                aktivitet.Deltagare = ValdaDeltagare.ToList();
+                foreach (var id in deltagareIds)
+                {
+                    var user = await _användarService.HämtaAnvändareMedId(id);
+
+                    if (user != null)
+                    {
+                        aktivitet.Deltagare.Add(user);
+                    }
+                }
+
                 await _service.LäggTillAktivitet(aktivitet);
-
+                MessageBox.Show(aktivitet.Deltagare.Count.ToString());
                 // Stäng fönstret
                 Application.Current.Windows
                     .OfType<Window>()
@@ -87,6 +104,23 @@ namespace WpfApp1.ViewModels
                 MessageBox.Show($"Ett fel uppstod: {ex.Message}\n\nInre fel: {ex.InnerException?.Message}");
             }
         }
-    }
 
+        private async Task LaddaAnvändare()
+        {
+            var users = await _användarService.HämtaAllaAnvändare();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AllaAnvändare.Clear();
+
+                foreach (var u in users)
+                {
+                    AllaAnvändare.Add(new SelectableAnvändare
+                    {
+                        User = u
+                    });
+                }
+            });
+        }
+    }
 }

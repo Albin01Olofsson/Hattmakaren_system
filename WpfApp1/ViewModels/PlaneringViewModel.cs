@@ -27,20 +27,21 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private Produkt valdProdukt;
 
-        //[ObservableProperty]
-        //private OrderRad valdOrderRad;
-
         [ObservableProperty]
         private DateTime? valdStartTid;
 
         [ObservableProperty]
         private int? valdStartTimme;
+        [ObservableProperty]
+        private int? valdStartMinut;
 
         [ObservableProperty]
         private DateTime? valdSlutTid;
 
         [ObservableProperty]
         private int? valdSlutTimme;
+        [ObservableProperty]
+        private int? valdSlutMinut;
 
         [ObservableProperty]
         private string planeringsNamn;
@@ -120,8 +121,9 @@ namespace WpfApp1.ViewModels
                 StartTidFel = "Välj tid";
                 hasError = true;
             }
-            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
-            var slutTid = ValdSlutTid.Value.Date.AddHours(ValdSlutTimme.Value);
+
+            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value).AddMinutes(ValdStartMinut ?? 0);
+            var slutTid = ValdSlutTid.Value.Date.AddHours(ValdSlutTimme.Value).AddMinutes(ValdSlutMinut ?? 0);
 
             if (slutTid <= startTid)
             {
@@ -131,8 +133,6 @@ namespace WpfApp1.ViewModels
 
             if (User == null || hasError)
                 return;
-
-
 
             var orderRad = HämtaOrderRad();
 
@@ -169,6 +169,5 @@ namespace WpfApp1.ViewModels
                 .OrderRader?
                 .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
         }
-
     }
 }

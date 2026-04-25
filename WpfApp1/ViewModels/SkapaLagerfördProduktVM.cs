@@ -51,6 +51,13 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string nyBeskrivning = String.Empty;
 
+        [ObservableProperty]
+        private string artikelId;
+
+        [ObservableProperty]
+        private string kategori;
+
+
         public SkapaLagerfördProduktVM(IOrderService orderService, IProduktService produktService, IMaterialService materialService, IKundService kundService, IAnvändarService användarService)
         {
             _orderService = orderService;
@@ -180,6 +187,33 @@ namespace WpfApp1.ViewModels
                 NyFärg = string.Empty;
                 return;
             }
+            // Artikelid
+            if (string.IsNullOrWhiteSpace(ArtikelId))
+            {
+                MessageBox.Show("ArtikelID för hatten måste anges.", "ArtikelID ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ArtikelId = String.Empty;
+                return;
+            }
+            else if (ArtikelId.Length < 3 || ArtikelId.Length > 76)
+            {
+                MessageBox.Show("Teckenantalet angivet för 'ArtikelID' måste vara 3-76 tecken", "För många tecken ArtikelID!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ArtikelId = string.Empty;
+                return;
+            }
+            // Kategori
+            if (string.IsNullOrWhiteSpace(Kategori))
+            {
+                MessageBox.Show("Kategori för hatten måste anges.", "Kategori ej angiven!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Kategori = String.Empty;
+                return;
+            }
+            else if (Kategori.Length < 3 || Kategori.Length > 76)
+            {
+                MessageBox.Show("Teckenantalet angivet för 'Kategori' måste vara 3-76 tecken", "För många tecken Kategori!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Kategori = string.Empty;
+                return;
+            }
+
 
             Användare startadAvAnvändare = Session.CurrentUser;
 
@@ -192,6 +226,8 @@ namespace WpfApp1.ViewModels
                 HattTyp = NyTyp,
                 Modell = NyModell,
                 Färg = NyFärg,
+                ArtikelID = ArtikelId,
+                Kategori = Kategori,
                 Decoration = NyDecoration,
                 Lagerantal = NyttLagerantal,
                 TillverkadAVID = startadAvAnvändare.AnvändarID
@@ -215,6 +251,8 @@ namespace WpfApp1.ViewModels
             NyDecoration = string.Empty;
             ValdMaterial = null;
             NyMaterialLista.Clear();
+            Kategori = string.Empty;
+            ArtikelId = string.Empty;
         }
     }
 }

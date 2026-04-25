@@ -18,6 +18,7 @@ namespace WpfApp1.ViewModels
         public int? OrderId { get; set; }
         public int? ProduktId { get; set; }
         public string AnvändarNamn { get; set; }
+        public int AnvändarId { get; set; }
         public string ProduktNamn { get; set; }
     }
 }

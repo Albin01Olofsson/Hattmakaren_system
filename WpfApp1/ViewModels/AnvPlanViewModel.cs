@@ -29,6 +29,9 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private DateTime? valtDatum;
 
+        [ObservableProperty]
+        private SchemaBlock valdAktivitet;
+
         private ObservableCollection<SchemaBlock> schema;
         public ObservableCollection<SchemaBlock> Schema
         {
@@ -46,7 +49,7 @@ namespace WpfApp1.ViewModels
             DateTime idag = DateTime.Today;
             int diff = (7 + (idag.DayOfWeek - DayOfWeek.Monday)) % 7;
             NuvarandeMåndag = idag.AddDays(-1 * diff).Date;
-
+            ValtSchemaLäge = "Mitt schema";
             _ = LaddaSchema();
         }
 
@@ -64,6 +67,16 @@ namespace WpfApp1.ViewModels
             var planeringar = await _service.HämtaAllaPlaneringar(veckaStart, veckaSlut);
             var aktiviteter = await _aktivitetService.HämtaAllaAktiviteter();
 
+            // Om användaren vill se eget schema, filtrera på användarens id
+            if (ValtSchemaLäge == "Mitt schema")
+            {
+                planeringar = planeringar.Where(p => p.AnvändarID == Session.CurrentUser.AnvändarID)
+                    .ToList();
+                aktiviteter = aktiviteter.Where(p => p.SkapadAvID == Session.CurrentUser.AnvändarID)
+                    .ToList();//här kan man sen lägga till filtrering så att om mitt id är i deltagarlistan
+                              // då ska det visas på mitt schema
+            }
+
             // Skapa en helt NY, temporär lista i minnet för att inte bråka med UI-tråden
             var nyLista = new ObservableCollection<SchemaBlock>();
 
@@ -80,6 +93,7 @@ namespace WpfApp1.ViewModels
                     OrderId = p.OrderRad?.OrderID,
                     ProduktId = p.OrderRad?.ProduktID,
                     AnvändarNamn = p.Användare?.Namn,
+                    AnvändarId = p.AnvändarID,
                     ProduktNamn = p.OrderRad?.Produkt?.Namn,
                     ÄrHeldag = p.StartTid.Date != p.SlutTid.Date,
                 });
@@ -96,6 +110,7 @@ namespace WpfApp1.ViewModels
                     SlutTid = a.SlutTid,
                     Färg = (Brush)new BrushConverter().ConvertFrom("#8A2BE2"),
                     AnvändarNamn = a.SkapadAv?.Namn,
+                    AnvändarId = a.SkapadAvID,
                     ÄrHeldag = a.StartTid.Date != a.SlutTid.Date,
                 });
             }
@@ -161,11 +176,27 @@ namespace WpfApp1.ViewModels
                 _ = LaddaSchema();
             }
         }
-
-        [RelayCommand]
-        private async Task DeleteBokning(int planeringsId)
+        public bool KanTaBortVald =>
+                ValdAktivitet != null &&
+                ValdAktivitet.AnvändarId == Session.CurrentUser.AnvändarID;
+        partial void OnValdAktivitetChanged(SchemaBlock value)
         {
-            await _service.TaBortPlanering(planeringsId);
+            OnPropertyChanged(nameof(KanTaBortVald));
+        }
+        [RelayCommand]
+        private async Task TaBortVald()
+        {
+            if (ValdAktivitet == null) return;
+
+            if (ValdAktivitet.Typ == "Planering")
+            {
+                await _service.TaBortPlanering(ValdAktivitet.Id);
+            }
+            else if (ValdAktivitet.Typ == "Aktivitet")
+            {
+                await _aktivitetService.TaBortAktivitet(ValdAktivitet.Id);
+            }
+
             await LaddaSchema();
         }
 

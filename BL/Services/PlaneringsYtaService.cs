@@ -74,7 +74,7 @@ namespace BL.Services
         public async Task<List<Planering>> HämtaAllaPlaneringar(DateTime veckaStart, DateTime veckaSlut)
         {
             return await _planeringsRepo.HämtaAllaPlaneringarMedDetaljer()
-                .Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut).ToListAsync();
+                /*.Where(p => p.StartTid >= veckaStart && p.StartTid < veckaSlut)*/.ToListAsync();
         }
 
         // 5. Hämta planeringar för en specifik användare

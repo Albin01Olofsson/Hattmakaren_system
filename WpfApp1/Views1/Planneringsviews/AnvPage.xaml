@@ -123,7 +123,50 @@
                 </StackPanel>
             </Border>
         </Border>
-        <Border x:Name="InfoPopup" 
+        <Popup x:Name="AppointmentPopup"
+           Placement="MousePoint"
+           StaysOpen="False"
+           AllowsTransparency="True"
+           PopupAnimation="Fade">
+
+            <Border Background="#FF2D2D30"
+                CornerRadius="12"
+                BorderBrush="#FFC5A059"
+                BorderThickness="1"
+                Padding="15"
+                Width="220">
+
+                <StackPanel>
+                    <!-- Titel -->
+                    <TextBlock Text="{Binding ValdAktivitet.Titel}" 
+                       Foreground="White" 
+                       FontWeight="Bold" 
+                       FontSize="14"/>
+
+                    <!-- Användare -->
+                    <TextBlock Text="{Binding ValdAktivitet.AnvändarNamn}" 
+                       Foreground="#B0FFFFFF"
+                       Margin="0,5,0,5"/>
+
+                    <!-- Tid -->
+                    <TextBlock Text="{Binding ValdAktivitet.StartTid, StringFormat=HH:mm}" 
+                       Foreground="#88FFFFFF"/>
+                    <TextBlock Text="{Binding ValdAktivitet.SlutTid, StringFormat=HH:mm}" 
+                       Foreground="#88FFFFFF"
+                       Margin="0,0,0,10"/>
+
+                    <!-- Ta bort -->
+                    <Button Content="Ta bort"
+                    Command="{Binding TaBortValdCommand}"
+                    IsEnabled="{Binding KanTaBortVald}"
+                    Background="#FFCF6679"
+                    Foreground="White"
+                    Padding="8"/>
+                </StackPanel>
+
+            </Border>
+        </Popup>
+        <!--<Border x:Name="InfoPopup" 
         Visibility="Collapsed" 
         Background="#FF2D2D30" 
         CornerRadius="15" 
@@ -162,6 +205,6 @@
                     </Button.Resources>
                 </Button>
             </StackPanel>
-        </Border>
+        </Border>-->
     </Grid>
 </Page>

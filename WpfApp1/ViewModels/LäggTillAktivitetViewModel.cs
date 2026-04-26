@@ -19,20 +19,26 @@ namespace WpfApp1.ViewModels
         }
         public bool ÄrAdmin => _user?.IsAdmin == true;
         public ObservableCollection<SelectableAnvändare> AllaAnvändare { get; } = new();
-
+        [ObservableProperty] private string sökText;
+        public ObservableCollection<SelectableAnvändare> FiltreradeAnvändare { get; set; } = new();
         public ObservableCollection<Användare> ValdaDeltagare { get; } = new();
 
         [ObservableProperty] private string titel;
 
-        [ObservableProperty] private DateTime startDatum = DateTime.Now;
+        [ObservableProperty] private DateTime? startDatum = DateTime.Now;
 
-        [ObservableProperty] private int startTid;
-        [ObservableProperty] private int startMinut;
+        [ObservableProperty] private int? startTid;
+        [ObservableProperty] private int? startMinut;
 
-        [ObservableProperty] private int slutTid;
-        [ObservableProperty] private int slutMinut;
+        [ObservableProperty] private int? slutTid;
+        [ObservableProperty] private int? slutMinut;
 
-        [ObservableProperty] private DateTime slutDatum = DateTime.Now;
+        [ObservableProperty] private DateTime? slutDatum = DateTime.Now;
+
+        [ObservableProperty] private string namnFel;
+        [ObservableProperty] private string startTidFel;
+        [ObservableProperty] private string slutTidFel;
+        [ObservableProperty] private string timmarFel;
 
         public LäggTillAktivitetViewModel(IAktivitetService service, IAnvändarService användarService)
         {
@@ -44,29 +50,48 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private async Task SparaAktivitet()
         {
+            NamnFel = "";
+            StartTidFel = "";
+            SlutTidFel = "";
+            TimmarFel = "";
+            bool HasErrors = false;
             try
             {
                 if (_user == null)
                 {
                     MessageBox.Show("Systemfel: Ingen användare inloggad.");
+                    HasErrors = true;
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(Titel))
                 {
-                    MessageBox.Show("Vänligen fyll i ett namn på aktiviteten.");
-                    return;
+                    NamnFel = "Vänligen fyll i ett namn på aktiviteten.";
+                    HasErrors = true;
+                }
+                if (!StartDatum.HasValue || !StartTid.HasValue)
+                {
+                    StartTidFel = "Välj datum och tid!";
+                    HasErrors = true;
+                }
+                if (!SlutDatum.HasValue || !SlutTid.HasValue)
+                {
+                    SlutTidFel = "Välj datum och tid!";
+                    HasErrors = true;
                 }
 
-                var start = StartDatum.Date + new TimeSpan(StartTid, StartMinut, 0);
-                var slut = SlutDatum.Date + new TimeSpan(SlutTid, SlutMinut, 0);
+                var start = StartDatum.Value.Date.AddHours(StartTid.Value).AddMinutes(StartMinut ?? 0);
 
+                var slut = SlutDatum.Value.Date.AddHours(SlutTid.Value).AddMinutes(SlutMinut ?? 0);
+                
                 if (slut <= start)
                 {
-                    MessageBox.Show("Sluttiden måste vara senare än starttiden!");
-                    return;
+                    TimmarFel = "Sluttiden måste vara senare än starttiden!";
+                    HasErrors = true;
                 }
-                
+                if (HasErrors)
+                    return;
+
                 var aktivitet = new Aktivitet
                 {
                     Namn = Titel,
@@ -91,7 +116,13 @@ namespace WpfApp1.ViewModels
                 }
 
                 await _service.LäggTillAktivitet(aktivitet);
-                MessageBox.Show(aktivitet.Deltagare.Count.ToString());
+
+                //MessageBox.Show(aktivitet.Deltagare.Count.ToString());
+                NamnFel = "";
+                StartTidFel = "";
+                SlutTidFel = "";
+                TimmarFel = "";
+
                 // Stäng fönstret
                 Application.Current.Windows
                     .OfType<Window>()
@@ -120,7 +151,28 @@ namespace WpfApp1.ViewModels
                         User = u
                     });
                 }
+                FiltreraAnvändare();
             });
+        }
+        partial void OnSökTextChanged(string value)
+        {
+            FiltreraAnvändare();
+        }
+
+        private void FiltreraAnvändare()
+        {
+            FiltreradeAnvändare.Clear();
+
+            var filtrerade = string.IsNullOrWhiteSpace(SökText)
+                ? AllaAnvändare
+                : AllaAnvändare
+                    .Where(a => a.User.Namn
+                        .Contains(SökText, StringComparison.OrdinalIgnoreCase));
+
+            foreach (var user in filtrerade)
+            {
+                FiltreradeAnvändare.Add(user);
+            }
         }
     }
 }

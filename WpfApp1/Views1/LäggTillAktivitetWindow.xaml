@@ -12,9 +12,10 @@
             <TextBlock Text="Skapa Aktivitet" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,25"/>
             <TextBlock Text="Aktivitetens namn" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
             <TextBox Text="{Binding Titel}" Margin="0,0,0,20" Padding="5" Background="#FF1A1A1D" Foreground="White"/>
+            <TextBlock Text="{Binding NamnFel}" Grid.Row="2" Grid.Column="1" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-20,0,25"/>
 
             <!-- START -->
-            <Grid Margin="0,0,0,20">
+            <Grid Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
@@ -22,6 +23,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -57,10 +59,12 @@
                     <sys:Int32>30</sys:Int32>
                     <sys:Int32>45</sys:Int32>
                 </ComboBox>
+                <TextBlock Text="{Binding StartTidFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+
             </Grid>
 
             <!-- SLUT -->
-            <Grid Margin="0,0,0,25">
+            <Grid Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
@@ -68,6 +72,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -103,13 +108,23 @@
                     <sys:Int32>30</sys:Int32>
                     <sys:Int32>45</sys:Int32>
                 </ComboBox>
+                <TextBlock Text="{Binding SlutTidFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding TimmarFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+
             </Grid>
 
             <!-- ADMIN BEHÖRIGHET -->
             <StackPanel Visibility="{Binding ÄrAdmin, Converter={StaticResource BoolToVis}}">
                 <TextBlock Text="Deltagare" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,10,0,5"/>
-                <ListBox ItemsSource="{Binding AllaAnvändare}" SelectionMode="Multiple" Background="#FF1A1A1D"
-                         BorderBrush="#FF3E3E42" Foreground="White" Height="100">
+                <TextBox Text="{Binding SökText, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,10"
+                            Padding="5"
+                            Background="#FF1A1A1D"
+                            Foreground="White"
+                            BorderBrush="#FF3E3E42"
+                            ToolTip="Sök användare..."/>
+                <ListBox ItemsSource="{Binding FiltreradeAnvändare}" SelectionMode="Multiple" Background="#FF1A1A1D"
+                         BorderBrush="#FF3E3E42" Foreground="White" Height="100" MaxHeight="100" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <CheckBox Content="{Binding User.Namn}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Foreground="White"/>

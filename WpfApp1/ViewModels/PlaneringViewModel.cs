@@ -56,7 +56,11 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string startTidFel;
         [ObservableProperty]
+        private string slutTidFel;
+        [ObservableProperty]
         private string timmarFel;
+        [ObservableProperty]
+        private string slutTimmarFel;
 
         public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
@@ -99,7 +103,9 @@ namespace WpfApp1.ViewModels
             OrdrarFel = "";
             ProdukterFel = "";
             StartTidFel = "";
+            SlutTidFel = "";
             TimmarFel = "";
+            SlutTimmarFel = "";
 
             bool hasError = false;
 
@@ -115,10 +121,14 @@ namespace WpfApp1.ViewModels
                 hasError = true;
             }
 
-            if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue ||
-                !ValdSlutTid.HasValue || !ValdSlutTimme.HasValue)
+            if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue)
             {
-                StartTidFel = "Välj tid";
+                StartTidFel = "Välj datum och tid!";
+                hasError = true;
+            }
+            if (!ValdSlutTid.HasValue || !ValdSlutTimme.HasValue)
+            {
+                SlutTidFel = "Välj datum och tid!";
                 hasError = true;
             }
 
@@ -128,19 +138,19 @@ namespace WpfApp1.ViewModels
             if (slutTid <= startTid)
             {
                 TimmarFel = "Arbetet måste sluta efter att det har börjat";
-                return;
+                hasError = true;
             }
-
-            if (User == null || hasError)
-                return;
 
             var orderRad = HämtaOrderRad();
 
             if (orderRad == null)
             {
-                ProdukterFel = "Kunde inte hitta orderrad för vald produkt";
-                return;
+                ProdukterFel = "Kunde inte hitta vald produkt";
+                hasError = true;
             }
+
+            if (User == null || hasError)
+                return;
 
             var planering = new Planering
             {

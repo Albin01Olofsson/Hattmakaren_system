@@ -19,6 +19,14 @@ namespace WpfApp1
 
         public IServiceProvider ServiceProvider { get; private set; }
 
+        public App()
+        {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8 / V1JHaF1cXmhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdENjXX1acXVXR2BbVUxxX0leYA ==");
+
+            // Din krasch-fångare som vi lade in tidigare
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -34,6 +42,7 @@ namespace WpfApp1
             services.AddScoped<IOrderRepository, OrderRepo>(); // SAKNADES
             services.AddScoped<IPlaneringsRepo, PlaneringsRepo>();
             services.AddScoped<IAktivitetsRepo, AktivitetRepo>();
+            services.AddScoped<IReklamationRepository, ReklamationRepository>();
 
             // 3. REGISTRERA TJÄNSTER (BL)
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -44,12 +53,14 @@ namespace WpfApp1
             services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
             services.AddScoped<IAktivitetService, AktivitetService>();
             services.AddSingleton<ITullService, TullService>();
+            services.AddScoped<IReklamationService, ReklamationService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();
             services.AddTransient<SkapaOrderViewModel>(); // DETTA VAR FELET PÅ BILDEN!
             services.AddTransient<PlaneringViewModel>();
             services.AddTransient<AnvPlanViewModel>();
+            services.AddTransient<LäggTillAktivitetViewModel>();
 
             // 5. BYGG PROVIDER
             ServiceProvider = services.BuildServiceProvider();
@@ -72,6 +83,15 @@ namespace WpfApp1
             };
 
             mainWindow.MainFrame.Navigate(loginPage);
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"SYSTEMKRASCH FÖRHINDRAD!\n\nFel: {e.Exception.Message}",
+                            "Globalt Fel",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+            e.Handled = true;
         }
     }
 }

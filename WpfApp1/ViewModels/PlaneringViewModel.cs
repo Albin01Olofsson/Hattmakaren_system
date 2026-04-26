@@ -27,14 +27,21 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private Produkt valdProdukt;
 
-        //[ObservableProperty]
-        //private OrderRad valdOrderRad;
-
         [ObservableProperty]
         private DateTime? valdStartTid;
 
         [ObservableProperty]
         private int? valdStartTimme;
+        [ObservableProperty]
+        private int? valdStartMinut;
+
+        [ObservableProperty]
+        private DateTime? valdSlutTid;
+
+        [ObservableProperty]
+        private int? valdSlutTimme;
+        [ObservableProperty]
+        private int? valdSlutMinut;
 
         [ObservableProperty]
         private string planeringsNamn;
@@ -49,7 +56,11 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string startTidFel;
         [ObservableProperty]
+        private string slutTidFel;
+        [ObservableProperty]
         private string timmarFel;
+        [ObservableProperty]
+        private string slutTimmarFel;
 
         public PlaneringViewModel(IOrderService orderService, IPlaneringsYtaService planeringsService)
         {
@@ -64,7 +75,7 @@ namespace WpfApp1.ViewModels
             AllaOrdrar.Clear();
 
             var ordrarFrånDB = await _orderService.GetOrdersWithNavProps();
-            
+
             foreach (var order in ordrarFrånDB)
             {
                 AllaOrdrar.Add(order);
@@ -92,7 +103,9 @@ namespace WpfApp1.ViewModels
             OrdrarFel = "";
             ProdukterFel = "";
             StartTidFel = "";
+            SlutTidFel = "";
             TimmarFel = "";
+            SlutTimmarFel = "";
 
             bool hasError = false;
 
@@ -110,29 +123,41 @@ namespace WpfApp1.ViewModels
 
             if (!ValdStartTid.HasValue || !ValdStartTimme.HasValue)
             {
-                StartTidFel = "Välj tid";
+                StartTidFel = "Välj datum och tid!";
+                hasError = true;
+            }
+            if (!ValdSlutTid.HasValue || !ValdSlutTimme.HasValue)
+            {
+                SlutTidFel = "Välj datum och tid!";
+                hasError = true;
+            }
+
+            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value).AddMinutes(ValdStartMinut ?? 0);
+            var slutTid = ValdSlutTid.Value.Date.AddHours(ValdSlutTimme.Value).AddMinutes(ValdSlutMinut ?? 0);
+
+            if (slutTid <= startTid)
+            {
+                TimmarFel = "Arbetet måste sluta efter att det har börjat";
+                hasError = true;
+            }
+
+            var orderRad = HämtaOrderRad();
+
+            if (orderRad == null)
+            {
+                ProdukterFel = "Kunde inte hitta vald produkt";
                 hasError = true;
             }
 
             if (User == null || hasError)
                 return;
 
-            var startTid = ValdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
-
-            var orderRad = HämtaOrderRad();
-
-            if (orderRad == null)
-            {
-                ProdukterFel = "Kunde inte hitta orderrad för vald produkt";
-                return;
-            }
-
             var planering = new Planering
             {
                 AnvändarID = User.AnvändarID,
                 OrderRadID = orderRad.OrderRadID,
                 StartTid = startTid,
-                SlutTid = startTid.AddHours(2),
+                SlutTid = slutTid,
 
                 PlaneringsNamn = string.IsNullOrWhiteSpace(PlaneringsNamn)
                     ? ValdProdukt.Namn
@@ -141,7 +166,7 @@ namespace WpfApp1.ViewModels
                 Status = "Ej påbörjat"
             };
 
-            await _service.Add(planering); // 👈 använd repo/service direkt om du har Add
+            await _service.Add(planering);
 
             PlaneringAdded?.Invoke(planering);
 
@@ -154,50 +179,5 @@ namespace WpfApp1.ViewModels
                 .OrderRader?
                 .FirstOrDefault(or => or.ProduktID == ValdProdukt?.ProduktID);
         }
-        //[RelayCommand]
-        //private async Task SparaAktivitet()
-        //{
-        //    OrdrarFel = "";
-        //    ProdukterFel = "";
-        //    StartTidFel = "";
-        //    TimmarFel = "";
-        //    bool HasErrors = false;
-
-        //    if (ValdOrder == null)
-        //    {
-        //        OrdrarFel = "Vänligen välj en order!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdProdukt == null)
-        //    {
-        //        ProdukterFel = "Vänligen välj en produkt!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdStartTid == null)
-        //    {
-        //        StartTidFel = "Vänligen välj vilken dag bokningen startar!";
-        //        HasErrors = true;
-        //    }
-        //    if(ValdStartTimme == null)
-        //    {
-        //        TimmarFel = "Vänligen välj vilken tid bokningen börjar!";
-        //        HasErrors = true;
-        //    }
-
-        //    if (ValdOrder == null || ValdProdukt == null || User == null || !ValdStartTid.HasValue || HasErrors)
-        //        return;
-
-        //    var startTid = valdStartTid.Value.Date.AddHours(ValdStartTimme.Value);
-
-        //    var planering = await _service.PlaneraArbete(User.AnvändarID, ValdProdukt.ProduktID, startTid);
-
-        //    PlaneringAdded?.Invoke(planering);
-
-        //    ValdProdukt = null;
-        //    OrdrarFel = "";
-        //    ProdukterFel = "";
-        //    StartTidFel = "";
-        //    TimmarFel = "";
-        //}
     }
 }

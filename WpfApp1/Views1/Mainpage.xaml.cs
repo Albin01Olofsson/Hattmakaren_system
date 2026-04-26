@@ -71,6 +71,18 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new BestallningarPage());
         }
 
+        private void BtnStatistik_Click(object sender, RoutedEventArgs e)
+        {
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new StatistikPage());
+        }
+
+        private void BtnReklamation_Click(object sender, RoutedEventArgs e)
+        {
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new ReklamationPage());
+        }
+
         private void BtnSchema_Click(object sender, RoutedEventArgs e)
         {
             // Vi säger åt vår Frame att visa AnvPage

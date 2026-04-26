@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -13,11 +14,19 @@ namespace Models
 
         public string Beskrivning { get; set; }
 
-        public string Typ { get; set; }
-
-        public string Mått { get; set; }
+        public MåttTyp MåttTyp { get; set; }
 
         public int Lagerantal { get; set; }
 
+        [NotMapped]
+        public string MåttText => MåttTyp switch
+        {
+            MåttTyp.Meter => "m",
+            MåttTyp.Centimeter => "cm",
+            MåttTyp.Millimeter => "mm",
+            MåttTyp.Styck => "st",
+            _ => ""
+        };
     }
 }
+

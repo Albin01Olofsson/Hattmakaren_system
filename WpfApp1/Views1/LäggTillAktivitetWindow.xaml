@@ -1,22 +1,140 @@
 ﻿<Window x:Class="WpfApp1.Views1.LäggTillAktivitetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Lägg till aktivitet"
-        Height="300" Width="400"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="Ny Aktivitet"
+        Height="650" Width="500"
+        WindowStartupLocation="CenterScreen"
         Background="#FF1A1A1D">
 
-    <StackPanel Margin="20">
+    <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="20">
+        <StackPanel>
 
-        <TextBox Text="{Binding Titel}" Margin="0,0,0,10"/>
+            <TextBlock Text="Skapa Aktivitet" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+            <TextBlock Text="Aktivitetens namn" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Titel}" Margin="0,0,0,20" Padding="5" Background="#FF1A1A1D" Foreground="White"/>
+            <TextBlock Text="{Binding NamnFel}" Grid.Row="2" Grid.Column="1" Foreground="#FFFF6B6B" FontSize="11" Margin="0,-20,0,25"/>
 
-        <DatePicker SelectedDate="{Binding StartDatum}" />
+            <!-- START -->
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <TextBox Text="{Binding StartTid}" Margin="0,10,0,0"/>
-        <TextBox Text="{Binding SlutTid}" Margin="0,10,0,0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <Button Content="Spara"
-                Command="{Binding SparaAktivitetCommand}"
-                Margin="0,20,0,0"/>
+                <!-- StartText -->
+                <TextBlock Text="Start" Grid.Row="0" Grid.Column="0" Foreground="#FFC5A059" FontWeight="Bold"/>
+                <TextBlock Text="Timme" Grid.Row="0" Grid.Column="1" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Minut" Grid.Row="0" Grid.Column="2" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-    </StackPanel>
+                <!-- StartDatePicker -->
+                <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding StartDatum}" Height="30"/>
+
+                <!-- StartTimme -->
+                <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding StartTid, Mode=TwoWay}"
+                          Background="#FF1A1A1D" Foreground="Black" Margin="5,5,5,5">
+                    <sys:Int32>7</sys:Int32>
+                    <sys:Int32>8</sys:Int32>
+                    <sys:Int32>9</sys:Int32>
+                    <sys:Int32>10</sys:Int32>
+                    <sys:Int32>11</sys:Int32>
+                    <sys:Int32>12</sys:Int32>
+                    <sys:Int32>13</sys:Int32>
+                    <sys:Int32>14</sys:Int32>
+                    <sys:Int32>15</sys:Int32>
+                    <sys:Int32>16</sys:Int32>
+                </ComboBox>
+                
+                <!-- StartMinut -->
+                <ComboBox Grid.Row="1" Grid.Column="2" SelectedItem="{Binding StartMinut, Mode=TwoWay}"
+                          Background="#FF1A1A1D" Foreground="Black" Margin="5,5,5,5">
+                    <sys:Int32>0</sys:Int32>
+                    <sys:Int32>15</sys:Int32>
+                    <sys:Int32>30</sys:Int32>
+                    <sys:Int32>45</sys:Int32>
+                </ComboBox>
+                <TextBlock Text="{Binding StartTidFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+
+            </Grid>
+
+            <!-- SLUT -->
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- SlutText -->
+                <TextBlock Text="Slut" Grid.Row="0" Grid.Column="0" Foreground="#FFC5A059" FontWeight="Bold"/>
+                <TextBlock Text="Timme" Grid.Row="0" Grid.Column="1" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Minut" Grid.Row="0" Grid.Column="2" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                <!-- SlutDatePicker -->
+                <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding SlutDatum}" Height="30"/>
+
+                <!-- SlutTimme -->
+                <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding SlutTid, Mode=TwoWay}" 
+                          Background="#FF1A1A1D" Foreground="Black" Margin="5,5,5,5">
+                    <sys:Int32>7</sys:Int32>
+                    <sys:Int32>8</sys:Int32>
+                    <sys:Int32>9</sys:Int32>
+                    <sys:Int32>10</sys:Int32>
+                    <sys:Int32>11</sys:Int32>
+                    <sys:Int32>12</sys:Int32>
+                    <sys:Int32>13</sys:Int32>
+                    <sys:Int32>14</sys:Int32>
+                    <sys:Int32>15</sys:Int32>
+                    <sys:Int32>16</sys:Int32>
+                </ComboBox>
+
+                <!-- SlutMinut -->
+                <ComboBox Grid.Row="1" Grid.Column="2" SelectedItem="{Binding SlutMinut, Mode=TwoWay}" 
+                          Background="#FF1A1A1D" Foreground="Black" Margin="5,5,5,5">
+                    <sys:Int32>0</sys:Int32>
+                    <sys:Int32>15</sys:Int32>
+                    <sys:Int32>30</sys:Int32>
+                    <sys:Int32>45</sys:Int32>
+                </ComboBox>
+                <TextBlock Text="{Binding SlutTidFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding TimmarFel}" Grid.Row="2" Grid.Column="0" Foreground="#FFFF6B6B" FontSize="11" Margin="0,0,0,5"/>
+
+            </Grid>
+
+            <!-- ADMIN BEHÖRIGHET -->
+            <StackPanel Visibility="{Binding ÄrAdmin, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="Deltagare" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,10,0,5"/>
+                <TextBox Text="{Binding SökText, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,10"
+                            Padding="5"
+                            Background="#FF1A1A1D"
+                            Foreground="White"
+                            BorderBrush="#FF3E3E42"
+                            ToolTip="Sök användare..."/>
+                <ListBox ItemsSource="{Binding FiltreradeAnvändare}" SelectionMode="Multiple" Background="#FF1A1A1D"
+                         BorderBrush="#FF3E3E42" Foreground="White" Height="100" MaxHeight="100" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding User.Namn}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Foreground="White"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <Button Content="Spara Aktivitet" Command="{Binding SparaAktivitetCommand}" Height="45"
+                    Background="#FFB08D46" Foreground="Black" FontWeight="Bold" Margin="0,20,0,0"/>
+        </StackPanel>
+    </Border>
 </Window>

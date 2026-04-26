@@ -1,0 +1,416 @@
+﻿<Page x:Class="WpfApp1.Views1.ReklamationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="720"
+      d:DesignWidth="1000"
+      Background="#FF1A1A1D"
+      Title="ReklamationPage">
+
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#F4F1EA"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Margin" Value="0,3,0,7"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,3,0,7"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0,0,7,0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="StatusBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#FFC5A059"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="7,3"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="Under behandling">
+                    <Setter Property="Background" Value="#FF4A90A4"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Godkänd">
+                    <Setter Property="Background" Value="#FF2ECC71"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Nekad">
+                    <Setter Property="Background" Value="#FFE74C3C"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Åtgärdad">
+                    <Setter Property="Background" Value="#FF95A5A6"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="REKLAMATIONER"
+                           FontSize="26"
+                           FontWeight="Black"
+                           Margin="0,0,18,0"/>
+
+                <UniformGrid Columns="4" Width="390">
+                    <Border Background="#FF2C3E50" CornerRadius="8" Padding="10,8" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="Nya" Foreground="#FFC5A059" FontSize="11" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding NyaAntal}" FontSize="20" FontWeight="Black"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF2C3E50" CornerRadius="8" Padding="10,8" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="Behandling" Foreground="#FF7FB8C9" FontSize="11" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding UnderBehandlingAntal}" FontSize="20" FontWeight="Black"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF2C3E50" CornerRadius="8" Padding="10,8" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="Godkända" Foreground="#FF2ECC71" FontSize="11" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding GodkandaAntal}" FontSize="20" FontWeight="Black"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#FF2C3E50" CornerRadius="8" Padding="10,8">
+                        <StackPanel>
+                            <TextBlock Text="Åtgärdade" Foreground="#FFC5A059" FontSize="11" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding AtgardadeAntal}" FontSize="20" FontWeight="Black"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Right"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                <TextBox Width="210"
+                         Text="{Binding SokText, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Width="145"
+                          ItemsSource="{Binding FilterAlternativ}"
+                          SelectedItem="{Binding ValdFilterStatus}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.88*"/>
+                <ColumnDefinition Width="1.72*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="#FF2C3E50"
+                    CornerRadius="8"
+                    Padding="12"
+                    Margin="0,0,12,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,8">
+                        <TextBlock Text="Ärenden"
+                                   FontSize="18"
+                                   FontWeight="Bold"/>
+                        <TextBlock DockPanel.Dock="Right"
+                                   Text="{Binding Reklamationer.Count, StringFormat={}{0} träffar}"
+                                   Opacity="0.65"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding Reklamationer}"
+                             SelectedItem="{Binding ValdReklamation, Mode=TwoWay}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#12FFFFFF"
+                                        BorderBrush="#22FFFFFF"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="9"
+                                        Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <DockPanel Grid.Row="0" LastChildFill="True">
+                                            <Border DockPanel.Dock="Right" Style="{StaticResource StatusBadgeStyle}" Margin="8,0,0,0">
+                                                <TextBlock Text="{Binding Status}"
+                                                           Foreground="#FF1A1A1D"
+                                                           FontSize="11"
+                                                           FontWeight="Bold"
+                                                           TextAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding ReklamationID, StringFormat={}# {0}}"
+                                                           Foreground="#FFC5A059"
+                                                           FontWeight="Black"
+                                                           Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Kund.Namn}"
+                                                           FontWeight="Bold"
+                                                           Foreground="#F4F1EA"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           MaxWidth="115"/>
+                                            </StackPanel>
+                                        </DockPanel>
+
+                                        <TextBlock Grid.Row="1"
+                                                   Text="{Binding OrderID, StringFormat={}Order {0}}"
+                                                   Opacity="0.72"
+                                                   Foreground="#F4F1EA"
+                                                   Margin="0,5,0,0"/>
+
+                                        <Grid Grid.Row="2" Margin="0,5,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding Orsak}"
+                                                       FontWeight="Bold"
+                                                       Foreground="#F4F1EA"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding SkapadDatum, StringFormat={}{0:yyyy-MM-dd}}"
+                                                       HorizontalAlignment="Right"
+                                                       Opacity="0.65"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="#FF2C3E50"
+                    CornerRadius="8"
+                    Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Reklamation"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="0,0,0,8"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Row="0"
+                                Grid.Column="0"
+                                Background="#17000000"
+                                CornerRadius="8"
+                                Padding="10"
+                                Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Koppling"
+                                           Foreground="#FFC5A059"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,6"/>
+
+                                <TextBlock Text="Order"/>
+                                <ComboBox ItemsSource="{Binding Ordrar}"
+                                          SelectedItem="{Binding ValdOrder}"
+                                          DisplayMemberPath="OrderID"/>
+
+                                <TextBlock Text="{Binding OrderDetaljText}"
+                                           TextWrapping="Wrap"
+                                           Opacity="0.72"
+                                           FontSize="11"
+                                           Margin="0,0,0,7"/>
+
+                                <TextBlock Text="Kund"/>
+                                <TextBox Text="{Binding KundText}" IsReadOnly="True"/>
+
+                                <TextBlock Text="Produkt"/>
+                                <ComboBox ItemsSource="{Binding ProdukterIOrder}"
+                                          SelectedItem="{Binding ValdProdukt}"
+                                          DisplayMemberPath="Namn"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="0"
+                                Grid.Column="2"
+                                Background="#17000000"
+                                CornerRadius="8"
+                                Padding="10"
+                                Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Beslut"
+                                           Foreground="#FFC5A059"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,6"/>
+
+                                <UniformGrid Columns="2" Margin="0,0,0,10">
+                                    <Button Content="Behandling"
+                                            Command="{Binding SattStatusCommand}"
+                                            CommandParameter="Under behandling"
+                                            Background="#FF4A90A4"
+                                            Foreground="White"
+                                            Height="34"
+                                            Margin="0,0,6,6"/>
+                                    <Button Content="Godkänn"
+                                            Command="{Binding SattStatusCommand}"
+                                            CommandParameter="Godkänd"
+                                            Background="#FF2ECC71"
+                                            Foreground="#FF1A1A1D"
+                                            Height="34"
+                                            Margin="0,0,0,6"/>
+                                    <Button Content="Neka"
+                                            Command="{Binding SattStatusCommand}"
+                                            CommandParameter="Nekad"
+                                            Background="#FFE74C3C"
+                                            Foreground="White"
+                                            Height="34"
+                                            Margin="0,0,6,0"/>
+                                    <Button Content="Åtgärdad"
+                                            Command="{Binding SattStatusCommand}"
+                                            CommandParameter="Åtgärdad"
+                                            Background="#FFC5A059"
+                                            Foreground="#FF1A1A1D"
+                                            Height="34"
+                                            Margin="0"/>
+                                </UniformGrid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Status"/>
+                                        <ComboBox ItemsSource="{Binding StatusAlternativ}"
+                                                  SelectedItem="{Binding ValdStatus}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Åtgärd"/>
+                                        <ComboBox ItemsSource="{Binding AtgardsAlternativ}"
+                                                  SelectedItem="{Binding ValdAtgard}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Background="#17000000"
+                                CornerRadius="8"
+                                Padding="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Text="Ärende"
+                                           Foreground="#FFC5A059"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,6"/>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Orsak"/>
+                                        <ComboBox ItemsSource="{Binding OrsaksAlternativ}"
+                                                  SelectedItem="{Binding ValdOrsak}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Beskrivning"/>
+                                        <TextBox Text="{Binding Beskrivning, UpdateSourceTrigger=PropertyChanged}"
+                                                 MinHeight="78"
+                                                 Height="96"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 VerticalContentAlignment="Top"
+                                                 Padding="8"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <DockPanel Grid.Row="2" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Spara"
+                                    Command="{Binding SparaReklamationCommand}"
+                                    Background="#FFC5A059"
+                                    Foreground="#FF1A1A1D"/>
+                            <Button Content="Ny"
+                                    Command="{Binding RensaFormularCommand}"
+                                    Background="#FFB08D46"
+                                    Foreground="#FF1A1A1D"/>
+                            <Button Content="Åtgärdad"
+                                    Command="{Binding MarkeraAtgardadCommand}"
+                                    Background="#FF2ECC71"
+                                    Foreground="#FF1A1A1D"/>
+                        </StackPanel>
+
+                        <Button DockPanel.Dock="Right"
+                                Content="Ta bort"
+                                Command="{Binding TaBortReklamationCommand}"
+                                Background="#FFE74C3C"
+                                Foreground="White"
+                                HorizontalAlignment="Right"
+                                Margin="8,0,0,0"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

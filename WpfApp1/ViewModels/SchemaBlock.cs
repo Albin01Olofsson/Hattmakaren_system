@@ -1,52 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
+﻿using Models;
+using System.Windows.Media;
 namespace WpfApp1.ViewModels
 {
     public class SchemaBlock
     {
+        // 1. Identifiering
         public int Id { get; set; }
-        public string Typ { get; set; } // Planering | Aktivitet
+        public string Typ { get; set; } // "Planering" eller "Aktivitet"
 
+        // 2. Tider & Visning (Det Syncfusion behöver för kalendern)
         public string Titel { get; set; }
-
         public DateTime StartTid { get; set; }
         public DateTime SlutTid { get; set; }
+        public Brush Färg { get; set; }
+        public bool ÄrHeldag { get; set; }
 
-        public int Kolumn { get; set; } // dag i veckan (0-4)
-        public int DagIndex { get; set; } // samma som Kolumn egentligen
-
-        public double TopPos { get; set; }
-
-        public double Height { get; set; } // i minuter (1 min = 1 px om du kör 60px/h)
-
-        public string Färg { get; set; }
-
-        public int ZIndex { get; set; }
-
+        // 3. Affärsdata (Det vi visar i ToolTip-rutan)
         public int? OrderId { get; set; }
         public int? ProduktId { get; set; }
-
-        public string AnvändarNamn { get; set; }
         public string ProduktNamn { get; set; }
-        //public int Id { get; set; }
-        //public int ZIndex { get; set; }
-        //public string? Typ { get; set; } // "Planering" | "Aktivitet"
-        //public string? Titel { get; set; }
-        //public DateTime StartTid { get; set; }
-        //public DateTime SlutTid { get; set; }
-        //public int Kolumn { get; set; }
-        //public double TopPos { get; set; }
-        //public double Height { get; set; }
-        //public double LeftOffset => Kolumn * 150;
-        //public double Width => 140;
-        //public Thickness Margin => new Thickness(0, TopPos, 0, 0);
-        //public string? Färg { get; set; }
-        //public int? OrderId { get; set; }
-        //public int? ProduktId { get; set; }
+        public int AnvändarId { get; set; }
+        public string AnvändarNamn { get; set; }
+        //för popup fönstret, visa deltagarlista
+        public List<string> DeltagareNamn { get; set; } = new();
+        public bool HarDeltagare =>
+            DeltagareNamn != null && DeltagareNamn.Any();
+        public bool ÄrAktivitet => Typ == "Aktivitet";
+        public bool ÄrPlanering => Typ == "Planering";
     }
 }

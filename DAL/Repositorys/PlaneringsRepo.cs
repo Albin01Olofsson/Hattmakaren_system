@@ -14,7 +14,7 @@ namespace DAL.Repositorys
         public async Task<Planering> HämtaPlaneringMedDetaljer(int id)
         {
             return await _dbSet
-                .Include(p => p.Användare)
+                .AsNoTracking().Include(p => p.Användare)
                 .Include(p => p.OrderRad)
                     .ThenInclude(or => or.Produkt)
                 .Include(p => p.OrderRad)
@@ -25,7 +25,8 @@ namespace DAL.Repositorys
         public IQueryable<Planering> HämtaAllaPlaneringarMedDetaljer()
         {
             return _dbSet
-                .Include(p => p.Användare)
+
+                .AsNoTracking().Include(p => p.Användare)
                 .Include(p => p.OrderRad)
                     .ThenInclude(or => or.Produkt)
                 .Include(p => p.OrderRad)

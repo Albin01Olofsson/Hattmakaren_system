@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Models;
 namespace DAL
 {
@@ -17,6 +17,7 @@ namespace DAL
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
         public DbSet<OrderRad> OrderRader { get; set; }
         public DbSet<Frakt> Frakt { get; set; }
+        public DbSet<Reklamation> Reklamationer { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -132,6 +133,29 @@ namespace DAL
                 .WithMany(o => o.Frakt)
                 .HasForeignKey(f => f.OrderID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Reklamation>(entity =>
+            {
+                entity.HasOne(r => r.Order)
+                      .WithMany()
+                      .HasForeignKey(r => r.OrderID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Kund)
+                      .WithMany()
+                      .HasForeignKey(r => r.KundID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Produkt)
+                      .WithMany()
+                      .HasForeignKey(r => r.ProduktID)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(r => r.SkapadAv)
+                      .WithMany()
+                      .HasForeignKey(r => r.SkapadAvID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
 
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
@@ -251,9 +275,8 @@ namespace DAL
                         Namn = "Filt",
                         Pris = 54,
                         Beskrivning = "Inte filt man sover med",
-                        Typ = "Tyg",
-                        Lagerantal = 23,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 23
                     },
                     new Material
                     {
@@ -261,9 +284,8 @@ namespace DAL
                         Namn = "Bomull",
                         Pris = 34,
                         Beskrivning = "100% obesprutat bomull",
-                        Typ = "Tyg",
-                        Lagerantal = 52,
-                        Mått = "milimeter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 52
                     },
                     new Material
                     {
@@ -271,9 +293,8 @@ namespace DAL
                         Namn = "Svart tråd",
                         Pris = 28,
                         Beskrivning = "1.2 mm svar syträd av silikon och polyester",
-                        Typ = "Tråd",
-                        Lagerantal = 2,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 2
                     }
                 );
             //MATERIALBESTÄLLNINGAR

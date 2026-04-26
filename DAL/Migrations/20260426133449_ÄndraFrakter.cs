@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCreatee : Migration
+    public partial class ÄndraFrakter : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -154,7 +154,7 @@ namespace DAL.Migrations
                     Moms = table.Column<double>(type: "float", nullable: true),
                     Datum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Färdig = table.Column<bool>(type: "bit", nullable: false),
-                    Rabatt = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    Rabatt = table.Column<decimal>(type: "decimal(18,2)", precision: 5, scale: 2, nullable: false),
                     IsSpecialbeställning = table.Column<bool>(type: "bit", nullable: false),
                     IsPrio = table.Column<bool>(type: "bit", nullable: false),
                     StartadAvID = table.Column<int>(type: "int", nullable: false),
@@ -279,6 +279,26 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Frakt",
+                columns: table => new
+                {
+                    Sändningsnummer = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    kolliId = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Frakt", x => x.Sändningsnummer);
+                    table.ForeignKey(
+                        name: "FK_Frakt_Ordrar_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Ordrar",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderRader",
                 columns: table => new
                 {
@@ -340,10 +360,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -436,6 +456,11 @@ namespace DAL.Migrations
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Frakt_OrderID",
+                table: "Frakt",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaterialBeställningar_StartadAvID",
                 table: "MaterialBeställningar",
                 column: "StartadAvID");
@@ -494,6 +519,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "BestallningsRader");
+
+            migrationBuilder.DropTable(
+                name: "Frakt");
 
             migrationBuilder.DropTable(
                 name: "MaterialMaterialBeställning");

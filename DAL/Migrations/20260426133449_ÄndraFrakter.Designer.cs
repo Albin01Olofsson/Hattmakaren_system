@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260423063153_InitCreatee")]
-    partial class InitCreatee
+    [Migration("20260426133449_ÄndraFrakter")]
+    partial class ÄndraFrakter
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,7 +139,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -149,7 +149,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -159,7 +159,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -169,7 +169,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$kyxoXyMpKv9uICsN4HYm6upxDOH9RBrR5tKWtoQNmrs.cLboxXLkS",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -199,6 +199,28 @@ namespace DAL.Migrations
                     b.HasIndex("MaterialId");
 
                     b.ToTable("BestallningsRader");
+                });
+
+            modelBuilder.Entity("Models.Frakt", b =>
+                {
+                    b.Property<string>("Sändningsnummer")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("kolliId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Sändningsnummer");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("Frakt");
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -447,7 +469,7 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Rabatt")
                         .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
@@ -1023,6 +1045,17 @@ namespace DAL.Migrations
                     b.Navigation("Material");
                 });
 
+            modelBuilder.Entity("Models.Frakt", b =>
+                {
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany("Frakt")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Models.MaterialBeställning", b =>
                 {
                     b.HasOne("Models.Användare", "StartadAv")
@@ -1127,6 +1160,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Order", b =>
                 {
+                    b.Navigation("Frakt");
+
                     b.Navigation("OrderRader");
                 });
 

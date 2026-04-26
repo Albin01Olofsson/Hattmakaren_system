@@ -1,7 +1,15 @@
-﻿using GMap.NET.WindowsPresentation;
+﻿using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsPresentation;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WpfApp1.ViewModels;
+using Models;
+using System.Threading.Tasks;
+using DAL;
+using BL.Services;
+using DAL.Repositorys;
 
 
 namespace WpfApp1.Views1
@@ -14,6 +22,13 @@ namespace WpfApp1.Views1
         public SpårningPage()
         {
             InitializeComponent();
+
+            var service = new OrderService(new OrderRepo(new DBcontext()),  new DBcontext());
+            var vm = new SpårningViewModel(service);
+
+            this.DataContext = vm;
+
+            vm.SkapaTestOrder();
 
             //Tvinga windows anv säkerhet vid anrop
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
@@ -85,6 +100,11 @@ namespace WpfApp1.Views1
                 transportHalo.Width = 40;
             };
 
+            transportHalo.MouseDown += (s, e) =>
+            {
+                MessageBox.Show($"Info: {info}");
+            };
+
             //koppla txtblock tikk markör
             marker.Shape = transportHalo;
 
@@ -93,6 +113,75 @@ namespace WpfApp1.Views1
 
             //Lägg till i kartans samling
             MainMap.Markers.Add(marker);
+        }
+
+        private void FokuseraPåPosition(double lat, double lng, int zoomNivå = 13)
+        {
+            MainMap.Position = new GMap.NET.PointLatLng(lat, lng);
+            MainMap.Zoom = zoomNivå;
+        }
+
+        //Återgångsknapp till senaste markör
+        private void BtnHome_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (SpårningViewModel)this.DataContext;
+
+            
+        }
+
+        private void AdderaAdressMarkör(string adress, string info)
+        {
+            GeoCoderStatusCode status;
+            PointLatLng? position = GMapProviders.GoogleHybridMap.GetPoint(adress, out status);
+
+
+            if (status == GeoCoderStatusCode.G_GEO_SUCCESS && position.HasValue)
+            {
+                AdderaLeveransMarkör(position.Value.Lat, position.Value.Lng, info, false);
+            }
+            else
+            {
+                MessageBox.Show("Kunde inte hitta adressen: " + status.ToString());
+            }
+        }
+
+        private async void Leveranslista_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            var vm = (SpårningViewModel)this.DataContext;
+
+            if (Leveranslista.SelectedItem is Order valdOrder)
+            {
+                var frakt = valdOrder.Frakt.FirstOrDefault();
+
+                if (frakt != null)
+                {
+                    await vm.HämtaHistorikFrånFraktjakt(frakt.Sändningsnummer);
+
+                    var senaste = vm.Uppdateringar.FirstOrDefault();
+
+                    if (senaste != null)
+                    {
+                        MainMap.Markers.Clear();
+                        AdderaLeveransMarkör(senaste.Latitud, senaste.Longitud, $"{senaste.Plats}: {senaste.Meddelande}", false);
+
+                        FokuseraPåPosition(senaste.Latitud, senaste.Longitud, 12);
+                    }
+
+                }
+            }
+
+        }
+
+        private void HändelserLista_SelectedChange(object sender, EventArgs e)
+        {
+            if (sender is ListBox lb && lb.SelectedItem is SpårningsPunkt punkt)
+            {
+                FokuseraPåPosition(punkt.Latitud, punkt.Longitud, 12);
+
+                MainMap.Markers.Clear();
+                AdderaLeveransMarkör(punkt.Latitud, punkt.Longitud, punkt.Plats, false);
+            }
         }
     }
 }

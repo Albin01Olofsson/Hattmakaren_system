@@ -19,7 +19,8 @@ namespace DAL.Repositorys
                 .Include(o => o.Kund)
                 .Include(o => o.StartadAv)
                 .Include(o => o.OrderRader)
-                    .ThenInclude(or => or.Produkt);
+                    .ThenInclude(or => or.Produkt)
+                    .Include(o => o.Frakt);
         }
 
         public async Task<Order> GetMedDetaljer(int oid)
@@ -29,6 +30,7 @@ namespace DAL.Repositorys
                 .Include(o => o.StartadAv)
                 .Include(o => o.OrderRader)
                     .ThenInclude(or => or.Produkt)
+                    .Include(o => o.Frakt)
                 .FirstOrDefaultAsync(o => o.OrderID == oid);
         }
 
@@ -42,6 +44,7 @@ namespace DAL.Repositorys
                     .ThenInclude(or => or.Produkt)
                 .Include(o => o.OrderRader)
                     .ThenInclude(or => or.Planeringar)
+                    .Include(o => o.Frakt)
                 .FirstOrDefaultAsync(o => o.OrderID == id);
         }
 

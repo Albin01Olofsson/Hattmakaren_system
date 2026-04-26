@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 namespace Models
 {
     public class Order : INotifyPropertyChanged
@@ -45,10 +46,12 @@ namespace Models
 
         public DateTime FörväntadTillverkningsTid { get; set; }
 
+        public ObservableCollection<Frakt> Frakt { get; set; } = new();
         public Kund Kund { get; set; } = null!;
 
         [ForeignKey("Kund")]
         public int KundID { get; set; }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

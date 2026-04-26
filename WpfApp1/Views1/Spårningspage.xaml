@@ -5,14 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
       xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="spårningPage" Background="#FF1A1A1D">
+      mc:Ignorable="d" d:DesignWidth="800"
+      Title="spårningPage" Background="#FF1A1A1D" Height="495">
 
     <Grid>
         <Grid>
-
             <Grid.RowDefinitions>
+                <RowDefinition Height="125"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -25,6 +25,45 @@
             <Border Grid.Row="1" Grid.RowSpan="3" Background="#FF2C3E50" CornerRadius="10" Margin="10" Padding="15">
                 <gmap:GMapControl x:Name="MainMap"/>
             </Border>
+
+            <Grid Grid.Row="4" Grid.RowSpan="2" Background="#FF2C3E50" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="10">
+                    <TextBlock Text="Välj en order" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <ListBox x:Name="Leveranslista" ItemsSource="{Binding PlockadeOrdrar}" SelectionChanged="Leveranslista_SelectionChanged" Background="#FF34495E" BorderThickness="0" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding OrderID, StringFormat='Order #{0}'}" Foreground="#FFC5A059" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Kund.Namn}" Foreground="#FFC5A059" FontSize="11"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="10">
+                    <TextBlock Text="Händelser" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <ListBox ItemsSource="{Binding Uppdateringar}" SelectionChanged="HändelserLista_SelectionChanged" Background="#ff34495E" Foreground="#FFC5A059" BorderThickness="0" Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding Tidpunkt, StringFormat='{}{0:d MMM HH:mm}'}" Foreground="#FFC5A059" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Plats}" Foreground="#FFC5A059" FontSize="12"/>
+                                    <TextBlock Text="{Binding Meddelande}" Foreground="#FFC5A059" FontSize="11" FontStyle="Italic"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+               
+                
+
+            </Grid>
         </Grid>
     </Grid>
 </Page>

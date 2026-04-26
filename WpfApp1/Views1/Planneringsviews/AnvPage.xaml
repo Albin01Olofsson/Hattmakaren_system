@@ -31,6 +31,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+         
+
     </Page.Resources>
 
     <Grid>
@@ -93,7 +95,7 @@
 
                     <syncfusion:SfScheduler.AppointmentMapping>
                         <syncfusion:AppointmentMapping Subject="Titel" StartTime="StartTid" EndTime="SlutTid"        
-                                                       AppointmentBackground="Färg" IsAllDay="ÄrHeldag" />
+                                                       AppointmentBackground="Färg"  /> <!--IsAllDay="ÄrHeldag"-->
                     </syncfusion:SfScheduler.AppointmentMapping>
                 </syncfusion:SfScheduler>
             </Grid>
@@ -129,13 +131,15 @@
                     <!-- DELTAGARE LISTA -->
                     <StackPanel Visibility="{Binding ValdAktivitet.HarDeltagare, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Deltagare:  " Foreground="#FFC5A059"/>
-                        <ItemsControl ItemsSource="{Binding ValdAktivitet.DeltagareNamn}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" Foreground="#B0FFFFFF" Margin="0,0,0,2"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ScrollViewer MaxHeight="100" VerticalScrollBarVisibility="Auto" Padding="4,0,6,0">
+                            <ItemsControl ItemsSource="{Binding ValdAktivitet.DeltagareNamn}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Foreground="#B0FFFFFF" Margin="0,0,10,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
                     </StackPanel>
 
                     <!-- PLANERINGSECTION -->

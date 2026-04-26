@@ -16,6 +16,7 @@ namespace DAL
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
         public DbSet<OrderRad> OrderRader { get; set; }
+        public DbSet<Reklamation> Reklamationer { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -125,6 +126,29 @@ namespace DAL
 
                 entity.Property(or => or.Antal)
                       .IsRequired();
+            });
+
+            modelBuilder.Entity<Reklamation>(entity =>
+            {
+                entity.HasOne(r => r.Order)
+                      .WithMany()
+                      .HasForeignKey(r => r.OrderID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Kund)
+                      .WithMany()
+                      .HasForeignKey(r => r.KundID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Produkt)
+                      .WithMany()
+                      .HasForeignKey(r => r.ProduktID)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(r => r.SkapadAv)
+                      .WithMany()
+                      .HasForeignKey(r => r.SkapadAvID)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // 6. DATATYPSPRECISION (Ekonomi)

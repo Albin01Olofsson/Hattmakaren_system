@@ -42,6 +42,7 @@ namespace WpfApp1
             services.AddScoped<IOrderRepository, OrderRepo>(); // SAKNADES
             services.AddScoped<IPlaneringsRepo, PlaneringsRepo>();
             services.AddScoped<IAktivitetsRepo, AktivitetRepo>();
+            services.AddScoped<IReklamationRepository, ReklamationRepository>();
 
             // 3. REGISTRERA TJÄNSTER (BL)
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -52,6 +53,7 @@ namespace WpfApp1
             services.AddScoped<IPlaneringsYtaService, PlaneringsYtaService>();
             services.AddScoped<IAktivitetService, AktivitetService>();
             services.AddSingleton<ITullService, TullService>();
+            services.AddScoped<IReklamationService, ReklamationService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();

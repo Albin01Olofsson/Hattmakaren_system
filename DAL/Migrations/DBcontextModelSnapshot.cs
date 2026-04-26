@@ -405,6 +405,61 @@ namespace DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.Property<int>("ReklamationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReklamationID"));
+
+                    b.Property<string>("Atgard")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AvslutadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Beskrivning")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KundID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Orsak")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkapadAvID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SkapadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReklamationID");
+
+                    b.HasIndex("KundID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.HasIndex("SkapadAvID");
+
+                    b.ToTable("Reklamationer");
+                });
+
             modelBuilder.Entity("Models.Order", b =>
                 {
                     b.Property<int>("OrderID")
@@ -1117,6 +1172,40 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("TillverkadAv");
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.HasOne("Models.Kund", "Kund")
+                        .WithMany()
+                        .HasForeignKey("KundID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany()
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Models.Användare", "SkapadAv")
+                        .WithMany()
+                        .HasForeignKey("SkapadAvID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Kund");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Produkt");
+
+                    b.Navigation("SkapadAv");
                 });
 
             modelBuilder.Entity("Models.Användare", b =>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class schemaStart : Migration
+    public partial class inti : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -256,23 +256,26 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MaterialProdukt",
+                name: "ProduktMaterial",
                 columns: table => new
                 {
-                    MaterialListaMaterialID = table.Column<int>(type: "int", nullable: false),
-                    ProduktID = table.Column<int>(type: "int", nullable: false)
+                    ProduktMaterialID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProduktID = table.Column<int>(type: "int", nullable: false),
+                    MaterialID = table.Column<int>(type: "int", nullable: false),
+                    Mängd = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MaterialProdukt", x => new { x.MaterialListaMaterialID, x.ProduktID });
+                    table.PrimaryKey("PK_ProduktMaterial", x => x.ProduktMaterialID);
                     table.ForeignKey(
-                        name: "FK_MaterialProdukt_Material_MaterialListaMaterialID",
-                        column: x => x.MaterialListaMaterialID,
+                        name: "FK_ProduktMaterial_Material_MaterialID",
+                        column: x => x.MaterialID,
                         principalTable: "Material",
                         principalColumn: "MaterialID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MaterialProdukt_Produkter_ProduktID",
+                        name: "FK_ProduktMaterial_Produkter_ProduktID",
                         column: x => x.ProduktID,
                         principalTable: "Produkter",
                         principalColumn: "ProduktID",
@@ -304,6 +307,52 @@ namespace DAL.Migrations
                         principalTable: "Produkter",
                         principalColumn: "ProduktID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reklamationer",
+                columns: table => new
+                {
+                    ReklamationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    ProduktID = table.Column<int>(type: "int", nullable: true),
+                    KundID = table.Column<int>(type: "int", nullable: false),
+                    Orsak = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Beskrivning = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Atgard = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SkapadDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AvslutadDatum = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SkapadAvID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reklamationer", x => x.ReklamationID);
+                    table.ForeignKey(
+                        name: "FK_Reklamationer_Användare_SkapadAvID",
+                        column: x => x.SkapadAvID,
+                        principalTable: "Användare",
+                        principalColumn: "AnvändarID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reklamationer_Kunder_KundID",
+                        column: x => x.KundID,
+                        principalTable: "Kunder",
+                        principalColumn: "KundID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reklamationer_Ordrar_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Ordrar",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reklamationer_Produkter_ProduktID",
+                        column: x => x.ProduktID,
+                        principalTable: "Produkter",
+                        principalColumn: "ProduktID",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -341,10 +390,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -447,11 +496,6 @@ namespace DAL.Migrations
                 column: "MaterialListaMaterialID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaterialProdukt_ProduktID",
-                table: "MaterialProdukt",
-                column: "ProduktID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderRader_OrderID",
                 table: "OrderRader",
                 column: "OrderID");
@@ -485,6 +529,36 @@ namespace DAL.Migrations
                 name: "IX_Produkter_TillverkadAVID",
                 table: "Produkter",
                 column: "TillverkadAVID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProduktMaterial_MaterialID",
+                table: "ProduktMaterial",
+                column: "MaterialID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProduktMaterial_ProduktID",
+                table: "ProduktMaterial",
+                column: "ProduktID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reklamationer_KundID",
+                table: "Reklamationer",
+                column: "KundID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reklamationer_OrderID",
+                table: "Reklamationer",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reklamationer_ProduktID",
+                table: "Reklamationer",
+                column: "ProduktID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reklamationer_SkapadAvID",
+                table: "Reklamationer",
+                column: "SkapadAvID");
         }
 
         /// <inheritdoc />
@@ -500,10 +574,13 @@ namespace DAL.Migrations
                 name: "MaterialMaterialBeställning");
 
             migrationBuilder.DropTable(
-                name: "MaterialProdukt");
+                name: "Planeringar");
 
             migrationBuilder.DropTable(
-                name: "Planeringar");
+                name: "ProduktMaterial");
+
+            migrationBuilder.DropTable(
+                name: "Reklamationer");
 
             migrationBuilder.DropTable(
                 name: "Aktiviteter");
@@ -512,10 +589,10 @@ namespace DAL.Migrations
                 name: "MaterialBeställningar");
 
             migrationBuilder.DropTable(
-                name: "Material");
+                name: "OrderRader");
 
             migrationBuilder.DropTable(
-                name: "OrderRader");
+                name: "Material");
 
             migrationBuilder.DropTable(
                 name: "Ordrar");

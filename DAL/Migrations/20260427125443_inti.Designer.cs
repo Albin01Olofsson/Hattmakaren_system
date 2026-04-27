@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20260425091951_schemaStart")]
-    partial class schemaStart
+    [Migration("20260427125443_inti")]
+    partial class inti
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,21 +53,6 @@ namespace DAL.Migrations
                     b.HasIndex("MaterialListaMaterialID");
 
                     b.ToTable("MaterialMaterialBeställning");
-                });
-
-            modelBuilder.Entity("MaterialProdukt", b =>
-                {
-                    b.Property<int>("MaterialListaMaterialID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProduktID")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaterialListaMaterialID", "ProduktID");
-
-                    b.HasIndex("ProduktID");
-
-                    b.ToTable("MaterialProdukt");
                 });
 
             modelBuilder.Entity("Models.Aktivitet", b =>
@@ -139,7 +124,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -149,7 +134,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -159,7 +144,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -169,7 +154,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -904,6 +889,87 @@ namespace DAL.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Models.ProduktMaterial", b =>
+                {
+                    b.Property<int>("ProduktMaterialID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktMaterialID"));
+
+                    b.Property<int>("MaterialID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Mängd")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProduktMaterialID");
+
+                    b.HasIndex("MaterialID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.ToTable("ProduktMaterial");
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.Property<int>("ReklamationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReklamationID"));
+
+                    b.Property<string>("Atgard")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AvslutadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Beskrivning")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KundID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Orsak")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkapadAvID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SkapadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReklamationID");
+
+                    b.HasIndex("KundID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.HasIndex("SkapadAvID");
+
+                    b.ToTable("Reklamationer");
+                });
+
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
                 {
                     b.HasBaseType("Models.Produkt");
@@ -994,21 +1060,6 @@ namespace DAL.Migrations
                     b.HasOne("Models.Material", null)
                         .WithMany()
                         .HasForeignKey("MaterialListaMaterialID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MaterialProdukt", b =>
-                {
-                    b.HasOne("Models.Material", null)
-                        .WithMany()
-                        .HasForeignKey("MaterialListaMaterialID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Produkt", null)
-                        .WithMany()
-                        .HasForeignKey("ProduktID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1122,6 +1173,59 @@ namespace DAL.Migrations
                     b.Navigation("TillverkadAv");
                 });
 
+            modelBuilder.Entity("Models.ProduktMaterial", b =>
+                {
+                    b.HasOne("Models.Material", "Material")
+                        .WithMany("ProduktMaterial")
+                        .HasForeignKey("MaterialID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany("ProduktMaterial")
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Produkt");
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.HasOne("Models.Kund", "Kund")
+                        .WithMany()
+                        .HasForeignKey("KundID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany()
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Models.Användare", "SkapadAv")
+                        .WithMany()
+                        .HasForeignKey("SkapadAvID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Kund");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Produkt");
+
+                    b.Navigation("SkapadAv");
+                });
+
             modelBuilder.Entity("Models.Användare", b =>
                 {
                     b.Navigation("Planeringar");
@@ -1138,6 +1242,11 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Kund", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Models.Material", b =>
+                {
+                    b.Navigation("ProduktMaterial");
                 });
 
             modelBuilder.Entity("Models.MaterialBeställning", b =>
@@ -1158,6 +1267,8 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Produkt", b =>
                 {
                     b.Navigation("OrderRader");
+
+                    b.Navigation("ProduktMaterial");
                 });
 #pragma warning restore 612, 618
         }

@@ -45,64 +45,6 @@ namespace BL.Services
 
         public async Task SaveOrder() => await _orderRepo.Save();
 
-        //public async Task skapaOrder(Order nyOrder)
-        //{
-        //    if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || nyOrder.Produkter == null || !nyOrder.Produkter.Any())
-        //    {
-        //        throw new ArgumentException("Ordern måste ha en kund, en startande användare och minst en produkt.");
-        //    }
-
-        //    decimal totalPris = 0;
-
-        //    try
-        //    {
-        //        // Hämta produkterna igen från samma DbContext som ordern ska sparas i
-        //        var produktIds = nyOrder.Produkter.Select(p => p.ProduktID).ToList();
-
-        //        var produkterFrånDb = await _context.Produkter
-        //            .Where(p => produktIds.Contains(p.ProduktID))
-        //            .ToListAsync();
-
-        //        if (produkterFrånDb.Count != produktIds.Count)
-        //        {
-        //            throw new Exception("En eller flera produkter kunde inte hittas i databasen.");
-        //        }
-
-        //        nyOrder.Produkter = produkterFrånDb;
-
-        //        foreach (var produkt in nyOrder.Produkter)
-        //        {
-        //            if (produkt is SpecialBeställning)
-        //            {
-        //                produkt.Färdig = false;
-        //            }
-
-        //            totalPris += produkt.Pris;
-        //        }
-
-        //        totalPris -= nyOrder.Rabatt;
-
-        //        if (totalPris < 0)
-        //        {
-        //            totalPris = 0;
-        //        }
-
-        //        if (nyOrder.IsPrio)
-        //        {
-        //            totalPris *= 1.20m;
-        //        }
-
-        //        nyOrder.Pris = totalPris;
-        //        nyOrder.Datum = DateTime.Now;
-
-        //        await _orderRepo.Add(nyOrder);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception($"Något gick fel när ordern skulle skapas: {ex.Message}", ex);
-        //    }
-        //}
         public async Task skapaOrder(Order nyOrder, List<int> produktIds)
         {
             if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || produktIds == null || !produktIds.Any())
@@ -126,6 +68,8 @@ namespace BL.Services
 
                 // 3. Fråga databasen efter de unika produkterna
                 var produkterFrånDb = await _context.Produkter
+                    .Include(p => p.ProduktMaterial)
+                        .ThenInclude(pm => pm.Material)
                     .Where(p => unikaIds.Contains(p.ProduktID))
                     .ToListAsync();
 
@@ -141,6 +85,15 @@ namespace BL.Services
                 foreach (var grupp in grupperadeProdukter)
                 {
                     var produktDb = produkterFrånDb.First(p => p.ProduktID == grupp.ProduktID);
+                    
+                    int beställt = grupp.Antal;
+                    int iLager = produktDb.Lagerantal;
+
+                    int frånLager = Math.Min(iLager, beställt);
+                    int behöverTillverkas = beställt - frånLager;
+
+                    //lageravdrag
+                    produktDb.Lagerantal -= frånLager;
 
                     nyOrder.OrderRader.Add(new OrderRad
                     {
@@ -151,7 +104,12 @@ namespace BL.Services
                     });
 
                     // Räkna ut priset: Produktens pris * Antalet vi vill köpa
-                    totalPris += (produktDb.Pris * grupp.Antal);
+                    totalPris += (produktDb.Pris * beställt);
+                    //OM vi måste tillverka mer
+                    if (behöverTillverkas > 0)
+                    {
+                        await HanteraTillverkning(produktDb, behöverTillverkas);
+                    }
                 }
 
                 // 5. Hantera Rabatt och Prio
@@ -180,7 +138,7 @@ namespace BL.Services
                 await _context.SaveChangesAsync();
 
                 // 7. Hämta tillbaks ordern så navigation properties är satta och kan användas till att sätta varukod
-                Order senasteOrder = await _context.Ordrar.OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
+                Order senasteOrder = await _context.Ordrar.Include(o => o.Kund).OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
 
                 //Varukodform:
                 //1. Första bokstaven på land
@@ -207,23 +165,34 @@ namespace BL.Services
 
                 //MINSKA LAGERANTAL
 
-                List<Produkt> produkter = new();
+                //List<Produkt> produkter = new();
 
-                foreach(var or in nyOrder.OrderRader)
-                {
-                    var prod = await _context.Produkter.FindAsync(or.ProduktID);
-                    if(prod.Lagerantal != 0)
-                    {
-                        for (int i = 0; i < or.Antal; i++)
-                        {
-                            if (prod.Lagerantal != 0)
-                                prod.Lagerantal -= 1;
-                        }
-                            
-                    }
+                //foreach (var or in nyOrder.OrderRader)
+                //{
+                //    //var prod = await _context.Produkter.FindAsync(or.ProduktID);
+                //    //if(prod.Lagerantal != 0)
+                //    //{
+                //    //    for (int i = 0; i < or.Antal; i++)
+                //    //    {
+                //    //        if (prod.Lagerantal != 0)
+                //    //            prod.Lagerantal -= 1;
+                //    //    }
 
-                    _context.Produkter.Update(prod);
-                }
+                //    //}
+
+                //    //_context.Produkter.Update(prod);
+                //    var prod = await _context.Produkter.FindAsync(or.ProduktID);
+
+                //    if (prod.Lagerantal > 0)
+                //    {
+                //        prod.Lagerantal -= or.Antal;
+
+                //        if (prod.Lagerantal < 0)
+                //            prod.Lagerantal = 0;
+                //    }
+
+                //    _context.Produkter.Update(prod);
+                //}
 
                 await _orderRepo.Update(senasteOrder);
                 await _context.SaveChangesAsync();
@@ -235,6 +204,56 @@ namespace BL.Services
                 throw new Exception(felorsak, ex);
             }
         }
+
+        private async Task HanteraTillverkning(Produkt produkt, int antalAttTillverka)
+        {
+            foreach (var pm in produkt.ProduktMaterial)
+            {
+                decimal totaltBehov = pm.Mängd * antalAttTillverka;
+
+                var material = await _context.Material
+                    .FirstOrDefaultAsync(m => m.MaterialID == pm.MaterialID);
+
+                if (material == null)
+                    throw new Exception("Material saknas i systemet.");
+
+                // ✔ finns material
+                if (material.Lagerantal >= totaltBehov)
+                {
+                    material.Lagerantal -= (int)totaltBehov;
+                }
+                else
+                {
+                    decimal saknas = totaltBehov - (decimal)material.Lagerantal;
+
+                    // töm lager
+                    material.Lagerantal = 0;
+
+                    // skapa beställning
+                    await SkapaMaterialBeställning(material.MaterialID, saknas);
+                }
+
+                _context.Material.Update(material);
+            }
+        }
+        private async Task SkapaMaterialBeställning(int materialId, decimal mängd)
+        {
+            var beställning = new MaterialBeställning
+            {
+                Datum = DateTime.Now,
+                Rader = new List<BestallningsRad>
+                {
+                    new BestallningsRad
+                    {
+                        MaterialId = materialId,
+                        Antal = (int)Math.Ceiling(mängd)
+                    }
+                }
+            };
+            beställning.TotalPris = beställning.Rader.Sum(r => r.RadPris);
+            await _context.MaterialBeställningar.AddAsync(beställning);
+        }
+
         public async Task MarkeraFärdig(int OrderID)
         {
             var order = await _orderRepo.GetById(OrderID);

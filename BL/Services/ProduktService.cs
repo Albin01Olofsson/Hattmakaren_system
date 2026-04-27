@@ -1,17 +1,13 @@
 ﻿using BL.Interfaces;
 using DAL.Intefaces;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BL.Services
 {
     public class ProduktService : IProduktService
     {
         private readonly IProduktRepo prodRepo;
+
         public ProduktService(IProduktRepo repository)
         {
             prodRepo = repository;
@@ -23,22 +19,49 @@ namespace BL.Services
 
         public async Task<Produkt> GetProduktId(int id) => await prodRepo.GetById(id);
 
-        public async Task AddProdukt(Produkt p, List<int> materialIdn)
+        public async Task AddProdukt(Produkt p, List<ProduktMaterial> materialLista)
         {
-            await prodRepo.AddProd(p, materialIdn);
-            await prodRepo.Save();
+            await prodRepo.AddProd(p, materialLista);
         }
 
-        public async Task AddSpecialBeställning(SpecialBeställning sb, List<int> materialIdn)
+        public async Task AddSpecialBeställning(SpecialBeställning sb, List<ProduktMaterial> materialLista)
         {
-            await prodRepo.AddSpecBes(sb, materialIdn);
-            await prodRepo.Save();
+            await prodRepo.AddSpecBes(sb, materialLista);
         }
 
         public async Task UpdateProdukt(Produkt p) => await prodRepo.Update(p);
         public async Task DeleteProdukt(int id) => await prodRepo.Delete(id);
         public async Task SaveProdukt() => await prodRepo.Save();
 
+        public async Task TillverkaProdukt(int produktId, int antalAttTillverka)
+        {
+            var produkt = await prodRepo.GetById(produktId);
 
+            if (produkt == null)
+                throw new Exception("Produkt hittades inte");
+
+            // Hämta produkt med material
+            var fullProdukt = (await prodRepo.GetAllaProdukter())
+                .First(p => p.ProduktID == produktId);
+
+            foreach (var pm in fullProdukt.ProduktMaterial)
+            {
+                var material = pm.Material;
+
+                decimal totalÅtgång = pm.Mängd * antalAttTillverka;
+
+                if (material.Lagerantal < totalÅtgång)
+                {
+                    throw new Exception($"Material {material.Namn} räcker inte!");
+                }
+
+                material.Lagerantal -= (int)totalÅtgång;
+            }
+
+            // Lägg till i lager
+            produkt.Lagerantal += antalAttTillverka;
+
+            await prodRepo.Save();
+        }
     }
 }

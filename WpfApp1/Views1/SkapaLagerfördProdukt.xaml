@@ -20,6 +20,28 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="5,0"/>
         </Style>
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Background" Value="#FFB08D46"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFC5A059"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -103,7 +125,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,25">
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
                 <StackPanel>
                     <TextBlock Text="MATERIAL" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
                     <Grid>
@@ -115,36 +137,45 @@
 
                         <StackPanel Grid.Column="0" VerticalAlignment="Top">
                             <TextBlock Text="Välj Material" Style="{StaticResource LabelStyle}"/>
-                            <ComboBox ItemsSource="{Binding MaterialLista}" 
-                                      SelectedItem="{Binding ValdMaterial}" 
-                                      DisplayMemberPath="Namn" 
-                                      Height="32"/>
+                            <ComboBox x:Name="MaterialComboBox" 
+                          ItemsSource="{Binding MaterialLista}" 
+                          SelectedItem="{Binding ValdMaterial}" 
+                          DisplayMemberPath="Namn" 
+                          Height="32"
+                          /><!--SelectionChanged="ComboBox_SelectionChanged"-->
+                            <TextBlock Text="Mängd" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding ValdMängd, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
                         <Button Grid.Column="1" 
-                                Command="{Binding LäggTillMaterialCommand}" 
-                                Content="Lägg till &#x2794;" 
-                                Margin="15,22,15,0" 
-                                Padding="15,0"
-                                Height="32" 
-                                Background="#FFC5A059" 
-                                FontWeight="Bold" 
-                                VerticalAlignment="Top"/>
+                    Command="{Binding LäggTillMaterialCommand}" 
+                    Content="Lägg till &#x2794;" 
+                    Margin="15,22,15,0" 
+                    Padding="15,0"
+                    Height="32" 
+                    Style="{StaticResource ActionButtonStyle}"
+                    VerticalAlignment="Top"/>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Valda material:" Style="{StaticResource LabelStyle}"/>
-                            <ListBox ItemsSource="{Binding NyMaterialLista}"
-                                     DisplayMemberPath="Namn"
-                                     Background="#FF1A1A1D"
-                                     Foreground="White"
-                                     BorderThickness="0"
-                                     Height="100"
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListBox ItemsSource="{Binding NyMaterialLista}" Background="#FF1A1A1D" Foreground="White"
+                        BorderThickness="0" Height="100" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Material.Namn}" Width="150" Foreground="White"/>
+                                            <TextBlock Text="{Binding Mängd}" Foreground="White"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="Padding" Value="5"/>
                                     </Style>
                                 </ListBox.ItemContainerStyle>
+
                             </ListBox>
                         </StackPanel>
                     </Grid>

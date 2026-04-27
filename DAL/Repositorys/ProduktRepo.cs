@@ -1,11 +1,6 @@
 ﻿using DAL.Intefaces;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositorys
 {
@@ -14,36 +9,27 @@ namespace DAL.Repositorys
         public ProduktRepo(DBcontext context) : base(context)
         {
         }
-
-        public async Task AddSpecBes(SpecialBeställning sb, List<int> materialIdn)
+        public async Task AddSpecBes(SpecialBeställning sb, List<ProduktMaterial> materialLista)
         {
-            foreach(int materialId in materialIdn)
-            {
-                var materialIdDb = await _context.Material.FirstOrDefaultAsync(m => m.MaterialID == materialId);
-                sb.MaterialLista.Add(materialIdDb);
-            }
+            sb.ProduktMaterial = materialLista;
 
             await _context.SpecialBeställningar.AddAsync(sb);
             await Save();
         }
-        
-        public async Task AddProd(Produkt sb, List<int> materialIdn)
-        {
-            foreach(int materialId in materialIdn)
-            {
-                var materialIdDb = await _context.Material.FirstOrDefaultAsync(m => m.MaterialID == materialId);
-                sb.MaterialLista.Add(materialIdDb);
-            }
 
-            await _context.Produkter.AddAsync(sb);
+        public async Task AddProd(Produkt p, List<ProduktMaterial> materialLista)
+        {
+            p.ProduktMaterial = materialLista;
+
+            await _context.Produkter.AddAsync(p);
             await Save();
         }
-
 
         public async Task<List<Produkt>> GetAllaProdukter()
         {
             return await _context.Produkter
-                .Include(p => p.MaterialLista)
+                .Include(p => p.ProduktMaterial)
+                    .ThenInclude(pm => pm.Material)
                 .Include(p => p.TillverkadAv)
                 .Include(p => p.OrderRader)
                     .ThenInclude(or => or.Order)

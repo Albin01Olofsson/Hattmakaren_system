@@ -19,10 +19,12 @@ namespace WpfApp1.ViewModels
         private ObservableCollection<Material> materialLista;
 
         [ObservableProperty]
-        private ObservableCollection<Material> nyMaterialLista;
+        private ObservableCollection<ProduktMaterialVM> nyMaterialLista;
 
         [ObservableProperty]
         private Material? valdMaterial;
+        [ObservableProperty]
+        private decimal valdMängd;
 
         [ObservableProperty]
         private string nyttProduktNamn = String.Empty;
@@ -60,7 +62,7 @@ namespace WpfApp1.ViewModels
             _användarService = användarService;
 
             MaterialLista = new ObservableCollection<Material>();
-            NyMaterialLista = new ObservableCollection<Material>();
+            NyMaterialLista = new ObservableCollection<ProduktMaterialVM>();
             LaddaData();
         }
 
@@ -75,15 +77,19 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LäggTillMaterial()
         {
-            if (ValdMaterial == null)
+            if (ValdMaterial == null || ValdMängd <= 0)
                 return;
-
-            bool redanTillagd = NyMaterialLista.Any(m => m.Namn == ValdMaterial.Namn);
-
+            bool redanTillagd = NyMaterialLista.Any(m => m.Material.MaterialID == ValdMaterial.MaterialID);
             if (!redanTillagd)
             {
-                NyMaterialLista.Add(ValdMaterial);
+                NyMaterialLista.Add(new ProduktMaterialVM
+                {
+                    Material = ValdMaterial,
+                    Mängd = ValdMängd
+                });
             }
+            ValdMaterial = null;
+            ValdMängd = 0;
         }
 
         [RelayCommand]
@@ -183,7 +189,6 @@ namespace WpfApp1.ViewModels
 
             Användare startadAvAnvändare = Session.CurrentUser;
 
-
             LagerfördProdukt nyProd = new LagerfördProdukt
             {
                 Namn = NyttProduktNamn,
@@ -197,13 +202,22 @@ namespace WpfApp1.ViewModels
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
 
+            List<ProduktMaterial> produktMaterialLista = NyMaterialLista.Select(x => new ProduktMaterial
+            {
+                MaterialID = x.Material.MaterialID,
+                Mängd = x.Mängd
+            }).ToList();
 
-            List<int> materialIds = NyMaterialLista.Select(m => m.MaterialID).ToList();
-
-            await _produktService.AddProdukt(nyProd, materialIds);
-
-            MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            try
+            {
+                await _produktService.AddProdukt(nyProd, produktMaterialLista);
+                MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
             // Nollställ formuläret
             NyttProduktNamn = string.Empty;
             NyttPris = 0;

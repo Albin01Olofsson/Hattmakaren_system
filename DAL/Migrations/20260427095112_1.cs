@@ -412,7 +412,9 @@ namespace DAL.Migrations
                 {
                     { 100001, "Inte filt man sover med", 23, 0, "Filt", 54m },
                     { 100002, "100% obesprutat bomull", 52, 0, "Bomull", 34m },
-                    { 100003, "1.2 mm svar syträd av silikon och polyester", 2, 0, "Svart tråd", 28m }
+                    { 100003, "1.2 mm svar syträd av silikon och polyester", 2, 0, "Svart tråd", 28m },
+                    { 100004, "Tunt siden till foder och detaljer", 18, 0, "Siden", 89m },
+                    { 100005, "Brunt läderband till hattdekoration", 11, 0, "Läderband", 45m }
                 });
 
             migrationBuilder.InsertData(
@@ -420,9 +422,9 @@ namespace DAL.Migrations
                 columns: new[] { "MaterialBeställningID", "Datum", "Leverantör", "StartadAvID", "TotalPris" },
                 values: new object[,]
                 {
-                    { 1000001, null, "Kung AB", 1, 1890m },
-                    { 1000002, null, "Kung AB", 2, 769m },
-                    { 1000003, null, "Kung AB", 1, 3419m }
+                    { 1000001, new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kung AB", 1, 1890m },
+                    { 1000002, new DateTime(2026, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nordic Textile", 2, 769m },
+                    { 1000003, new DateTime(2026, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Skrädderi Grossisten", 1, 3419m }
                 });
 
             migrationBuilder.InsertData(
@@ -458,8 +460,94 @@ namespace DAL.Migrations
                 columns: new[] { "ProduktID", "ArtikelID", "Decoration", "Färdig", "Färg", "HattTyp", "Kategori", "Lagerantal", "Modell", "Namn", "Pris", "ProduktTyp", "Storlek", "TillverkadAVID" },
                 values: new object[,]
                 {
-                    { 10000001, "LP0001", "", false, "", "", "Hatt", 0, "", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
-                    { 10000002, "LP0002", "", false, "", "", "Keps", 0, "", "Siden keps", 949m, "Lagerförd", "M", 2 }
+                    { 10000001, "LP0001", "Läderband", true, "Svart", "Fedora", "Hatt", 7, "Klassisk", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
+                    { 10000002, "LP0002", "Svart tråd", true, "Blå", "Keps", "Keps", 5, "Siden", "Siden keps", 949m, "Lagerförd", "M", 2 },
+                    { 10000003, "LP0003", "Bomullsband", true, "Naturvit", "Panama", "Hatt", 4, "Sommar", "Sommarhatt", 799m, "Lagerförd", "L", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Produkter",
+                columns: new[] { "ProduktID", "Beskrivning", "BildURL", "Decoration", "Färdig", "Färg", "HattTyp", "Lagerantal", "Modell", "Namn", "Pris", "ProduktTyp", "Storlek", "TillverkadAVID" },
+                values: new object[] { 10000004, "Specialbeställd bröllopshatt med sidenrosett", "", "Sidenrosett", false, "Creme", "Fascinator", 0, "Bröllop", "Bröllopshatt", 1899m, "Special", "S", 4 });
+
+            migrationBuilder.InsertData(
+                table: "BestallningsRader",
+                columns: new[] { "Id", "Antal", "MaterialBeställningID", "MaterialId" },
+                values: new object[,]
+                {
+                    { 10001, 20, 1000001, 100001 },
+                    { 10002, 10, 1000001, 100003 },
+                    { 10003, 30, 1000002, 100002 },
+                    { 10004, 12, 1000002, 100004 },
+                    { 10005, 35, 1000003, 100001 },
+                    { 10006, 15, 1000003, 100005 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MaterialMaterialBeställning",
+                columns: new[] { "MaterialBeställningID", "MaterialListaMaterialID" },
+                values: new object[,]
+                {
+                    { 1000001, 100001 },
+                    { 1000001, 100003 },
+                    { 1000002, 100002 },
+                    { 1000002, 100004 },
+                    { 1000003, 100001 },
+                    { 1000003, 100005 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MaterialProdukt",
+                columns: new[] { "MaterialListaMaterialID", "ProduktID" },
+                values: new object[,]
+                {
+                    { 100001, 10000001 },
+                    { 100003, 10000001 },
+                    { 100005, 10000001 },
+                    { 100004, 10000002 },
+                    { 100003, 10000002 },
+                    { 100002, 10000003 },
+                    { 100005, 10000003 },
+                    { 100004, 10000004 },
+                    { 100002, 10000004 },
+                    { 100003, 10000004 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderRader",
+                columns: new[] { "OrderRadID", "Antal", "OrderID", "ProduktID" },
+                values: new object[,]
+                {
+                    { 20001, 1, 100000001, 10000004 },
+                    { 20002, 1, 100000002, 10000001 },
+                    { 20003, 1, 100000003, 10000003 },
+                    { 20004, 1, 100000004, 10000004 },
+                    { 20005, 1, 100000005, 10000002 },
+                    { 20006, 1, 100000006, 10000002 },
+                    { 20007, 1, 100000007, 10000001 },
+                    { 20008, 2, 100000008, 10000003 },
+                    { 20009, 1, 100000009, 10000001 },
+                    { 20010, 1, 100000010, 10000002 },
+                    { 20011, 1, 100000011, 10000001 },
+                    { 20012, 1, 100000012, 10000004 },
+                    { 20013, 1, 100000013, 10000004 },
+                    { 20014, 1, 100000014, 10000003 },
+                    { 20015, 1, 100000015, 10000002 },
+                    { 20016, 1, 100000016, 10000004 },
+                    { 20017, 1, 100000017, 10000003 },
+                    { 20018, 1, 100000018, 10000001 },
+                    { 20019, 1, 100000019, 10000002 },
+                    { 20020, 1, 100000020, 10000003 },
+                    { 20021, 1, 100000021, 10000001 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Reklamationer",
+                columns: new[] { "ReklamationID", "Atgard", "AvslutadDatum", "Beskrivning", "KundID", "OrderID", "Orsak", "ProduktID", "SkapadAvID", "SkapadDatum", "Status" },
+                values: new object[,]
+                {
+                    { 30001, "Justering", null, "Kunden önskar justering av passform.", 1003, 100000008, "Fel storlek", 10000003, 1, new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ny" },
+                    { 30002, "Reparation", null, "Sidenrosetten behöver bytas till ljusare nyans.", 1002, 100000013, "Fel färg", 10000004, 2, new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Under behandling" }
                 });
 
             migrationBuilder.CreateIndex(

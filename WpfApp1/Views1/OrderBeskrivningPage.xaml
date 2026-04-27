@@ -47,12 +47,12 @@
         </Style>
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" Margin="30">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="0,30,0,10">
+        <StackPanel Orientation="Vertical">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0.7*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
@@ -172,16 +172,32 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="1" Grid.Row="1" Margin="0,30,0,0" Background="#FFB08D46" CornerRadius="10" Padding="15" VerticalAlignment="Top" MaxWidth="350">
+                <Border Grid.Column="1" Grid.Row="1" Margin="0,30,0,0" Background="#FFB08D46" CornerRadius="10" Padding="0,15,0,15" VerticalAlignment="Top" MaxWidth="450">
                     <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Beskrivning av specialtillverkningar" Margin="5,0,0,8" FontWeight="Black" FontSize="14" Foreground="#F4F1EA"/>
 
 
-                        <Border Background="#FF2C3E50" Margin="0,15,0,0" Padding="15" CornerRadius="8">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="ORDERBESKRIVNING" Margin="0,0,0,8" FontWeight="Black" FontSize="14" Foreground="#FFC5A059"/>
-                                <TextBlock Text="Förberett för specialbeställning. Här kommer detaljerna att synas när de skrivs in." TextWrapping="Wrap" Foreground="#F4F1EA" LineHeight="20"/>
-                            </StackPanel>
-                        </Border>
+                        <ListBox ItemsSource="{Binding SpecialBeställningarLista}"
+                                 Background="#FF1A1A1D"
+                                 BorderThickness="0"
+                                 HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FF2C3E50" Margin="0,15,0,0" Padding="15" CornerRadius="8">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding Namn}" Margin="0,0,0,8" FontWeight="Bold" FontSize="14" Foreground="#FFC5A059" TextWrapping="Wrap"/>
+                                            <Image Source="{Binding BildFullPath}" Width="240" Height="140" Stretch="UniformToFill" Margin="0,0,0,8" HorizontalAlignment="Center"></Image>
+                                            <TextBlock Text="{Binding Beskrivning}" Margin="0,0,0,8" FontSize="12" Foreground="#F4F1EA" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
                 </Border>
             </Grid>

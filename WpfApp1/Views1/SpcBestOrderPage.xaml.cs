@@ -37,8 +37,6 @@ namespace WpfApp1.Views1
             fileDialog.Filter = "Tillåtna filnamn.Extensions (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
             fileDialog.InitialDirectory = System.IO.Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName, "DAL", "FörfråganBilder");
 
-
-
             if (fileDialog.ShowDialog() == true)
             {
                 string filPath = fileDialog.FileName;
@@ -71,6 +69,12 @@ namespace WpfApp1.Views1
 
         private void SparaSpecialbeställning_Click(object sender, RoutedEventArgs e)
         {            
+        }
+
+        private void ÖppnaFörfråganWindow_Clíck(object sender, RoutedEventArgs e)
+        {
+            FörfråganWindow fw = new FörfråganWindow();
+            fw.Show();
         }
     }
 }

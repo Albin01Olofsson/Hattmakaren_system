@@ -30,8 +30,9 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Produkt> produkLista;
-        //Funktionaliteten att visa produktlista i programmet funkar, men måste vänta på att riktiga ordar skapas,
-        //eftersom att man inte kan lägga till produkter i produktlista på en order för exempeldata
+
+        [ObservableProperty]
+        private ObservableCollection<SpecialBeställning> specialBeställningarLista;
 
         [ObservableProperty]
         private string orderStartareNamn;
@@ -56,10 +57,10 @@ namespace WpfApp1.ViewModels
             Rabatt = ValdOrder.Rabatt;
             Datum = ValdOrder.Datum;
             ProdukLista = new ObservableCollection<Produkt>(ValdOrder.OrderRader.Select(or => or.Produkt));
+            SpecialBeställningarLista = new ObservableCollection<SpecialBeställning>(ValdOrder.OrderRader.Select(or => or.Produkt).OfType<SpecialBeställning>());
             OrderStartareNamn = ValdOrder.StartadAv.Namn;
             Färdig = ValdOrder.Färdig;
             IsSpecialbeställning = ValdOrder.IsSpecialbeställning;
-            BildKälla = "C:\\Users\\david\\Desktop\\CvBuddy-G16-master\\Hattmakaren_system\\DAL\\Bilder\\bildsaknas.png\"";
         }
     }
 }

@@ -3,28 +3,12 @@ using BL.Services;
 using DAL;
 using DAL.Repositorys;
 using iText.Kernel.Pdf;
+using iText.Layout;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using System.IO;
-using iText.IO.Image;
-using iText.Layout.Element;
 
 namespace WpfApp1.Views1
 {
@@ -99,6 +83,59 @@ namespace WpfApp1.Views1
             dokument.Add(new iText.Layout.Element.Paragraph($"Specialbeställning: {order.IsSpecialbeställning}"));
             dokument.Close();
             MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");
+        }
+
+        private async void OrderStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Detta anropas när användaren byter status i rullistan!
+            // Se till att hämta din ViewModel
+            if (this.DataContext is OrderBeskrivningVM vm)
+            {
+                // Här kan du anropa en metod i din Service för att spara den nya statusen!
+                // t.ex: await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
+
+                await _orderService.UppdateraOrderStatus(vm.OrdernsID, vm.OrderStatus);
+            }
+        }
+
+        private async void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                string fileName = $"Order_{order.OrderID}.pdf";
+
+                string baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+                string pdfMapp = System.IO.Path.Combine(baseDirectory, "DAL", "Fraktsedlar");
+                string orderPdfFullPath = System.IO.Path.Combine(pdfMapp, fileName);
+
+                Directory.CreateDirectory(pdfMapp);
+
+                Document dokument = new Document(new PdfDocument(new PdfWriter(orderPdfFullPath)));
+
+                dokument.Add(new iText.Layout.Element.Paragraph($"Varukod: {order.Varukod}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Pris: {order.Pris} {(order.Kund.FöretagsKund ? "(25% Moms)" : "")}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Mottagare: {order.Kund.Namn}"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Adress: {order.Kund.Land}, {order.Kund.Stad}, {order.Kund.Adress}"));
+
+                foreach (var pRad in order.OrderRader)
+                {
+                    var produkt = await _produktService.GetProduktId(pRad.ProduktID);
+                    string prodString = $" - {produkt.Namn} - {(pRad.Antal * produkt.Pris)} - {pRad.Antal} st";
+                    dokument.Add(new iText.Layout.Element.Paragraph(prodString));
+                }
+
+                dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Otto & Judith AB"));
+                dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Sweden, Örebro, Fabriksvägen 11B"));
+                dokument.Close();
+
+                MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

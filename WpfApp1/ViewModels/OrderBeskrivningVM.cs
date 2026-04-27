@@ -1,15 +1,7 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DAL.Intefaces;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModels
 {
@@ -34,9 +26,13 @@ namespace WpfApp1.ViewModels
         private DateTime? datum;
 
         [ObservableProperty]
+        private string orderStatus;
+
+        [ObservableProperty]
         private ObservableCollection<Produkt> produkLista;
-        //Funktionaliteten att visa produktlista i programmet funkar, men måste vänta på att riktiga ordar skapas,
-        //eftersom att man inte kan lägga till produkter i produktlista på en order för exempeldata
+
+        [ObservableProperty]
+        private ObservableCollection<SpecialBeställning> specialBeställningarLista;
 
         [ObservableProperty]
         private string orderStartareNamn;
@@ -61,10 +57,10 @@ namespace WpfApp1.ViewModels
             Rabatt = ValdOrder.Rabatt;
             Datum = ValdOrder.Datum;
             ProdukLista = new ObservableCollection<Produkt>(ValdOrder.OrderRader.Select(or => or.Produkt));
+            SpecialBeställningarLista = new ObservableCollection<SpecialBeställning>(ValdOrder.OrderRader.Select(or => or.Produkt).OfType<SpecialBeställning>());
             OrderStartareNamn = ValdOrder.StartadAv.Namn;
             Färdig = ValdOrder.Färdig;
             IsSpecialbeställning = ValdOrder.IsSpecialbeställning;
-            BildKälla = "C:\\Users\\david\\Desktop\\CvBuddy-G16-master\\Hattmakaren_system\\DAL\\Bilder\\bildsaknas.png\"";
         }
     }
 }

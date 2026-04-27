@@ -2,16 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace WpfApp1.ViewModels
 {
@@ -108,7 +102,7 @@ namespace WpfApp1.ViewModels
             {
                 NyMaterialLista.Add(ValdMaterial);
             }
-            
+
         }
 
         [RelayCommand]
@@ -116,21 +110,15 @@ namespace WpfApp1.ViewModels
         {
             //Validering - Start
 
-            //Produkt namn
-            if (ValdProdukt != null && !string.IsNullOrWhiteSpace(NyttProduktNamn)) //Om Man valt ett produktnamn och skrivit in ett produktnamn
-            {
-                MessageBox.Show("Du har valt ett produkt namn och angett ett eget produktnamn, du kan bara göra en av dem.", "Krock Produkt nammn!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                NyttProduktNamn = string.Empty;
-                ValdProdukt = null;
-                return;
-            }
 
-            if(NyttProduktNamn.Length < 3)
+
+            if (NyttProduktNamn.Length < 3 && ValdProdukt == null)
             {
                 MessageBox.Show("Det angivna produktnamnet är för kort, ange ett prduktnamn som är 3-32 tecken långt", "Produkt nammn för kort!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 NyttProduktNamn = string.Empty;
                 return;
-            }else if(NyttProduktNamn.Length > 32)
+            }
+            else if (NyttProduktNamn.Length > 32 && ValdProdukt == null)
             {
                 MessageBox.Show("Det angivna produktnamnet är för kort, ange ett prduktnamn som är 3-32 tecken långt", "Produkt nammn för långt!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 NyttProduktNamn = string.Empty;
@@ -138,12 +126,13 @@ namespace WpfApp1.ViewModels
             }
 
             //Pris
-            if(NyttPris == 0)
+            if (NyttPris == 0)
             {
                 MessageBox.Show("För lågt pris, ange pris över 0 kr", "Pris för lågt!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 NyttPris = 0;
                 return;
-            }else if(NyttPris > 999999)
+            }
+            else if (NyttPris > 999999)
             {
                 MessageBox.Show("För högt pris, ange pris över under 1 000 000 kr", "Pris för Högt!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 NyttPris = 0;
@@ -274,7 +263,7 @@ namespace WpfApp1.ViewModels
         private List<Material> MaterialListaKonvertering()
         {
             List<Material> mLista = new();
-            foreach(Material m in NyMaterialLista)
+            foreach (Material m in NyMaterialLista)
             {
                 mLista.Add(m);
             }

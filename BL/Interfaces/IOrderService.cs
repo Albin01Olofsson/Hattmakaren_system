@@ -28,6 +28,8 @@ namespace BL.Interfaces
         Task MarkeraSomPrio(int OrderID);
 
         Task MarkeraFärdig(int OrderID);
-        Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string klarFilter, string specialFilter);
+        Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string orderStatus, string specialFilter);
+
+        Task UppdateraOrderStatus(int orderId, string nyStatus);
     }
 }

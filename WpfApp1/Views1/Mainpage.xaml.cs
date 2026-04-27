@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using WpfApp1.ViewModels;
 using WpfApp1.Views1.Planneringsviews;
 
+
 namespace WpfApp1.Views1
 {
     public partial class Mainpage : Page
@@ -71,10 +72,33 @@ namespace WpfApp1.Views1
             MainFrame.Navigate(new BestallningarPage());
         }
 
+        private void BtnStatistik_Click(object sender, RoutedEventArgs e)
+        {
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new StatistikPage());
+        }
+
+        private void BtnReklamation_Click(object sender, RoutedEventArgs e)
+        {
+            DashboardStartView.Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(new ReklamationPage());
+        }
+
         private void BtnSchema_Click(object sender, RoutedEventArgs e)
         {
             // Vi säger åt vår Frame att visa AnvPage
             MainFrame.Navigate(new AnvPage());
+        }
+
+        private void BtnFörfrågningar_Click(object sender, RoutedEventArgs e)
+        {
+            var mailRepo = new MailRepository();
+            MainFrame.Navigate(new FörfrågningarPage(new FörfrågningVM(new MailService(mailRepo))));
+        }
+
+        private void BtnLeveranser_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SpårningPage());
         }
 
 

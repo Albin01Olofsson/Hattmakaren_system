@@ -16,6 +16,7 @@ namespace DAL
         public DbSet<Aktivitet> Aktiviteter { get; set; }
         public DbSet<BestallningsRad> BestallningsRader { get; set; }
         public DbSet<OrderRad> OrderRader { get; set; }
+        public DbSet<Reklamation> Reklamationer { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -93,7 +94,7 @@ namespace DAL
                 .HasMany(mb => mb.MaterialLista)
                 .WithMany();
 
-           
+
             modelBuilder.Entity<Planering>(entity =>
             {
                 // Primärnyckel
@@ -127,12 +128,37 @@ namespace DAL
                       .IsRequired();
             });
 
+            modelBuilder.Entity<Reklamation>(entity =>
+            {
+                entity.HasOne(r => r.Order)
+                      .WithMany()
+                      .HasForeignKey(r => r.OrderID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Kund)
+                      .WithMany()
+                      .HasForeignKey(r => r.KundID)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Produkt)
+                      .WithMany()
+                      .HasForeignKey(r => r.ProduktID)
+                      .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(r => r.SkapadAv)
+                      .WithMany()
+                      .HasForeignKey(r => r.SkapadAvID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // 6. DATATYPSPRECISION (Ekonomi)
             // Tvingar SQL Server att använda decimaler för priser för att undvika avrundningsfel.
             modelBuilder.Entity<Produkt>().Property(p => p.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
+
 
             //Exempeldata ----------------
 
@@ -243,9 +269,8 @@ namespace DAL
                         Namn = "Filt",
                         Pris = 54,
                         Beskrivning = "Inte filt man sover med",
-                        Typ = "Tyg",
-                        Lagerantal = 23,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 23
                     },
                     new Material
                     {
@@ -253,9 +278,8 @@ namespace DAL
                         Namn = "Bomull",
                         Pris = 34,
                         Beskrivning = "100% obesprutat bomull",
-                        Typ = "Tyg",
-                        Lagerantal = 52,
-                        Mått = "milimeter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 52
                     },
                     new Material
                     {
@@ -263,9 +287,8 @@ namespace DAL
                         Namn = "Svart tråd",
                         Pris = 28,
                         Beskrivning = "1.2 mm svar syträd av silikon och polyester",
-                        Typ = "Tråd",
-                        Lagerantal = 2,
-                        Mått = "meter"
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 2
                     }
                 );
             //MATERIALBESTÄLLNINGAR
@@ -310,7 +333,7 @@ namespace DAL
                         StartadAvID = 1,
                         KundID = 1001,
                         Status = "Ej påbörjat",
-                        FörväntadTillverkningsTid = new DateTime(2026, 04,28)
+                        FörväntadTillverkningsTid = new DateTime(2026, 04, 28)
                     },
                     new Order
                     {

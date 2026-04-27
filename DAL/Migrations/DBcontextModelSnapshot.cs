@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$bcl5J2jYDt6.OeiVJbCCL.PwzRtBOuQYeFs24.OWPWhOLyiLvzF42",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -310,9 +310,8 @@ namespace DAL.Migrations
                     b.Property<int>("Lagerantal")
                         .HasColumnType("int");
 
-                    b.Property<string>("Mått")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MåttTyp")
+                        .HasColumnType("int");
 
                     b.Property<string>("Namn")
                         .IsRequired()
@@ -320,10 +319,6 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Pris")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Typ")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MaterialID");
 
@@ -335,30 +330,27 @@ namespace DAL.Migrations
                             MaterialID = 100001,
                             Beskrivning = "Inte filt man sover med",
                             Lagerantal = 23,
-                            Mått = "meter",
+                            MåttTyp = 0,
                             Namn = "Filt",
-                            Pris = 54m,
-                            Typ = "Tyg"
+                            Pris = 54m
                         },
                         new
                         {
                             MaterialID = 100002,
                             Beskrivning = "100% obesprutat bomull",
                             Lagerantal = 52,
-                            Mått = "milimeter",
+                            MåttTyp = 0,
                             Namn = "Bomull",
-                            Pris = 34m,
-                            Typ = "Tyg"
+                            Pris = 34m
                         },
                         new
                         {
                             MaterialID = 100003,
                             Beskrivning = "1.2 mm svar syträd av silikon och polyester",
                             Lagerantal = 2,
-                            Mått = "meter",
+                            MåttTyp = 0,
                             Namn = "Svart tråd",
-                            Pris = 28m,
-                            Typ = "Tråd"
+                            Pris = 28m
                         });
                 });
 
@@ -369,6 +361,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaterialBeställningID"));
+
+                    b.Property<DateTime?>("Datum")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Leverantör")
                         .IsRequired()
@@ -444,12 +439,16 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Rabatt")
                         .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StartadAvID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Varukod")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -474,7 +473,8 @@ namespace DAL.Migrations
                             Pris = 1299m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -488,7 +488,8 @@ namespace DAL.Migrations
                             Pris = 1099m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -502,7 +503,8 @@ namespace DAL.Migrations
                             Pris = 299m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -516,7 +518,8 @@ namespace DAL.Migrations
                             Pris = 2399m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -530,7 +533,8 @@ namespace DAL.Migrations
                             Pris = 779m,
                             Rabatt = 0m,
                             StartadAvID = 1,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -544,7 +548,8 @@ namespace DAL.Migrations
                             Pris = 949m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -558,7 +563,8 @@ namespace DAL.Migrations
                             Pris = 1049m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -572,7 +578,8 @@ namespace DAL.Migrations
                             Pris = 749m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -586,7 +593,8 @@ namespace DAL.Migrations
                             Pris = 999m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -600,7 +608,8 @@ namespace DAL.Migrations
                             Pris = 899m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -614,7 +623,8 @@ namespace DAL.Migrations
                             Pris = 1099m,
                             Rabatt = 0m,
                             StartadAvID = 2,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -628,7 +638,8 @@ namespace DAL.Migrations
                             Pris = 2019m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -642,7 +653,8 @@ namespace DAL.Migrations
                             Pris = 1829m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -656,7 +668,8 @@ namespace DAL.Migrations
                             Pris = 599m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -670,7 +683,8 @@ namespace DAL.Migrations
                             Pris = 899m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -684,7 +698,8 @@ namespace DAL.Migrations
                             Pris = 1299m,
                             Rabatt = 0m,
                             StartadAvID = 3,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -698,7 +713,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -712,7 +728,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -726,7 +743,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -740,7 +758,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         },
                         new
                         {
@@ -754,7 +773,8 @@ namespace DAL.Migrations
                             Pris = 499m,
                             Rabatt = 0m,
                             StartadAvID = 4,
-                            Status = "Ej påbörjat"
+                            Status = "Ej påbörjat",
+                            Varukod = ""
                         });
                 });
 
@@ -879,6 +899,61 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.Property<int>("ReklamationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReklamationID"));
+
+                    b.Property<string>("Atgard")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AvslutadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Beskrivning")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KundID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Orsak")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkapadAvID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SkapadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReklamationID");
+
+                    b.HasIndex("KundID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.HasIndex("SkapadAvID");
+
+                    b.ToTable("Reklamationer");
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -1097,6 +1172,40 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("TillverkadAv");
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.HasOne("Models.Kund", "Kund")
+                        .WithMany()
+                        .HasForeignKey("KundID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany()
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Models.Användare", "SkapadAv")
+                        .WithMany()
+                        .HasForeignKey("SkapadAvID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Kund");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Produkt");
+
+                    b.Navigation("SkapadAv");
                 });
 
             modelBuilder.Entity("Models.Användare", b =>

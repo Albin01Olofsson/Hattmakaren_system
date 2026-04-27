@@ -1,11 +1,18 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BL.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
+using System.Security.RightsManagement;
 using System.Text.RegularExpressions;
 namespace WpfApp1.ViewModels
 {
     public partial class AddAnvändareViewModel : ObservableObject
     {
+        private readonly IAnvändarService _användarService;
+        public AddAnvändareViewModel(IAnvändarService användarService)
+        {
+            _användarService = användarService;
+        }
         public event Action<Användare> AnvändareAdded;
 
         [ObservableProperty]
@@ -28,14 +35,15 @@ namespace WpfApp1.ViewModels
         private string lösenordFel;
 
         [RelayCommand]
-        public void AddAnvändare()
+        public async Task AddAnvändare()
         {
             NamnFel = "";
             EmailFel = "";
             TelefonFel = "";
             LösenordFel = "";
             bool HasErrors = false;
-            if(string.IsNullOrWhiteSpace(Namn))
+            var users = await _användarService.HämtaAllaAnvändare();
+            if (string.IsNullOrWhiteSpace(Namn))
             {
                 NamnFel = " - obligatorisk!";
                 HasErrors = true;
@@ -55,8 +63,18 @@ namespace WpfApp1.ViewModels
             {
                 TelefonFel = " - för kort nummer!";
                 HasErrors = true;
+            }else if (!string.IsNullOrWhiteSpace(Telefon))
+            {
+                foreach(var user in users)
+                {
+                    if(user.Telefon == Telefon)
+                    {
+                        TelefonFel = " - finns redan i systemet!";
+                        HasErrors = true;
+                    }
+                }
             }
-
+            
             if (string.IsNullOrWhiteSpace(Email))
             {
                 EmailFel = " - obligatorisk!";
@@ -66,8 +84,18 @@ namespace WpfApp1.ViewModels
             {
                 EmailFel = " - ogiltig e-post!";
                 HasErrors = true;
+            }else if(!string.IsNullOrWhiteSpace(Email))
+            {
+                foreach (var user in users)
+                {
+                    if (user.Email.ToLower() == Email.ToLower())
+                    {
+                        EmailFel = " - redan finns i systemet!";
+                        HasErrors = true;
+                    }
+                }
             }
-
+            
             if (string.IsNullOrWhiteSpace(Lösenord))
             {
                 LösenordFel = " - obligatorisk!";

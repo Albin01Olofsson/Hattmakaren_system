@@ -6,84 +6,201 @@
       xmlns:local="clr-namespace:WpfApp1.Views1"
       xmlns:viewmodels="clr-namespace:WpfApp1.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OrderBeskrivningVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="900"
       Background="#FF1A1A1D"
       Title="OrderBeskrivningPage">
 
-    <StackPanel Orientation="Vertical" Margin="20">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Background" Value="#FFB08D46"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFC5A059"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Style TargetType="TextBlock" x:Key="DetailLabel">
+            <Setter Property="Foreground" Value="#FFC5A059"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="DetailValue">
+            <Setter Property="Foreground" Value="#F4F1EA"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
 
-            <TextBlock x:Name="Rubrik"
-                   Grid.Column="0"
-                   Grid.Row="0"
-                   Text="{Binding OrdernsID, StringFormat=Order: {0}}"
-                   Margin="0,0,0,10"
-                   FontSize="28"
-                   FontWeight="Black"
-                   Foreground="#F4F1EA"
-                   HorizontalAlignment="Center">
-            </TextBlock>
+    <ScrollViewer VerticalScrollBarVisibility="Auto"  Margin="0,30,0,10">
+        <StackPanel Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Background="#FF2C3E50">
-                <!--<CheckBox Content="Markera som klar" IsChecked="{Binding Färdig}" Margin="10" Foreground="#F4F1EA" VerticalAlignment="Center">-->
-                <CheckBox Content="Markera som klar" Click="MarkeraSomKlar_Click" IsChecked="{Binding Färdig}" Margin="10" Foreground="#F4F1EA" VerticalAlignment="Center">
-                </CheckBox>
-                <Button x:Name="LaddaNerPdfKnapp" Click="LaddaNerPdfKnapp_Click" Content="Ladda ner pdf" Margin="10" Background="#FFB08D46" VerticalAlignment="Center" Padding="10" Foreground="#F4F1EA" FontWeight="Bold">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <Border Grid.Column="0" Grid.Row="1" Margin="0,20,20,0" Background="#FF2C3E50" CornerRadius="10" Padding="10">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding KundNamn, StringFormat=Kund: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="{Binding Pris, StringFormat=Pris: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="{Binding Rabatt, StringFormat=Rabatt: {0} %}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                <TextBlock x:Name="Rubrik"
+                           Grid.Column="0"
+                           Grid.Row="0"
+                           Text="{Binding OrdernsID, StringFormat='Ordernr: #{0}'}"
+                           FontSize="32"
+                           FontWeight="Black"
+                           Foreground="#F4F1EA"
+                           VerticalAlignment="Center">
+                </TextBlock>
 
-                    <TextBlock Text="Tillagda prokuter" Margin="0,0,0,4" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
-                    <ListBox ItemsSource="{Binding ProdukLista}" Margin="0,0,0,7">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="0,0,0,7">
-                                    <TextBlock.Inlines>
-                                        <Run Text="{Binding namn}"/>
-                                        <Run Text=" - "/>
-                                        <Run Text="{Binding pris}"/>
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    
-                    <TextBlock Text="{Binding Datum, StringFormat=Datum: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="{Binding OrderStartareNamn, StringFormat=Startare: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="{Binding Färdig, StringFormat=Klar: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
-                    <TextBlock Text="{Binding IsSpecialbeställning, StringFormat=Specialbeställning: {0}}" Margin="0,0,0,7" Foreground="#F4F1EA"></TextBlock>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <TextBlock Text="Status:" Foreground="#FFC5A059" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                    <ComboBox Width="150" 
+                              Height="35" 
+                              Margin="0,0,15,0"
+                              SelectedValue="{Binding OrderStatus, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Content"
+                              VerticalContentAlignment="Center"
+                              SelectionChanged="OrderStatus_SelectionChanged">
+                        <ComboBoxItem Content="Ej Påbörjad"/>
+                        <ComboBoxItem Content="Påbörjad"/>
+                        <ComboBoxItem Content="Levererad"/>
+                    </ComboBox>
+
+                    <Button x:Name="LaddaNerPdfKnapp" 
+                            Click="LaddaNerPdfKnapp_Click" 
+                            Content="Ladda ner PDF" 
+                            Style="{StaticResource ActionButtonStyle}"/>
                 </StackPanel>
-            </Border>
-            <Border Grid.Column="1" Grid.Row="1" Margin="0,20,0,0" Background="#FFB08D46" CornerRadius="10" Padding="10">
-                <StackPanel Orientation="Vertical">
-                    <Image Source="C:\Users\david\Desktop\CvBuddy-G16-master\Hattmakaren_system\DAL\Bilder\bildsaknas.png"></Image>
-                    <StackPanel Orientation="Vertical" Background="#FF2C3E50" Margin="0,10,0,0">
-                        <TextBlock Text="Ev. Beskrivning" Margin="0,0,0,4" FontWeight="Bold" FontSize="14" Foreground="#F4F1EA"></TextBlock>
-                        <TextBlock Text="Förberett för specialbeställning" Margin="0,0,0,4" FontWeight="Bold" Foreground="#F4F1EA"></TextBlock>
+
+                <Border Grid.Column="0" Grid.Row="1" Margin="0,30,20,0" Background="#FF2C3E50" CornerRadius="10" Padding="25" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="ORDERDETALJER" FontSize="18" FontWeight="Black" Foreground="#FFC5A059" Margin="0,0,0,20"/>
+                            <Button  Grid.Column="1" 
+                                     x:Name="BtnSkrivUtFraktsedel"
+                                     Click="BtnSkrivUtFraktsedel_Click"  
+                                     Content="Skriv ut fraktsedel"
+                                     Height="39"          
+                                     Width="140"         
+                                     HorizontalAlignment="Right"    
+                                     Style="{StaticResource ActionButtonStyle}"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="Kund:" Style="{StaticResource DetailLabel}"/>
+                            <TextBlock Text="{Binding KundNamn}" Style="{StaticResource DetailValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="Säljare:" Style="{StaticResource DetailLabel}"/>
+                            <TextBlock Text="{Binding OrderStartareNamn}" Style="{StaticResource DetailValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="Datum:" Style="{StaticResource DetailLabel}"/>
+                            <TextBlock Text="{Binding Datum, StringFormat='{}{0:yyyy-MM-dd}'}" Style="{StaticResource DetailValue}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="Specialbeställning:" Style="{StaticResource DetailLabel}"/>
+                            <TextBlock Text="{Binding IsSpecialbeställning}" Style="{StaticResource DetailValue}"/>
+                        </StackPanel>
+
+                        <Border BorderBrush="#1AFFFFFF" BorderThickness="0,0,0,1" Margin="0,10,0,20"/>
+
+                        <TextBlock Text="PRODUKTER" FontWeight="Bold" Foreground="#FFC5A059" Margin="0,0,0,10"/>
+
+                        <ListBox ItemsSource="{Binding ProdukLista}" 
+                                 Background="Transparent" 
+                                 BorderThickness="0" 
+                                 Margin="0,0,0,20"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#11FFFFFF" CornerRadius="5" Padding="10" Margin="0,0,0,5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" Foreground="#F4F1EA" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Pris, StringFormat='{}{0} kr'}" Foreground="#FFC5A059" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <Border Background="#FF1A1A1D" CornerRadius="5" Padding="15">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="Rabatt:" Foreground="LightGray" Width="100"/>
+                                    <TextBlock Text="{Binding Rabatt, StringFormat='{}{0} %'}" Foreground="LightGray"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Slutsumma:" Foreground="#FFC5A059" FontWeight="Black" FontSize="16" Width="100"/>
+                                    <TextBlock Text="{Binding Pris, StringFormat='{}{0} kr'}" Foreground="#F4F1EA" FontWeight="Black" FontSize="16"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                     </StackPanel>
-                </StackPanel>
-            </Border>
-        </Grid>
+                </Border>
 
-    </StackPanel>
+                <Border Grid.Column="1" Grid.Row="1" Margin="0,30,0,0" Background="#FFB08D46" CornerRadius="10" Padding="0,15,0,15" VerticalAlignment="Top" MaxWidth="450">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Beskrivning av specialtillverkningar" Margin="5,0,0,8" FontWeight="Black" FontSize="14" Foreground="#F4F1EA"/>
 
+
+                        <ListBox ItemsSource="{Binding SpecialBeställningarLista}"
+                                 Background="#FF1A1A1D"
+                                 BorderThickness="0"
+                                 HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FF2C3E50" Margin="0,15,0,0" Padding="15" CornerRadius="8">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding Namn}" Margin="0,0,0,8" FontWeight="Bold" FontSize="14" Foreground="#FFC5A059" TextWrapping="Wrap"/>
+                                            <Image Source="{Binding BildFullPath}" Width="240" Height="140" Stretch="UniformToFill" Margin="0,0,0,8" HorizontalAlignment="Center"></Image>
+                                            <TextBlock Text="{Binding Beskrivning}" Margin="0,0,0,8" FontSize="12" Foreground="#F4F1EA" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

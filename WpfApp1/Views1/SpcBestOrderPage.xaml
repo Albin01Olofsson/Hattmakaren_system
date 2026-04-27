@@ -5,197 +5,247 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.Views1"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="800"
-      Title="SpcBestOrderPage"  Background="#FF1A1A1D">
-    
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
+      d:DesignHeight="950" d:DesignWidth="800"
+      Title="SpcBestOrderPage" Background="#FF1A1A1D">
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Background" Value="#FFB08D46"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFC5A059"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            
-            <TextBlock Margin = "0, 15, 0, 15" HorizontalAlignment = "Center" VerticalAlignment = "Center" FontSize = "28" FontWeight = "Bold" Text = "Skapa Specialbeställning" Foreground = "White" ></TextBlock >
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#FFC5A059"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
 
-            <Border Grid.Row = "1" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.35*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="ProduktNamnFält" Grid.Column="0" Text="Välj Produkt: " Foreground = "#FFC5A059"></TextBlock>
-                    <ComboBox x:Name="ProduktComboBox" Grid.Column="1" ItemsSource="{Binding ProduktLista}" SelectedItem="{Binding ValdProdukt}" DisplayMemberPath="namn"></ComboBox>
-                    <TextBlock Grid.Column="2" HorizontalAlignment="Center" Text="Eller vid ny produkt, Ange Namn:" Foreground = "#FFC5A059"></TextBlock>
-                    <TextBox Grid.Column="3" Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left"></TextBox>
-                </Grid>
-            </Border>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,0"/>
+        </Style>
+    </Page.Resources>
 
-            <Border Grid.Row="2" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Ange pris: " Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                    <TextBox Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
-                </StackPanel>
-            </Border>
-                
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="800">
 
-            
-            <Border Grid.Row = "3" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Text="SKAPA SPECIALBESTÄLLNING" 
+                       FontSize="28" 
+                       FontWeight="Black" 
+                       Foreground="#F4F1EA" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,10"/>
+                <Button Grid.Column="2"
+                    Content="Se förfrågningar"   
+                    Click="ÖppnaFörfråganWindow_Clíck"
+                    VerticalAlignment="Center"
+                    Width="105" 
+                    Height="29" 
+                    Margin="0,5,0,30"
+                    Style="{StaticResource ActionButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6,6,6,6">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="GRUNDINFORMATION" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="0"
-                                Orientation="Horizontal">
-                        <TextBlock x:Name="StorlekFält" Text = "Storlek" Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                        <TextBox Text="{Binding NyStorlek, UpdateSourceTrigger=PropertyChanged}" Width = "200" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="1"
-                                Orientation="Horizontal">
-                        <TextBlock x:Name="TypFält" Text = "Typ" Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                        <TextBox Text="{Binding NyTyp, UpdateSourceTrigger=PropertyChanged}" Width = "200" />
-                    </StackPanel>
-                   
-                    <StackPanel Grid.Row="1"
-                                Grid.Column="0"
-                                Orientation="Horizontal"
-                                Margin="0,10,0,0">
-                        <TextBlock x:Name="ModellFält" Text = "Modell" Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                        <TextBox Text="{Binding NyModell, UpdateSourceTrigger=PropertyChanged}" Width = "200" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Row="1"
-                                Grid.Column="1"
-                                Orientation="Horizontal"
-                                Margin="0,10,0,0">
-                        <TextBlock x:Name="FärgFält" Text = "Färg" Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                        <TextBox Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}" Width = "200" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Row="2"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Orientation="Horizontal"
-                                Margin="0,10,0,0">
-                        <TextBlock x:Name="DecorationFält" Text = "Decoration" Foreground = "#FFC5A059" Margin="0,0,10,0"></TextBlock>
-                        <TextBox Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}" Width = "635" />
-                    </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,15">
+                            <TextBlock Text="Utgå från befintlig modell (Valfritt)" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="ProduktComboBox" 
+                                      ItemsSource="{Binding ProduktLista}" 
+                                      SelectedItem="{Binding ValdProdukt, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMemberPath="Namn" 
+                                      Height="32"/>
+                        </StackPanel>
 
-                </Grid>
-            </Border>
+                        <StackPanel Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="Specialbeställningens Namn" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyttProduktNamn, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
 
-            <Border Grid.Row = "4" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text = "Material" Foreground = "#FFC5A059" ></TextBlock>
-                    <!--<Button Grid.Column = "1" Width = "200" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Material" Background = "#FFB08D46" ></Button>-->
-                    <ComboBox x:Name="MaterialComboBox" Grid.Column="1" Width = "200"  HorizontalAlignment = "Left" ItemsSource = "{Binding MaterialLista}" SelectedItem = "{Binding ValdMaterial}" DisplayMemberPath="Namn" Text = "Välj Material" SelectionChanged="ComboBox_SelectionChanged" ></ComboBox>
-                    <Button Grid.Column="2" Command="{Binding LäggTillMaterialCommand}" Content="Lägg till material" Margin="10,0,10,0" Background="#FFC5A059"></Button>
-                    <ListBox Grid.Column="3"
-                             ItemsSource="{Binding NyMaterialLista}"
-                             DisplayMemberPath="Namn"
-                             Background="#FF1A1A1D"
-                             Foreground="White"
-                             HorizontalContentAlignment="Left"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             MaxHeight="290" >
-                    </ListBox>
-                        <!--<StackPanel Orientation = "Horizontal" Margin = "50, 0, 0, 15" VerticalAlignment = "Bottom">
-                        <TextBox Width = "200"/>
-                        <ComboBox VerticalAlignment = "center" Foreground = "#FFC5A059" ItemsSource="{Binding materialInkrement}" SelectedItem="{Binding valtInkrement}"/>
-                        --><!--Behövs Text här?--><!--
-                    </StackPanel>-->
-                </Grid>
-            </Border>
-
-            <Border Grid.Row = "5" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal" Width="Auto">
-                    <TextBlock Text="Beskrivning: " Foreground = "#FFC5A059"/>
-                    <TextBox Text="{Binding NyBeskrivning, UpdateSourceTrigger=PropertyChanged}" Width="300" Height="100" Margin="15" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True"/>
-                    <!--<Button Width = "200" Margin = "100, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Beskrivning" Background = "#FFB08D46" ></Button>-->
+                        <StackPanel Grid.Row="1" Grid.Column="2">
+                            <TextBlock Text="Ange Pris (kr)" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyttPris, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="6" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Referensbild: " Foreground = "#FFC5A059"/>
-                    <!--<TextBox Width="200" Margin="15, 0"></TextBox>-->
-                    <Button Click="BtnLaddaUppBild_Click" Width = "100" Margin = "0, 15, 50, 15" HorizontalAlignment = "Right" VerticalAlignment = "Bottom" Content = "Lägg Till Bild" Background = "#FFB08D46" ></Button>
-                    <!--<ListBox ItemsSource="{Binding}">     Vet inte vad detta är
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding}" Width="50" Height="50" Margin="0, 0, 10, 0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding}" FontWeight="Bold"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>-->
-                    <Image Source="{Binding ValdBild}" MaxWidth="200" MaxHeight="200" Stretch="Uniform"/>
-                    <!--Ska jag vara här?-->
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="SPECIFIKATIONER" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
+                            <TextBlock Text="Storlek" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyStorlek, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,15">
+                            <TextBlock Text="Typ" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyTyp, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,15">
+                            <TextBlock Text="Modell" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyModell, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,15">
+                            <TextBlock Text="Färg" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyFärg, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                            <TextBlock Text="Dekoration" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyDecoration, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock Text="MATERIAL" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                            <TextBlock Text="Välj Material" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox x:Name="MaterialComboBox" 
+                                      ItemsSource="{Binding MaterialLista}" 
+                                      SelectedItem="{Binding ValdMaterial}" 
+                                      DisplayMemberPath="Namn" 
+                                      Height="32"
+                                      SelectionChanged="ComboBox_SelectionChanged"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="1" 
+                                Command="{Binding LäggTillMaterialCommand}" 
+                                Content="Lägg till &#x2794;" 
+                                Margin="15,22,15,0" 
+                                Padding="15,0"
+                                Height="32" 
+                                Style="{StaticResource ActionButtonStyle}"
+                                VerticalAlignment="Top"/>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Valda material:" Style="{StaticResource LabelStyle}"/>
+                            <ListBox ItemsSource="{Binding NyMaterialLista}"
+                                     DisplayMemberPath="Namn"
+                                     Background="#FF1A1A1D"
+                                     Foreground="White"
+                                     BorderThickness="0"
+                                     Height="100"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="5"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,25">
+                <StackPanel>
+                    <TextBlock Text="EXTRA INFORMATION" FontWeight="Bold" Foreground="#F4F1EA" Margin="0,0,0,15"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Kundens Beskrivning" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding NyBeskrivning, UpdateSourceTrigger=PropertyChanged}" 
+                                     Height="120" 
+                                     AcceptsReturn="True" 
+                                     TextWrapping="Wrap" 
+                                     VerticalScrollBarVisibility="Auto" 
+                                     SpellCheck.IsEnabled="True"
+                                     VerticalContentAlignment="Top"
+                                     Padding="5"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Referensbild" Style="{StaticResource LabelStyle}"/>
+                            <Border Background="#FF1A1A1D" CornerRadius="5" Height="120" Margin="0,0,0,10" ClipToBounds="True">
+                                <Image Source="{Binding ValdBild}" Stretch="Uniform" Margin="5"/>
+                            </Border>
+                            <Button Click="BtnLaddaUppBild_Click" 
+                                    Content="Ladda upp bild" 
+                                    Style="{StaticResource ActionButtonStyle}"
+                                    Height="32" Padding="0"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
 
             <Button Command="{Binding LäggTillSpecialBeställningCommand}" 
-                    Grid.Row="7"
-                    Content="LÄGG TILL SPECIALBESTÄLLNING I DATABAS"
-
-                    Height="45" 
+                    Content="SPARA SPECIALBESTÄLLNING" 
+                    Height="50" 
                     FontSize="18"
-                    FontWeight="Bold"
-                    Background="#FFB08D46">
-            </Button>
+                    Style="{StaticResource ActionButtonStyle}"/>
 
-            <!--<Border Grid.Row="7" Background = "#FF2C3E50" Padding = "20" CornerRadius = "15" Margin = "10, 10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    --><!--<TextBlock Text="Översikt" Foreground="#FFB08D46"></TextBlock>
-                    <TextBox Margin="50, 15" Width="300" Text="{Binding översikt}" TextWrapping="Wrap"></TextBox>--><!--
-                    <Button Command="{Binding LäggTillSpecialBeställningCommand}" 
-                            Width="200" 
-                            Margin="50, 15"
-                             
-                            Content="Lägg Till Specialbeställning"
-                            Background="#FFB08D46">
-                    </Button>
-                </Grid>
-            </Border>-->
-        </Grid>
-
-
+        </StackPanel>
     </ScrollViewer>
 </Page>

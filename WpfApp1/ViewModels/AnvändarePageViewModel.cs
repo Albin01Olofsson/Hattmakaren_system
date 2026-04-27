@@ -1,12 +1,6 @@
 ﻿using BL.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using iText.Bouncycastle.Crypto;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModels
 {
@@ -26,18 +20,11 @@ namespace WpfApp1.ViewModels
         {
             _användarService = användarService;
 
-            AddAnvändareVM = new AddAnvändareViewModel();
+            AddAnvändareVM = new AddAnvändareViewModel(_användarService);
             ListaVM = new AnvändareViewModel(_användarService);
 
             AddAnvändareVM.AnvändareAdded += OnUserAdded;
 
-            
-            //AddAnvändareVM.AnvändareAdded += (användare) =>
-            //{
-            //    användare.IsActive = true;
-            //    _användarService.LäggTillAnvändare(användare);
-            //    ListaVM.AnvändareLista.Add(användare);
-            //};
             var user = Session.CurrentUser;
             AddAnvändareVM.LoadUser(user);
             CanEditUsers = user?.IsAdmin == true;

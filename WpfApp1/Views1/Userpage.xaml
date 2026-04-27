@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="AnvandarePage"
       Background="#FF1A1A1D">
-    
+
+
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -50,17 +51,6 @@
                     </DockPanel>
                 </Border>
 
-                <!--<Border Grid.Column="1" Background="#FF2C3E50" CornerRadius="15" Margin="10,0,0,0" Padding="20">
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="KUNDER" Foreground="#FFC5A059" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
-                        <Button x:Name="BtnDeleteCustomer" DockPanel.Dock="Bottom" Content="TA BORT KUND" Background="#FFE74C3C" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0" Margin="0,15,0,0"/>
-
-                        <ListBox Background="Transparent" BorderThickness="0" Foreground="White">
-                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👥 Karl Karlsson</ListBoxItem>
-                            <ListBoxItem Padding="10" Margin="0,0,0,5" Background="#11FFFFFF">👥 Maria Larsson</ListBoxItem>
-                        </ListBox>
-                    </DockPanel>
-                </Border>-->
             </Grid>
             <!--Registrera ny användare-->
             <Border Grid.Column="1" Background="#FFC5A059" CornerRadius="15" Padding="18">
@@ -92,6 +82,7 @@
                     <TextBox x:Name="InputTelefon" Text="{Binding AddAnvändareVM.Telefon, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
 
+                    <StackPanel Visibility="{Binding CanEditUsers, Converter={StaticResource BoolToVis}}">
                     <!-- LÖSENORD -->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="LÖSENORD" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
@@ -99,7 +90,7 @@
                     </StackPanel>
                     <TextBox Text="{Binding AddAnvändareVM.Lösenord, UpdateSourceTrigger=PropertyChanged}"
                         Margin="0,3,0,3" Height="30" Padding="5" Background="White" BorderThickness="0"/>
-
+                    </StackPanel>
                     <!-- ROLL -->
                     <TextBlock Text="KATEGORI" Foreground="#FF2C3E50" FontSize="11" FontWeight="Bold"/>
                     <ComboBox SelectedValue="{Binding AddAnvändareVM.IsAdmin}" SelectedValuePath="Tag" Margin="0,3,0,10" Height="30">
@@ -108,7 +99,7 @@
                     </ComboBox>
 
                     <!-- BUTTON -->
-                    <Button Content="BEKRÄFTA OCH SPARA" Command="{Binding AddAnvändareVM.AddAnvändareCommand}" IsEnabled="{Binding CanEditUsers}"
+                    <Button Content="BEKRÄFTA OCH SPARA" Command="{Binding AddAnvändareVM.AddAnvändareCommand}" Visibility="{Binding CanEditUsers, Converter={StaticResource BoolToVis}}"
                         Background="#FF2C3E50" Foreground="White" FontWeight="Bold" Height="40" BorderThickness="0"/>
 
                     <TextBlock Text="* Historik bevaras vid radering." Foreground="#FF2C3E50" FontSize="10"
@@ -116,5 +107,34 @@
                 </StackPanel>
             </Border>
         </Grid>
+        <Popup IsOpen="{Binding ListaVM.VisaAnvändarPopup}" Placement="MousePoint" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+
+            <Border Background="#FF2D2D30" CornerRadius="12" BorderBrush="#FFC5A059" BorderThickness="1" Padding="15" Width="250">
+                <StackPanel>
+                    <TextBlock Text="ANVÄNDARE" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding ListaVM.ValdAnvändare.Namn}" Foreground="White" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding ListaVM.ValdAnvändare.Email}" Foreground="#B0FFFFFF" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding ListaVM.ValdAnvändare.Telefon}" Foreground="#B0FFFFFF" Margin="0,0,0,5"/>
+
+                    <TextBlock Foreground="#FFC5A059" FontWeight="SemiBold">
+                        <!-- DEFAULT TEXT -->
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <!-- anställd -->
+                                <Setter Property="Text" Value="Anställd"/>
+                                <!-- OM admin = true -->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ListaVM.ValdAnvändare.IsAdmin}" Value="True">
+                                        <Setter Property="Text" Value="Administratör"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <Button Content="X" Margin="0,10,0,0" Command="{Binding ListaVM.StängPopupCommand}" Background="#FF2D2D30" Foreground="Red"/>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
+    
 </Page>

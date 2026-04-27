@@ -29,10 +29,6 @@ namespace WpfApp1.Views1
             {
                 AdminPanel.Visibility = Visibility.Visible;
                 TxtHeaderTitle.Text = "MIN PROFIL";
-                
-                //InputName.Text = användare.Namn;
-                //InputTelefon.Text = användare.Telefon;
-                //InputEmail.Text = användare.Email;
 
                 InputName.IsReadOnly = true;
                 InputTelefon.IsReadOnly = true;

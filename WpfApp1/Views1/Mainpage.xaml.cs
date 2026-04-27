@@ -18,8 +18,9 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
             LoadUser();
-            OrderRepo repo = new OrderRepo(new DBcontext());
-            _orderService = new OrderService(repo, new DBcontext());
+            var context = new DBcontext();
+            OrderRepo repo = new OrderRepo(context);
+            _orderService = new OrderService(repo, context);
             vm = new OrderVM(_orderService);
         }
 

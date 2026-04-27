@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Hattmakaren.png" />
+    <None Remove="Hattmakaren2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="GMap.NET.Presentation" Version="1.7.5" />
     <PackageReference Include="itext" Version="9.6.0" />
@@ -27,6 +32,11 @@
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Hattmakaren.png" />
+    <Resource Include="Hattmakaren2.png" />
   </ItemGroup>
 
 </Project>

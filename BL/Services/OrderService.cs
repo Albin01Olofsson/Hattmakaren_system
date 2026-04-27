@@ -205,6 +205,26 @@ namespace BL.Services
 
                 nyOrder.Varukod = $"{landBokstav}{stadBokstav}{företagskundBokstav}{kundNamnBokstav}{random4siffror}";
 
+                //MINSKA LAGERANTAL
+
+                List<Produkt> produkter = new();
+
+                foreach(var or in nyOrder.OrderRader)
+                {
+                    var prod = await _context.Produkter.FindAsync(or.ProduktID);
+                    if(prod.Lagerantal != 0)
+                    {
+                        for (int i = 0; i < or.Antal; i++)
+                        {
+                            if (prod.Lagerantal != 0)
+                                prod.Lagerantal -= 1;
+                        }
+                            
+                    }
+
+                    _context.Produkter.Update(prod);
+                }
+
                 await _orderRepo.Update(senasteOrder);
                 await _context.SaveChangesAsync();
             }

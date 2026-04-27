@@ -173,7 +173,7 @@ namespace WpfApp1.Views1
 
         }
 
-        private void HändelserLista_SelectedChange(object sender, EventArgs e)
+        private void HändelserLista_SelectionChanged(object sender, EventArgs e)
         {
             if (sender is ListBox lb && lb.SelectedItem is SpårningsPunkt punkt)
             {

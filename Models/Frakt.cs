@@ -12,8 +12,9 @@ namespace Models
     {
         [Key]
         public string Sändningsnummer { get; set; }
-        public int kolliId { get; set; }
-        public string status { get; set; } = string.Empty;
+        public int KolliId { get; set; }
+        public string Status { get; set; }
+        public DateTime StartDatum { get; set; } 
 
         public Order Order { get; set; } = null!;
 

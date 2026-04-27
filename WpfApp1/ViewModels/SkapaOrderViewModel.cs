@@ -1,4 +1,5 @@
 ﻿using BL.Interfaces;
+using BL.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
@@ -12,6 +13,7 @@ namespace WpfApp1.ViewModels
         private readonly IKundService _kundService;
         private readonly IProduktService _produktService;
         private readonly ITullService _tullService;
+        private readonly FraktjaktSimulator _fraktSimulator;
 
         // LISTOR (ItemsSource för rullistorna)
         [ObservableProperty]
@@ -19,9 +21,12 @@ namespace WpfApp1.ViewModels
         public ObservableCollection<Produkt> AllaProdukter { get; set; }
         public ObservableCollection<Produkt> TillagdaProdukter { get; set; }
 
+        [ObservableProperty] private ObservableCollection<FraktAlternativ> fraktVal = new();
+
         // VALDA OBJEKT (SelectedItem i rullistorna)
         [ObservableProperty] private Kund valdKund;
         [ObservableProperty] private Produkt valdProdukt;
+        [ObservableProperty] private FraktAlternativ valtFraktAlternativ;
 
         // ÖVRIGT
         [ObservableProperty] private decimal rabatt;
@@ -30,12 +35,13 @@ namespace WpfApp1.ViewModels
         [ObservableProperty] private bool isPrioVald;
         [ObservableProperty] private decimal tullKostnad;
 
-        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService, ITullService tullService)
+        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService, ITullService tullService, FraktjaktSimulator fraktSimulator)
         {
             _orderService = orderService;
             _kundService = kundService;
             _produktService = produktService;
             _tullService = tullService;
+            _fraktSimulator = fraktSimulator;
 
             AllaKunder = new ObservableCollection<Kund>();
             AllaProdukter = new ObservableCollection<Produkt>();
@@ -202,6 +208,14 @@ namespace WpfApp1.ViewModels
                         $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
                         $"Moms (25%): {(momsTillägg ? "JA" : "NEJ")}\n" +
                         $"Slutpris: {slutpris:C}";
+        }
+
+        [RelayCommand]
+        public async Task HämtaFraktVal()
+        {
+            var val = await _fraktSimulator.HämtaFraktAlternativ(ValdKund.Land);
+            FraktVal.Clear();
+            foreach (var v in val) FraktVal.Add(v);
         }
 
 

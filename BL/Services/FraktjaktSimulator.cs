@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Identity.Client;
 using Models;
 
 namespace BL.Services
@@ -67,8 +68,38 @@ namespace BL.Services
                         new SpårningsPunkt { Tidpunkt = DateTime.Now.AddDays(-1), Plats = "Västerås", Meddelande = "Skickad", Latitud = 59.6099, Longitud = 16.5448 }
                     };
             }
+
+            
         }
 
-        
+        public async Task<Frakt> BeställFrakt(Order order)
+        {
+            await Task.Delay(400);
+            string nyttSändningsnummer = "HATT-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+
+            var nyFrakt = new Frakt
+            {
+                Sändningsnummer = nyttSändningsnummer,
+                KolliId = 
+                Status = "Beställd",
+                StartDatum = DateTime.Now,
+                OrderID = order.OrderID
+            };
+
+            return nyFrakt;
+        }
+
+        public async Task<List<FraktAlternativ>> HämtaFraktAlternativ(string land)
+        {
+            await Task.Delay(400);
+
+            return new List<FraktAlternativ>
+            {
+                new FraktAlternativ { Namn = "DHL Express", Pris = 250, LeveransTidDagar = 1 },
+                new FraktAlternativ { Namn = "Schenker Standard", Pris = 79, LeveransTidDagar = 4 },
+                new FraktAlternativ { Namn = "Postnord MyPack", Pris = 120, LeveransTidDagar = 2 }
+            };
+        }
+
     }
 }

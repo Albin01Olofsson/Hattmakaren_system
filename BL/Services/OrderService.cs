@@ -125,7 +125,7 @@ namespace BL.Services
                 try
                 {
                     Kund kund = await _context.Kunder.FirstOrDefaultAsync((k => k.KundID == nyOrder.KundID));
-                    if (kund.FöretagsKund)
+                    if (kund != null && kund.FöretagsKund)
                         totalPris *= 1.25m;
                 }
                 catch (Exception e) { }
@@ -209,7 +209,7 @@ namespace BL.Services
         {
             foreach (var pm in produkt.ProduktMaterial)
             {
-                decimal totaltBehov = pm.Mängd * antalAttTillverka;
+                int totaltBehov = (int)Math.Ceiling(pm.Mängd * antalAttTillverka);
 
                 var material = await _context.Material
                     .FirstOrDefaultAsync(m => m.MaterialID == pm.MaterialID);
@@ -220,11 +220,11 @@ namespace BL.Services
                 // ✔ finns material
                 if (material.Lagerantal >= totaltBehov)
                 {
-                    material.Lagerantal -= (int)totaltBehov;
+                    material.Lagerantal -= totaltBehov;
                 }
                 else
                 {
-                    decimal saknas = totaltBehov - (decimal)material.Lagerantal;
+                    int saknas = totaltBehov - material.Lagerantal;
 
                     // töm lager
                     material.Lagerantal = 0;
@@ -234,6 +234,7 @@ namespace BL.Services
                 }
 
                 _context.Material.Update(material);
+
             }
         }
         private async Task SkapaMaterialBeställning(int materialId, decimal mängd)
@@ -252,6 +253,7 @@ namespace BL.Services
             };
             beställning.TotalPris = beställning.Rader.Sum(r => r.RadPris);
             await _context.MaterialBeställningar.AddAsync(beställning);
+
         }
 
         public async Task MarkeraFärdig(int OrderID)

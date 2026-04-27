@@ -148,8 +148,8 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding namn}" Foreground="#F4F1EA" FontWeight="SemiBold"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding pris, StringFormat='{}{0} kr'}" Foreground="#FFC5A059" HorizontalAlignment="Right"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" Foreground="#F4F1EA" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Pris, StringFormat='{}{0} kr'}" Foreground="#FFC5A059" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

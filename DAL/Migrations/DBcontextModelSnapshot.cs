@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$ZUEFvvA6WSXwJVHpjksite/DbOXByc.IaoTZdpdjs4geY3Yx.PySO",
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -403,61 +403,6 @@ namespace DAL.Migrations
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
-                });
-
-            modelBuilder.Entity("Models.Reklamation", b =>
-                {
-                    b.Property<int>("ReklamationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReklamationID"));
-
-                    b.Property<string>("Atgard")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AvslutadDatum")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Beskrivning")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KundID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Orsak")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProduktID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkapadAvID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SkapadDatum")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ReklamationID");
-
-                    b.HasIndex("KundID");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("ProduktID");
-
-                    b.HasIndex("SkapadAvID");
-
-                    b.ToTable("Reklamationer");
                 });
 
             modelBuilder.Entity("Models.Order", b =>
@@ -954,6 +899,61 @@ namespace DAL.Migrations
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Models.Reklamation", b =>
+                {
+                    b.Property<int>("ReklamationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReklamationID"));
+
+                    b.Property<string>("Atgard")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AvslutadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Beskrivning")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KundID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Orsak")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkapadAvID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SkapadDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReklamationID");
+
+                    b.HasIndex("KundID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.HasIndex("SkapadAvID");
+
+                    b.ToTable("Reklamationer");
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>

@@ -49,7 +49,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("MaterialListaMaterialID");
 
-                    b.ToTable("MaterialMaterialBeställning");
+                    b.ToTable("MaterialMaterialBeställning", (string)null);
                 });
 
             modelBuilder.Entity("MaterialProdukt", b =>
@@ -64,7 +64,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProduktID");
 
-                    b.ToTable("MaterialProdukt");
+                    b.ToTable("MaterialProdukt", (string)null);
                 });
 
             modelBuilder.Entity("Models.Aktivitet", b =>
@@ -92,7 +92,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SkapadAvID");
 
-                    b.ToTable("Aktiviteter");
+                    b.ToTable("Aktiviteter", (string)null);
                 });
 
             modelBuilder.Entity("Models.Användare", b =>
@@ -127,7 +127,7 @@ namespace DAL.Migrations
 
                     b.HasKey("AnvändarID");
 
-                    b.ToTable("Användare");
+                    b.ToTable("Användare", (string)null);
 
                     b.HasData(
                         new
@@ -195,7 +195,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("BestallningsRader");
+                    b.ToTable("BestallningsRader", (string)null);
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -235,7 +235,7 @@ namespace DAL.Migrations
 
                     b.HasKey("KundID");
 
-                    b.ToTable("Kunder");
+                    b.ToTable("Kunder", (string)null);
 
                     b.HasData(
                         new
@@ -322,7 +322,7 @@ namespace DAL.Migrations
 
                     b.HasKey("MaterialID");
 
-                    b.ToTable("Material");
+                    b.ToTable("Material", (string)null);
 
                     b.HasData(
                         new
@@ -379,7 +379,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StartadAvID");
 
-                    b.ToTable("MaterialBeställningar");
+                    b.ToTable("MaterialBeställningar", (string)null);
 
                     b.HasData(
                         new
@@ -458,7 +458,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StartadAvID");
 
-                    b.ToTable("Ordrar");
+                    b.ToTable("Ordrar", (string)null);
 
                     b.HasData(
                         new
@@ -801,7 +801,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProduktID");
 
-                    b.ToTable("OrderRader");
+                    b.ToTable("OrderRader", (string)null);
                 });
 
             modelBuilder.Entity("Models.Planering", b =>
@@ -838,7 +838,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("OrderRadID");
 
-                    b.ToTable("Planeringar");
+                    b.ToTable("Planeringar", (string)null);
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -894,7 +894,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TillverkadAVID");
 
-                    b.ToTable("Produkter");
+                    b.ToTable("Produkter", (string)null);
 
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
@@ -953,7 +953,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SkapadAvID");
 
-                    b.ToTable("Reklamationer");
+                    b.ToTable("Reklamationer", (string)null);
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>

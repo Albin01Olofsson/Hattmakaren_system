@@ -16,13 +16,28 @@ namespace BL.Services
 
         public async Task SkapaBestallning(MaterialBeställning bestallning)
         {
+            if (bestallning == null || bestallning.Rader == null || !bestallning.Rader.Any())
+                throw new Exception("Beställningen saknar materialrader.");
+
             foreach (var rad in bestallning.Rader)
             {
-                // 🔥 SÄTT FK
-                rad.MaterialId = rad.Material.MaterialID;
+                if (rad.Material == null)
+                    throw new Exception("Material saknas på en beställningsrad.");
 
-                // 🔥 SÄG TILL EF: detta material finns redan!
-                _context.Entry(rad.Material).State = EntityState.Unchanged;
+                var dbMaterial = await _context.Material
+                    .FirstOrDefaultAsync(m => m.MaterialID == rad.Material.MaterialID);
+
+                if (dbMaterial == null)
+                    throw new Exception($"Material med ID {rad.Material.MaterialID} hittades inte.");
+
+                // Sätt foreign key
+                rad.MaterialId = dbMaterial.MaterialID;
+
+                // Koppla raden till materialet som redan finns i databasen
+                rad.Material = dbMaterial;
+
+                // Öka lagersaldo med antal som beställts
+                dbMaterial.Lagerantal += rad.Antal;
             }
 
             _context.MaterialBeställningar.Add(bestallning);

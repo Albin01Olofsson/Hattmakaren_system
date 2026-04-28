@@ -18,6 +18,9 @@ namespace Models
 
         public int Lagerantal { get; set; }
 
+        public ICollection<ProduktMaterial> ProduktMaterial { get; set; }
+        = new List<ProduktMaterial>();
+
         [NotMapped]
         public string MåttText => MåttTyp switch
         {

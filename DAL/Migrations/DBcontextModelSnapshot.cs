@@ -50,21 +50,38 @@ namespace DAL.Migrations
                     b.HasIndex("MaterialListaMaterialID");
 
                     b.ToTable("MaterialMaterialBeställning");
-                });
 
-            modelBuilder.Entity("MaterialProdukt", b =>
-                {
-                    b.Property<int>("MaterialListaMaterialID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProduktID")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaterialListaMaterialID", "ProduktID");
-
-                    b.HasIndex("ProduktID");
-
-                    b.ToTable("MaterialProdukt");
+                    b.HasData(
+                        new
+                        {
+                            MaterialBeställningID = 1000001,
+                            MaterialListaMaterialID = 100001
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000001,
+                            MaterialListaMaterialID = 100003
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000002,
+                            MaterialListaMaterialID = 100002
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000002,
+                            MaterialListaMaterialID = 100004
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000003,
+                            MaterialListaMaterialID = 100001
+                        },
+                        new
+                        {
+                            MaterialBeställningID = 1000003,
+                            MaterialListaMaterialID = 100005
+                        });
                 });
 
             modelBuilder.Entity("Models.Aktivitet", b =>
@@ -136,7 +153,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +163,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +173,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +183,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -196,39 +213,50 @@ namespace DAL.Migrations
                     b.HasIndex("MaterialId");
 
                     b.ToTable("BestallningsRader");
-                });
 
-            modelBuilder.Entity("Models.Frakt", b =>
-                {
-                    b.Property<string>("Sändningsnummer")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("KolliId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Pris")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartDatum")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Transportör")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Sändningsnummer");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("Frakt");
+                    b.HasData(
+                        new
+                        {
+                            Id = 10001,
+                            Antal = 20,
+                            MaterialBeställningID = 1000001,
+                            MaterialId = 100001
+                        },
+                        new
+                        {
+                            Id = 10002,
+                            Antal = 10,
+                            MaterialBeställningID = 1000001,
+                            MaterialId = 100003
+                        },
+                        new
+                        {
+                            Id = 10003,
+                            Antal = 30,
+                            MaterialBeställningID = 1000002,
+                            MaterialId = 100002
+                        },
+                        new
+                        {
+                            Id = 10004,
+                            Antal = 12,
+                            MaterialBeställningID = 1000002,
+                            MaterialId = 100004
+                        },
+                        new
+                        {
+                            Id = 10005,
+                            Antal = 35,
+                            MaterialBeställningID = 1000003,
+                            MaterialId = 100001
+                        },
+                        new
+                        {
+                            Id = 10006,
+                            Antal = 15,
+                            MaterialBeställningID = 1000003,
+                            MaterialId = 100005
+                        });
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -384,6 +412,24 @@ namespace DAL.Migrations
                             MåttTyp = 0,
                             Namn = "Svart tråd",
                             Pris = 28m
+                        },
+                        new
+                        {
+                            MaterialID = 100004,
+                            Beskrivning = "Tunt siden till foder och detaljer",
+                            Lagerantal = 18,
+                            MåttTyp = 0,
+                            Namn = "Siden",
+                            Pris = 89m
+                        },
+                        new
+                        {
+                            MaterialID = 100005,
+                            Beskrivning = "Brunt läderband till hattdekoration",
+                            Lagerantal = 11,
+                            MåttTyp = 0,
+                            Namn = "Läderband",
+                            Pris = 45m
                         });
                 });
 
@@ -418,6 +464,7 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000001,
+                            Datum = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Leverantör = "Kung AB",
                             StartadAvID = 1,
                             TotalPris = 1890m
@@ -425,14 +472,16 @@ namespace DAL.Migrations
                         new
                         {
                             MaterialBeställningID = 1000002,
-                            Leverantör = "Kung AB",
+                            Datum = new DateTime(2026, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Leverantör = "Nordic Textile",
                             StartadAvID = 2,
                             TotalPris = 769m
                         },
                         new
                         {
                             MaterialBeställningID = 1000003,
-                            Leverantör = "Kung AB",
+                            Datum = new DateTime(2026, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Leverantör = "Skrädderi Grossisten",
                             StartadAvID = 1,
                             TotalPris = 3419m
                         });
@@ -835,6 +884,155 @@ namespace DAL.Migrations
                     b.HasIndex("ProduktID");
 
                     b.ToTable("OrderRader");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderRadID = 20001,
+                            Antal = 1,
+                            OrderID = 100000001,
+                            ProduktID = 10000004
+                        },
+                        new
+                        {
+                            OrderRadID = 20002,
+                            Antal = 1,
+                            OrderID = 100000002,
+                            ProduktID = 10000001
+                        },
+                        new
+                        {
+                            OrderRadID = 20003,
+                            Antal = 1,
+                            OrderID = 100000003,
+                            ProduktID = 10000003
+                        },
+                        new
+                        {
+                            OrderRadID = 20004,
+                            Antal = 1,
+                            OrderID = 100000004,
+                            ProduktID = 10000004
+                        },
+                        new
+                        {
+                            OrderRadID = 20005,
+                            Antal = 1,
+                            OrderID = 100000005,
+                            ProduktID = 10000002
+                        },
+                        new
+                        {
+                            OrderRadID = 20006,
+                            Antal = 1,
+                            OrderID = 100000006,
+                            ProduktID = 10000002
+                        },
+                        new
+                        {
+                            OrderRadID = 20007,
+                            Antal = 1,
+                            OrderID = 100000007,
+                            ProduktID = 10000001
+                        },
+                        new
+                        {
+                            OrderRadID = 20008,
+                            Antal = 2,
+                            OrderID = 100000008,
+                            ProduktID = 10000003
+                        },
+                        new
+                        {
+                            OrderRadID = 20009,
+                            Antal = 1,
+                            OrderID = 100000009,
+                            ProduktID = 10000001
+                        },
+                        new
+                        {
+                            OrderRadID = 20010,
+                            Antal = 1,
+                            OrderID = 100000010,
+                            ProduktID = 10000002
+                        },
+                        new
+                        {
+                            OrderRadID = 20011,
+                            Antal = 1,
+                            OrderID = 100000011,
+                            ProduktID = 10000001
+                        },
+                        new
+                        {
+                            OrderRadID = 20012,
+                            Antal = 1,
+                            OrderID = 100000012,
+                            ProduktID = 10000004
+                        },
+                        new
+                        {
+                            OrderRadID = 20013,
+                            Antal = 1,
+                            OrderID = 100000013,
+                            ProduktID = 10000004
+                        },
+                        new
+                        {
+                            OrderRadID = 20014,
+                            Antal = 1,
+                            OrderID = 100000014,
+                            ProduktID = 10000003
+                        },
+                        new
+                        {
+                            OrderRadID = 20015,
+                            Antal = 1,
+                            OrderID = 100000015,
+                            ProduktID = 10000002
+                        },
+                        new
+                        {
+                            OrderRadID = 20016,
+                            Antal = 1,
+                            OrderID = 100000016,
+                            ProduktID = 10000004
+                        },
+                        new
+                        {
+                            OrderRadID = 20017,
+                            Antal = 1,
+                            OrderID = 100000017,
+                            ProduktID = 10000003
+                        },
+                        new
+                        {
+                            OrderRadID = 20018,
+                            Antal = 1,
+                            OrderID = 100000018,
+                            ProduktID = 10000001
+                        },
+                        new
+                        {
+                            OrderRadID = 20019,
+                            Antal = 1,
+                            OrderID = 100000019,
+                            ProduktID = 10000002
+                        },
+                        new
+                        {
+                            OrderRadID = 20020,
+                            Antal = 1,
+                            OrderID = 100000020,
+                            ProduktID = 10000003
+                        },
+                        new
+                        {
+                            OrderRadID = 20021,
+                            Antal = 1,
+                            OrderID = 100000021,
+                            ProduktID = 10000001
+                        });
                 });
 
             modelBuilder.Entity("Models.Planering", b =>
@@ -934,6 +1132,32 @@ namespace DAL.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Models.ProduktMaterial", b =>
+                {
+                    b.Property<int>("ProduktMaterialID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduktMaterialID"));
+
+                    b.Property<int>("MaterialID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Mängd")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProduktMaterialID");
+
+                    b.HasIndex("MaterialID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.ToTable("ProduktMaterial");
+                });
+
             modelBuilder.Entity("Models.Reklamation", b =>
                 {
                     b.Property<int>("ReklamationID")
@@ -987,6 +1211,34 @@ namespace DAL.Migrations
                     b.HasIndex("SkapadAvID");
 
                     b.ToTable("Reklamationer");
+
+                    b.HasData(
+                        new
+                        {
+                            ReklamationID = 30001,
+                            Atgard = "Justering",
+                            Beskrivning = "Kunden önskar justering av passform.",
+                            KundID = 1003,
+                            OrderID = 100000008,
+                            Orsak = "Fel storlek",
+                            ProduktID = 10000003,
+                            SkapadAvID = 1,
+                            SkapadDatum = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Ny"
+                        },
+                        new
+                        {
+                            ReklamationID = 30002,
+                            Atgard = "Reparation",
+                            Beskrivning = "Sidenrosetten behöver bytas till ljusare nyans.",
+                            KundID = 1002,
+                            OrderID = 100000013,
+                            Orsak = "Fel färg",
+                            ProduktID = 10000004,
+                            SkapadAvID = 2,
+                            SkapadDatum = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Under behandling"
+                        });
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>
@@ -1007,12 +1259,12 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000001,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Lagerantal = 0,
-                            Modell = "",
+                            Decoration = "Läderband",
+                            Färdig = true,
+                            Färg = "Svart",
+                            HattTyp = "Fedora",
+                            Lagerantal = 7,
+                            Modell = "Klassisk",
                             Namn = "Filt hatt",
                             Pris = 1099m,
                             Storlek = "M",
@@ -1023,18 +1275,34 @@ namespace DAL.Migrations
                         new
                         {
                             ProduktID = 10000002,
-                            Decoration = "",
-                            Färdig = false,
-                            Färg = "",
-                            HattTyp = "",
-                            Lagerantal = 0,
-                            Modell = "",
+                            Decoration = "Svart tråd",
+                            Färdig = true,
+                            Färg = "Blå",
+                            HattTyp = "Keps",
+                            Lagerantal = 5,
+                            Modell = "Siden",
                             Namn = "Siden keps",
                             Pris = 949m,
                             Storlek = "M",
                             TillverkadAVID = 2,
                             ArtikelID = "LP0002",
                             Kategori = "Keps"
+                        },
+                        new
+                        {
+                            ProduktID = 10000003,
+                            Decoration = "Bomullsband",
+                            Färdig = true,
+                            Färg = "Naturvit",
+                            HattTyp = "Panama",
+                            Lagerantal = 4,
+                            Modell = "Sommar",
+                            Namn = "Sommarhatt",
+                            Pris = 799m,
+                            Storlek = "L",
+                            TillverkadAVID = 3,
+                            ArtikelID = "LP0003",
+                            Kategori = "Hatt"
                         });
                 });
 
@@ -1051,6 +1319,24 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Special");
+
+                    b.HasData(
+                        new
+                        {
+                            ProduktID = 10000004,
+                            Decoration = "Sidenrosett",
+                            Färdig = false,
+                            Färg = "Creme",
+                            HattTyp = "Fascinator",
+                            Lagerantal = 0,
+                            Modell = "Bröllop",
+                            Namn = "Bröllopshatt",
+                            Pris = 1899m,
+                            Storlek = "S",
+                            TillverkadAVID = 4,
+                            Beskrivning = "Specialbeställd bröllopshatt med sidenrosett",
+                            BildURL = ""
+                        });
                 });
 
             modelBuilder.Entity("AktivitetAnvändare", b =>
@@ -1083,21 +1369,6 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MaterialProdukt", b =>
-                {
-                    b.HasOne("Models.Material", null)
-                        .WithMany()
-                        .HasForeignKey("MaterialListaMaterialID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Produkt", null)
-                        .WithMany()
-                        .HasForeignKey("ProduktID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Models.Aktivitet", b =>
                 {
                     b.HasOne("Models.Användare", "SkapadAv")
@@ -1126,17 +1397,6 @@ namespace DAL.Migrations
                     b.Navigation("Bestallning");
 
                     b.Navigation("Material");
-                });
-
-            modelBuilder.Entity("Models.Frakt", b =>
-                {
-                    b.HasOne("Models.Order", "Order")
-                        .WithMany("Frakt")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Models.MaterialBeställning", b =>
@@ -1218,6 +1478,25 @@ namespace DAL.Migrations
                     b.Navigation("TillverkadAv");
                 });
 
+            modelBuilder.Entity("Models.ProduktMaterial", b =>
+                {
+                    b.HasOne("Models.Material", "Material")
+                        .WithMany("ProduktMaterial")
+                        .HasForeignKey("MaterialID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Models.Produkt", "Produkt")
+                        .WithMany("ProduktMaterial")
+                        .HasForeignKey("ProduktID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Produkt");
+                });
+
             modelBuilder.Entity("Models.Reklamation", b =>
                 {
                     b.HasOne("Models.Kund", "Kund")
@@ -1270,6 +1549,11 @@ namespace DAL.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("Models.Material", b =>
+                {
+                    b.Navigation("ProduktMaterial");
+                });
+
             modelBuilder.Entity("Models.MaterialBeställning", b =>
                 {
                     b.Navigation("Rader");
@@ -1277,8 +1561,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Order", b =>
                 {
-                    b.Navigation("Frakt");
-
                     b.Navigation("OrderRader");
                 });
 
@@ -1290,6 +1572,8 @@ namespace DAL.Migrations
             modelBuilder.Entity("Models.Produkt", b =>
                 {
                     b.Navigation("OrderRader");
+
+                    b.Navigation("ProduktMaterial");
                 });
 #pragma warning restore 612, 618
         }

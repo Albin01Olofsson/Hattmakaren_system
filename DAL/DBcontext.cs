@@ -18,6 +18,7 @@ namespace DAL
         public DbSet<OrderRad> OrderRader { get; set; }
         public DbSet<Frakt> Frakt { get; set; }
         public DbSet<Reklamation> Reklamationer { get; set; }
+        public DbSet<ProduktMaterial> ProduktMaterial { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -86,9 +87,25 @@ namespace DAL
 
             // 5. MÅNGA-TILL-MÅNGA (N:N)
             // Produkt <-> Material
-            modelBuilder.Entity<Produkt>()
-                .HasMany(p => p.MaterialLista)
-                .WithMany();
+            //modelBuilder.Entity<Produkt>()
+            //    .HasMany(p => p.MaterialLista)
+            //    .WithMany();
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasKey(pm => pm.ProduktMaterialID);
+
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasOne(pm => pm.Produkt)
+                .WithMany(p => p.ProduktMaterial)
+                .HasForeignKey(pm => pm.ProduktID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasOne(pm => pm.Material)
+                .WithMany(m => m.ProduktMaterial)
+                .HasForeignKey(pm => pm.MaterialID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
 
             // MaterialBeställning <-> Material
             modelBuilder.Entity<MaterialBeställning>()
@@ -166,6 +183,7 @@ namespace DAL
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ProduktMaterial>().Property(mb => mb.Mängd).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
 
 
@@ -754,18 +772,18 @@ namespace DAL
                         SkapadAvID = 2
                     }
                 );
-            modelBuilder.Entity("MaterialProdukt").HasData(
-                    new { MaterialListaMaterialID = 100001, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100005, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100004, ProduktID = 10000002 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000002 },
-                    new { MaterialListaMaterialID = 100002, ProduktID = 10000003 },
-                    new { MaterialListaMaterialID = 100005, ProduktID = 10000003 },
-                    new { MaterialListaMaterialID = 100004, ProduktID = 10000004 },
-                    new { MaterialListaMaterialID = 100002, ProduktID = 10000004 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000004 }
-                );
+            //modelBuilder.Entity("MaterialProdukt").HasData(
+            //        new { MaterialListaMaterialID = 100001, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000004 }
+            //    );
             modelBuilder.Entity("MaterialMaterialBeställning").HasData(
                     new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100001 },
                     new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100003 },

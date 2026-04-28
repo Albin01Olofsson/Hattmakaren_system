@@ -16,7 +16,7 @@ namespace WpfApp1.Views1
 
             DataContext = new StatistikViewModel(
                 new MaterialService(new MaterialRepo(context)),
-                new ProduktService(new ProduktRepo(context)),
+                new ProduktService(new ProduktRepo(context), context),
                 new KundService(new KundRepo(context)),
                 new OrderService(new OrderRepo(context), context),
                 context);

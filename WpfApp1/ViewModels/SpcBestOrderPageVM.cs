@@ -27,7 +27,9 @@ namespace WpfApp1.ViewModels
         private ObservableCollection<Material> materialLista;
 
         [ObservableProperty]
-        private ObservableCollection<Material> nyMaterialLista;
+        private ObservableCollection<ProduktMaterialVM> nyMaterialLista;
+        [ObservableProperty]
+        private decimal valdMängd;
 
         [ObservableProperty]
         private Material? valdMaterial;
@@ -72,7 +74,7 @@ namespace WpfApp1.ViewModels
 
             ProduktLista = new ObservableCollection<Produkt>();
             MaterialLista = new ObservableCollection<Material>();
-            NyMaterialLista = new ObservableCollection<Material>();
+            NyMaterialLista = new ObservableCollection<ProduktMaterialVM>();
             _ = LaddaData();
         }
 
@@ -93,25 +95,29 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private void LäggTillMaterial()
         {
-            if (ValdMaterial == null)
+            if (ValdMaterial == null || ValdMängd <= 0)
                 return;
 
-            bool redanTillagd = NyMaterialLista.Any(m => m.Namn == ValdMaterial.Namn);
+            bool redanTillagd = NyMaterialLista.Any(m =>
+                m.Material.MaterialID == ValdMaterial.MaterialID);
 
             if (!redanTillagd)
             {
-                NyMaterialLista.Add(ValdMaterial);
+                NyMaterialLista.Add(new ProduktMaterialVM
+                {
+                    Material = ValdMaterial,
+                    Mängd = ValdMängd
+                });
             }
 
+            ValdMaterial = null;
+            ValdMängd = 0;
         }
 
         [RelayCommand]
         private async Task LäggTillSpecialBeställning()
         {
             //Validering - Start
-
-
-
             if (NyttProduktNamn.Length < 3 && ValdProdukt == null)
             {
                 MessageBox.Show("Det angivna produktnamnet är för kort, ange ett prduktnamn som är 3-32 tecken långt", "Produkt nammn för kort!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -202,7 +208,6 @@ namespace WpfApp1.ViewModels
                 NyBeskrivning = string.Empty;
                 return;
             }
-
             //Validering - slut
 
             Användare startadAvAnvändare = Session.CurrentUser;
@@ -222,7 +227,11 @@ namespace WpfApp1.ViewModels
                 TillverkadAVID = startadAvAnvändare.AnvändarID
             };
 
-            var materialIdn = NyMaterialLista.Select(M => M.MaterialID).ToList();
+            List<ProduktMaterial> materialLista = NyMaterialLista.Select(x => new ProduktMaterial
+            {
+                MaterialID = x.Material.MaterialID,
+                Mängd = x.Mängd
+            }).ToList();
 
             //Bild
             if (!string.IsNullOrWhiteSpace(BildUrl))
@@ -241,14 +250,20 @@ namespace WpfApp1.ViewModels
             nySpecBes.BildURL = tillagdBildPath; //Tilldela "Bilder/filnamn" som sökväg till specialbeställnings objektet
             //Bild
 
-            await _produktService.AddSpecialBeställning(nySpecBes, materialIdn);
-
-            MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            try
+            {
+                await _produktService.AddSpecialBeställning(nySpecBes, materialLista);
+                MessageBox.Show("Sparad!", "Klar", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
             NyttProduktNamn = string.Empty;
             NyttPris = 0;
             NyStorlek = string.Empty;
-            NyMaterialLista = new ObservableCollection<Material>();
+            NyMaterialLista = new ObservableCollection<ProduktMaterialVM>();
             NyTyp = string.Empty;
             NyModell = string.Empty;
             NyFärg = string.Empty;
@@ -260,15 +275,15 @@ namespace WpfApp1.ViewModels
             ValdMaterial = null;
         }
 
-        private List<Material> MaterialListaKonvertering()
-        {
-            List<Material> mLista = new();
-            foreach (Material m in NyMaterialLista)
-            {
-                mLista.Add(m);
-            }
+        //private List<Material> MaterialListaKonvertering()
+        //{
+        //    List<Material> mLista = new();
+        //    foreach (Material m in NyMaterialLista)
+        //    {
+        //        mLista.Add(m);
+        //    }
 
-            return mLista;
-        }
+        //    return mLista;
+        //}
     }
 }

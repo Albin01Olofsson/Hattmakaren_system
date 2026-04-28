@@ -281,26 +281,54 @@ namespace WpfApp1.ViewModels
                 .ToList();
         }
 
+        //private List<SaldMaterialRad> RaknaMaterialFranSaldaHattar(List<SaldOrderRad> saldaRader)
+        //{
+        //    var resultat = new List<SaldMaterialRad>();
+
+        //    foreach (var rad in saldaRader)
+        //    {
+        //        var produkt = _allaProdukter.FirstOrDefault(p => p.ProduktID == rad.Produkt.ProduktID);
+
+        //        if (produkt == null || produkt.MaterialLista == null)
+        //        {
+        //            continue;
+        //        }
+
+        //        foreach (var material in produkt.MaterialLista)
+        //        {
+        //            resultat.Add(new SaldMaterialRad(
+        //                produkt.ProduktID,
+        //                produkt.Namn,
+        //                material,
+        //                rad.Antal));
+        //        }
+        //    }
+
+        //    return resultat;
+        //}
         private List<SaldMaterialRad> RaknaMaterialFranSaldaHattar(List<SaldOrderRad> saldaRader)
         {
             var resultat = new List<SaldMaterialRad>();
 
             foreach (var rad in saldaRader)
             {
-                var produkt = _allaProdukter.FirstOrDefault(p => p.ProduktID == rad.Produkt.ProduktID);
+                var produkt = _allaProdukter
+                    .FirstOrDefault(p => p.ProduktID == rad.Produkt.ProduktID);
 
-                if (produkt == null || produkt.MaterialLista == null)
-                {
+                if (produkt == null || produkt.ProduktMaterial == null)
                     continue;
-                }
 
-                foreach (var material in produkt.MaterialLista)
+                foreach (var pm in produkt.ProduktMaterial)
                 {
+                    if (pm.Material == null)
+                        continue;
+
                     resultat.Add(new SaldMaterialRad(
                         produkt.ProduktID,
                         produkt.Namn,
-                        material,
-                        rad.Antal));
+                        pm.Material,
+                        (int)pm.Mängd * rad.Antal   
+                    ));
                 }
             }
 

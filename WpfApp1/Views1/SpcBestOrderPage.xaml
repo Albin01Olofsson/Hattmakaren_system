@@ -173,6 +173,8 @@
                                       DisplayMemberPath="Namn" 
                                       Height="32"
                                       SelectionChanged="ComboBox_SelectionChanged"/>
+                            <TextBlock Text="Mängd" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding ValdMängd, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
                         <Button Grid.Column="1" 
@@ -186,18 +188,24 @@
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Valda material:" Style="{StaticResource LabelStyle}"/>
-                            <ListBox ItemsSource="{Binding NyMaterialLista}"
-                                     DisplayMemberPath="Namn"
-                                     Background="#FF1A1A1D"
-                                     Foreground="White"
-                                     BorderThickness="0"
-                                     Height="100"
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListBox ItemsSource="{Binding NyMaterialLista}" Background="#FF1A1A1D" Foreground="White"
+                                    BorderThickness="0" Height="100" ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Material.Namn}" Width="150" Foreground="White"/>
+                                            <TextBlock Text="{Binding Mängd}" Foreground="White"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="Padding" Value="5"/>
                                     </Style>
                                 </ListBox.ItemContainerStyle>
+
                             </ListBox>
                         </StackPanel>
                     </Grid>

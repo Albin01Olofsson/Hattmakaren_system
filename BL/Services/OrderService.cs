@@ -45,64 +45,6 @@ namespace BL.Services
 
         public async Task SaveOrder() => await _orderRepo.Save();
 
-        //public async Task skapaOrder(Order nyOrder)
-        //{
-        //    if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || nyOrder.Produkter == null || !nyOrder.Produkter.Any())
-        //    {
-        //        throw new ArgumentException("Ordern måste ha en kund, en startande användare och minst en produkt.");
-        //    }
-
-        //    decimal totalPris = 0;
-
-        //    try
-        //    {
-        //        // Hämta produkterna igen från samma DbContext som ordern ska sparas i
-        //        var produktIds = nyOrder.Produkter.Select(p => p.ProduktID).ToList();
-
-        //        var produkterFrånDb = await _context.Produkter
-        //            .Where(p => produktIds.Contains(p.ProduktID))
-        //            .ToListAsync();
-
-        //        if (produkterFrånDb.Count != produktIds.Count)
-        //        {
-        //            throw new Exception("En eller flera produkter kunde inte hittas i databasen.");
-        //        }
-
-        //        nyOrder.Produkter = produkterFrånDb;
-
-        //        foreach (var produkt in nyOrder.Produkter)
-        //        {
-        //            if (produkt is SpecialBeställning)
-        //            {
-        //                produkt.Färdig = false;
-        //            }
-
-        //            totalPris += produkt.Pris;
-        //        }
-
-        //        totalPris -= nyOrder.Rabatt;
-
-        //        if (totalPris < 0)
-        //        {
-        //            totalPris = 0;
-        //        }
-
-        //        if (nyOrder.IsPrio)
-        //        {
-        //            totalPris *= 1.20m;
-        //        }
-
-        //        nyOrder.Pris = totalPris;
-        //        nyOrder.Datum = DateTime.Now;
-
-        //        await _orderRepo.Add(nyOrder);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception($"Något gick fel när ordern skulle skapas: {ex.Message}", ex);
-        //    }
-        //}
         public async Task skapaOrder(Order nyOrder, List<int> produktIds)
         {
             if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || produktIds == null || !produktIds.Any())
@@ -222,6 +164,9 @@ namespace BL.Services
                 throw new Exception(felorsak, ex);
             }
         }
+
+
+
         public async Task MarkeraFärdig(int OrderID)
         {
             var order = await _orderRepo.GetById(OrderID);

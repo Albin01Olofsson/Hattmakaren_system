@@ -7,7 +7,6 @@ namespace Models
     {
         [Key]
         public int ProduktMaterialID { get; set; }
-
         [ForeignKey("Produkt")]
         public int ProduktID { get; set; }
         public Produkt Produkt { get; set; }

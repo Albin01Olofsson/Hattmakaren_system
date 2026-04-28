@@ -763,18 +763,18 @@ namespace DAL
                         SkapadAvID = 2
                     }
                 );
-            modelBuilder.Entity("MaterialProdukt").HasData(
-                    new { MaterialListaMaterialID = 100001, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100005, ProduktID = 10000001 },
-                    new { MaterialListaMaterialID = 100004, ProduktID = 10000002 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000002 },
-                    new { MaterialListaMaterialID = 100002, ProduktID = 10000003 },
-                    new { MaterialListaMaterialID = 100005, ProduktID = 10000003 },
-                    new { MaterialListaMaterialID = 100004, ProduktID = 10000004 },
-                    new { MaterialListaMaterialID = 100002, ProduktID = 10000004 },
-                    new { MaterialListaMaterialID = 100003, ProduktID = 10000004 }
-                );
+            //modelBuilder.Entity("MaterialProdukt").HasData(
+            //        new { MaterialListaMaterialID = 100001, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000004 }
+            //    );
             modelBuilder.Entity("MaterialMaterialBeställning").HasData(
                     new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100001 },
                     new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100003 },

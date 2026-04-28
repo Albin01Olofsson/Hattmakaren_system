@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:DAL/Migrations/20260427125443_inti.cs
-    public partial class inti : Migration
-========
-    public partial class _1 : Migration
->>>>>>>> master:DAL/Migrations/20260427095112_1.cs
+    public partial class iiii : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -394,17 +390,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:DAL/Migrations/20260427125443_inti.cs
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56", "Herbert", "0705512322" }
-========
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Herbert", "0705512322" }
->>>>>>>> master:DAL/Migrations/20260427095112_1.cs
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -511,23 +500,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "MaterialProdukt",
-                columns: new[] { "MaterialListaMaterialID", "ProduktID" },
-                values: new object[,]
-                {
-                    { 100001, 10000001 },
-                    { 100003, 10000001 },
-                    { 100005, 10000001 },
-                    { 100004, 10000002 },
-                    { 100003, 10000002 },
-                    { 100002, 10000003 },
-                    { 100005, 10000003 },
-                    { 100004, 10000004 },
-                    { 100002, 10000004 },
-                    { 100003, 10000004 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "OrderRader",
                 columns: new[] { "OrderRadID", "Antal", "OrderID", "ProduktID" },
                 values: new object[,]
@@ -630,7 +602,6 @@ namespace DAL.Migrations
                 column: "TillverkadAVID");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:DAL/Migrations/20260427125443_inti.cs
                 name: "IX_ProduktMaterial_MaterialID",
                 table: "ProduktMaterial",
                 column: "MaterialID");
@@ -641,8 +612,6 @@ namespace DAL.Migrations
                 column: "ProduktID");
 
             migrationBuilder.CreateIndex(
-========
->>>>>>>> master:DAL/Migrations/20260427095112_1.cs
                 name: "IX_Reklamationer_KundID",
                 table: "Reklamationer",
                 column: "KundID");
@@ -680,9 +649,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProduktMaterial");
-
-            migrationBuilder.DropTable(
-                name: "Reklamationer");
 
             migrationBuilder.DropTable(
                 name: "Reklamationer");

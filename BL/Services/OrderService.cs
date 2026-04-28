@@ -56,6 +56,7 @@ namespace BL.Services
 
             try
             {
+                _context.ChangeTracker.Clear();
                 // 1. Gruppera ID:n för att räkna antalet av varje unik produkt
                 // Om produktIds är [5, 5, 2] blir detta: { ProduktID = 5, Antal = 2 }, { ProduktID = 2, Antal = 1 }
                 var grupperadeProdukter = produktIds
@@ -68,8 +69,6 @@ namespace BL.Services
 
                 // 3. Fråga databasen efter de unika produkterna
                 var produkterFrånDb = await _context.Produkter
-                    .Include(p => p.ProduktMaterial)
-                        .ThenInclude(pm => pm.Material)
                     .Where(p => unikaIds.Contains(p.ProduktID))
                     .ToListAsync();
 
@@ -85,27 +84,21 @@ namespace BL.Services
                 foreach (var grupp in grupperadeProdukter)
                 {
                     var produktDb = produkterFrånDb.First(p => p.ProduktID == grupp.ProduktID);
-                    
-                    int beställt = grupp.Antal;
-                    int iLager = produktDb.Lagerantal;
 
-                    int frånLager = Math.Min(iLager, beställt);
-                    int behöverTillverkas = beställt - frånLager;
+                    if (produktDb.Lagerantal < grupp.Antal)
+                    {
+                        throw new Exception($"Inte tillräckligt lager för {produktDb.Namn}. Finns: {produktDb.Lagerantal}, försöker beställa: {grupp.Antal}.");
+                    }
 
-                    //lageravdrag
-                    produktDb.Lagerantal -= frånLager;
+                    produktDb.Lagerantal -= grupp.Antal;
 
                     nyOrder.OrderRader.Add(new OrderRad
                     {
                         ProduktID = produktDb.ProduktID,
                         Antal = grupp.Antal
-                        // VIKTIGT: Vi skickar INTE in hela 'Produkt = produktDb' här, 
-                        // vi låter Entity Framework knyta ihop relationen via ProduktID!
                     });
 
-                    // Räkna ut priset: Produktens pris * Antalet vi vill köpa
-                    totalPris += (produktDb.Pris * beställt);
-                    
+                    totalPris += (produktDb.Pris * grupp.Antal);
                 }
 
                 // 5. Hantera Rabatt och Prio
@@ -121,7 +114,7 @@ namespace BL.Services
                 try
                 {
                     Kund kund = await _context.Kunder.FirstOrDefaultAsync((k => k.KundID == nyOrder.KundID));
-                    if (kund != null && kund.FöretagsKund)
+                    if (kund.FöretagsKund)
                         totalPris *= 1.25m;
                 }
                 catch (Exception e) { }
@@ -134,7 +127,7 @@ namespace BL.Services
                 await _context.SaveChangesAsync();
 
                 // 7. Hämta tillbaks ordern så navigation properties är satta och kan användas till att sätta varukod
-                Order senasteOrder = await _context.Ordrar.Include(o => o.Kund).OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
+                Order senasteOrder = await _context.Ordrar.OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
 
                 //Varukodform:
                 //1. Första bokstaven på land
@@ -161,35 +154,6 @@ namespace BL.Services
 
                 //MINSKA LAGERANTAL
 
-                //List<Produkt> produkter = new();
-
-                //foreach (var or in nyOrder.OrderRader)
-                //{
-                //    //var prod = await _context.Produkter.FindAsync(or.ProduktID);
-                //    //if(prod.Lagerantal != 0)
-                //    //{
-                //    //    for (int i = 0; i < or.Antal; i++)
-                //    //    {
-                //    //        if (prod.Lagerantal != 0)
-                //    //            prod.Lagerantal -= 1;
-                //    //    }
-
-                //    //}
-
-                //    //_context.Produkter.Update(prod);
-                //    var prod = await _context.Produkter.FindAsync(or.ProduktID);
-
-                //    if (prod.Lagerantal > 0)
-                //    {
-                //        prod.Lagerantal -= or.Antal;
-
-                //        if (prod.Lagerantal < 0)
-                //            prod.Lagerantal = 0;
-                //    }
-
-                //    _context.Produkter.Update(prod);
-                //}
-
                 await _orderRepo.Update(senasteOrder);
                 await _context.SaveChangesAsync();
             }
@@ -201,7 +165,7 @@ namespace BL.Services
             }
         }
 
-        
+
 
         public async Task MarkeraFärdig(int OrderID)
         {

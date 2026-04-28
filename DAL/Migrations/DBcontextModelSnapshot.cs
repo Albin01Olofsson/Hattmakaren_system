@@ -136,7 +136,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -146,7 +146,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -156,7 +156,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -166,7 +166,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC",
+                            Lösenord = "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -229,6 +229,48 @@ namespace DAL.Migrations
                     b.HasIndex("OrderID");
 
                     b.ToTable("Frakt");
+
+                    b.HasData(
+                        new
+                        {
+                            Sändningsnummer = "S-100001",
+                            KolliId = "K-001-AAA",
+                            OrderID = 100000001,
+                            Pris = 0m,
+                            StartDatum = new DateTime(2026, 4, 28, 13, 8, 36, 279, DateTimeKind.Local).AddTicks(7068),
+                            Status = "Order Plockad",
+                            Transportör = "PostNord"
+                        },
+                        new
+                        {
+                            Sändningsnummer = "S-100002",
+                            KolliId = "K-002-BBB",
+                            OrderID = 100000002,
+                            Pris = 0m,
+                            StartDatum = new DateTime(2026, 4, 28, 10, 8, 36, 279, DateTimeKind.Local).AddTicks(7132),
+                            Status = "I Transit",
+                            Transportör = "DHL"
+                        },
+                        new
+                        {
+                            Sändningsnummer = "TEST-GLOBAL",
+                            KolliId = "K-003-CCC",
+                            OrderID = 100000003,
+                            Pris = 0m,
+                            StartDatum = new DateTime(2026, 4, 27, 13, 8, 36, 279, DateTimeKind.Local).AddTicks(7137),
+                            Status = "International Shipping",
+                            Transportör = "Bring"
+                        },
+                        new
+                        {
+                            Sändningsnummer = "S-100004",
+                            KolliId = "K-004-DDD",
+                            OrderID = 100000004,
+                            Pris = 0m,
+                            StartDatum = new DateTime(2026, 4, 28, 3, 8, 36, 279, DateTimeKind.Local).AddTicks(7142),
+                            Status = "Levererad",
+                            Transportör = "Schenker"
+                        });
                 });
 
             modelBuilder.Entity("Models.Kund", b =>

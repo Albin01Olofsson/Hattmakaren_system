@@ -24,7 +24,7 @@ namespace WpfApp1.Views1
             InitializeComponent();
 
             var orderService = new OrderService(new OrderRepo(new DBcontext()),  new DBcontext());
-            var fraktService = new FraktjaktService(new OrderRepo(new DBcontext()));
+            var fraktService = new FraktjaktService(new OrderRepo(new DBcontext()), new DBcontext());
             var vm = new SpårningViewModel(orderService, fraktService);
 
             this.DataContext = vm;

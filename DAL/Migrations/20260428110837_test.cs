@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Prispåfrakt : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -410,10 +410,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$5EWEt88yEX3oYPNKlkGXouI215Y3NVFRSBr6yPsqRCz13z3e10Hu.", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -483,6 +483,17 @@ namespace DAL.Migrations
                 {
                     { 10000001, "LP0001", "", false, "", "", "Hatt", 0, "", "Filt hatt", 1099m, "Lagerförd", "M", 1 },
                     { 10000002, "LP0002", "", false, "", "", "Keps", 0, "", "Siden keps", 949m, "Lagerförd", "M", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Frakt",
+                columns: new[] { "Sändningsnummer", "KolliId", "OrderID", "Pris", "StartDatum", "Status", "Transportör" },
+                values: new object[,]
+                {
+                    { "S-100001", "K-001-AAA", 100000001, 0m, new DateTime(2026, 4, 28, 13, 8, 36, 279, DateTimeKind.Local).AddTicks(7068), "Order Plockad", "PostNord" },
+                    { "S-100002", "K-002-BBB", 100000002, 0m, new DateTime(2026, 4, 28, 10, 8, 36, 279, DateTimeKind.Local).AddTicks(7132), "I Transit", "DHL" },
+                    { "S-100004", "K-004-DDD", 100000004, 0m, new DateTime(2026, 4, 28, 3, 8, 36, 279, DateTimeKind.Local).AddTicks(7142), "Levererad", "Schenker" },
+                    { "TEST-GLOBAL", "K-003-CCC", 100000003, 0m, new DateTime(2026, 4, 27, 13, 8, 36, 279, DateTimeKind.Local).AddTicks(7137), "International Shipping", "Bring" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -4,26 +4,96 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL.Interfaces;
+using DAL;
 using DAL.Intefaces;
 using Microsoft.Identity.Client;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace BL.Services
 {
     public class FraktjaktService : IFraktjaktService
     {
+        private readonly DBcontext _dbcontext;
         private readonly IOrderRepository _orderRepo;
 
-        public FraktjaktService(IOrderRepository orderRepo)
+        public FraktjaktService(IOrderRepository orderRepo, DBcontext dBcontext)
         {
             _orderRepo = orderRepo;
+            _dbcontext = dBcontext;
         }
         public async Task<List<SpårningsPunkt>> HämtaHistorik(string sändningsnummer)
         {
             //simulering fördröjning
             await Task.Delay(400);
 
+            if(sändningsnummer.StartsWith("TEST-"))
+            {
+                return await GenereraTestRutt(sändningsnummer);
+            }
+
             var frakt = await _orderRepo.GetFraktBySändningsnummer(sändningsnummer);
+
+            if (frakt == null) return new List<SpårningsPunkt>();
+
+            TimeSpan tidSedanStart = DateTime.Now - frakt.StartDatum;
+
+            var ruttMall = new List<(TimeSpan AktiverasEfter, SpårningsPunkt Punkt)>
+            {
+                (TimeSpan.FromMinutes(0), new SpårningsPunkt { Plats = "Lager (Butik)", Meddelande = "Order plockad och packad", Latitud = 59.2662, Longitud = 15.2104 }),
+                (TimeSpan.FromMinutes(10), new SpårningsPunkt { Plats = "Örebro Terminal", Meddelande = "Inlämnad till transportör", Latitud = 59.2753, Longitud = 15.2134 }),
+                (TimeSpan.FromHours(1), new SpårningsPunkt { Plats = "Västerås Hub", Meddelande = "Sorterad och skickad vidare", Latitud = 59.6099, Longitud = 16.5448 }),
+                (TimeSpan.FromHours(4), new SpårningsPunkt { Plats = "Stockholm", Meddelande = "Ankommit sorteringsterminal", Latitud = 59.3293, Longitud = 18.0686 }),
+                (TimeSpan.FromHours(8), new SpårningsPunkt { Plats = "Mottagarens Stad", Meddelande = "Lastad på bil för utkörning", Latitud = 59.3689, Longitud = 18.0084 })
+            };
+
+            var synligaPunkter = ruttMall
+                .Where(x => tidSedanStart >= x.AktiverasEfter)
+                .Select(x => {
+                    x.Punkt.Tidpunkt = frakt.StartDatum.Add(x.AktiverasEfter);
+                    return x.Punkt;
+                })
+                .OrderByDescending(p => p.Tidpunkt)
+                .ToList();
+
+            return synligaPunkter;
+        }
+
+        public async Task<List<SpårningsPunkt>> GenereraTestRutt(string sändningsnummer)
+        {
+            var frakt = await _dbcontext.Frakt.Include(f => f.Order).ThenInclude(o => o.Kund).FirstOrDefaultAsync(f => f.Sändningsnummer == sändningsnummer);
+
+            if (frakt == null) return new List<SpårningsPunkt>();
+
+            var kund = frakt.Order.Kund;
+            var start = frakt.StartDatum;
+
+            return kund.Stad switch
+            {
+                "Stockholm" => new List<SpårningsPunkt>
+                {
+                    new SpårningsPunkt {Tidpunkt = start.AddDays(1).AddHours(6), Plats = kund.Stad, Meddelande = "Ankommit destination", Latitud = HämtaLat(kund.Stad), Longitud = HämtaLng(kund.Stad)},
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(18), Plats = "Västerås", Meddelande = "Passerat kontrollstation", Latitud = 57.1837, Longitud = 14.0463 },
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(5), Plats = "Örebro", Meddelande = "Sorterad", Latitud = 59.3293, Longitud = 180686 }
+                },
+                "Helsingfors" => new List<SpårningsPunkt>
+                {
+                    new SpårningsPunkt {Tidpunkt = start.AddDays(1).AddHours(8), Plats = $"{kund.Stad} Logistikcenter", Meddelande = "Lastas på bil", Latitud = HämtaLat(kund.Stad), Longitud = HämtaLng(kund.Stad) },
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(12), Plats = "Kapellskär (Färja)", Meddelande = "Lastad på fartyg", Latitud = 59.7208, Longitud = 19.0633},
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(2), Plats = "Örebro", Meddelande = "Sorterad", Latitud = 59.2753, Longitud = 15.2134}
+                },
+                "Örebro" => new List<SpårningsPunkt>
+                {
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(4), Plats = "Örebro (Ombud)", Meddelande = "Klar för avhämtning", Latitud = 59.2753, Longitud = 15.2134 },
+                    new SpårningsPunkt {Tidpunkt = DateTime.Now.AddHours(-1), Plats = "Örebro (Lager)", Meddelande = "Utkörd från lager", Latitud = 59.2753, Longitud = 15.2134}
+                },
+                _ => new List<SpårningsPunkt>
+                {
+                    new SpårningsPunkt {Tidpunkt = start.AddHours(8), Plats = kund.Stad, Meddelande = "Framme vid sortering", Latitud = HämtaLat(kund.Stad), Longitud = HämtaLng(kund.Stad) }
+                }
+            };
+
+
 
             if (frakt == null || frakt.Status == "Beställd" || frakt.Status == "Plockas")
             {
@@ -125,6 +195,22 @@ namespace BL.Services
                 new FraktAlternativ { Namn = "Postnord MyPack", Pris = 120, LeveransTid = 2 }
             };
         }
+
+        private double HämtaLat(string stad) => stad switch
+        {
+            "Stockholm" => 59.3293,
+            "Örebro" => 59.2753,
+            "Helsingfors" => 60.1695,
+            _ => 59.3293
+        };
+
+        private double HämtaLng(string stad) => stad switch
+        {
+            "Stockholm" => 18.0686,
+            "Örebro" => 15.2134,
+            "Helsingfors" => 24.9354,
+            _ => 18.0686
+        };
 
     }
 }

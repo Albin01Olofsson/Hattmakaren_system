@@ -32,11 +32,16 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" Content="Skickad" Command="{Binding MarkeraSomSkickadCommand}" Background="#FFC5A059" Foreground="Black" Margin="10,15"/>
-                <StackPanel Grid.Column="1" Margin="10">
+                
+                <!--<Button Content="Skickad" Command="{Binding MarkeraSomSkickadCommand}" Background="#FFC5A059" Foreground="Black" Margin="10,15"/>-->
+                
+                <Grid Grid.Column="1" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <TextBlock Text="Välj en order" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <ListBox x:Name="Leveranslista" ItemsSource="{Binding PlockadeOrdrar}" SelectionChanged="Leveranslista_SelectionChanged" Background="#FF34495E" BorderThickness="0" Height="150">
+                    <ListBox Grid.Row="1" x:Name="Leveranslista" ItemsSource="{Binding PlockadeOrdrar}" SelectionChanged="Leveranslista_SelectionChanged" Background="#FF34495E" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="5">
@@ -46,11 +51,15 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </Grid>
 
-                <StackPanel Grid.Column="2" Margin="10">
+                <Grid Grid.Column="2" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <TextBlock Text="Händelser" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <ListBox ItemsSource="{Binding Uppdateringar}" SelectionChanged="HändelserLista_SelectionChanged" Background="#ff34495E" Foreground="#FFC5A059" BorderThickness="0" Height="150">
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Uppdateringar}" SelectionChanged="HändelserLista_SelectionChanged" Background="#ff34495E" Foreground="#FFC5A059" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="False">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="5">
@@ -61,7 +70,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </Grid>
                
                 
 

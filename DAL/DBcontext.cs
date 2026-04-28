@@ -628,6 +628,47 @@ namespace DAL
                         Kategori = "Keps"
                     }
                 );
+            modelBuilder.Entity<Frakt>().HasData(
+                new Frakt
+                {
+                    Sändningsnummer = "S-100001",
+                    StartDatum = DateTime.Now.AddDays(-4), 
+                    Status = "Order Plockad",
+                    OrderID = 100000001,
+                    KolliId = "K-001-AAA",
+                    Transportör = "PostNord"
+                },
+
+                new Frakt
+                {
+                    Sändningsnummer = "S-100002",
+                    StartDatum = DateTime.Now.AddHours(-3),
+                    Status = "I Transit",
+                    OrderID = 100000002,
+                    KolliId = "K-002-BBB",
+                    Transportör = "DHL"
+                },
+
+                new Frakt
+                {
+                    Sändningsnummer = "S-100003",
+                    StartDatum = DateTime.Now.AddDays(-1),
+                    Status = "International Shipping",
+                    OrderID = 100000003,
+                    KolliId = "K-003-CCC",
+                    Transportör = "Bring"
+                },
+
+                new Frakt
+                {
+                    Sändningsnummer = "S-100004",
+                    StartDatum = DateTime.Now.AddDays(-10),
+                    Status = "Levererad",
+                    OrderID = 100000004,
+                    KolliId = "K-004-DDD",
+                    Transportör = "Schenker"
+                }
+                );
         }
 
     }

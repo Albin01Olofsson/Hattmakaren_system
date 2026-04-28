@@ -33,7 +33,7 @@ namespace WpfApp1.Views1
         private async void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)
         {
             await _orderService.MarkeraFärdig(order.OrderID);
-            var enOrder = await _orderService.GetOrder(order.OrderID);//hämtade nya värdet asyncront
+            var enOrder = await _orderService.GetOrder(order.OrderID);
             //order = _orderService.GetFullOrder(order.OrderID);
             if (order.Färdig)
             {

@@ -105,11 +105,7 @@ namespace BL.Services
 
                     // Räkna ut priset: Produktens pris * Antalet vi vill köpa
                     totalPris += (produktDb.Pris * beställt);
-                    //OM vi måste tillverka mer
-                    if (behöverTillverkas > 0)
-                    {
-                        await HanteraTillverkning(produktDb, behöverTillverkas);
-                    }
+                    
                 }
 
                 // 5. Hantera Rabatt och Prio
@@ -205,56 +201,7 @@ namespace BL.Services
             }
         }
 
-        private async Task HanteraTillverkning(Produkt produkt, int antalAttTillverka)
-        {
-            foreach (var pm in produkt.ProduktMaterial)
-            {
-                int totaltBehov = (int)Math.Ceiling(pm.Mängd * antalAttTillverka);
-
-                var material = await _context.Material
-                    .FirstOrDefaultAsync(m => m.MaterialID == pm.MaterialID);
-
-                if (material == null)
-                    throw new Exception("Material saknas i systemet.");
-
-                // ✔ finns material
-                if (material.Lagerantal >= totaltBehov)
-                {
-                    material.Lagerantal -= totaltBehov;
-                }
-                else
-                {
-                    int saknas = totaltBehov - material.Lagerantal;
-
-                    // töm lager
-                    material.Lagerantal = 0;
-
-                    // skapa beställning
-                    await SkapaMaterialBeställning(material.MaterialID, saknas);
-                }
-
-                _context.Material.Update(material);
-
-            }
-        }
-        private async Task SkapaMaterialBeställning(int materialId, decimal mängd)
-        {
-            var beställning = new MaterialBeställning
-            {
-                Datum = DateTime.Now,
-                Rader = new List<BestallningsRad>
-                {
-                    new BestallningsRad
-                    {
-                        MaterialId = materialId,
-                        Antal = (int)Math.Ceiling(mängd)
-                    }
-                }
-            };
-            beställning.TotalPris = beställning.Rader.Sum(r => r.RadPris);
-            await _context.MaterialBeställningar.AddAsync(beställning);
-
-        }
+        
 
         public async Task MarkeraFärdig(int OrderID)
         {

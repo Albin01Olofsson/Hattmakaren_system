@@ -114,6 +114,7 @@ namespace BL.Services
 
             try
             {
+                _context.ChangeTracker.Clear();
                 // 1. Gruppera ID:n för att räkna antalet av varje unik produkt
                 // Om produktIds är [5, 5, 2] blir detta: { ProduktID = 5, Antal = 2 }, { ProduktID = 2, Antal = 1 }
                 var grupperadeProdukter = produktIds
@@ -142,15 +143,19 @@ namespace BL.Services
                 {
                     var produktDb = produkterFrånDb.First(p => p.ProduktID == grupp.ProduktID);
 
+                    if (produktDb.Lagerantal < grupp.Antal)
+                    {
+                        throw new Exception($"Inte tillräckligt lager för {produktDb.Namn}. Finns: {produktDb.Lagerantal}, försöker beställa: {grupp.Antal}.");
+                    }
+
+                    produktDb.Lagerantal -= grupp.Antal;
+
                     nyOrder.OrderRader.Add(new OrderRad
                     {
                         ProduktID = produktDb.ProduktID,
                         Antal = grupp.Antal
-                        // VIKTIGT: Vi skickar INTE in hela 'Produkt = produktDb' här, 
-                        // vi låter Entity Framework knyta ihop relationen via ProduktID!
                     });
 
-                    // Räkna ut priset: Produktens pris * Antalet vi vill köpa
                     totalPris += (produktDb.Pris * grupp.Antal);
                 }
 
@@ -204,6 +209,8 @@ namespace BL.Services
                 int random4siffror = random.Next(1000, 10000);
 
                 nyOrder.Varukod = $"{landBokstav}{stadBokstav}{företagskundBokstav}{kundNamnBokstav}{random4siffror}";
+
+                //MINSKA LAGERANTAL
 
                 await _orderRepo.Update(senasteOrder);
                 await _context.SaveChangesAsync();

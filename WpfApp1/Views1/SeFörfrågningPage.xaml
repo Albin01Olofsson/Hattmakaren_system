@@ -9,77 +9,85 @@
       Title="SeFörfrågningPage"
       Background="#FF1A1A1D">
 
-    <StackPanel Margin="25">
-        <TextBlock x:Name="Rubrik"
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="25">
+            <TextBlock x:Name="Rubrik"
                    Text="{Binding Avsändare, StringFormat=Från: {0}}"
                    Margin="0,0,0,10"
                    FontSize="22"
                    FontWeight="Black"
                    Foreground="#F4F1EA"
                    HorizontalAlignment="Center"/>
-        <Border Background="#FF2C3E50"
+
+            <Border Background="#FF2C3E50"
                 Height="auto"
                 CornerRadius="15"
                 Padding="10">
-            <StackPanel>
 
-                <TextBlock Text="{Binding Ämne, StringFormat=Ämne: {0}}"
+
+                <StackPanel>
+
+                    <TextBlock Text="{Binding Ämne, StringFormat=Ämne: {0}}"
+                           FontSize="16"             
+                           Foreground="#F4F1EA"   
+                           FontWeight="DemiBold">
+                    </TextBlock>
+
+                    <TextBlock Text="{Binding Datum, StringFormat=Datum: {0}}"
                            FontSize="16"
-                           Foreground="#F4F1EA"
+                           Foreground="#F4F1EA" 
                            FontWeight="DemiBold">
+                    </TextBlock>
 
-                </TextBlock>
-
-                <TextBlock Text="{Binding Datum, StringFormat=Datum: {0}}"
-                           FontSize="16" 
-                           Foreground="#F4F1EA"
-                           FontWeight="DemiBold">
-                </TextBlock>
-                
-                <TextBlock Text="Förfrågan"
-                           Margin="0,10,0,0"
+                    <TextBlock Text="Förfrågan"
+                           Margin="0,10,0,0" 
                            FontSize="16" 
                            FontWeight="UltraBold"
                            Foreground="#F4F1EA">
-                </TextBlock>
+                    </TextBlock>
 
-                <TextBlock  Text="{Binding Innehåll}"
-                            FontSize="16"
+                    <TextBlock  Text="{Binding Innehåll}"
+                            FontSize="16" 
                             Foreground="#F4F1EA"
-                            TextWrapping="Wrap"
+                            TextWrapping="Wrap" 
                             Margin="0,8,0,0">
-                    
-                </TextBlock>
-            </StackPanel>
 
-        </Border>
-        <Grid>
+                    </TextBlock>
+                </StackPanel>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="1.3*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="1"
+            </Border>
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="1"
                     Background="#FFB08D46"
                     CornerRadius="15"
                     Padding="10">
-                <!--<Image Source="{Binding BildSökVäg}"
+                    <!--<Image Source="{Binding BildSökVäg}"
                            MaxWidth="312"
                            MaxHeight="172"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center">
                 </Image>-->
-                <Image x:Name="MailBild"
+                    <Image x:Name="MailBild"
                            MaxWidth="312"
                            MaxHeight="172"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center">
-                </Image>
-                
-            </Border>
-        </Grid>
-    </StackPanel>
+                    </Image>
+
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+
 
 </Page>

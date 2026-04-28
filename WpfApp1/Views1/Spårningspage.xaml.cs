@@ -23,8 +23,9 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
 
-            var service = new OrderService(new OrderRepo(new DBcontext()),  new DBcontext());
-            var vm = new SpårningViewModel(service);
+            var orderService = new OrderService(new OrderRepo(new DBcontext()),  new DBcontext());
+            var fraktService = new FraktjaktService(new OrderRepo(new DBcontext()));
+            var vm = new SpårningViewModel(orderService, fraktService);
 
             this.DataContext = vm;
 
@@ -152,9 +153,9 @@ namespace WpfApp1.Views1
 
             if (Leveranslista.SelectedItem is Order valdOrder)
             {
-                var frakt = valdOrder.Frakt.FirstOrDefault();
+                var frakt = valdOrder.Frakt?.FirstOrDefault();
 
-                if (frakt != null)
+                if (frakt != null && !string.IsNullOrEmpty(frakt.Sändningsnummer))
                 {
                     await vm.HämtaHistorikFrånFraktjakt(frakt.Sändningsnummer);
 
@@ -168,6 +169,12 @@ namespace WpfApp1.Views1
                         FokuseraPåPosition(senaste.Latitud, senaste.Longitud, 12);
                     }
 
+                }
+                else
+                {
+                    MainMap.Markers.Clear();
+                    FokuseraPåPosition(59.2662, 15.2104, 13);
+                    MessageBox.Show("Denna order har ingenbokad transport");
                 }
             }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class a : Migration
+    public partial class Prispåfrakt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -284,8 +284,11 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Sändningsnummer = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    kolliId = table.Column<int>(type: "int", nullable: false),
-                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KolliId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Transportör = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StartDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -407,10 +410,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$R26V9FqlUYQuXC5RLtJecOBo9c3JhlQmUM8F0qaP5lg89chcl9C7e", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$R26V9FqlUYQuXC5RLtJecOBo9c3JhlQmUM8F0qaP5lg89chcl9C7e", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$R26V9FqlUYQuXC5RLtJecOBo9c3JhlQmUM8F0qaP5lg89chcl9C7e", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$R26V9FqlUYQuXC5RLtJecOBo9c3JhlQmUM8F0qaP5lg89chcl9C7e", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$CkS1Q/y9Fx01YNG0isQlC.4KOsPZhT0K84S4Q7n70CQP6MyH.8BQC", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(

@@ -137,6 +137,24 @@
                     </Grid>
                 </Border>
 
+                <Border Background="#FF2C3E50" Padding="20" CornerRadius="8" Margin="0,0,0,25">
+                    <StackPanel>
+                        <Button Content="HämtaFraktalternativ" Command="{Binding HämtaFraktValCommand}" Width="100" HorizontalAlignment="Left" Style="{StaticResource ActionButtonStyle}"/>
+                        <ListBox ItemsSource="{Binding FraktVal}" SelectedItem="{Binding ValtFraktAlternativ}" Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Namn}" FontWeight="Bold" Width="120"/>
+                                        <TextBlock Text="{Binding Pris, StringFormat='{}{0:C}'}" Width="80"/>
+                                        <TextBlock Text="{Binding LeveransTid, StringFormat='{}{0} dagar'}" Width="80"/>
+                                        <TextBlock Text="{Binding Typ}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+
                 <Border Background="#FF1A1A1D" BorderBrush="#FFC5A059" BorderThickness="2" Padding="25" CornerRadius="10">
                     <StackPanel>
                         <TextBlock Text="ORDERÖVERSIKT" Foreground="#FFC5A059" FontWeight="Black" FontSize="18" Margin="0,0,0,15" HorizontalAlignment="Center"/>

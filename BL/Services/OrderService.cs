@@ -180,7 +180,7 @@ namespace BL.Services
                 await _context.SaveChangesAsync();
 
                 // 7. Hämta tillbaks ordern så navigation properties är satta och kan användas till att sätta varukod
-                Order senasteOrder = await _context.Ordrar.OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
+                Order senasteOrder = await _context.Ordrar.Include(o => o.Kund).OrderByDescending(o => o.OrderID).FirstOrDefaultAsync();
 
                 //Varukodform:
                 //1. Första bokstaven på land
@@ -328,6 +328,55 @@ namespace BL.Services
 
                 throw new Exception($"Ett fel uppstod när statusen skulle sparas: {ex.Message}", ex);
             }
+        }
+
+        public async Task SparaFrakt(Frakt frakt)
+        {
+            try
+            {
+                _context.Frakt.Add(frakt);
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            { 
+                throw new Exception($"Kunde inte spara fraktinformationen i databasen: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<Frakt> GetFraktForOrder(int orderId)
+        {
+            var frakt = await _orderRepo.GetFraktByOrderID(orderId);
+
+            if ( frakt == null )
+            {
+                return null;
+            }
+            return frakt;
+        }
+
+        public async Task UppdateraFraktStatus(string sändningsnummer, string nyStatus)
+        {
+            try
+            {
+                var frakt = await _context.Frakt.FirstOrDefaultAsync(f => f.Sändningsnummer == sändningsnummer);
+
+                if (frakt != null)
+                {
+                    frakt.Status = nyStatus;
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception($"Kunde inte hitta frakt med sändningsnummer {sändningsnummer}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Fel vid uppdatering av fraktstatus: {ex.Message}", ex);
+            }
+        
         }
     }
 

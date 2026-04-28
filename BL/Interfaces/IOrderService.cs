@@ -31,5 +31,11 @@ namespace BL.Interfaces
         Task<List<Order>> GetFilteredOrders(string sökString, DateTime? datumFrån, DateTime? datumTill, string orderStartare, string orderStatus, string specialFilter);
 
         Task UppdateraOrderStatus(int orderId, string nyStatus);
+
+        Task SparaFrakt(Frakt frakt);
+
+        Task<Frakt> GetFraktForOrder(int orderId);
+
+        Task UppdateraFraktStatus(string sändningsnummer, string nyStatus);
     }
 }

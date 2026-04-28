@@ -100,6 +100,7 @@ namespace WpfApp1.Views1
 
         private async void BtnSkrivUtFraktsedel_Click(object sender, RoutedEventArgs e)
         {
+            var fraktInfo = await _orderService.GetFraktForOrder(order.OrderID);
 
             try
             {
@@ -127,6 +128,13 @@ namespace WpfApp1.Views1
 
                 dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Otto & Judith AB"));
                 dokument.Add(new iText.Layout.Element.Paragraph($"Avsändare: Sweden, Örebro, Fabriksvägen 11B"));
+
+                if (fraktInfo != null)
+                {
+                    dokument.Add(new iText.Layout.Element.Paragraph($"Transportör: {fraktInfo.Transportör}"));
+                    dokument.Add(new iText.Layout.Element.Paragraph($"Sändningsnummer: {fraktInfo.Sändningsnummer}"));
+                    dokument.Add(new iText.Layout.Element.Paragraph($"Kolli-ID: {fraktInfo.KolliId}"));
+                }
                 dokument.Close();
 
                 MessageBox.Show($"En PDF har skapats på: {orderPdfFullPath}");

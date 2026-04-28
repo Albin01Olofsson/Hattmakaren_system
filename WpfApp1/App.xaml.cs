@@ -54,6 +54,7 @@ namespace WpfApp1
             services.AddScoped<IAktivitetService, AktivitetService>();
             services.AddSingleton<ITullService, TullService>();
             services.AddScoped<IReklamationService, ReklamationService>();
+            services.AddScoped<IFraktjaktService, FraktjaktService>();
 
             // 4. REGISTRERA VIEWMODELS
             services.AddTransient<LoginViewModel>();

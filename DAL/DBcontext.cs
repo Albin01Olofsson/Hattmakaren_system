@@ -133,6 +133,9 @@ namespace DAL
                 .WithMany(o => o.Frakt)
                 .HasForeignKey(f => f.OrderID)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Frakt>()
+                .Property(f => f.Pris)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Reklamation>(entity =>
             {

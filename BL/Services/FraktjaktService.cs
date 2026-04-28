@@ -3,18 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL.Interfaces;
+using DAL.Intefaces;
 using Microsoft.Identity.Client;
 using Models;
 
 namespace BL.Services
 {
-    public class FraktjaktSimulator
+    public class FraktjaktService : IFraktjaktService
     {
+        private readonly IOrderRepository _orderRepo;
+
+        public FraktjaktService(IOrderRepository orderRepo)
+        {
+            _orderRepo = orderRepo;
+        }
         public async Task<List<SpårningsPunkt>> HämtaHistorik(string sändningsnummer)
         {
             //simulering fördröjning
             await Task.Delay(400);
-;
+
+            var frakt = await _orderRepo.GetFraktBySändningsnummer(sändningsnummer);
+
+            if (frakt == null || frakt.Status == "Beställd" || frakt.Status == "Plockas")
+            {
+                return new List<SpårningsPunkt>
+                {
+                    new SpårningsPunkt
+                    {
+                        Tidpunkt = frakt?.StartDatum ?? DateTime.Now,
+                        Plats = "Lager (Butik)",
+                        Meddelande = frakt.Status,
+                        Latitud = 59.2662,
+                        Longitud = 15.2104
+                    }
+                };
+            }
+
             int ruttVal = (Math.Abs(sändningsnummer.GetHashCode()) % 5) + 1;
 
             switch (ruttVal)
@@ -72,21 +97,21 @@ namespace BL.Services
             
         }
 
-        public async Task<Frakt> BeställFrakt(Order order)
+        public async Task<Frakt> BokaFrakt(int orderId, FraktAlternativ valtAlternativ)
         {
             await Task.Delay(400);
-            string nyttSändningsnummer = "HATT-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 
-            var nyFrakt = new Frakt
+            return new Frakt
             {
-                Sändningsnummer = nyttSändningsnummer,
-                KolliId = 
+                OrderID = orderId,
+                Transportör = valtAlternativ.Namn,
+                Pris = valtAlternativ.Pris, 
                 Status = "Beställd",
                 StartDatum = DateTime.Now,
-                OrderID = order.OrderID
-            };
+                Sändningsnummer = "HATT-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper(),
+                KolliId = "KID-" + new Random().Next(1000, 9999)
 
-            return nyFrakt;
+            };
         }
 
         public async Task<List<FraktAlternativ>> HämtaFraktAlternativ(string land)
@@ -95,9 +120,9 @@ namespace BL.Services
 
             return new List<FraktAlternativ>
             {
-                new FraktAlternativ { Namn = "DHL Express", Pris = 250, LeveransTidDagar = 1 },
-                new FraktAlternativ { Namn = "Schenker Standard", Pris = 79, LeveransTidDagar = 4 },
-                new FraktAlternativ { Namn = "Postnord MyPack", Pris = 120, LeveransTidDagar = 2 }
+                new FraktAlternativ { Namn = "DHL Express", Pris = 250, LeveransTid = 1 },
+                new FraktAlternativ { Namn = "Schenker Standard", Pris = 79, LeveransTid = 4 },
+                new FraktAlternativ { Namn = "Postnord MyPack", Pris = 120, LeveransTid = 2 }
             };
         }
 

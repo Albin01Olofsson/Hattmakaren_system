@@ -12,8 +12,10 @@ namespace Models
     {
         [Key]
         public string Sändningsnummer { get; set; }
-        public int KolliId { get; set; }
+        public string KolliId { get; set; }
         public string Status { get; set; }
+        public string Transportör {  get; set; }
+        public decimal Pris { get; set; }
         public DateTime StartDatum { get; set; } 
 
         public Order Order { get; set; } = null!;

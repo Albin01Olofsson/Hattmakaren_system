@@ -10,6 +10,6 @@ namespace Models
     {
         public string Namn { get; set; }
         public decimal Pris {  get; set; }
-        public int LeveransTidDagar { get; set; }
+        public int LeveransTid{ get; set; }
     }
 }

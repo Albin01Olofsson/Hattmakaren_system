@@ -13,7 +13,7 @@ namespace WpfApp1.ViewModels
         private readonly IKundService _kundService;
         private readonly IProduktService _produktService;
         private readonly ITullService _tullService;
-        private readonly FraktjaktSimulator _fraktSimulator;
+        private readonly IFraktjaktService _fraktService;
 
         // LISTOR (ItemsSource för rullistorna)
         [ObservableProperty]
@@ -35,13 +35,13 @@ namespace WpfApp1.ViewModels
         [ObservableProperty] private bool isPrioVald;
         [ObservableProperty] private decimal tullKostnad;
 
-        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService, ITullService tullService, FraktjaktSimulator fraktSimulator)
+        public SkapaOrderViewModel(IOrderService orderService, IAuthenticationService authService, IKundService kundService, IProduktService produktService, ITullService tullService, IFraktjaktService fraktService)
         {
             _orderService = orderService;
             _kundService = kundService;
             _produktService = produktService;
             _tullService = tullService;
-            _fraktSimulator = fraktSimulator;
+            _fraktService = fraktService;
 
             AllaKunder = new ObservableCollection<Kund>();
             AllaProdukter = new ObservableCollection<Produkt>();
@@ -123,6 +123,10 @@ namespace WpfApp1.ViewModels
                 OrderOversiktText = "Rabatt får inte vara negativ!";
                 return;
             }
+            if (ValtFraktAlternativ == null)
+            {
+                OrderOversiktText = "FEL: Du måste välja ett fraktalternativ";
+            }
             try
             {
                 var nyOrder = new Order
@@ -142,6 +146,19 @@ namespace WpfApp1.ViewModels
 
                 await _orderService.skapaOrder(nyOrder, TillagdaProdukter.Select(p => p.ProduktID).ToList());
 
+                //Ber om bokning
+                var bekräftadFrakt = await _fraktService.BokaFrakt(nyOrder.OrderID, ValtFraktAlternativ);
+
+                if (bekräftadFrakt != null)
+                {
+                    bekräftadFrakt.OrderID = nyOrder.OrderID;
+                }
+
+                if (string.IsNullOrEmpty(bekräftadFrakt.Status)) bekräftadFrakt.Status = "Frakt bokad";
+
+                bekräftadFrakt.StartDatum = DateTime.Now;
+
+                await _orderService.SparaFrakt(bekräftadFrakt);
 
                 // Nollställ formuläret
                 TillagdaProdukter.Clear();
@@ -198,6 +215,9 @@ namespace WpfApp1.ViewModels
                 slutpris += moms;
             }
 
+            decimal fraktKostnad = ValtFraktAlternativ?.Pris ?? 0m;
+            slutpris += fraktKostnad;
+
 
             OrderOversiktText = $"Vald Kund: {(ValdKund != null ? ValdKund.Namn : "Ingen vald")}\n" +
                         $"Land: {(ValdKund != null ? ValdKund.Land : "-")}\n" + // Visa landet också!
@@ -207,13 +227,18 @@ namespace WpfApp1.ViewModels
                         $"Tullavgift (via API): {TullKostnad:C}\n" + // Visa tullen här!
                         $"Prio-tillägg (20%): {(IsPrioVald ? "JA" : "NEJ")}\n" +
                         $"Moms (25%): {(momsTillägg ? "JA" : "NEJ")}\n" +
+                        $"Fraktkostnad: {fraktKostnad:C} (via {ValtFraktAlternativ?.Namn ?? "Ej vald"}\n" +
                         $"Slutpris: {slutpris:C}";
         }
 
         [RelayCommand]
         public async Task HämtaFraktVal()
         {
-            var val = await _fraktSimulator.HämtaFraktAlternativ(ValdKund.Land);
+            if (ValdKund == null)
+            {
+                return;
+            }
+            var val = await _fraktService.HämtaFraktAlternativ(ValdKund.Land);
             FraktVal.Clear();
             foreach (var v in val) FraktVal.Add(v);
         }

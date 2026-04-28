@@ -48,12 +48,35 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel MaxWidth="800">
 
-            <TextBlock Text="SKAPA SPECIALBESTÄLLNING" 
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Text="SKAPA SPECIALBESTÄLLNING" 
                        FontSize="28" 
                        FontWeight="Black" 
                        Foreground="#F4F1EA" 
                        HorizontalAlignment="Center" 
-                       Margin="0,0,0,30"/>
+                       Margin="0,0,0,10"/>
+                <Button Grid.Column="2"
+                    Content="Se förfrågningar"   
+                    Click="ÖppnaFörfråganWindow_Clíck"
+                    VerticalAlignment="Center"
+                    Width="105" 
+                    Height="29" 
+                    Margin="0,5,0,30"
+                    Style="{StaticResource ActionButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6,6,6,6">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
 
             <Border Background="#FF2C3E50" Padding="25" CornerRadius="10" Margin="0,0,0,15">
                 <StackPanel>

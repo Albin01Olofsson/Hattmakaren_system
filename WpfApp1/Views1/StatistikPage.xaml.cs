@@ -18,7 +18,8 @@ namespace WpfApp1.Views1
                 new MaterialService(new MaterialRepo(context)),
                 new ProduktService(new ProduktRepo(context), context),
                 new KundService(new KundRepo(context)),
-                new OrderService(new OrderRepo(context), context));
+                new OrderService(new OrderRepo(context), context),
+                context);
         }
     }
 }

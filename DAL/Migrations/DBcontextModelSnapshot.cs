@@ -49,9 +49,27 @@ namespace DAL.Migrations
 
                     b.HasIndex("MaterialListaMaterialID");
 
-                    b.ToTable("MaterialMaterialBeställning");
+                    b.ToTable("MaterialMaterialBeställning", (string)null);
                 });
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity("MaterialProdukt", b =>
+                {
+                    b.Property<int>("MaterialListaMaterialID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduktID")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaterialListaMaterialID", "ProduktID");
+
+                    b.HasIndex("ProduktID");
+
+                    b.ToTable("MaterialProdukt", (string)null);
+                });
+
+>>>>>>> master
             modelBuilder.Entity("Models.Aktivitet", b =>
                 {
                     b.Property<int>("AktivitetID")
@@ -77,7 +95,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SkapadAvID");
 
-                    b.ToTable("Aktiviteter");
+                    b.ToTable("Aktiviteter", (string)null);
                 });
 
             modelBuilder.Entity("Models.Användare", b =>
@@ -112,7 +130,7 @@ namespace DAL.Migrations
 
                     b.HasKey("AnvändarID");
 
-                    b.ToTable("Användare");
+                    b.ToTable("Användare", (string)null);
 
                     b.HasData(
                         new
@@ -121,7 +139,11 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
+=======
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
+>>>>>>> master
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -131,7 +153,11 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
+=======
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
+>>>>>>> master
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -141,7 +167,11 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
+=======
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
+>>>>>>> master
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -151,7 +181,11 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
+<<<<<<< HEAD
                             Lösenord = "$2a$11$iKn7DQxEyysWxldkLXOT.eSuJimj3Og.sWwgDTw2RZwbot8GksK56",
+=======
+                            Lösenord = "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe",
+>>>>>>> master
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -180,7 +214,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("BestallningsRader");
+                    b.ToTable("BestallningsRader", (string)null);
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -220,7 +254,7 @@ namespace DAL.Migrations
 
                     b.HasKey("KundID");
 
-                    b.ToTable("Kunder");
+                    b.ToTable("Kunder", (string)null);
 
                     b.HasData(
                         new
@@ -307,7 +341,7 @@ namespace DAL.Migrations
 
                     b.HasKey("MaterialID");
 
-                    b.ToTable("Material");
+                    b.ToTable("Material", (string)null);
 
                     b.HasData(
                         new
@@ -364,7 +398,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StartadAvID");
 
-                    b.ToTable("MaterialBeställningar");
+                    b.ToTable("MaterialBeställningar", (string)null);
 
                     b.HasData(
                         new
@@ -443,7 +477,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StartadAvID");
 
-                    b.ToTable("Ordrar");
+                    b.ToTable("Ordrar", (string)null);
 
                     b.HasData(
                         new
@@ -786,7 +820,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProduktID");
 
-                    b.ToTable("OrderRader");
+                    b.ToTable("OrderRader", (string)null);
                 });
 
             modelBuilder.Entity("Models.Planering", b =>
@@ -823,7 +857,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("OrderRadID");
 
-                    b.ToTable("Planeringar");
+                    b.ToTable("Planeringar", (string)null);
                 });
 
             modelBuilder.Entity("Models.Produkt", b =>
@@ -879,13 +913,14 @@ namespace DAL.Migrations
 
                     b.HasIndex("TillverkadAVID");
 
-                    b.ToTable("Produkter");
+                    b.ToTable("Produkter", (string)null);
 
                     b.HasDiscriminator<string>("ProduktTyp").HasValue("Produkt");
 
                     b.UseTphMappingStrategy();
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Models.ProduktMaterial", b =>
                 {
                     b.Property<int>("ProduktMaterialID")
@@ -912,6 +947,8 @@ namespace DAL.Migrations
                     b.ToTable("ProduktMaterial");
                 });
 
+=======
+>>>>>>> master
             modelBuilder.Entity("Models.Reklamation", b =>
                 {
                     b.Property<int>("ReklamationID")
@@ -964,7 +1001,11 @@ namespace DAL.Migrations
 
                     b.HasIndex("SkapadAvID");
 
+<<<<<<< HEAD
                     b.ToTable("Reklamationer");
+=======
+                    b.ToTable("Reklamationer", (string)null);
+>>>>>>> master
                 });
 
             modelBuilder.Entity("Models.LagerfördProdukt", b =>

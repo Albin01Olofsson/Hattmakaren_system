@@ -153,7 +153,7 @@ namespace DAL.Migrations
                             Email = "ottoHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = true,
-                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
+                            Lösenord = "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe",
                             Namn = "Otto",
                             Telefon = "07085652321"
                         },
@@ -163,7 +163,7 @@ namespace DAL.Migrations
                             Email = "JudithHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
+                            Lösenord = "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe",
                             Namn = "Judith",
                             Telefon = "0727639856"
                         },
@@ -173,7 +173,7 @@ namespace DAL.Migrations
                             Email = "MillieHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
+                            Lösenord = "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe",
                             Namn = "Millie",
                             Telefon = "0709825533"
                         },
@@ -183,7 +183,7 @@ namespace DAL.Migrations
                             Email = "HerbertHattman@hotmail.com",
                             IsActive = true,
                             IsAdmin = false,
-                            Lösenord = "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu",
+                            Lösenord = "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe",
                             Namn = "Herbert",
                             Telefon = "0705512322"
                         });
@@ -257,6 +257,39 @@ namespace DAL.Migrations
                             MaterialBeställningID = 1000003,
                             MaterialId = 100005
                         });
+                });
+
+            modelBuilder.Entity("Models.Frakt", b =>
+                {
+                    b.Property<string>("Sändningsnummer")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("KolliId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Pris")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("StartDatum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Transportör")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Sändningsnummer");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("Frakt");
                 });
 
             modelBuilder.Entity("Models.Kund", b =>
@@ -1399,6 +1432,17 @@ namespace DAL.Migrations
                     b.Navigation("Material");
                 });
 
+            modelBuilder.Entity("Models.Frakt", b =>
+                {
+                    b.HasOne("Models.Order", "Order")
+                        .WithMany("Frakt")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Models.MaterialBeställning", b =>
                 {
                     b.HasOne("Models.Användare", "StartadAv")
@@ -1561,6 +1605,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Models.Order", b =>
                 {
+                    b.Navigation("Frakt");
+
                     b.Navigation("OrderRader");
                 });
 

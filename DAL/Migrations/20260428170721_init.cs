@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class iiii : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -283,6 +283,29 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Frakt",
+                columns: table => new
+                {
+                    Sändningsnummer = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    KolliId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Transportör = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pris = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StartDatum = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Frakt", x => x.Sändningsnummer);
+                    table.ForeignKey(
+                        name: "FK_Frakt_Ordrar_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Ordrar",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderRader",
                 columns: table => new
                 {
@@ -390,10 +413,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$y1LPLhsOzgoCWjZYX5gxLeAyJFVQ1FX/l3PRkYbWfLcQ7WO8IsLPu", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$6sWUJlyHcvFCZBYVMokc/eWeqCFmKUPZ0XD9Up.R5vTWBH5O55rHe", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -557,6 +580,11 @@ namespace DAL.Migrations
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Frakt_OrderID",
+                table: "Frakt",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaterialBeställningar_StartadAvID",
                 table: "MaterialBeställningar",
                 column: "StartadAvID");
@@ -640,6 +668,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "BestallningsRader");
+
+            migrationBuilder.DropTable(
+                name: "Frakt");
 
             migrationBuilder.DropTable(
                 name: "MaterialMaterialBeställning");

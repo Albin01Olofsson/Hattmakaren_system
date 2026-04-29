@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class _3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -387,10 +387,10 @@ namespace DAL.Migrations
                 columns: new[] { "AnvändarID", "Email", "IsActive", "IsAdmin", "Lösenord", "Namn", "Telefon" },
                 values: new object[,]
                 {
-                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Otto", "07085652321" },
-                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Judith", "0727639856" },
-                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Millie", "0709825533" },
-                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$Vy1q.yCoBl/iyv8FppqgG.YywbGBrsFKJ.WM253C1B5Z4xUCzAIZe", "Herbert", "0705512322" }
+                    { 1, "ottoHattman@hotmail.com", true, true, "$2a$11$Sm4gPznXLP7ATihoEf1ZF.GQpuCBikGa1bb1jhElNgKyeL7asIC5O", "Otto", "07085652321" },
+                    { 2, "JudithHattman@hotmail.com", true, false, "$2a$11$Sm4gPznXLP7ATihoEf1ZF.GQpuCBikGa1bb1jhElNgKyeL7asIC5O", "Judith", "0727639856" },
+                    { 3, "MillieHattman@hotmail.com", true, false, "$2a$11$Sm4gPznXLP7ATihoEf1ZF.GQpuCBikGa1bb1jhElNgKyeL7asIC5O", "Millie", "0709825533" },
+                    { 4, "HerbertHattman@hotmail.com", true, false, "$2a$11$Sm4gPznXLP7ATihoEf1ZF.GQpuCBikGa1bb1jhElNgKyeL7asIC5O", "Herbert", "0705512322" }
                 });
 
             migrationBuilder.InsertData(
@@ -502,15 +502,15 @@ namespace DAL.Migrations
                 values: new object[,]
                 {
                     { 100001, 10000001 },
-                    { 100003, 10000001 },
-                    { 100005, 10000001 },
-                    { 100004, 10000002 },
-                    { 100003, 10000002 },
                     { 100002, 10000003 },
-                    { 100005, 10000003 },
-                    { 100004, 10000004 },
                     { 100002, 10000004 },
-                    { 100003, 10000004 }
+                    { 100003, 10000001 },
+                    { 100003, 10000002 },
+                    { 100003, 10000004 },
+                    { 100004, 10000002 },
+                    { 100004, 10000004 },
+                    { 100005, 10000001 },
+                    { 100005, 10000003 }
                 });
 
             migrationBuilder.InsertData(

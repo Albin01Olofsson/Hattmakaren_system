@@ -25,6 +25,8 @@ namespace Models
             MåttTyp.Centimeter => "cm",
             MåttTyp.Millimeter => "mm",
             MåttTyp.Styck => "st",
+            MåttTyp.Kilogram => "kg",
+            MåttTyp.Gram => "g",
             _ => ""
         };
     }

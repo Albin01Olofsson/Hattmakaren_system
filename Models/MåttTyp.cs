@@ -11,6 +11,8 @@ namespace Models
         Meter,
         Centimeter,
         Millimeter,
-        Styck
+        Styck,
+        Kilogram,
+        Gram,
     }
 }

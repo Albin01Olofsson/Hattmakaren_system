@@ -54,7 +54,6 @@ namespace WpfApp1.ViewModels
         [ObservableProperty]
         private string materialSaldo;
 
-        // 🔥 ENUM istället för string
         public Array MåttTyper => Enum.GetValues(typeof(MåttTyp));
 
         [ObservableProperty]
@@ -126,7 +125,7 @@ namespace WpfApp1.ViewModels
         }
 
         [RelayCommand]
-        private void OppnaRedigeraMaterial()
+        private async Task OppnaRedigeraMaterial()
         {
             if (SelectedMaterial == null)
             {
@@ -146,6 +145,10 @@ namespace WpfApp1.ViewModels
             SelectedMåttTyp = SelectedMaterial.MåttTyp;
 
             IsEditorVisible = true;
+
+            await _materialRepo.Update(SelectedMaterial);
+            await _materialRepo.Save();
+
         }
 
         [RelayCommand]

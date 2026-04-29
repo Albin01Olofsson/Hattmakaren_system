@@ -120,7 +120,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding MaterialID}" Width="1.1*"/>
                         <DataGridTextColumn Header="Namn" Binding="{Binding Namn}" Width="2.2*"/>
-                        <DataGridTextColumn Header="Mått" Binding="{Binding MåttText}" Width="1.8*"/>
+                        <DataGridTextColumn Header="Mått" Binding="{Binding MåttText, Mode=OneWay}" Width="1.8*"/>
                         <DataGridTextColumn Header="Pris" Binding="{Binding Pris}" Width="1.3*"/>
                         <DataGridTextColumn Header="Saldo" Binding="{Binding Lagerantal}" Width="1.3*"/>
                     </DataGrid.Columns>
@@ -242,7 +242,11 @@
                             <TextBox Text="{Binding MaterialNamn}" Style="{StaticResource EditorTextBoxStyle}"/>
 
                             <TextBlock Text="Materialtyp" Style="{StaticResource EditorLabelStyle}"/>
-                            <TextBox Text="{Binding MaterialTyp}" Style="{StaticResource EditorTextBoxStyle}"/>
+                            <ComboBox ItemsSource="{Binding MåttTyper}"
+                                      SelectedItem="{Binding SelectedMåttTyp, Mode=TwoWay}">
+                                
+                            </ComboBox>
+                            <!--<TextBox Text="{Binding MaterialTyp}" Style="{StaticResource EditorTextBoxStyle}"/>-->
 
                             <TextBlock Text="Materialpris" Style="{StaticResource EditorLabelStyle}"/>
                             <TextBox Text="{Binding MaterialPris}" Style="{StaticResource EditorTextBoxStyle}"/>

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:WpfApp1.Views1"
       xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
       mc:Ignorable="d" d:DesignWidth="800"
-      Title="spårningPage" Background="#FF1A1A1D" Height="495">
+      Title="spårningPage" Background="#FF1A1A1D" Height="800">
 
     <Grid>
         <Grid>
@@ -28,7 +28,7 @@
 
             <Grid Grid.Row="4" Grid.RowSpan="2" Background="#FF2C3E50" Margin="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>

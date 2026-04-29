@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using DAL;
 using BL.Services;
 using DAL.Repositorys;
-
+using System.Net.Http;
+using System.Text.Json;
 
 namespace WpfApp1.Views1
 {
@@ -57,10 +58,6 @@ namespace WpfApp1.Views1
             MainMap.DragButton = System.Windows.Input.MouseButton.Left;
 
             MainMap.UpdateLayout();
-
-            AdderaLeveransMarkör(59.3293, 18.0686, "Hatt-leverans #1: Slottet", true);
-            AdderaLeveransMarkör(59.3326, 18.0645, "Hatt-leverans #2: Centralen", false);
-            AdderaLeveransMarkör(59.3385, 18.0335, "Hatt-leverans #3: S:t Eriksplan", false);
         }
 
         private void AdderaLeveransMarkör(double lat, double lng, string info, bool ärLevererad)
@@ -130,19 +127,18 @@ namespace WpfApp1.Views1
             
         }
 
-        private void AdderaAdressMarkör(string adress, string info)
+        private async Task AdderaAdressMarkör(string adress, string info)
         {
-            GeoCoderStatusCode status;
-            PointLatLng? position = GMapProviders.GoogleHybridMap.GetPoint(adress, out status);
+            PointLatLng? position = await SökKordinaterFrånAdressAsync(adress);
 
 
-            if (status == GeoCoderStatusCode.G_GEO_SUCCESS && position.HasValue)
+            if (position.HasValue)
             {
                 AdderaLeveransMarkör(position.Value.Lat, position.Value.Lng, info, false);
             }
             else
             {
-                MessageBox.Show("Kunde inte hitta adressen: " + status.ToString());
+                MessageBox.Show($"Kunde inte hitta adressen: {adress}");
             }
         }
 
@@ -189,6 +185,39 @@ namespace WpfApp1.Views1
                 MainMap.Markers.Clear();
                 AdderaLeveransMarkör(punkt.Latitud, punkt.Longitud, punkt.Plats, false);
             }
+        }
+
+        private async Task<PointLatLng?> SökKordinaterFrånAdressAsync(string adress)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "WPF-Hattmakare-App");
+
+                    string url = $"https://photon.komoot.io/api/?q={Uri.EscapeDataString(adress)}&limit=1";
+
+                    var response = await client.GetStringAsync(url);
+
+                    using (JsonDocument doc = JsonDocument.Parse(response))
+                    {
+                        var features = doc.RootElement.GetProperty("features");
+                        if (features.GetArrayLength() > 0)
+                        {
+                            var coords = features[0].GetProperty("geometry").GetProperty("coordinates");
+                            double lng = coords[0].GetDouble();
+                            double lat = coords[1].GetDouble();
+
+                            return new PointLatLng(lat, lng);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Geocoding error: {ex.Message}");
+            }
+            return null;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace DAL.Repositorys
 
         public async Task<Frakt> GetFraktBySändningsnummer(string sändningsnummer)
         {
-            return await _context.Frakt.FirstOrDefaultAsync(f => f.Sändningsnummer == sändningsnummer);
+            return await _context.Frakt.Include(f => f.Order).ThenInclude(o => o.Kund).FirstOrDefaultAsync(f => f.Sändningsnummer == sändningsnummer);
         }
 
     }

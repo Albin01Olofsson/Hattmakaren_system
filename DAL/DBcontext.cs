@@ -344,6 +344,7 @@ namespace DAL
                         TotalPris = 1890,
                         StartadAvID = 1,
                         Leverantör = "Kung AB",
+                        Levererad = false,
                         Datum = new DateTime(2026, 1, 15)
                     },
                     new MaterialBeställning
@@ -352,6 +353,7 @@ namespace DAL
                         TotalPris = 769,
                         StartadAvID = 2,
                         Leverantör = "Nordic Textile",
+                        Levererad = false,
                         Datum = new DateTime(2026, 2, 12)
                     },
                     new MaterialBeställning
@@ -359,6 +361,7 @@ namespace DAL
                         MaterialBeställningID = 1000003,
                         TotalPris = 3419,
                         StartadAvID = 1,
+                        Levererad = true,
                         Leverantör = "Skrädderi Grossisten",
                         Datum = new DateTime(2026, 3, 5)
                     }

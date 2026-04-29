@@ -28,7 +28,18 @@
                            FontWeight="Bold"
                            Foreground="White"
                            Margin="0,0,0,25"/>
+                <StackPanel Orientation="Horizontal" Margin="40,10,40,10">
 
+                    <TextBlock Text="Filter:"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+
+                    <ComboBox Width="160"
+                              ItemsSource="{Binding FilterOptions}"
+                              SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"/>
+
+                </StackPanel>
                 <!-- LIST -->
                 <ItemsControl ItemsSource="{Binding Bestallningar}">
 
@@ -120,7 +131,7 @@
                                                                Text="{Binding RadPris, StringFormat='{}{0} kr'}"
                                                                Foreground="#FFC5A059"
                                                                HorizontalAlignment="Right"/>
-
+                                                    
                                                 </Grid>
 
                                             </DataTemplate>
@@ -136,6 +147,16 @@
                                     <!-- TOTAL -->
                                     <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Right">
+                                        <ComboBox Width="160"
+                                                  Margin="0,0,0,10"
+                                                  SelectedValue="{Binding Levererad, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag"
+                                                  SelectionChanged="ComboBox_SelectionChanged">
+
+                                            <ComboBoxItem Content="Beställd" Tag="False"/>
+                                            <ComboBoxItem Content="Levererad" Tag="True"/>
+
+                                        </ComboBox>
                                         <TextBlock Text="Total: "
                                                    Foreground="Gray"
                                                    FontSize="14"/>

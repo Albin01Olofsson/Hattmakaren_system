@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,16 @@ namespace WpfApp1.Views1
         {
             InitializeComponent();
             DataContext = new BestallningarListaViewModel();
+        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox combo && combo.DataContext is MaterialBeställning bestallning)
+            {
+                if (DataContext is BestallningarListaViewModel vm)
+                {
+                    vm.UpdateLevereradCommand.Execute(bestallning);
+                }
+            }
         }
     }
 }

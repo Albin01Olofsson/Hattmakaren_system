@@ -15,6 +15,7 @@ namespace Models
         public List<BestallningsRad> Rader { get; set; } = new();
 
         public string Leverantör {  get; set; }
+        public bool Levererad { get; set; } = false;
 
         //public int Antal { get; set; }
 

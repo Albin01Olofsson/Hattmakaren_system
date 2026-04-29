@@ -1,25 +1,12 @@
-﻿using BL.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DAL;
-using DAL.Repositorys;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using Microsoft.Win32;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using WpfApp1.Views1;
 using System.Windows;
 using WpfApp1;
-using Microsoft.EntityFrameworkCore;
+using WpfApp1.Views1;
 public partial class BestallningarListaViewModel : ObservableObject
 {
     private readonly DBcontext _context;
@@ -27,17 +14,43 @@ public partial class BestallningarListaViewModel : ObservableObject
     public BestallningarListaViewModel()
     {
         _context = new DBcontext();
-
-        var list = _context.MaterialBeställningar
-            .Include(b => b.Rader)
-            .ThenInclude(r => r.Material)
-            .ToList();
-
-        Bestallningar = new ObservableCollection<MaterialBeställning>(list);
+        LaddaBeställningar();
     }
 
     [ObservableProperty]
     private ObservableCollection<MaterialBeställning> bestallningar;
+    public List<string> FilterOptions { get; } = new()
+    {
+        "Alla",
+        "Beställda",
+        "Levererade"
+    };
+    [ObservableProperty]
+    private string selectedFilter = "Alla";
+    partial void OnSelectedFilterChanged(string value)
+    {
+        LaddaBeställningar();
+    }
+    private void LaddaBeställningar()
+    {
+        var query = _context.MaterialBeställningar
+            .Include(b => b.Rader)
+            .ThenInclude(r => r.Material)
+            .AsQueryable();
+
+        switch (SelectedFilter)
+        {
+            case "Beställda":
+                query = query.Where(b => !b.Levererad);
+                break;
+
+            case "Levererade":
+                query = query.Where(b => b.Levererad);
+                break;
+        }
+
+        Bestallningar = new ObservableCollection<MaterialBeställning>(query.ToList());
+    }
 
     [RelayCommand]
     private void GoBack()
@@ -46,5 +59,18 @@ public partial class BestallningarListaViewModel : ObservableObject
         var mainPage = window.MainFrame.Content as Mainpage;
 
         mainPage?.GetFrame().Navigate(new BestallningarPage());
+    }
+
+    [RelayCommand]
+    private void UpdateLevererad(MaterialBeställning bestallning)
+    {
+        var item = _context.MaterialBeställningar
+            .FirstOrDefault(b => b.MaterialBeställningID == bestallning.MaterialBeställningID);
+
+        if (item != null)
+        {
+            item.Levererad = bestallning.Levererad;
+            _context.SaveChanges();
+        }
     }
 }

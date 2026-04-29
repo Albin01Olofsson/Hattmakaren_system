@@ -51,11 +51,26 @@ namespace WpfApp1.ViewModels
         [RelayCommand]
         private async Task TaBortKund(Kund kund)
         {
-            // 1. Kör din anonymisering
-            await _kundService.AnonymiseraKund(kund.KundID);
+            if (kund == null) return;
 
-            // 2. Uppdatera listan så kunden försvinner direkt i UI
-            await LaddaData();
+            //. Skapa popup-rutan och spara resultatet
+
+            var resultat = System.Windows.MessageBox.Show(
+                $"Är du säker på att du vill ta bort {kund.Namn}? \n\nKunden kommer att anonymiseras men köphistoriken sparas.",
+                "Bekräfta borttagning",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Warning);
+
+            // 2. Kontrollera om användaren klickade på 'Ja'
+            if (resultat == System.Windows.MessageBoxResult.Yes)
+            {
+                // Kör din befintliga anonymisering
+                await _kundService.AnonymiseraKund(kund.KundID);
+
+                // Uppdatera listan direkt i UI
+                await LaddaData();
+            }
+            // Om användaren klickar 'Nej' så avbryts metoden här och inget händer
         }
     }
 }

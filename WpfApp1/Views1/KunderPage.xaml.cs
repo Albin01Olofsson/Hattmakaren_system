@@ -34,5 +34,7 @@ namespace WpfApp1.Views1
                 MessageBox.Show("Kund tillagd!");//hej
             }
         }
+
+
     }
 }

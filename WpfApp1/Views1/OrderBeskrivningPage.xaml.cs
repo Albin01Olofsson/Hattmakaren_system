@@ -23,11 +23,11 @@ namespace WpfApp1.Views1
         public OrderBeskrivningPage(Order o)
         {
             InitializeComponent();
-            _produktService = new ProduktService(new ProduktRepo(new DBcontext()));
+            var context = new DBcontext();
+            _produktService = new ProduktService(new ProduktRepo(context), context);
+            _orderService = new OrderService(new OrderRepo(context), context);
             order = o;
             DataContext = new OrderBeskrivningVM(order, _produktService);
-            var context = new DBcontext();
-            _orderService = new OrderService(new OrderRepo(context), context);
         }
 
         private async void MarkeraSomKlar_Click(object sender, RoutedEventArgs e)

@@ -50,10 +50,10 @@ namespace WpfApp1.Views1
 
             NavigationService.Navigate(new SkapaLagerfördProdukt(new SkapaLagerfördProduktVM(
                     new OrderService(new OrderRepo(orderContext), orderContext),
-                    new ProduktService(new ProduktRepo(new DBcontext())),
-                    new MaterialService(new MaterialRepo(new DBcontext())),
-                    new KundService(new KundRepo(new DBcontext())),
-                    new AnvändarService(new AnvändarRepo(new DBcontext()))
+                    new ProduktService(new ProduktRepo(orderContext), orderContext),
+                    new MaterialService(new MaterialRepo(orderContext)),
+                    new KundService(new KundRepo(orderContext)),
+                    new AnvändarService(new AnvändarRepo(orderContext))
                 )));
         }
 
@@ -63,10 +63,10 @@ namespace WpfApp1.Views1
 
             NavigationService.Navigate(new SpcBestOrderPage(new SpcBestOrderPageVM(
                     new OrderService(new OrderRepo(orderContext), orderContext),
-                    new ProduktService(new ProduktRepo(new DBcontext())),
-                    new MaterialService(new MaterialRepo(new DBcontext())),
-                    new KundService(new KundRepo(new DBcontext())),
-                    new AnvändarService(new AnvändarRepo(new DBcontext()))
+                    new ProduktService(new ProduktRepo(orderContext), orderContext),
+                    new MaterialService(new MaterialRepo(orderContext)),
+                    new KundService(new KundRepo(orderContext)),
+                    new AnvändarService(new AnvändarRepo(orderContext))
                 )));
         }
 

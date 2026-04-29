@@ -21,7 +21,8 @@ namespace WpfApp1.ViewModels
 
         [ObservableProperty]
         private Användare valdAnvändare;
-
+        [ObservableProperty]
+        private bool visaAnvändarPopup;
         public AnvändareViewModel(IAnvändarService användareService)
         {
             _användareService = användareService;
@@ -78,6 +79,18 @@ namespace WpfApp1.ViewModels
             {
                 AnvändareLista.Add(u);
             }
+        }
+        partial void OnValdAnvändareChanged(Användare value)
+        {
+            if (value != null)
+            {
+                VisaAnvändarPopup = true;
+            }
+        }
+        [RelayCommand]
+        private void StängPopup()
+        {
+            VisaAnvändarPopup = false;
         }
     }
 }

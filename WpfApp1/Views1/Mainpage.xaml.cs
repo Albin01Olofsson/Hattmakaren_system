@@ -15,14 +15,21 @@ namespace WpfApp1.Views1
         public OrderVM vm { get; set; }
 
         private IOrderService _orderService;
+        DashboardViewModel _dash = new DashboardViewModel();
+
         public Mainpage()
         {
             InitializeComponent();
             LoadUser();
-            OrderRepo repo = new OrderRepo(new DBcontext());
-            _orderService = new OrderService(repo, new DBcontext());
+            var context = new DBcontext();
+            OrderRepo repo = new OrderRepo(context);
+            _orderService = new OrderService(repo, context);
             vm = new OrderVM(_orderService);
+            this.DataContext = _dash;
+            this.Loaded += async (s, e) => await _dash.LaddaDataAsync();
         }
+
+
 
         // Här är koden som körs när du klickar på "Användare"
         private void BtnAnvandare_Click(object sender, RoutedEventArgs e)
@@ -138,5 +145,7 @@ namespace WpfApp1.Views1
             UserNameText.Text = användare.Namn;
             RoleText.Text = användare.IsAdmin ? "Administratör" : "Anställd";
         }
+
+
     }
 }

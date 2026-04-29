@@ -15,7 +15,9 @@
         </Style>
 
         <Style TargetType="Button">
-            <Setter Property="Padding" Value="12,7"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="MinWidth" Value="78"/>
+            <Setter Property="Padding" Value="14,7"/>
             <Setter Property="Margin" Value="8,0,0,0"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -24,9 +26,87 @@
         </Style>
 
         <Style TargetType="DatePicker">
-            <Setter Property="Height" Value="32"/>
+            <Setter Property="Height" Value="34"/>
             <Setter Property="Margin" Value="8,0,0,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="MinWidth" Value="118"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder"
+                                Background="#182333"
+                                BorderBrush="#33485C"
+                                BorderThickness="1"
+                                CornerRadius="7"
+                                Padding="16,8">
+                            <TextBlock x:Name="HeaderText"
+                                       Text="{TemplateBinding Header}"
+                                       Foreground="#F4F1EA"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#FFC5A059"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#FFC5A059"/>
+                                <Setter TargetName="HeaderText" Property="Foreground" Value="#FF1A1A1D"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#FFC5A059"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#F4F1EA"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
+                                CornerRadius="7">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#FFC5A059"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#55708A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Page.Resources>
 
@@ -40,7 +120,7 @@
         <DockPanel Grid.Row="0" Margin="0,0,0,12">
             <StackPanel DockPanel.Dock="Left">
                 <TextBlock Text="STATISTIK"
-                           FontSize="28"
+                           FontSize="26"
                            FontWeight="Black"/>
                 <TextBlock Text="{Binding PeriodText}"
                            Foreground="#FFC5A059"
@@ -51,14 +131,16 @@
             <Border DockPanel.Dock="Right"
                     Background="#FF2C3E50"
                     CornerRadius="8"
-                    Padding="12"
+                    Padding="10"
                     VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="Från" VerticalAlignment="Center" FontWeight="Bold"/>
-                    <DatePicker Width="130"
+                    <DatePicker Width="166"
+                                SelectedDateFormat="Short"
                                 SelectedDate="{Binding DatumFran, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="Till" VerticalAlignment="Center" FontWeight="Bold" Margin="12,0,0,0"/>
-                    <DatePicker Width="130"
+                    <DatePicker Width="166"
+                                SelectedDateFormat="Short"
                                 SelectedDate="{Binding DatumTill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Rensa"
                             Command="{Binding RensaDatumFilterCommand}"
@@ -68,7 +150,7 @@
             </Border>
         </DockPanel>
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Nyckeltal}" Margin="0,0,0,12">
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Nyckeltal}" Margin="0,0,0,14">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="5"/>
@@ -78,179 +160,338 @@
                 <DataTemplate>
                     <Border Background="#FF2C3E50"
                             CornerRadius="8"
-                            Padding="14"
+                            Padding="12"
+                            Height="92"
                             Margin="0,0,10,0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0"
-                                       Text="{Binding Rubrik}"
+                        <StackPanel>
+                            <TextBlock Text="{Binding Rubrik}"
                                        Foreground="{Binding AccentFarg}"
-                                       FontWeight="Bold"/>
-                            <TextBlock Grid.Row="1"
-                                       Text="{Binding Varde}"
-                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       FontSize="13"/>
+                            <TextBlock Text="{Binding Varde}"
+                                       Foreground="#F4F1EA"
+                                       FontSize="17"
                                        FontWeight="Black"
-                                       Margin="0,6,0,1"/>
-                            <TextBlock Grid.Row="2"
-                                       Text="{Binding Detalj}"
-                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       Margin="0,5,0,2"/>
+                            <TextBlock Text="{Binding Detalj}"
+                                       Foreground="#F4F1EA"
+                                       FontSize="12"
+                                       TextTrimming="CharacterEllipsis"
                                        Opacity="0.72"/>
-                        </Grid>
+                        </StackPanel>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.05*"/>
-                <ColumnDefinition Width="1.05*"/>
-                <ColumnDefinition Width="1.1*"/>
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="2"
+                Background="#FF2C3E50"
+                CornerRadius="8"
+                Padding="14,12"
+                ClipToBounds="True">
+            <TabControl>
+                <TabItem Header="Hattar">
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.55*"/>
+                            <ColumnDefinition Width="0.95*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    Background="#FF2C3E50"
-                    CornerRadius="8"
-                    Padding="14"
-                    Margin="0,0,10,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                        <Grid Grid.Column="0" Margin="0,0,12,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="Material"
-                                   FontSize="20"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="Nuvarande lager och materialvärde"
-                                   Opacity="0.65"/>
-                    </StackPanel>
+                            <TextBlock Text="Sålda hattar"
+                                       Foreground="#F4F1EA"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,8"/>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding MaterialStatistik}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,0,0,14">
-                                        <DockPanel>
-                                            <TextBlock Text="{Binding Rubrik}" FontWeight="Bold"/>
-                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Antal}" FontWeight="Bold"/>
-                                        </DockPanel>
-                                        <Border Height="10" Background="#22000000" CornerRadius="5" Margin="0,7,0,5">
-                                            <Border Width="{Binding Bredd}"
-                                                    Background="#FFC5A059"
-                                                    CornerRadius="5"
-                                                    HorizontalAlignment="Left"/>
+                            <Grid Grid.Row="1" Margin="12,0,12,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="76"/>
+                                    <ColumnDefinition Width="92"/>
+                                    <ColumnDefinition Width="68"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Hatt" Foreground="#FFC5A059" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Sålda" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="2" Text="Intäkt" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="Kunder" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <ListBox Grid.Row="2"
+                                     ItemsSource="{Binding Hattar}"
+                                     SelectedItem="{Binding ValdHatt, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#223A5068" CornerRadius="7" Padding="12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="76"/>
+                                                    <ColumnDefinition Width="92"/>
+                                                    <ColumnDefinition Width="68"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="{Binding Namn}" Foreground="#F4F1EA" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Text="{Binding Typ}" Foreground="#F4F1EA" Opacity="0.65"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="1" Text="{Binding AntalSalda}" Foreground="#F4F1EA" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding IntaktText}" Foreground="#F4F1EA" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding AntalKunder}" Foreground="#F4F1EA" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            </Grid>
                                         </Border>
-                                        <TextBlock Text="{Binding Detalj}" Opacity="0.78"/>
-                                        <TextBlock Text="{Binding SekundarDetalj}" Opacity="0.58"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
 
-            <Border Grid.Column="1"
-                    Background="#FF2C3E50"
-                    CornerRadius="8"
-                    Padding="14"
-                    Margin="5,0,5,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                        <Border Grid.Column="1" Background="#182333" CornerRadius="8" Padding="14">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="Hattar"
-                                   FontSize="20"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="Hattstatistik för vald period"
-                                   Opacity="0.65"/>
-                    </StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding ValdHatt.Namn}" Foreground="#F4F1EA" FontSize="18" FontWeight="Bold" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Köpt av" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,5,0,0"/>
+                                </StackPanel>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding HattStatistik}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,0,0,14">
-                                        <DockPanel>
-                                            <TextBlock Text="{Binding Rubrik}" FontWeight="Bold"/>
-                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Antal}" FontWeight="Bold"/>
-                                        </DockPanel>
-                                        <Border Height="10" Background="#22000000" CornerRadius="5" Margin="0,7,0,5">
-                                            <Border Width="{Binding Bredd}"
-                                                    Background="#FF2ECC71"
-                                                    CornerRadius="5"
-                                                    HorizontalAlignment="Left"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding HattDetaljer}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Namn}"
+                                                           Foreground="#F4F1EA"
+                                                           FontWeight="Bold"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Margin="0,0,12,0"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Varde}"
+                                                           Foreground="#FFC5A059"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Kunder">
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.55*"/>
+                            <ColumnDefinition Width="0.95*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Margin="0,0,12,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Kunder och köp"
+                                       Foreground="#F4F1EA"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,8"/>
+
+                            <Grid Grid.Row="1" Margin="12,0,12,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="72"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Kund" Foreground="#FFC5A059" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Hattar" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="2" Text="Ordrar" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="Totalt" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <ListBox Grid.Row="2"
+                                     ItemsSource="{Binding Kunder}"
+                                     SelectedItem="{Binding ValdKund, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#223A5068" CornerRadius="7" Padding="12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="72"/>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="90"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="{Binding Namn}" Foreground="#F4F1EA" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding AntalHattar}" Foreground="#F4F1EA" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding AntalOrdrar}" Foreground="#F4F1EA" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding TotaltKoptText}" Foreground="#F4F1EA" HorizontalAlignment="Right"/>
+                                            </Grid>
                                         </Border>
-                                        <TextBlock Text="{Binding Detalj}" Opacity="0.78"/>
-                                        <TextBlock Text="{Binding SekundarDetalj}" Opacity="0.58"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
 
-            <Border Grid.Column="2"
-                    Background="#FF2C3E50"
-                    CornerRadius="8"
-                    Padding="14"
-                    Margin="10,0,0,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                        <Border Grid.Column="1" Background="#182333" CornerRadius="8" Padding="14">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="Kunder"
-                                   FontSize="20"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="Mest aktiva kunder i perioden"
-                                   Opacity="0.65"/>
-                    </StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding ValdKund.Namn}" Foreground="#F4F1EA" FontSize="18" FontWeight="Bold" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Har köpt" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,5,0,0"/>
+                                </StackPanel>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding KundStatistik}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,0,0,14">
-                                        <DockPanel>
-                                            <TextBlock Text="{Binding Rubrik}" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Antal}" FontWeight="Bold"/>
-                                        </DockPanel>
-                                        <Border Height="10" Background="#22000000" CornerRadius="5" Margin="0,7,0,5">
-                                            <Border Width="{Binding Bredd}"
-                                                    Background="#FFF59E0B"
-                                                    CornerRadius="5"
-                                                    HorizontalAlignment="Left"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding KundDetaljer}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Namn}"
+                                                           Foreground="#F4F1EA"
+                                                           FontWeight="Bold"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Margin="0,0,12,0"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Varde}"
+                                                           Foreground="#FFC5A059"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Material">
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.55*"/>
+                            <ColumnDefinition Width="0.95*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Margin="0,0,12,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Materialanvändning"
+                                       Foreground="#F4F1EA"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,8"/>
+
+                            <Grid Grid.Row="1" Margin="12,0,12,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="84"/>
+                                    <ColumnDefinition Width="84"/>
+                                    <ColumnDefinition Width="78"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Material" Foreground="#FFC5A059" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Beställt" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="2" Text="Hattar" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="Lager" Foreground="#FFC5A059" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <ListBox Grid.Row="2"
+                                     ItemsSource="{Binding Material}"
+                                     SelectedItem="{Binding ValtMaterial, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#223A5068" CornerRadius="7" Padding="12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="84"/>
+                                                    <ColumnDefinition Width="84"/>
+                                                    <ColumnDefinition Width="78"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="{Binding Namn}" Foreground="#F4F1EA" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding BestalltText}" Foreground="#F4F1EA" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding AnvantText}" Foreground="#F4F1EA" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding LagerText}" Foreground="#F4F1EA" HorizontalAlignment="Right"/>
+                                            </Grid>
                                         </Border>
-                                        <TextBlock Text="{Binding Detalj}" Opacity="0.78"/>
-                                        <TextBlock Text="{Binding SekundarDetalj}" Opacity="0.58"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
 
-                    <TextBlock Grid.Row="2"
-                               Text="{Binding UppdateradText}"
-                               HorizontalAlignment="Right"
-                               Opacity="0.55"
-                               Margin="0,10,0,0"/>
-                </Grid>
-            </Border>
-        </Grid>
+                        <Border Grid.Column="1" Background="#182333" CornerRadius="8" Padding="14">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding ValtMaterial.Namn}" Foreground="#F4F1EA" FontSize="18" FontWeight="Bold" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Användning och inköp" Foreground="#FFC5A059" FontWeight="Bold" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding MaterialDetaljer}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Namn}"
+                                                           Foreground="#F4F1EA"
+                                                           FontWeight="Bold"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Margin="0,0,12,0"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Varde}"
+                                                           Foreground="#FFC5A059"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
+
+        <TextBlock Grid.Row="2"
+                   Text="{Binding UppdateradText}"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Opacity="0.55"
+                   Margin="0,0,12,10"/>
     </Grid>
 </Page>

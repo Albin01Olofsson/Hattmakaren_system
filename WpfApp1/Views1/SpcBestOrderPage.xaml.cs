@@ -1,20 +1,9 @@
 ﻿using Microsoft.Win32;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfApp1.ViewModels;
+using System.IO;
 
 namespace WpfApp1.Views1
 {
@@ -34,6 +23,7 @@ namespace WpfApp1.Views1
             OpenFileDialog fileDialog = new OpenFileDialog();
 
             fileDialog.Filter = "Tillåtna filnamn.Extensions (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+            fileDialog.InitialDirectory = System.IO.Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName, "DAL", "FörfråganBilder");
 
             if (fileDialog.ShowDialog() == true)
             {
@@ -52,11 +42,6 @@ namespace WpfApp1.Views1
                     vm.BildUrl = filPath;
                     vm.ValdBild = bild;
                 }
-
-                //if (DataContext is SpcBestOrderPageVM vm)
-                //{
-                //    vm.BildUrl = filPath; 
-                //}
             }
         }
 
@@ -67,6 +52,12 @@ namespace WpfApp1.Views1
 
         private void SparaSpecialbeställning_Click(object sender, RoutedEventArgs e)
         {            
+        }
+
+        private void ÖppnaFörfråganWindow_Clíck(object sender, RoutedEventArgs e)
+        {
+            FörfråganWindow fw = new FörfråganWindow();
+            fw.Show();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Models
         public decimal Pris { get; set; }
         public bool Färdig { get; set; } = false;
         public string Storlek { get; set; }
-        public List<Material> MaterialLista { get; set; } = new List<Material>();
+        public ICollection<ProduktMaterial> ProduktMaterial { get; set; } = new List<ProduktMaterial>();
 
         //Tillagda properties för att följa kraven i "KM_Scrum_vt26.pptx"
         public string HattTyp { get; set; } = string.Empty; //Ex: Fedora, keps, basker, typ som skor har sneakers

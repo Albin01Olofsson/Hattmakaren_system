@@ -18,6 +18,7 @@ namespace DAL
         public DbSet<OrderRad> OrderRader { get; set; }
         public DbSet<Frakt> Frakt { get; set; }
         public DbSet<Reklamation> Reklamationer { get; set; }
+        public DbSet<ProduktMaterial> ProduktMaterial { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -86,9 +87,25 @@ namespace DAL
 
             // 5. MÅNGA-TILL-MÅNGA (N:N)
             // Produkt <-> Material
-            modelBuilder.Entity<Produkt>()
-                .HasMany(p => p.MaterialLista)
-                .WithMany();
+            //modelBuilder.Entity<Produkt>()
+            //    .HasMany(p => p.MaterialLista)
+            //    .WithMany();
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasKey(pm => pm.ProduktMaterialID);
+
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasOne(pm => pm.Produkt)
+                .WithMany(p => p.ProduktMaterial)
+                .HasForeignKey(pm => pm.ProduktID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProduktMaterial>()
+                .HasOne(pm => pm.Material)
+                .WithMany(m => m.ProduktMaterial)
+                .HasForeignKey(pm => pm.MaterialID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
 
             // MaterialBeställning <-> Material
             modelBuilder.Entity<MaterialBeställning>()
@@ -166,6 +183,7 @@ namespace DAL
             modelBuilder.Entity<Order>().Property(o => o.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Material>().Property(m => m.Pris).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<MaterialBeställning>().Property(mb => mb.TotalPris).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ProduktMaterial>().Property(mb => mb.Mängd).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>().Property(o => o.Rabatt).HasColumnType("decimal(18,2)");
 
 
@@ -298,6 +316,24 @@ namespace DAL
                         Beskrivning = "1.2 mm svar syträd av silikon och polyester",
                         MåttTyp = MåttTyp.Meter,
                         Lagerantal = 2
+                    },
+                    new Material
+                    {
+                        MaterialID = 100004,
+                        Namn = "Siden",
+                        Pris = 89,
+                        Beskrivning = "Tunt siden till foder och detaljer",
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 18
+                    },
+                    new Material
+                    {
+                        MaterialID = 100005,
+                        Namn = "Läderband",
+                        Pris = 45,
+                        Beskrivning = "Brunt läderband till hattdekoration",
+                        MåttTyp = MåttTyp.Meter,
+                        Lagerantal = 11
                     }
                 );
             //MATERIALBESTÄLLNINGAR
@@ -307,22 +343,33 @@ namespace DAL
                         MaterialBeställningID = 1000001,
                         TotalPris = 1890,
                         StartadAvID = 1,
-                        Leverantör = "Kung AB"
+                        Leverantör = "Kung AB",
+                        Datum = new DateTime(2026, 1, 15)
                     },
                     new MaterialBeställning
                     {
                         MaterialBeställningID = 1000002,
                         TotalPris = 769,
                         StartadAvID = 2,
-                        Leverantör = "Kung AB"
+                        Leverantör = "Nordic Textile",
+                        Datum = new DateTime(2026, 2, 12)
                     },
                     new MaterialBeställning
                     {
                         MaterialBeställningID = 1000003,
                         TotalPris = 3419,
                         StartadAvID = 1,
-                        Leverantör = "Kung AB"
+                        Leverantör = "Skrädderi Grossisten",
+                        Datum = new DateTime(2026, 3, 5)
                     }
+                );
+            modelBuilder.Entity<BestallningsRad>().HasData(
+                    new BestallningsRad { Id = 10001, MaterialBeställningID = 1000001, MaterialId = 100001, Antal = 20 },
+                    new BestallningsRad { Id = 10002, MaterialBeställningID = 1000001, MaterialId = 100003, Antal = 10 },
+                    new BestallningsRad { Id = 10003, MaterialBeställningID = 1000002, MaterialId = 100002, Antal = 30 },
+                    new BestallningsRad { Id = 10004, MaterialBeställningID = 1000002, MaterialId = 100004, Antal = 12 },
+                    new BestallningsRad { Id = 10005, MaterialBeställningID = 1000003, MaterialId = 100001, Antal = 35 },
+                    new BestallningsRad { Id = 10006, MaterialBeställningID = 1000003, MaterialId = 100005, Antal = 15 }
                 );
             //MATERIALMATERIALPRODUKT
             //är en mellantabell, kodade in relationerna vi keyes istället bara
@@ -615,7 +662,13 @@ namespace DAL
                         Storlek = "M",
                         TillverkadAVID = 1,
                         ArtikelID = "LP0001",
-                        Kategori = "Hatt"
+                        Kategori = "Hatt",
+                        HattTyp = "Fedora",
+                        Modell = "Klassisk",
+                        Färg = "Svart",
+                        Decoration = "Läderband",
+                        Lagerantal = 7,
+                        Färdig = true
                     },
                     new LagerfördProdukt
                     {
@@ -625,49 +678,119 @@ namespace DAL
                         Storlek = "M",
                         TillverkadAVID = 2,
                         ArtikelID = "LP0002",
-                        Kategori = "Keps"
+                        Kategori = "Keps",
+                        HattTyp = "Keps",
+                        Modell = "Siden",
+                        Färg = "Blå",
+                        Decoration = "Svart tråd",
+                        Lagerantal = 5,
+                        Färdig = true
+                    },
+                    new LagerfördProdukt
+                    {
+                        ProduktID = 10000003,
+                        Namn = "Sommarhatt",
+                        Pris = 799,
+                        Storlek = "L",
+                        TillverkadAVID = 3,
+                        ArtikelID = "LP0003",
+                        Kategori = "Hatt",
+                        HattTyp = "Panama",
+                        Modell = "Sommar",
+                        Färg = "Naturvit",
+                        Decoration = "Bomullsband",
+                        Lagerantal = 4,
+                        Färdig = true
                     }
                 );
-            modelBuilder.Entity<Frakt>().HasData(
-                new Frakt
-                {
-                    Sändningsnummer = "S-100001",
-                    StartDatum = DateTime.Now.AddDays(-4), 
-                    Status = "Order Plockad",
-                    OrderID = 100000001,
-                    KolliId = "K-001-AAA",
-                    Transportör = "PostNord"
-                },
-
-                new Frakt
-                {
-                    Sändningsnummer = "S-100002",
-                    StartDatum = DateTime.Now.AddHours(-3),
-                    Status = "I Transit",
-                    OrderID = 100000002,
-                    KolliId = "K-002-BBB",
-                    Transportör = "DHL"
-                },
-
-                new Frakt
-                {
-                    Sändningsnummer = "S-100003",
-                    StartDatum = DateTime.Now.AddDays(-1),
-                    Status = "International Shipping",
-                    OrderID = 100000003,
-                    KolliId = "K-003-CCC",
-                    Transportör = "Bring"
-                },
-
-                new Frakt
-                {
-                    Sändningsnummer = "S-100004",
-                    StartDatum = DateTime.Now.AddDays(-10),
-                    Status = "Levererad",
-                    OrderID = 100000004,
-                    KolliId = "K-004-DDD",
-                    Transportör = "Schenker"
-                }
+            modelBuilder.Entity<SpecialBeställning>().HasData(
+                    new SpecialBeställning
+                    {
+                        ProduktID = 10000004,
+                        Namn = "Bröllopshatt",
+                        Pris = 1899,
+                        Storlek = "S",
+                        TillverkadAVID = 4,
+                        HattTyp = "Fascinator",
+                        Modell = "Bröllop",
+                        Färg = "Creme",
+                        Decoration = "Sidenrosett",
+                        Lagerantal = 0,
+                        Färdig = false,
+                        BildURL = "",
+                        Beskrivning = "Specialbeställd bröllopshatt med sidenrosett"
+                    }
+                );
+            modelBuilder.Entity<OrderRad>().HasData(
+                    new OrderRad { OrderRadID = 20001, OrderID = 100000001, ProduktID = 10000004, Antal = 1 },
+                    new OrderRad { OrderRadID = 20002, OrderID = 100000002, ProduktID = 10000001, Antal = 1 },
+                    new OrderRad { OrderRadID = 20003, OrderID = 100000003, ProduktID = 10000003, Antal = 1 },
+                    new OrderRad { OrderRadID = 20004, OrderID = 100000004, ProduktID = 10000004, Antal = 1 },
+                    new OrderRad { OrderRadID = 20005, OrderID = 100000005, ProduktID = 10000002, Antal = 1 },
+                    new OrderRad { OrderRadID = 20006, OrderID = 100000006, ProduktID = 10000002, Antal = 1 },
+                    new OrderRad { OrderRadID = 20007, OrderID = 100000007, ProduktID = 10000001, Antal = 1 },
+                    new OrderRad { OrderRadID = 20008, OrderID = 100000008, ProduktID = 10000003, Antal = 2 },
+                    new OrderRad { OrderRadID = 20009, OrderID = 100000009, ProduktID = 10000001, Antal = 1 },
+                    new OrderRad { OrderRadID = 20010, OrderID = 100000010, ProduktID = 10000002, Antal = 1 },
+                    new OrderRad { OrderRadID = 20011, OrderID = 100000011, ProduktID = 10000001, Antal = 1 },
+                    new OrderRad { OrderRadID = 20012, OrderID = 100000012, ProduktID = 10000004, Antal = 1 },
+                    new OrderRad { OrderRadID = 20013, OrderID = 100000013, ProduktID = 10000004, Antal = 1 },
+                    new OrderRad { OrderRadID = 20014, OrderID = 100000014, ProduktID = 10000003, Antal = 1 },
+                    new OrderRad { OrderRadID = 20015, OrderID = 100000015, ProduktID = 10000002, Antal = 1 },
+                    new OrderRad { OrderRadID = 20016, OrderID = 100000016, ProduktID = 10000004, Antal = 1 },
+                    new OrderRad { OrderRadID = 20017, OrderID = 100000017, ProduktID = 10000003, Antal = 1 },
+                    new OrderRad { OrderRadID = 20018, OrderID = 100000018, ProduktID = 10000001, Antal = 1 },
+                    new OrderRad { OrderRadID = 20019, OrderID = 100000019, ProduktID = 10000002, Antal = 1 },
+                    new OrderRad { OrderRadID = 20020, OrderID = 100000020, ProduktID = 10000003, Antal = 1 },
+                    new OrderRad { OrderRadID = 20021, OrderID = 100000021, ProduktID = 10000001, Antal = 1 }
+                );
+            modelBuilder.Entity<Reklamation>().HasData(
+                    new Reklamation
+                    {
+                        ReklamationID = 30001,
+                        OrderID = 100000008,
+                        KundID = 1003,
+                        ProduktID = 10000003,
+                        Orsak = "Fel storlek",
+                        Beskrivning = "Kunden önskar justering av passform.",
+                        Status = "Ny",
+                        Atgard = "Justering",
+                        SkapadDatum = new DateTime(2026, 4, 18),
+                        SkapadAvID = 1
+                    },
+                    new Reklamation
+                    {
+                        ReklamationID = 30002,
+                        OrderID = 100000013,
+                        KundID = 1002,
+                        ProduktID = 10000004,
+                        Orsak = "Fel färg",
+                        Beskrivning = "Sidenrosetten behöver bytas till ljusare nyans.",
+                        Status = "Under behandling",
+                        Atgard = "Reparation",
+                        SkapadDatum = new DateTime(2026, 4, 20),
+                        SkapadAvID = 2
+                    }
+                );
+            //modelBuilder.Entity("MaterialProdukt").HasData(
+            //        new { MaterialListaMaterialID = 100001, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000001 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000002 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100005, ProduktID = 10000003 },
+            //        new { MaterialListaMaterialID = 100004, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100002, ProduktID = 10000004 },
+            //        new { MaterialListaMaterialID = 100003, ProduktID = 10000004 }
+            //    );
+            modelBuilder.Entity("MaterialMaterialBeställning").HasData(
+                    new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100001 },
+                    new { MaterialBeställningID = 1000001, MaterialListaMaterialID = 100003 },
+                    new { MaterialBeställningID = 1000002, MaterialListaMaterialID = 100002 },
+                    new { MaterialBeställningID = 1000002, MaterialListaMaterialID = 100004 },
+                    new { MaterialBeställningID = 1000003, MaterialListaMaterialID = 100001 },
+                    new { MaterialBeställningID = 1000003, MaterialListaMaterialID = 100005 }
                 );
         }
 

@@ -45,64 +45,6 @@ namespace BL.Services
 
         public async Task SaveOrder() => await _orderRepo.Save();
 
-        //public async Task skapaOrder(Order nyOrder)
-        //{
-        //    if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || nyOrder.Produkter == null || !nyOrder.Produkter.Any())
-        //    {
-        //        throw new ArgumentException("Ordern måste ha en kund, en startande användare och minst en produkt.");
-        //    }
-
-        //    decimal totalPris = 0;
-
-        //    try
-        //    {
-        //        // Hämta produkterna igen från samma DbContext som ordern ska sparas i
-        //        var produktIds = nyOrder.Produkter.Select(p => p.ProduktID).ToList();
-
-        //        var produkterFrånDb = await _context.Produkter
-        //            .Where(p => produktIds.Contains(p.ProduktID))
-        //            .ToListAsync();
-
-        //        if (produkterFrånDb.Count != produktIds.Count)
-        //        {
-        //            throw new Exception("En eller flera produkter kunde inte hittas i databasen.");
-        //        }
-
-        //        nyOrder.Produkter = produkterFrånDb;
-
-        //        foreach (var produkt in nyOrder.Produkter)
-        //        {
-        //            if (produkt is SpecialBeställning)
-        //            {
-        //                produkt.Färdig = false;
-        //            }
-
-        //            totalPris += produkt.Pris;
-        //        }
-
-        //        totalPris -= nyOrder.Rabatt;
-
-        //        if (totalPris < 0)
-        //        {
-        //            totalPris = 0;
-        //        }
-
-        //        if (nyOrder.IsPrio)
-        //        {
-        //            totalPris *= 1.20m;
-        //        }
-
-        //        nyOrder.Pris = totalPris;
-        //        nyOrder.Datum = DateTime.Now;
-
-        //        await _orderRepo.Add(nyOrder);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception($"Något gick fel när ordern skulle skapas: {ex.Message}", ex);
-        //    }
-        //}
         public async Task skapaOrder(Order nyOrder, List<int> produktIds)
         {
             if (nyOrder.KundID == 0 || nyOrder.StartadAvID == 0 || produktIds == null || !produktIds.Any())
@@ -114,6 +56,7 @@ namespace BL.Services
 
             try
             {
+                _context.ChangeTracker.Clear();
                 // 1. Gruppera ID:n för att räkna antalet av varje unik produkt
                 // Om produktIds är [5, 5, 2] blir detta: { ProduktID = 5, Antal = 2 }, { ProduktID = 2, Antal = 1 }
                 var grupperadeProdukter = produktIds
@@ -142,15 +85,19 @@ namespace BL.Services
                 {
                     var produktDb = produkterFrånDb.First(p => p.ProduktID == grupp.ProduktID);
 
+                    if (produktDb.Lagerantal < grupp.Antal)
+                    {
+                        throw new Exception($"Inte tillräckligt lager för {produktDb.Namn}. Finns: {produktDb.Lagerantal}, försöker beställa: {grupp.Antal}.");
+                    }
+
+                    produktDb.Lagerantal -= grupp.Antal;
+
                     nyOrder.OrderRader.Add(new OrderRad
                     {
                         ProduktID = produktDb.ProduktID,
                         Antal = grupp.Antal
-                        // VIKTIGT: Vi skickar INTE in hela 'Produkt = produktDb' här, 
-                        // vi låter Entity Framework knyta ihop relationen via ProduktID!
                     });
 
-                    // Räkna ut priset: Produktens pris * Antalet vi vill köpa
                     totalPris += (produktDb.Pris * grupp.Antal);
                 }
 
@@ -205,6 +152,8 @@ namespace BL.Services
 
                 nyOrder.Varukod = $"{landBokstav}{stadBokstav}{företagskundBokstav}{kundNamnBokstav}{random4siffror}";
 
+                //MINSKA LAGERANTAL
+
                 await _orderRepo.Update(senasteOrder);
                 await _context.SaveChangesAsync();
             }
@@ -215,6 +164,9 @@ namespace BL.Services
                 throw new Exception(felorsak, ex);
             }
         }
+
+
+
         public async Task MarkeraFärdig(int OrderID)
         {
             var order = await _orderRepo.GetById(OrderID);
